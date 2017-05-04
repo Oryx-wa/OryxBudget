@@ -43,7 +43,7 @@ namespace Entities.Budgets
 
         public virtual ICollection<Actuals> BudgetActuals { get; set; }
 
-        public virtual BudgetLineCategory BudgetCategory { get; set; }
+        public virtual Category BudgetCategory { get; set; }
 
      
     }
@@ -78,7 +78,7 @@ namespace Entities.Budgets
 
         public virtual ICollection<Actuals> BudgetActuals { get; set; }
 
-       public virtual BudgetLineCategory BudgetCategory { get; set; }
+       public virtual Category BudgetCategory { get; set; }
 
       
     }

@@ -38,7 +38,7 @@ namespace OryxBudgetService
             builder.RegisterType<PeriodService>();
             builder.RegisterType<LineCommentService>();
             builder.RegisterType<BudgetLineService>();
-            builder.RegisterType<BudgetLineCategoryService>();
+            builder.RegisterType<CategoryService>();
             
         }
     }

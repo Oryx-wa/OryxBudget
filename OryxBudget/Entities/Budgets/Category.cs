@@ -5,7 +5,7 @@ using System;
 
 namespace Entities.Budgets
 {
-    public class BudgetLineCategory : IEntityBase<Guid>
+    public class Category : IEntityBase<Guid>
     {
         [Key]
         public Guid Id { get; set; }
@@ -25,7 +25,7 @@ namespace Entities.Budgets
         public string Description { get; set; }
     }
 
-    public class BudgetLineCategoryLog : IEntityBase<Guid>, ILogEntityBase<Guid>
+    public class CategoryLog : IEntityBase<Guid>, ILogEntityBase<Guid>
     {
         public int LogInstance { get; set; }
         [Key]

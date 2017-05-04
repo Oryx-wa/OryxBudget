@@ -6,7 +6,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace OryxWebApi.ViewModels.BudgetsViewModels
 {
-    public class BudgetLineCategoryViewModel : BaseViewModel
+    public class CategoryViewModel : BaseViewModel
     {
         public string Code { get; set; }
 
