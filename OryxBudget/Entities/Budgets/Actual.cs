@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Entities.Budgets
 {
-   public class Actuals : IEntityBase<Guid>
+   public class Actual : IEntityBase<Guid>
     {
         [Key]
         public Guid Id { get; set; }
@@ -22,11 +22,11 @@ namespace Entities.Budgets
        
         public string Code { get; set; }
         public string Description { get; set; }
-        public decimal Amount { get; set; }
+        public decimal TotalAmount { get; set; }
         public string Remarks { get; set; }
         public string BudgetId { get; set; }
     }
-    public class ActualsLog : IEntityBase<Guid>, ILogEntityBase<Guid>
+    public class ActualLog : IEntityBase<Guid>, ILogEntityBase<Guid>
     {
         public int LogInstance {get; set;}
         public Guid Id { get; set; }
@@ -40,7 +40,7 @@ namespace Entities.Budgets
 
         public string Code { get; set; }
         public string Description { get; set; }
-        public decimal Amount { get; set; }
+        public decimal TotalAmount { get; set; }
         public string Remarks { get; set; }
         public string BudgetId { get; set; }
     }

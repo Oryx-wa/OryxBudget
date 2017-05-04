@@ -60,8 +60,8 @@ namespace OryxWebapi.ViewModels.Mappings
             CreateMap<BudgetRun, BudgetRunViewModel>().ReverseMap();
 
 
-            CreateMap<ActualsViewModel, Actuals>().ReverseMap();
-            CreateMap<Actuals, ActualsViewModel>().ReverseMap();
+            CreateMap<ActualViewModel, Actual>().ReverseMap();
+            CreateMap<Actual, ActualViewModel>().ReverseMap();
 
             //Operator
             CreateMap<OperatorViewModel, Operator>().ReverseMap();

@@ -8,7 +8,7 @@ using System.Text;
 
 namespace Data.Repositories
 {
-   public  class ActualsRepository : BaseLogBudgetRepository<Actuals, ActualsLog, Guid>, ILogRepository<Actuals, Guid>
+   public  class ActualsRepository : BaseLogBudgetRepository<Actual, ActualLog, Guid>, ILogRepository<Actual, Guid>
     {
         public ActualsRepository(IDbFactory dbFactory, IUserResolverService UserResolverService) : base(dbFactory, UserResolverService)
         {

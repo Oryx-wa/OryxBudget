@@ -24,8 +24,8 @@ namespace Data
         public DbSet<BudgetLine> BudgetLines { get; set; }
         public DbSet<BudgetLineLog> BudgetLineLogs { get; set; }
 
-        public DbSet<BudgetLineCategory> BudgetLineCategorys { get; set; }
-        public DbSet<BudgetLineCategoryLog> BudgetLineCategoryLogs { get; set; }
+        public DbSet<Category> Categorys { get; set; }
+        public DbSet<CategoryLog> CategoryLogs { get; set; }
 
         public DbSet<Period> Periods { get; set; }
         public DbSet<PeriodLog> PeriodLogs { get; set; }

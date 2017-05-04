@@ -36,7 +36,7 @@ namespace Data
             builder.RegisterType<BudgetRunRepository>();
             builder.RegisterType<BudgetRepository>();
            builder.RegisterType<BudgetLineRepository>();
-            builder.RegisterType<BudgetLineCategoryRepository>();
+            builder.RegisterType<CategoryRepository>();
             builder.RegisterType<PeriodRepository>();
             builder.RegisterType<ActualsRepository>();
           

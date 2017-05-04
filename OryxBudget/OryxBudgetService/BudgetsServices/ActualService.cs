@@ -9,18 +9,18 @@ using OryxBudgetService;
 
 namespace OryxBudgetService.BudgetsServices
 {
-   public class ActualsService : BaseBudgetService<Actuals>
+   public class ActualService : BaseBudgetService<Actual>
     {
-        private readonly IBaseLogBudgetRepository<Actuals, ActualsLog, Guid> _repository;
+        private readonly IBaseLogBudgetRepository<Actual, ActualLog, Guid> _repository;
 
-        public ActualsService(IBaseLogBudgetRepository<Actuals, ActualsLog, Guid> repository, IBudgetUnitOfWork unitOfWork) : base(repository, unitOfWork)
+        public ActualService(IBaseLogBudgetRepository<Actual, ActualLog, Guid> repository, IBudgetUnitOfWork unitOfWork) : base(repository, unitOfWork)
         {
             _repository = repository;
         }
 
-        public override void Update(Actuals entity)
+        public override void Update(Actual entity)
         {
-            Actuals dbActuals = this.Get(entity.Id);
+            Actual dbActuals = this.Get(entity.Id);
 
 
 
@@ -28,7 +28,7 @@ namespace OryxBudgetService.BudgetsServices
 
         }
 
-        public IEnumerable<Actuals> GetByActualsId(string bgtId)
+        public IEnumerable<Actual> GetByActualsId(string bgtId)
         {
             return this.GetAll().Where(info => info.BudgetId == bgtId);
         }

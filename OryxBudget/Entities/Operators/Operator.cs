@@ -29,8 +29,8 @@ namespace Entities.Operators
 
         public string Code { get; set; }
         public string OperatorType { get; set; }
-        public string IsJV { get; set; }
-        public string IsPSC { get; set; }
+        public bool IsJV { get; set; }
+        public bool IsPSC { get; set; }
         public string ContactPerson { get; set; }
     }
 
@@ -55,8 +55,8 @@ namespace Entities.Operators
 
         public string Code { get; set; }
         public string OperatorType { get; set; }
-        public string IsJV { get; set; }
-        public string IsPSC { get; set; }
+        public bool IsJV { get; set; }
+        public bool IsPSC { get; set; }
         public string ContactPerson { get; set; }
     }
 }

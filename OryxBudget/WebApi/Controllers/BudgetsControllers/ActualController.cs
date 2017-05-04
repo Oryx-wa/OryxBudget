@@ -12,23 +12,23 @@ using Entities.Budgets;
 
 namespace OryxWebApi.Controllers.BudgetsControllers
 {
-    public class ActualsController : BaseController
+    public class ActualController : BaseController
     {
-        private readonly ActualsService _actualsService;
+        private readonly ActualService _actualsService;
 
-        public ActualsController(ActualsService actualsService)
+        public ActualController(ActualService  actualService)
         {
-            _actualsService = actualsService;
+            _actualsService =actualService;
         }
 
         // POST api/values
         [HttpPost]
         [ValidateModelState]
         [Route("Add")]
-        public JsonResult Add([FromBody] ActualsViewModel ActualsVm)
+        public JsonResult Add([FromBody] ActualViewModel ActualsVm)
         {
 
-            var actuals = Mapper.Map<Actuals>(ActualsVm);
+            var actuals = Mapper.Map<Actual>(ActualsVm);
             _actualsService.Add(actuals);
             _actualsService.SaveChanges();
             return Json(_actualsService.Get(actuals.Id));
@@ -38,12 +38,12 @@ namespace OryxWebApi.Controllers.BudgetsControllers
         [HttpPost]
         [ValidateModelState]
         [Route("Update")]
-        public JsonResult Update([FromBody]ActualsViewModel ActualsVm)
+        public JsonResult Update([FromBody]ActualViewModel ActualsVm)
         {
-            var actuals = Mapper.Map<Actuals>(ActualsVm);
-            _actualsService.Update(actuals);
+            var actual = Mapper.Map<Actual>(ActualsVm);
+            _actualsService.Update(actual);
             _actualsService.SaveChanges();
-            return Json(_actualsService.Get(actuals.Id));
+            return Json(_actualsService.Get(actual.Id));
         }
 
         // PUT api/values/5

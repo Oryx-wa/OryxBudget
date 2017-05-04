@@ -33,15 +33,9 @@ namespace Entities.Budgets
 
         public decimal TotalBudgetAmount { get; set; }
 
-        public decimal TotalActualAmount { get; set; }
-
         public int OperatorId { get; set; }
-        
-        public virtual Period Period { get; set; }
 
         public virtual ICollection<BudgetLine> BudgetLines { get; set; }
-
-        public virtual ICollection<Actuals> BudgetActuals { get; set; }
 
         public virtual Category BudgetCategory { get; set; }
 
@@ -68,15 +62,9 @@ namespace Entities.Budgets
 
         public decimal TotalBudgetAmount { get; set; }
 
-        public decimal TotalActualAmount { get; set; }
-
         public int OperatorId { get; set; }
 
-        public virtual Period Period { get; set; }
-
         public virtual ICollection<BudgetLine> BudgetLines { get; set; }
-
-        public virtual ICollection<Actuals> BudgetActuals { get; set; }
 
        public virtual Category BudgetCategory { get; set; }
 

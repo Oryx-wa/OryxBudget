@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace OryxWebApi.ViewModels.BudgetsViewModels
 {
-    public class ActualsViewModel : BaseViewModel
+    public class ActualViewModel : BaseViewModel
     {
         public string Code { get; set; }
         public string Description { get; set; }
