@@ -29,8 +29,8 @@ namespace OryxWebapi.ViewModels.Mappings
             CreateMap<PeriodViewModel, Period>();
             CreateMap<Period, PeriodViewModel>();
 
-            CreateMap<BudgetLineCategoryViewModel, BudgetLineCategory>();
-            CreateMap<BudgetLineCategory, BudgetLineCategoryViewModel>();
+            CreateMap<CategoryViewModel, Category>();
+            CreateMap<Category, CategoryViewModel>();
 
             //Operators
             CreateMap<OperatorViewModel, Operator>();
@@ -52,8 +52,8 @@ namespace OryxWebapi.ViewModels.Mappings
             CreateMap<LineCommentViewModel, LineComment>().ReverseMap();
             CreateMap<LineComment, LineCommentViewModel>().ReverseMap();
 
-            CreateMap<BudgetLineCategoryViewModel, BudgetLineCategory>().ReverseMap();
-            CreateMap<BudgetLineCategory, BudgetLineCategoryViewModel>().ReverseMap();
+            CreateMap<CategoryViewModel, Category>().ReverseMap();
+            CreateMap<Category, CategoryViewModel>().ReverseMap();
 
 
             CreateMap<BudgetRunViewModel, BudgetRun>().ReverseMap();
