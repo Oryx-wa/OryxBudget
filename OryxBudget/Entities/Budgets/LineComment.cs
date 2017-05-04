@@ -17,8 +17,11 @@ namespace Entities.Budgets
         [Required]
         [MaxLength(50)]
         public string UserSign { get; set; }
+
+        [MaxLength(50), Required]
         public string BudgetLineId { get; set; }
 
+        [MaxLength(355)]
         public string Comment { get; set; }
 
        // public CommentStatus Status { get; set; }
@@ -39,8 +42,11 @@ namespace Entities.Budgets
         [Required]
         [MaxLength(50)]
         public string UserSign { get; set; }
+
+        [MaxLength(50), Required]
         public string BudgetLineId { get; set; }
 
+        [MaxLength(355)]
         public string Comment { get; set; }
 
         //public CommentStatus Status { get; set; }

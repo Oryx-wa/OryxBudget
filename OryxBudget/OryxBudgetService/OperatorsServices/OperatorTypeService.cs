@@ -28,10 +28,10 @@ namespace OryxBudgetService.OperatorsServices
 
         }
 
-        public IEnumerable<OperatorType> GetByOperatorTypeId(string operatorId)
-        {
-            return this.GetAll().Where(info => info.Operator == operatorId);
-        }
+        //public IEnumerable<OperatorType> GetByOperatorTypeId(string operatorId)
+        //{
+        //    return this.GetAll().Where(info => info. == operatorId);
+        //}
 
 
     }

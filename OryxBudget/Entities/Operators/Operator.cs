@@ -27,11 +27,19 @@ namespace Entities.Operators
         [MaxLength(50)]
         public string UserSign { get; set; }
 
+        [MaxLength(20), Required]
         public string Code { get; set; }
-        public string OperatorType { get; set; }
+
+        [MaxLength(50)]
+        public string OperatorTypeId { get; set; }
+
         public bool IsJV { get; set; }
         public bool IsPSC { get; set; }
-        public string ContactPerson { get; set; }
+
+        [MaxLength(50)]
+        public string ContactPersonId { get; set; }
+
+        public virtual ContactPerson ContactPerson { get; set; }
     }
 
     public class OperatorLog : IMasterDataBase<Guid>, ILogMasterDataBase<Guid>
@@ -53,10 +61,18 @@ namespace Entities.Operators
         [MaxLength(50)]
         public string UserSign { get; set; }
 
+        [MaxLength(20), Required]
         public string Code { get; set; }
-        public string OperatorType { get; set; }
+
+        [MaxLength(50)]
+        public string OperatorTypeId { get; set; }
+
         public bool IsJV { get; set; }
         public bool IsPSC { get; set; }
-        public string ContactPerson { get; set; }
+
+        [MaxLength(50)]
+        public string ContactPersonId { get; set; }
+
+        public virtual ContactPerson ContactPerson { get; set; }
     }
 }

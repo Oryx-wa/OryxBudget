@@ -21,12 +21,14 @@ namespace Entities.Operators
         public DateTime UpdateDate { get; set; }
         [MaxLength(1)]
         public string Status { get; set; }
-        [Required]
-        [MaxLength(50)]
+
+        [Required] [MaxLength(50)]
         public string UserSign { get; set; }
         
+        [MaxLength(100), Required]
         public string LastName { get; set; }
 
+        [MaxLength(50), Required]
         public string OperatorId { get; set; }
 
         public virtual Operator Operator { get; set; }
@@ -53,9 +55,11 @@ namespace Entities.Operators
         [Required]
         [MaxLength(50)]
         public string UserSign { get; set; }
-        
+
+        [MaxLength(100), Required]
         public string LastName { get; set; }
 
+        [MaxLength(50), Required]
         public string OperatorId { get; set; }
 
         public virtual Operator Operator { get; set; }

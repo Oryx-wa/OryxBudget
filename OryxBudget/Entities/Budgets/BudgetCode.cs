@@ -18,18 +18,24 @@ namespace Entities.Budgets
         [MaxLength(50)]
         public string UserSign { get; set; }
 
+        [MaxLength(20), Required]
         public string Code { get; set; }
 
+        [MaxLength(150)]
         public string Description { get; set; }
 
+        [MaxLength(150)]
         public string SecondDescription { get; set; }
 
+        [MaxLength(50), Required]
         public string FatherNum { get; set; }
 
+        [MaxLength(100), Required]
         public string Level { get; set; }
 
         public bool Active { get; set; }
 
+        [MaxLength(50), Required]
         public string CategoryId { get; set; }
 
         public virtual Category Category { get; set; }
@@ -49,18 +55,24 @@ namespace Entities.Budgets
         public string UserSign { get; set; }
 
 
+        [MaxLength(20), Required]
         public string Code { get; set; }
 
+        [MaxLength(150)]
         public string Description { get; set; }
 
+        [MaxLength(150)]
         public string SecondDescription { get; set; }
 
+        [MaxLength(50), Required]
         public string FatherNum { get; set; }
 
+        [MaxLength(100), Required]
         public string Level { get; set; }
 
         public bool Active { get; set; }
 
+        [MaxLength(50), Required]
         public string CategoryId { get; set; }
 
         public virtual Category Category { get; set; }

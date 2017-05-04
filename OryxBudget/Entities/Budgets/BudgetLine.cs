@@ -17,14 +17,14 @@ namespace Entities.Budgets
         [Required]
         [MaxLength(50)]
         public string UserSign { get; set; }
-        [Required, MaxLength(100)]
 
+        [Required, MaxLength(100)]
         public string BudgetId { get; set; }
 
         public int? RowNumber { get; set; }
 
         //public int BudgetCategoryId { get; set; }
-
+        [Required, MaxLength(20)]
         public string Code
         {
             //get { return BudgetLineCategory.Code + "." + RowNumber; }
@@ -62,13 +62,12 @@ namespace Entities.Budgets
         [MaxLength(50)]
         public string UserSign { get; set; }
         [Required, MaxLength(100)]
-
         public string BudgetId { get; set; }
 
         public int? RowNumber { get; set; }
 
         //public int BudgetCategoryId { get; set; }
-
+        [Required, MaxLength(20)]
         public string Code
         {
             //get { return BudgetLineCategory.Code + "." + RowNumber; }

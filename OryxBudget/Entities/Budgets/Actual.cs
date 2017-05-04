@@ -20,10 +20,18 @@ namespace Entities.Budgets
         [MaxLength(50)]
         public string UserSign { get; set; }
        
+        [MaxLength(20), Required]
         public string Code { get; set; }
+
+        [MaxLength(150)]
         public string Description { get; set; }
+
         public decimal TotalAmount { get; set; }
+
+        [MaxLength(150)]
         public string Remarks { get; set; }
+
+        [MaxLength(50), Required]
         public string BudgetId { get; set; }
     }
     public class ActualLog : IEntityBase<Guid>, ILogEntityBase<Guid>
@@ -38,10 +46,18 @@ namespace Entities.Budgets
         [MaxLength(50)]
         public string UserSign { get; set; }
 
+        [MaxLength(20), Required]
         public string Code { get; set; }
+
+        [MaxLength(150)]
         public string Description { get; set; }
+
         public decimal TotalAmount { get; set; }
+
+        [MaxLength(150)]
         public string Remarks { get; set; }
+
+        [MaxLength(50), Required]
         public string BudgetId { get; set; }
     }
 }

@@ -30,7 +30,7 @@ namespace OryxBudgetService.BudgetsServices
 
         public IEnumerable<BudgetRun> GetByBudgetRunId(string bgtId)
         {
-            return this.GetAll().Where(info => info.Budget == bgtId);
+            return this.GetAll().Where(info => info.BudgetId == bgtId);
         }
 
 

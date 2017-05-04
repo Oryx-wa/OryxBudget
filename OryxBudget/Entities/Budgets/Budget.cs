@@ -23,17 +23,20 @@ namespace Entities.Budgets
         [Required]
         [MaxLength(50)]
         public string UserSign { get; set; }
+
         [Required,MaxLength(100)]
         public string Description { get; set; }
 
         [MaxLength(300)]
         public string AdditionalStatement { get; set; }
 
+        [MaxLength(50)]
         public string PeriodId { get; set; }
 
         public decimal TotalBudgetAmount { get; set; }
 
-        public int OperatorId { get; set; }
+        [MaxLength(50), Required]
+        public string OperatorId { get; set; }
 
         public virtual ICollection<BudgetLine> BudgetLines { get; set; }
 
@@ -62,7 +65,8 @@ namespace Entities.Budgets
 
         public decimal TotalBudgetAmount { get; set; }
 
-        public int OperatorId { get; set; }
+        [MaxLength(50), Required]
+        public string OperatorId { get; set; }
 
         public virtual ICollection<BudgetLine> BudgetLines { get; set; }
 

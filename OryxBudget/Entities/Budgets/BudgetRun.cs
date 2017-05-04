@@ -11,19 +11,23 @@ namespace Entities.Budgets
     public class BudgetRun : IEntityBase<Guid>
     {
         [Key]
-    public Guid Id { get; set; }
-    public DateTime CreateDate { get; set; }
-    public DateTime UpdateDate { get; set; }
-    [MaxLength(1)]
-    public string Status { get; set; }
-    [Required]
-    [MaxLength(50)]
-    public string UserSign { get; set; }
+        public Guid Id { get; set; }
+        public DateTime CreateDate { get; set; }
+        public DateTime UpdateDate { get; set; }
+        [MaxLength(1)]
+        public string Status { get; set; }
+        [Required]
+        [MaxLength(50)]
+        public string UserSign { get; set; }
 
-    public DateTime StartDate { get; set; }
+        public DateTime StartDate { get; set; }
 
         public DateTime EndDate { get; set; }
-        public string Budget { get; set; }
+
+        [MaxLength(50), Required]
+        public string BudgetId { get; set; }
+
+        public virtual Budget Budget { get; set; }
 
     }
 
@@ -42,7 +46,11 @@ namespace Entities.Budgets
         public DateTime StartDate { get; set; }
 
         public DateTime EndDate { get; set; }
-        public string Budget { get; set; }
+
+        [MaxLength(50), Required]
+        public string BudgetId { get; set; }
+
+        public virtual Budget Budget { get; set; }
 
     }
 }
