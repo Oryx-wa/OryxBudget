@@ -32,12 +32,19 @@ namespace OryxWebapi.ViewModels.Mappings
             CreateMap<CategoryViewModel, Category>();
             CreateMap<Category, CategoryViewModel>();
 
+            CreateMap<BudgetCodeViewModel, BudgetCode>();
+            CreateMap<BudgetCode, BudgetCodeViewModel>();
+
             //Operators
             CreateMap<OperatorViewModel, Operator>();
             CreateMap<Operator, OperatorViewModel>();
 
             CreateMap<OperatorTypeViewModel, OperatorType>();
             CreateMap<OperatorType, OperatorTypeViewModel>();
+
+            CreateMap<ContactPersonViewModel, ContactPerson>();
+            CreateMap<ContactPerson, ContactPersonViewModel>();
+
 
 
             CreateMap<BudgetViewModel, Budget>().ReverseMap();
@@ -63,6 +70,9 @@ namespace OryxWebapi.ViewModels.Mappings
             CreateMap<ActualViewModel, Actual>().ReverseMap();
             CreateMap<Actual, ActualViewModel>().ReverseMap();
 
+            CreateMap<BudgetCodeViewModel, BudgetCode>().ReverseMap();
+            CreateMap<BudgetCode, BudgetCodeViewModel>().ReverseMap();
+
             //Operator
             CreateMap<OperatorViewModel, Operator>().ReverseMap();
             CreateMap<Operator, OperatorViewModel>().ReverseMap();
@@ -70,6 +80,8 @@ namespace OryxWebapi.ViewModels.Mappings
             CreateMap<OperatorTypeViewModel, OperatorType>().ReverseMap();
             CreateMap<OperatorType, OperatorTypeViewModel>().ReverseMap();
 
+            CreateMap<ContactPersonViewModel, ContactPerson>().ReverseMap();
+            CreateMap<ContactPerson, ContactPersonViewModel>().ReverseMap();
         }
     }
 }

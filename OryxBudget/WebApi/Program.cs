@@ -3,9 +3,9 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Configuration.CommandLine;
-using OryxWebapi;
+using OryxWebApi;
 
-namespace OryxHRwebapi
+namespace OryxWebApi
 {
     public class Program
     {

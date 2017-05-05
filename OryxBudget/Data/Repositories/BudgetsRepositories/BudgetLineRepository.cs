@@ -7,7 +7,7 @@ using System.Text;
 using OryxSecurity.Services;
 using Data.Repositories;
 
-namespace OryxHR.Data.Repositories.BudgetsRepositories
+namespace Data.Repositories.BudgetsRepositories
 {
     public class BudgetLineRepository : BaseLogBudgetRepository<BudgetLine, BudgetLineLog, Guid>, ILogRepository<BudgetLine, Guid>
     {
