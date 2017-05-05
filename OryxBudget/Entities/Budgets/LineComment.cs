@@ -23,10 +23,8 @@ namespace Entities.Budgets
 
         [MaxLength(355)]
         public string Comment { get; set; }
-
-       // public CommentStatus Status { get; set; }
-
-        public virtual BudgetLine BudgetLine { get; set; }
+        public CommentStatus CommentStatus { get; set; }
+        public  BudgetLine BudgetLine { get; set; }
 
     }
 
@@ -49,9 +47,9 @@ namespace Entities.Budgets
         [MaxLength(355)]
         public string Comment { get; set; }
 
-        //public CommentStatus Status { get; set; }
+        public CommentStatus CommentStatus { get; set; }
 
-        public virtual BudgetLine BudgetLine { get; set; }
+        public  BudgetLine BudgetLine { get; set; }
 
     }
 

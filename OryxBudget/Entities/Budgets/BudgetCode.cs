@@ -38,7 +38,7 @@ namespace Entities.Budgets
         [MaxLength(50), Required]
         public string CategoryId { get; set; }
 
-        public virtual Category Category { get; set; }
+        public Category Category { get; set; }
     }
 
     public class BudgetCodeLog : IEntityBase<Guid>, ILogEntityBase<Guid>
@@ -75,6 +75,6 @@ namespace Entities.Budgets
         [MaxLength(50), Required]
         public string CategoryId { get; set; }
 
-        public virtual Category Category { get; set; }
+        public  Category Category { get; set; }
     }
 }

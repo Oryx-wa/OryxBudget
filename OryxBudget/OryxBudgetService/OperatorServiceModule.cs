@@ -6,7 +6,7 @@ using OryxBudgetService.OperatorsServices;
 
 namespace OryxBudgetService
 {
-    class OperatorServiceModule : Module
+    public class OperatorServiceModule : Module
     {
         protected override void Load(ContainerBuilder builder)
         {

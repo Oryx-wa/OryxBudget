@@ -31,7 +31,7 @@ namespace Entities.Operators
         [MaxLength(50), Required]
         public string OperatorId { get; set; }
 
-        public virtual Operator Operator { get; set; }
+        public  Operator Operator { get; set; }
 
 
 
@@ -62,7 +62,7 @@ namespace Entities.Operators
         [MaxLength(50), Required]
         public string OperatorId { get; set; }
 
-        public virtual Operator Operator { get; set; }
+        public  Operator Operator { get; set; }
 
 
     }

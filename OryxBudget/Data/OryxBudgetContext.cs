@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using Entities.Budgets;
 using Data.Configurations;
-
+using Entities.Operators;
 
 namespace Data
 {
@@ -24,11 +24,27 @@ namespace Data
         public DbSet<BudgetLine> BudgetLines { get; set; }
         public DbSet<BudgetLineLog> BudgetLineLogs { get; set; }
 
-        public DbSet<Category> Categorys { get; set; }
+        public DbSet<Category> Categories { get; set; }
         public DbSet<CategoryLog> CategoryLogs { get; set; }
 
         public DbSet<Period> Periods { get; set; }
         public DbSet<PeriodLog> PeriodLogs { get; set; }
+
+        public DbSet<Actual> Actuals { get; set; }
+        public DbSet<ActualLog> ActualLogs { get; set; }
+
+        public DbSet<BudgetCode> BudgetCodes { get; set; }
+        public DbSet<BudgetCodeLog> BudgetCodeLogs { get; set; }
+
+        //Operator
+        public DbSet<Operator> Operators { get; set; }
+        public DbSet<OperatorLog> OperatorLogs { get; set; }
+
+        public DbSet<OperatorType> OperatorTypes { get; set; }
+        public DbSet<OperatorTypeLog> OperatorTypeLogs { get; set; }
+
+        public DbSet<ContactPerson> ContactPersons { get; set; }
+        public DbSet<ContactPersonLog> ContactPersonLogs { get; set; }
 
 
         #endregion
@@ -49,7 +65,8 @@ namespace Data
             // BudgetConfiguration.ModelConfiguration(ref builder);
             
             BudgetConfiguration.ModelConfiguration(ref builder);
-           
+            OperatorConfiguration.ModelConfiguration(ref builder);
+
 
 
             base.OnModelCreating(builder);

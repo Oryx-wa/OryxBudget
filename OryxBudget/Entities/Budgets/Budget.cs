@@ -38,9 +38,9 @@ namespace Entities.Budgets
         [MaxLength(50), Required]
         public string OperatorId { get; set; }
 
-        public virtual ICollection<BudgetLine> BudgetLines { get; set; }
+        public  ICollection<BudgetLine> BudgetLines { get; set; }
 
-        public virtual Category BudgetCategory { get; set; }
+        public  Category BudgetCategory { get; set; }
 
      
     }
@@ -68,9 +68,9 @@ namespace Entities.Budgets
         [MaxLength(50), Required]
         public string OperatorId { get; set; }
 
-        public virtual ICollection<BudgetLine> BudgetLines { get; set; }
+        public ICollection<BudgetLine> BudgetLines { get; set; }
 
-       public virtual Category BudgetCategory { get; set; }
+       public Category BudgetCategory { get; set; }
 
       
     }
