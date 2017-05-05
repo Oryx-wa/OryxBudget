@@ -39,7 +39,8 @@ namespace OryxBudgetService
             builder.RegisterType<LineCommentService>();
             builder.RegisterType<BudgetLineService>();
             builder.RegisterType<CategoryService>();
-            
+            builder.RegisterType<BudgetCodeService>();
+
         }
     }
 }
