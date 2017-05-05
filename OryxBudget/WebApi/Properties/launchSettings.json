@@ -16,7 +16,7 @@
         "ASPNETCORE_ENVIRONMENT": "Development"
       }
     },
-    "OryxHRwebapi": {
+    "OryxWebApi": {
       "commandName": "Project",
       "launchUrl": "http://localhost:5000/api/values",
       "environmentVariables": {

@@ -31,7 +31,7 @@ using Hangfire;
 using OryxSecurity;
 using OryxMailer;
 
-namespace OryxWebapi
+namespace OryxWebApi
 {
     public class Startup
     {

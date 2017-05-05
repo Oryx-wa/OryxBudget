@@ -1,13 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Autofac;
+﻿using Autofac;
 //using Hangfire;
 using Data.Repositories;
 using Data.Infrastructure;
 using Data.Repositories.BudgetsRepositories;
-using OryxHR.Data.Repositories.BudgetsRepositories;
+using Data.Repositories.BudgetsRepositories;
+using Data.Repositories.OperatorsRepositories;
 
 namespace Data
 {
@@ -39,7 +36,11 @@ namespace Data
             builder.RegisterType<CategoryRepository>();
             builder.RegisterType<PeriodRepository>();
             builder.RegisterType<ActualsRepository>();
-          
+            builder.RegisterType<BudgetCodeRepository>();
+            builder.RegisterType<ContactPersonRepository>();
+            builder.RegisterType<OperatorRepository>();
+            builder.RegisterType<OperatorTypeRepository>();
+
 
 
         }
