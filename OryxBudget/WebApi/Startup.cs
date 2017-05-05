@@ -167,6 +167,7 @@ namespace OryxWebApi
            
             builder.RegisterModule(new BudgetDataModule())                ;
             builder.RegisterModule(new BudgetServiceModule());
+            builder.RegisterModule(new OperatorServiceModule());
             builder.RegisterType<UserResolverService>();
             builder.RegisterType<ApiExceptionFilter>();
             builder.RegisterType<ValidateModelState>();

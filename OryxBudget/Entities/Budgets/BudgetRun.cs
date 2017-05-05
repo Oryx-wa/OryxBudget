@@ -27,7 +27,7 @@ namespace Entities.Budgets
         [MaxLength(50), Required]
         public string BudgetId { get; set; }
 
-        public virtual Budget Budget { get; set; }
+        public Budget Budget { get; set; }
 
     }
 
@@ -50,7 +50,7 @@ namespace Entities.Budgets
         [MaxLength(50), Required]
         public string BudgetId { get; set; }
 
-        public virtual Budget Budget { get; set; }
+        public Budget Budget { get; set; }
 
     }
 }

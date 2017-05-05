@@ -31,8 +31,16 @@ namespace Data.Configurations
                 c.LogInstance
             });
 
+            //BudgetCode
+            builder.Entity<BudgetCode>().HasIndex(m => new { m.Id }).IsUnique();
+            builder.Entity<BudgetCode>().Property(m => m.CreateDate).HasDefaultValueSql("getDate()");
+            builder.Entity<BudgetCode>().Property(m => m.UpdateDate).HasDefaultValueSql("getDate()");
+            builder.Entity<BudgetCodeLog>().HasKey(c => new {
+                c.Id,
+                c.LogInstance
+            });
 
-            //BudgetLineCategory
+            //Category
             builder.Entity<Category>().HasIndex(m => new { m.Id }).IsUnique();
             builder.Entity<Category>().Property(m => m.CreateDate).HasDefaultValueSql("getDate()");
             builder.Entity<Category>().Property(m => m.UpdateDate).HasDefaultValueSql("getDate()");
@@ -50,7 +58,7 @@ namespace Data.Configurations
             builder.Entity<Period>().Property(m => m.UpdateDate).HasDefaultValueSql("getDate()");
             builder.Entity<PeriodLog>().HasKey(c => new { c.Id, c.LogInstance });
 
-            //Period
+            //Actual
             builder.Entity<Actual>().HasIndex(m => new { m.Id }).IsUnique();
             builder.Entity<Actual>().Property(m => m.CreateDate).HasDefaultValueSql("getDate()");
             builder.Entity<Actual>().Property(m => m.UpdateDate).HasDefaultValueSql("getDate()");

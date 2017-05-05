@@ -27,9 +27,8 @@ namespace Entities.Operators
         [MaxLength(50)]
         public string UserSign { get; set; }
 
-        //public string Operator { get; set; }
-
-        public virtual ICollection<Operator> Operators { get; set; }
+        
+        public  ICollection<Operator> Operators { get; set; }
 
     }
 
@@ -53,7 +52,7 @@ namespace Entities.Operators
         [MaxLength(50)]
         public string UserSign { get; set; }
 
-        public virtual ICollection<Operator> Operators { get; set; }
+        public  ICollection<Operator> Operators { get; set; }
 
     }
 }

@@ -23,30 +23,24 @@ namespace Entities.Budgets
 
         public int? RowNumber { get; set; }
 
-        //public int BudgetCategoryId { get; set; }
+        public int CategoryId { get; set; }
         [Required, MaxLength(20)]
-        public string Code
-        {
-            //get { return BudgetLineCategory.Code + "." + RowNumber; }
-            get; set;
-        }
+        public string Code { get; set; }
+        
 
         [Required, MaxLength(100)]
         public string Description { get; set; } //ItemName
-
-        //public string Description { get; set; }
 
         public decimal BudgetAmount { get; set; }
 
         public decimal ActualAmount { get; set; }
 
-        //public int? TenantId { get; set; }
+       
+        public Budget Budget { get; set; }
 
-        public virtual Budget Budget { get; set; }
+        public Category BudgetLineCategory { get; set; }
 
-        //public virtual BudgetLineCategory BudgetLineCategory { get; set; }
-
-        public virtual ICollection<LineComment> LineComments { get; set; }
+        public ICollection<LineComment> LineComments { get; set; }
 
     }
 
@@ -66,29 +60,21 @@ namespace Entities.Budgets
 
         public int? RowNumber { get; set; }
 
-        //public int BudgetCategoryId { get; set; }
+        public int CategoryId { get; set; }
         [Required, MaxLength(20)]
-        public string Code
-        {
-            //get { return BudgetLineCategory.Code + "." + RowNumber; }
-            get; set;
-        }
-
+        public string Code { get; set; }
         [Required, MaxLength(100)]
         public string Description { get; set; } //ItemName
 
-        //public string Description { get; set; }
-
-        public decimal BudgetAmount { get; set; }
+         public decimal BudgetAmount { get; set; }
 
         public decimal ActualAmount { get; set; }
 
-        //public int? TenantId { get; set; }
+       
+        public  Budget Budget { get; set; }
 
-        public virtual Budget Budget { get; set; }
+        public Category Category { get; set; }
 
-        //public virtual BudgetLineCategory BudgetLineCategory { get; set; }
-
-        public virtual ICollection<LineComment> LineComments { get; set; }
+        public  ICollection<LineComment> LineComments { get; set; }
     }
 }
