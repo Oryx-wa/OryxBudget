@@ -76,27 +76,27 @@ namespace OryxWebApi
                 .RequireClaim("scope", "OryxBudget")
                 .Build();
 
-            services.AddAuthorization(options =>
-            {
+           // services.AddAuthorization(options =>
+          //  {
+//
+          //      options.AddPolicy("Administrator", policyAdmin =>
+          //      {
+          //          policyAdmin.RequireClaim("role", "Administrator");
+          //      });
+          //      options.AddPolicy("HR", policyAdmin =>
+         //       {
+         //           policyAdmin.RequireClaim("role", "HR");
+         //       });
+           //     options.AddPolicy("Employee", policyUser =>
+         //       {
+       //             policyUser.RequireClaim("role", "OryxBudget.user");
+        //        });
 
-                options.AddPolicy("Administrator", policyAdmin =>
-                {
-                    policyAdmin.RequireClaim("role", "Administrator");
-                });
-                options.AddPolicy("HR", policyAdmin =>
-                {
-                    policyAdmin.RequireClaim("role", "HR");
-                });
-                options.AddPolicy("Employee", policyUser =>
-                {
-                    policyUser.RequireClaim("role", "OryxBudget.user");
-                });
-
-            });
+        //    });
 
             services.AddMvcCore(config =>
             {
-                config.Filters.Add(new AuthorizeFilter(MCIPolicy));
+              //  config.Filters.Add(new AuthorizeFilter(MCIPolicy));
             })
            .AddJsonFormatters(opt =>
            {
@@ -262,20 +262,20 @@ namespace OryxWebApi
             app.UseCors("corsGlobalPolicy");
 
 
-            IdentityServerAuthenticationOptions identityServerAuthenticationOptions = new IdentityServerAuthenticationOptions();
-            identityServerAuthenticationOptions.Authority = "http://localhost:5000/";
-            identityServerAuthenticationOptions.AllowedScopes = new List<string> { "OryxBudget" };
-            identityServerAuthenticationOptions.ApiSecret = "F621F470-9731-4A25-80EF-67A6F7C5F4B8";
-            identityServerAuthenticationOptions.ApiName = "OryxBudget";
-            identityServerAuthenticationOptions.AutomaticAuthenticate = true;
-            identityServerAuthenticationOptions.SupportedTokens = SupportedTokens.Both;
+            // IdentityServerAuthenticationOptions identityServerAuthenticationOptions = new IdentityServerAuthenticationOptions();
+            // identityServerAuthenticationOptions.Authority = "http://localhost:5000/";
+            // identityServerAuthenticationOptions.AllowedScopes = new List<string> { "OryxBudget" };
+            // identityServerAuthenticationOptions.ApiSecret = "F621F470-9731-4A25-80EF-67A6F7C5F4B8";
+            // identityServerAuthenticationOptions.ApiName = "OryxBudget";
+            // identityServerAuthenticationOptions.AutomaticAuthenticate = true;
+            // identityServerAuthenticationOptions.SupportedTokens = SupportedTokens.Both;
             // required if you want to return a 403 and not a 401 for forbidden responses
-            identityServerAuthenticationOptions.AutomaticChallenge = true;
-            identityServerAuthenticationOptions.RequireHttpsMetadata = false;
+            // identityServerAuthenticationOptions.AutomaticChallenge = true;
+            // identityServerAuthenticationOptions.RequireHttpsMetadata = false;
 
 
-            JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();
-            app.UseIdentityServerAuthentication(identityServerAuthenticationOptions);
+            //JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();
+            //app.UseIdentityServerAuthentication(identityServerAuthenticationOptions);
 
           
             if (env.IsDevelopment())

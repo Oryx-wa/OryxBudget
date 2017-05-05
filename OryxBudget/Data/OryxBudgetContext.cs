@@ -14,7 +14,7 @@ namespace Data
         public OryxBudgetContext(DbContextOptions<OryxBudgetContext> options)
         : base(options)
         {
-              Database.EnsureCreated();
+             // Database.EnsureCreated();
         }
 
         #region EntitySets
