@@ -28,6 +28,9 @@ namespace OryxWebApi.ViewModels.BudgetsViewModels
         [MaxLength(50), Required]
         public string CategoryId { get; set; }
 
-        
+        [MaxLength(50)]
+        public string Postable { get; set; }
+
+
     }
 }
