@@ -39,6 +39,8 @@ namespace Entities.Budgets
         public string CategoryId { get; set; }
 
         public Category Category { get; set; }
+        [MaxLength(50)]
+        public string Postable { get; set; }
     }
 
     public class BudgetCodeLog : IEntityBase<Guid>, ILogEntityBase<Guid>
@@ -76,5 +78,8 @@ namespace Entities.Budgets
         public string CategoryId { get; set; }
 
         public  Category Category { get; set; }
+
+        [MaxLength(50)]
+        public string Postable { get; set; }
     }
 }
