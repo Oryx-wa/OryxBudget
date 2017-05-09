@@ -6,6 +6,7 @@ import { OperatorViewComponent } from './operator-view.component';
   imports: [
     CommonModule
   ],
-  declarations: [OperatorViewComponent]
+  declarations: [OperatorViewComponent],
+  exports: [OperatorViewComponent]
 })
 export class OperatorViewModule { }

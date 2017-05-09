@@ -7,6 +7,7 @@ import { SecurityService } from './login/security.service';
 import { AppComponent } from './app.component';
 import { HomeModule } from './home/home.module';
 import { BudgetModule} from './budget/budget.module';
+
 import { MainNavComponent } from './shared/main-nav/main-nav.component';
 import { OryxDashboardComponent } from './shared/oryx-dashboard/oryx-dashboard.component';
 import { Configuration } from './app.constants';
@@ -24,7 +25,7 @@ import { AppRoutingModule } from './app.routing.module';
     FormsModule,
     HttpModule,
      HomeModule,
-     BudgetModule,
+     BudgetModule,     
      AppRoutingModule,
     
    

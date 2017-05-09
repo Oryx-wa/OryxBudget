@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+/*import { Component, OnInit } from '@angular/core';
 import { SecurityService } from './security.service';
 import { Router, ActivatedRoute, Params } from '@angular/router';
 import 'rxjs/add/operator/switchMap';
@@ -22,3 +22,5 @@ export class LoginComponent implements OnInit {
     this.securityService.Authorize(this.returnUrl);
   }
 }
+
+*/

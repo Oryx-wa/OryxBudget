@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
+import { Operators } from './../models';
 
 @Component({
   selector: 'app-operator-view',
@@ -6,7 +7,9 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./operator-view.component.scss']
 })
 export class OperatorViewComponent implements OnInit {
-
+   @Input() name = '';
+  @Input() operatorId = '';
+  @Input() role = '';
   constructor() { }
 
   ngOnInit() {
