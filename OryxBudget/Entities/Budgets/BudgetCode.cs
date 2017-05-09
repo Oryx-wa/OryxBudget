@@ -21,10 +21,10 @@ namespace Entities.Budgets
         [MaxLength(20), Required]
         public string Code { get; set; }
 
-        [MaxLength(150)]
+        [MaxLength(1000)]
         public string Description { get; set; }
 
-        [MaxLength(150)]
+        [MaxLength(1000)]
         public string SecondDescription { get; set; }
 
         [MaxLength(50), Required]
@@ -32,14 +32,13 @@ namespace Entities.Budgets
 
         [MaxLength(100), Required]
         public string Level { get; set; }
+        [MaxLength(1)]
+        public string  Active { get; set; }
 
-        public bool Active { get; set; }
-
-        [MaxLength(50), Required]
-        public string CategoryId { get; set; }
-
-        public Category Category { get; set; }
         [MaxLength(50)]
+        public string CategoryId { get; set; }
+       
+        [MaxLength(1)]
         public string Postable { get; set; }
     }
 
@@ -60,10 +59,10 @@ namespace Entities.Budgets
         [MaxLength(20), Required]
         public string Code { get; set; }
 
-        [MaxLength(150)]
+        [MaxLength(1000)]
         public string Description { get; set; }
 
-        [MaxLength(150)]
+        [MaxLength(1000)]
         public string SecondDescription { get; set; }
 
         [MaxLength(50), Required]
@@ -72,14 +71,14 @@ namespace Entities.Budgets
         [MaxLength(100), Required]
         public string Level { get; set; }
 
-        public bool Active { get; set; }
 
-        [MaxLength(50), Required]
-        public string CategoryId { get; set; }
-
-        public  Category Category { get; set; }
+        public string Active { get; set; }
 
         [MaxLength(50)]
+        public string CategoryId { get; set; }
+      
+
+        [MaxLength(1)]
         public string Postable { get; set; }
     }
 }

@@ -10,7 +10,8 @@ namespace Entities.Budgets
     {
         public Budget()
         {
-            BudgetLines = new HashSet<BudgetLine>();
+            BudgetLines = new List<BudgetLine>();
+            Actuals = new List<Actual>();
         }
 
         public string BudgetLineCategoryId { get; set; }
@@ -34,13 +35,21 @@ namespace Entities.Budgets
         public string PeriodId { get; set; }
 
         public decimal TotalBudgetAmount { get; set; }
+        public decimal TotalAmountLC { get; set; }
+        public decimal TotalAmountUSD { get; set; }
+
+        public decimal ActualAmount { get; set; }
+        public decimal ActualAmountLC { get; set; }
+        public decimal ActualAmountUSD { get; set; }
 
         [MaxLength(50), Required]
         public string OperatorId { get; set; }
 
         public  ICollection<BudgetLine> BudgetLines { get; set; }
+        public ICollection<Actual> Actuals { get; set; }
 
-        public  Category BudgetCategory { get; set; }
+
+        public  string CategoryId { get; set; }
 
      
     }
@@ -63,15 +72,21 @@ namespace Entities.Budgets
 
         public string PeriodId { get; set; }
 
-        public decimal TotalBudgetAmount { get; set; }
+        public decimal TotalAmount { get; set; }
+        public decimal TotalAmountLC { get; set; }
+        public decimal TotalAmountUSD { get; set; }
+        public decimal ActualBudgetAmount { get; set; }
+        public decimal ActualAmountLC { get; set; }
+        public decimal ActualAmountUSD { get; set; }
 
         [MaxLength(50), Required]
         public string OperatorId { get; set; }
 
         public ICollection<BudgetLine> BudgetLines { get; set; }
 
-       public Category BudgetCategory { get; set; }
+        public string CategoryId { get; set; }
 
-      
+
+
     }
-    }
+}

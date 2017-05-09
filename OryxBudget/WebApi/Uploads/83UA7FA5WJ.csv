@@ -1,0 +1,99 @@
+Code,Description,SecondDescription,FatherNum,Level,Active,Category,Postable
+100,"Expenditure incurred to build, acquire, or upgrade hydrocarbon asset",,100,1,YES,,NO
+101,"Identifiable non-monetary assets that can not be seen, touched, or physically measured. These are created through time and/or efforts but are identifiable as a separate asset.",,100,2,YES,,NO
+101.01,Goodwill represents the amount of money a venture would pay over book value to acquire another venture,Goodwill represents the amount of money a venture would pay over book value to acquire another venture,101,3,YES,,YES
+101.02,These are intellectual property that generate legal property rights,These are intellectual property that generate legal property rights,101,3,YES,,YES
+102,,,100,2,YES,,NO
+110,"Cost incurred to purchase, lease or otherwise acquire a property, including compensation cost.",,100,2,YES,,NO
+110.01,Concession rentals on blocks from which hydrocarbon is not being produced,Concession rentals on blocks from which hydrocarbon is not being produced; rental payable to Government and/or regulatory authorities including related incidental costs,110,3,YES,,YES
+110.02,Concession rentals on blocks from which hydrocarbon is being produced          ,Concession rentals on blocks from which hydrocarbon is being produced; rental payable to Government and/or regulatory authorities including related incidental costs ,110,3,YES,,YES
+110.03,Expenditure incurred in converting from one concession type to another e.g OPL to OML,"Expenditure incurred in converting from one concession type to another e.g statutory fees, legal fees and other related costs.",110,3,YES,,YES
+110.04,"Signature/ lease bonus payable for award of block, other pre-licensing fees, and license renewal","Signature/ lease bonus payable for award of block and other pre-licensing fees including license renewal, compensation and other related costs",110,3,YES,,YES
+110.05,Cost incurred  when land and/or  mineral rights are purchased in fee or farmed in,Cost incurred when land and/or mineral rights are purchased in fee or farmed-in including legal fees and other related costs.,110,3,YES,,YES
+110.5,Indirect Common cost identifiable to acquisition  ,Indirect Common cost as apportioned from code 5000 series,110,3,YES,,YES
+110.6,Direct Common cost identifiable to acquisition  ,Direct Common cost as apportioned from code 5000 series,110,3,YES,,YES
+120,Cost incurred to prospect for hydrocarbons excluding exploration drilling cost,,100,2,YES,,YES
+120.01,"Actual Cost of acquisition, damage compensation & community related activities","Includes costs associated with field operations involving the acquisition of seismic data. Also includes the cost of obtaining, processing, interpreting and reporting geological and geophysical information. Includes materials, and other related field operations costs .",120,3,YES,,YES
+120.02,All expenses associated with Manual  and Computer aided Topographic survey of exploration areas,"Consists of all geotechnical activities, repositioning, drafting, Geographic Information System (GIS), materials,  etc. and all expenses associated with topographic survey of exploration areas and other related costs.",120,3,YES,,YES
+120.03,Expenditure incurred in the acquisition and processing of aeromagnetic data,,120,3,YES,,YES
+120.04, G & G Studies carried out specially for exploration,"Expenditure incurred in the acquisition and processing of aeromagnetic data, including Control Source Electomagnetic Survey (CSEM), materials and other related costs",120,3,YES,,YES
+120.05, Cost associated with geological laboratory studies in relation to exploration ,"Including geological interpretation, geophysical interpretation, computer analyses, materials and other related costs ",120,3,YES,,YES
+120.06,Costs associated with petroleum engineering in relation to exploration activities,Analysis etc                   ,120,3,YES,,YES
+120.5,Indirect Common cost identifiable to exploration (non-drilling) ,"Cost of PVT storage and analysis, core storage and analysis, geochemical and petro graphical samples and analysis, cost of reserves software, materials including permit and costs of specialist well site geologist .",120,3,YES,,YES
+120.6,Direct Common cost identifiable to exploration (non-drilling) ,Indirect Common cost as apportioned from code 5000 series,120,3,YES,,YES
+121,Drilling cost incurred to prospect for hydrocarbons,,100,2,YES,,NO
+121.01,"Cost incurred to obtain access to and peparing location for drilling, depth measurement and under-water survey",,121,3,YES,,YES
+121.02,Cost incurred to drill and equip exploratory and appraisal wells ,"(including dismantling),  and all necessary compensations ",121,3,YES,,YES
+121.03,"Cost incurred in  mobilising,  modifying, and demobilising  drilling rigs","Expenses incurred during the drilling phase of Exploratory and appraisal wells . It includes cost of muds, bits, casings, conductors, materials, engineering, cementation services, transportation and other related costs ",121,3,YES,,YES
+121.5,Indirect Common cost identifiable to exploration and appraisal - drilling ,"Cost of mobilsing, demobilizing and modifying drilling rigs. Mobilisation and Demoboilisation cost include the cost incurred to and from drilling site and other establishment obligations relating to drilling rig equipment, and materials. ",121,3,YES,,YES
+121.6,Direct Common cost identifiable to exploration and appraisal - drilling ,,121,3,YES,,YES
+124,"Cost incurred in safety, pollution and environment control activities",,100,2,YES,,NO
+124.01,Cost incurred on pollution control equipment and facilities for environmental protection,,124,3,YES,,YES
+124.02,Cost incurred on Environmental Impact ,"Includes cost of Oil Spill pollution control equipment such as Oil skimmers and ancillaries such as pumps, valves, hoses & connections, materials etc.,",124,3,YES,,YES
+124.03,Cost incurred in managing waste and effluents for environmental protection,,124,3,YES,,YES
+124.04,Cost of weather monitoring equipment,"Includes cost of Sewage Treatment Equipment for onshore & offshore locations, Waste Water equipment, Landfill, Incinerator, Compactors, Segregation Yard, incinerator yard concretizing/construction cost, materials, and other related costs.",124,3,YES,,YES
+124.05,Cost incurred in acquisition and installation of firefighting equipment,"Including wind current, tidal and seabed evaluation, materials, and other related costs.",124,3,YES,,YES
+124.06,Cost incurred in acquisition and installation of safety equipment,"Includes  purchasing, installation and upgrading fire trucks and buildings; Fire suits and accessories; Fire truck and tanker; Safety & Environmental training equipment; Fire detection/extinction, materials and other related costs.",124,3,YES,,YES
+124.07,Cost of acquisition and installing security apparatus on facilities.,"apparatus;?  materials,  Software  ?  Oil  Stick  monitoring;  Industrial hygiene development; Safety management development and any other related costs.",124,3,YES,,YES
+124.5,"Indirect Common cost identifiable to exploration safety, loss prevention, and environmental protection","Including cost of CCTV, materials, Bullet Proof Vans; Detector Gadgets; Bullet/Bomb proof equipment etc. ",124,3,YES,,YES
+124.6,"Direct Common cost identifiable to exploration safety, loss prevention, and environmental protection",,124,3,YES,,YES
+130,"Costs incurred in drilling production wells, ",,100,2,YES,,NO
+130.01,"Cost incurred to obtain access to and peparing location for drilling, dept measurement and underwater survey",,130,3,YES,,YES
+130.02,Cost incurred to drill and equip production wells ,,130,3,YES,,YES
+130.03,"Cost incurred in  mobilising,  modifying, and demobilisng  drilling rigs","Costs incurred during the preparation of location for Production wells including cost of land acquisition and payment of compensations, materials and other related costs",130,3,YES,,YES
+130.04,Cost incurred in completing a well to make it ready for production.,"Expenses incurred during the drilling of production wells . It includes cost of muds, bits, casings, materials, conductors, engineering, cementation services, transportation and other related costs ",130,3,YES,,YES
+130.05,"Cost of enhancing production capacity, quality and flowrates of hydrocarbon",Cost incurred during the completion phase of Wells ,130,3,YES,,YES
+130.5,Indirect Common cost identifiable to production wells (oil) ,"(Clearing/Civil Works; Engineering; Procurement; Construction; Commissioning/Start-up and other related costs), materials.",130,3,YES,,YES
+130.6,Direct Common cost identifiable to production wells (oil) ,"Cost of enhancing production capacity, quality and flowrates of hydrocarbon, and materials",130,3,YES,,YES
+131,Costs incurred in drilling production wells (Gas) ,Indirect Common cost as apportioned from code 5000 series,100,2,YES,,YES
+131.01,"Cost incurred to obtain access to and preparing location for drilling, dept measurement and underwater survey",Direct Common cost as apportioned from code 5000 series,131,3,YES,,YES
+131.02,Cost incurred to drill and equip production wells,,131,3,YES,,YES
+131.03,"Cost incurred in  mobilizing,  modifying, and demobilizing  drilling rigs","Costs incurred during the preparation of location for Production wells, materials including cost of land acquisition and payment of compensations.",131,3,YES,,YES
+131.04,Cost incurred in completing a well to make it ready for production.,"Costs incurred during the drilling phase of Production Wells excluding all surface and subsurface lifting equipment, materials",131,3,YES,,YES
+131.05,"Cost of enhancing production capacity, quality and flowrates of gas.",Cost incurred during the completion phase of Wells ,131,3,YES,,YES
+131.5,Indirect Common cost identifiable to production wells (gas) ,"(Clearing/Civil Works; Engineering; Procurement; Construction; Commissioning/Start-up and other related costs), material.",131,3,YES,,YES
+131.6,Direct Common cost identifiable to production wells (gas) ,"Cost of enhancing production capacity, quality and flowrates of gas, material.",131,3,YES,,YES
+132,"Cost of acquiring, constructing  and installing onshore and shallow waters facilities (oil)",Indirect Common cost as apportioned from code 5000 series,100,2,YES,,NO
+132.01,"Cost incurred on studies carried out during the development phase of a well, field or producing area.",Direct Common cost as apportioned from code 5000 series,132,3,YES,,YES
+132.02,"Cost incurred on Construction surveys, ",,132,3,YES,,YES
+132.03,Cost of constructing production platforms that receive oil from various well heads before passing to production separators ,"Costs associated with Construction surveys, Topographical surveys, Rouleb surveys, As-built surveys, Hydrographic & Underwater Surveys, Geotechnical, shallow hazards, including Site acquisition;  Clearing, material, and other related survey costs.",132,3,YES,,YES
+132.04,Cost incurred in constructing separators and other treating plants and equipment,Engineering; Procurement; Construction; ,132,3,YES,,YES
+132.05,Capital expenditure incurred to enhance oil recovery through secondary or tertiary operations,Commissioning/Start up; Project Management; contractors?  project  management;?  materials  and  other related costs.,132,3,YES,,YES
+132.06,"Capital expenditure incurred on Utilities including electricity plants, turbines, transmission lines etc. "," Contractor's Project Management,  Installation & testing, tree & manifold systems, tie-in and control systems, distribution and surface control systems, umbilical, Commissioning/Start up, material, and other related costs.",132,3,YES,,YES
+132.07,"Cost incurred for land transportation infrastructure e.g. roads, bridges, and drains etc.",,132,3,YES,,YES
+132.08,Cost incurred for water transportation infrastructure  e.g. jetty and harbour etc.,"Capital expenditure incurred on Utilities including electricity plants, turbines, transmission lines, material etc. ",132,3,YES,,YES
+132.09,"Cost incurred for air transportation infrastructure  e.g. helipads, hangers etc.","Commissioning; Contractor Project Management, material and other related costs.",132,3,YES,,YES
+132.1,"Cost of flow line that move oil from well heads to production  facilities  ?  for  onshore,  land,  swamp,  and shallow waters production. ","Commissioning; Contractor Project Management, material, and other related costs.",132,3,YES,,YES
+132.11,Cost incurred in constructing  a lined wall around oil tanks designed to catch all oil that leaks from it ,Engineering; Procurement; Construction; ,132,3,YES,,YES
+132.5,Indirect Common cost identifiable to capital construction  ?  oil  (onshore  and  shallow  waters)  ,"In-field flowlines for hydrocarbons and water, export pipelines for hydrocarbons including risers, cathodic and/or impressed current protection systems, riser guards, for land, swamp, shallow waters, materials.",132,3,YES,,YES
+132.6,Direct Common cost identifiable to capital construction  ?  oil  (onshore  and  shallow  waters)  ,"Commissioning; Contractor Project Management, material, and other related costs.",132,3,YES,,YES
+133,"Cost of acquiring, constructing  and installing onshore and shallow waters facilities (Gas)",,100,2,YES,,NO
+133.01,"Cost incurred on studies carried out during the development phase of a well, field or producing area.",,133,3,YES,,YES
+133.02,"Cost incurred on Construction surveys, ",,133,3,YES,,YES
+133.03,Cost of constructing production platforms that receive oil from various well heads before passing to production separators ,"Studies carried out on well, field or producing areas including Feasibility studies, materials, Conceptual design studies, HAZOP studies, Constructability studies, Maintainability studies, Field abandonment studies and other related study costs.",133,3,YES,,YES
+133.04,Cost incurred in constructing separators and other treating plants and equipment,It  includes Feasibility studies; Civil works; ,133,3,YES,,YES
+133.05,Capital expenditure incurred to enhance oil recovery through secondary or tertiary operations,Engineering; Procurement; Construction; ,133,3,YES,,YES
+133.06,"Capital expenditure incurred on Utilities including electricity plants, turbines, transmission lines etc. ",Cost includes Feasibility studies; Engineering; ,133,3,YES,,YES
+133.07,"Cost incurred for land transportation infrastructure e.g. roads, bridges, and drains etc.",Procurement; Installation; Commissioning/Start up; ,133,3,YES,,YES
+133.08,Cost incurred for water transportation infrastructure  e.g. jetty and harbour etc.,"Capital expenditure incurred on Utilities including electricity plants, turbines, transmission lines etc. ",133,3,YES,,YES
+133.09,"Cost incurred for air transportation infrastructure  e.g. helipads, hangers etc.","Commissioning; Contractor Project Management, materials, and other related costs.",133,3,YES,,YES
+133.1,Cost of flow line that move Gas from well heads ,"Commissioning; Contractor Project Management, materials, and other related costs.",133,3,YES,,YES
+133.11,Cost incurred in constructing  a lined wall around gas tanks designed to catch all gas that leaks from it ,"Commissioning; Contractor Project Management, materials, and other related costs.",133,3,YES,,YES
+133.5,Indirect Common cost identifiable to capital construction - Gas ,,133,3,YES,,YES
+133.6,Direct Common cost identifiable to capital construction - Gas ,"Commissioning; Contractor Project Management, materials, and other related costs.",133,3,YES,,YES
+134,"Cost incurred in safety, pollution and environment control activities",Indirect Common cost as apportioned from code 5000 series,100,2,YES,,NO
+134.01,Cost incurred on pollution control equipment and facilities for environmental protection,Direct Common cost as apportioned from code 5000 series,134,3,YES,,YES
+134.02,Cost incurred on Environmental Impact ,,134,3,YES,,YES
+134.03,Cost incurred in managing waste and effluents for environmental protection,"Includes cost of Oil Spill pollution control equipment such as Oil skimmers and ancillaries such as pumps, valves, hoses & connections, materials, etc.,",134,3,YES,,YES
+134.04,Cost of weather monitoring equipment,,134,3,YES,,YES
+134.05,Cost incurred in acquisition and installation of firefighting equipment,"Includes cost of Sewage Treatment Equipment for onshore & offshore locations, Waste Water equipment, Landfill, Incinerator, Compactors, ",134,3,YES,,YES
+134.06,Cost incurred in acquisition and installation of safety equipment,"Segregation Yard, incinerator yard concretizing/construction cost",134,3,YES,,YES
+134.07,Cost of acquisition and installing security apparatus on facilities.,"Including wind current, tidal and seabed evaluationand other related costs.",134,3,YES,,YES
+134.5,"Indirect Common cost identifiable to development safety, loss prevention, and environmental protection","Includes  purchasing, installation and upgrading fire trucks and buildings; Fire suits and accessories; Fire truck and tanker; Safety & Environmental training equipment; Fire detection/extinction and other related costs.",134,3,YES,,YES
+134.6,"Direct Common cost identifiable to development safety, loss prevention, and environmental protection","Including cost of CCTV, Bullet Proof Vans; Detector Gadgets; Bullet/Bomb proof equipment etc. ",134,3,YES,,YES
+136,"Cost of acquiring, constructing  and installing offshore and deep offshore facilities",,100,2,YES,,NO
+136.01,"Cost incurred on studies carried out during the development phase of a well, field or producing area.",,136,3,YES,,YES
+136.02,"Cost incurred on Construction surveys, ",,136,3,YES,,YES
+136.03,The cost of  facilities installed on the offshore and Deep offshore platform excluding Flotels,"Studies carried out on well, field or producing areas including Feasibility studies, Conceptual design studies, HAZOP studies, Constructability studies, Maintainability studies, Field abandonment studies and other related study costs.",136,3,YES,,YES
+136.04,Cost incurred in constructing separators and other treating plants and equipment,"Costs associated with Construction surveys, Topographical surveys, Rouleb surveys, As-built surveys, Hydrographic & Underwater Surveys, Geotechnical, shallow hazards, including Site acquisition;  Clearing, and other related survey costs.",136,3,YES,,YES
+136.05,Capital expenditure incurred to enhance oil recovery through secondary or tertiary operations,,136,3,YES,,YES

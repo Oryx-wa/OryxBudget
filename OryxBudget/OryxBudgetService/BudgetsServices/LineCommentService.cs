@@ -30,7 +30,7 @@ namespace  OryxBudgetService.BudgetsServices
 
         public IEnumerable<LineComment> GetByLineCommentId(string lineCommentId)
         {
-            return this.GetAll().Where(info => info.BudgetLineId == lineCommentId);
+            return this.GetAll().Where(info => info.BudgetLineId.ToString() == lineCommentId);
         }
 
 

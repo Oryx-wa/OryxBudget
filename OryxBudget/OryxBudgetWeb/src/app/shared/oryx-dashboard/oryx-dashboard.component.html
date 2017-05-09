@@ -1,0 +1,47 @@
+<br/>
+<div *ngIf="role==='Napims'" class="row">
+
+  <div class="container">
+
+    <div class="cards-stacked text-dark">
+      <div class="card-stacked">
+        <div *ngFor="let item of operators">
+          <div class="col l4 m7">
+            <div class="card horizontal">
+              <div class="card-image def-dashboard-image">
+                <img src="{{item.imageSrc}}">
+              </div>
+
+              <div class="card-content">
+                <div class="row">
+                  <div class="col s5 ">
+                    Name:
+                  </div>
+                  <div class="col s7">
+                    {{item.name}}
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col s5 ">
+                    Budget:
+                  </div>
+                  <div class="col s7">
+                    <a [routerLink]="['/operatordetails',{id:item.id}]" routerLinkActive="active">{{item.totalBudget | currency:'USD':true:'4.0-0'}}</a>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col s5 ">
+                    Actual :
+                  </div>
+                  <div class="col s7">
+                     <a [routerLink]="['/employee/basicinfo']" routerLinkActive="active">{{item.totalActual | currency:'USD':true:'4.0-0'}}</a>
+                  </div>
+                </div>
+              </div>
+             
+            </div>
+          </div>         
+        </div>
+      </div>
+    </div>
+  </div>

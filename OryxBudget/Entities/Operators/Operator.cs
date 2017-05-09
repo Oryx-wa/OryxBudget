@@ -10,7 +10,10 @@ namespace Entities.Operators
 {
     public class Operator : IMasterDataBase<Guid>
     {
-
+        public Operator()
+        {
+            this.ContactPersons = new HashSet<ContactPerson>();
+        }
 
         [Key]
         public Guid Id { get; set; }
@@ -32,12 +35,15 @@ namespace Entities.Operators
 
         [MaxLength(50)]
         public string OperatorTypeId { get; set; }
+        [MaxLength(250)]
+        public string ImageSrc { get; set; }
+
+        public ICollection<ContactPerson> ContactPersons { get; set; }
 
        // public bool IsJV { get; set; }
        // public bool IsPSC { get; set; }
 
-        [MaxLength(50)]
-        public string ContactPersonId { get; set; }
+       
 
     }
 
@@ -65,13 +71,14 @@ namespace Entities.Operators
 
         [MaxLength(50)]
         public string OperatorTypeId { get; set; }
+        [MaxLength(250)]
+        public string ImageSrc { get; set; }
 
-       // public bool IsJV { get; set; }
-       // public bool IsPSC { get; set; }
+        // public bool IsJV { get; set; }
+        // public bool IsPSC { get; set; }
 
-        [MaxLength(50)]
-        public string ContactPersonId { get; set; }
 
-        public  ContactPerson ContactPerson { get; set; }
+
+
     }
 }

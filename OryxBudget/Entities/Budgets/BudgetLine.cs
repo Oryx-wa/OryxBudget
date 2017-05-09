@@ -8,6 +8,11 @@ namespace Entities.Budgets
 {
     public class BudgetLine : IEntityBase<Guid>
     {
+        public BudgetLine()
+        {
+            this.LineComments = new List<LineComment>();
+        }
+
         [Key]
         public Guid Id { get; set; }
         public DateTime CreateDate { get; set; }
@@ -17,28 +22,26 @@ namespace Entities.Budgets
         [Required]
         [MaxLength(50)]
         public string UserSign { get; set; }
-
-        [Required, MaxLength(100)]
-        public string BudgetId { get; set; }
-
-        public int? RowNumber { get; set; }
-
-        public int CategoryId { get; set; }
-        [Required, MaxLength(20)]
-        public string Code { get; set; }
         
+        public int? RowNumber { get; set; }
+      
+        [Required, MaxLength(20)]
+        public string Code { get; set; }        
 
         [Required, MaxLength(100)]
         public string Description { get; set; } //ItemName
 
+        public decimal AmountLC { get; set; }
+        public decimal AmountLCInUSD { get; set; }
+        public decimal AmountUSD { get; set; }
         public decimal BudgetAmount { get; set; }
 
         public decimal ActualAmount { get; set; }
 
        
-        public Budget Budget { get; set; }
+        public Guid BudgetId { get; set; }
 
-        public Category BudgetLineCategory { get; set; }
+        public string CategoryId { get; set; }
 
         public ICollection<LineComment> LineComments { get; set; }
 
@@ -55,26 +58,26 @@ namespace Entities.Budgets
         [Required]
         [MaxLength(50)]
         public string UserSign { get; set; }
-        [Required, MaxLength(100)]
-        public string BudgetId { get; set; }
+      
 
         public int? RowNumber { get; set; }
 
-        public int CategoryId { get; set; }
         [Required, MaxLength(20)]
         public string Code { get; set; }
+
         [Required, MaxLength(100)]
         public string Description { get; set; } //ItemName
 
-         public decimal BudgetAmount { get; set; }
-
+        public decimal AmountLC { get; set; }
+        public decimal AmountUSD { get; set; }
+        public decimal AmountLCInUSD { get; set; }
+        public decimal BudgetAmount { get; set; }
         public decimal ActualAmount { get; set; }
 
-       
-        public  Budget Budget { get; set; }
 
-        public Category Category { get; set; }
+        public Guid BudgetId { get; set; }
 
-        public  ICollection<LineComment> LineComments { get; set; }
+        public string CategoryId { get; set; }
+
     }
 }

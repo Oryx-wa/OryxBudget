@@ -1,0 +1,34 @@
+ @import "../node_modules/materialize-css/dist/css/materialize.css";
+
+ .brand-logo{
+    font-size: 1.5rem !important;
+ }
+ .cards-stacked {
+    margin-left: auto;
+    margin-right: auto;
+    max-width: auto;
+    background: #eaeff4;
+    padding: 20px;
+    overflow: hidden;
+}
+.container{
+    width:1500px !important;
+}
+.dropdown-content {
+  background-color: #FFFFFF;
+  margin: 0;
+  display: none;
+  min-width: 200px !important; /* Changed this to accomodate content width */
+  max-height: auto;
+	margin-left: 1px; /* Add this to keep dropdown in line with edge of navbar */
+  overflow: hidden; /* Changed this from overflow-y:auto; to overflow:hidden; */
+  opacity: 0;
+  position: absolute;
+  white-space: nowrap;
+  will-change: width, height;
+}
+
+.def-dashboard-image {    
+    width: 200px;
+    height: 200px !important;
+}

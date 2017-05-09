@@ -18,10 +18,12 @@ namespace OryxWebApi.Controllers.OperatorsControllers
     public class OperatorController : BaseController
     {
         private readonly OperatorService _operatorService;
+        private BudgetService _budgetService;
 
-        public OperatorController(OperatorService operatorService)
+        public OperatorController(OperatorService operatorService, BudgetService budgetService)
         {
             _operatorService = operatorService;
+            _budgetService = budgetService;
         }
 
         // POST api/values
@@ -64,7 +66,34 @@ namespace OryxWebApi.Controllers.OperatorsControllers
         [HttpGet]
         public override JsonResult Get()
         {
-            return Json(_operatorService.GetAll());
+            var ops = _operatorService.GetAll();
+            IList<dynamic> ret = new List<dynamic>();
+            foreach (var op in ops)
+            {
+                var budget = _budgetService.GetByOperatorId(op.Id.ToString());
+                decimal totalbudget = 0;
+                decimal totalActual = 0;
+                if (budget != null)
+                {
+                    totalbudget = budget.TotalBudgetAmount;
+                    totalActual = budget.TotalAmountUSD;
+                }
+                var cm = new
+                {
+                    Id = op.Id,
+                    Name = op.Name,
+                    Code = op.Code,
+                    ImageSrc = op.ImageSrc,
+                    TotalBudget = totalbudget,
+                    TotalActual = totalActual
+                };
+
+                ret.Add(cm);
+
+
+            }
+
+            return Json(ret);
         }
 
 
@@ -72,7 +101,20 @@ namespace OryxWebApi.Controllers.OperatorsControllers
         [Route("GetById")]
         public JsonResult Get(string id)
         {
-            return Json(_operatorService.Get(ConvertToGuid(id)));
+            var op = _operatorService.Get(ConvertToGuid(id));
+            var budget = _budgetService.GetByOperatorId(id);
+
+            var ret = Json(new
+            {
+                Id = op.Id,
+                Name = op.Name,
+                Code = op.Code,
+                ImageSrc = op.ImageSrc,
+                TotalBudget = budget.TotalBudgetAmount,
+                TotalActual = budget.TotalAmountUSD
+            });
+
+            return ret;
         }
     }
 }

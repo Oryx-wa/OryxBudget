@@ -27,12 +27,22 @@ namespace Entities.Budgets
         public string Description { get; set; }
 
         public decimal TotalAmount { get; set; }
+        public decimal AmountLC { get; set; }
+        public decimal AmountLCInUSD { get; set; }
+        public decimal AmountUSD { get; set; }
 
         [MaxLength(150)]
         public string Remarks { get; set; }
 
-        [MaxLength(50), Required]
-        public string BudgetId { get; set; }
+        //[MaxLength(50), Required]
+        public Guid BudgetId { get; set; }
+
+        public DateTime PeriodStart { get; set; }
+        public DateTime PeriodEnd { get; set; }
+
+        //[MaxLength(50), Required]
+        //public string PeriodId { get; set; }
+
     }
     public class ActualLog : IEntityBase<Guid>, ILogEntityBase<Guid>
     {
@@ -53,11 +63,18 @@ namespace Entities.Budgets
         public string Description { get; set; }
 
         public decimal TotalAmount { get; set; }
+        public decimal AmountLC { get; set; }
+        public decimal AmountLCInUSD { get; set; }
+        public decimal AmountUSD { get; set; }
 
         [MaxLength(150)]
         public string Remarks { get; set; }
 
-        [MaxLength(50), Required]
-        public string BudgetId { get; set; }
+        public DateTime PeriodStart { get; set; }
+        public DateTime PeriodEnd { get; set; }
+        public Guid BudgetId { get; set; }
+
+        //[MaxLength(50), Required]
+        //public string PeriodId { get; set; }
     }
 }

@@ -1,0 +1,46 @@
+<nav>
+  <div class="nav-wrapper  teal accent-4">
+    <a href="#" class="brand-logo">&nbsp;Nexus Budget Mgr</a>
+
+    <ul style="margin-left: 200px;">
+      <li> <a routerLinkActive="active" class="waves-effect waves-light"><i class="material-icons left">home</i></a></li>
+      <li>
+        <a class="dropdown-button waves-effect waves-light" href="#!" data-activates="dropdown" data-beloworigin="true"><i class="material-icons right">menu</i></a>
+      </li>
+
+    </ul>
+    <ul id="nav-mobile" class="right hide-on-med-and-down">
+
+
+      <li> <a class="waves-effect waves-light"><i class="material-icons right">message</i></a></li>
+      <li>
+        <a class="dropdown-button waves-effect waves-light" href="#!"><i class="material-icons">add_alert</i></a>
+      </li>
+     
+       <li><a class="waves-effect waves-light" *ngIf="!securityService.IsAuthorized()" (click)="Login()"><i class="material-icons">power_settings_new</i></a></li>
+      <li><a class="waves-effect waves-light" *ngIf="securityService.IsAuthorized()" (click)="Logout()"><i class="material-icons">ic_exit_to_app_black</i></a></li>
+    </ul>
+    <ul id="dropdown" class="dropdown-content collection">
+
+      <li>
+        <a routerLinkActive="active" class="waves-effect waves-purple special">
+          <i class="material-icons left">persons</i>Users &nbsp;
+        </a>
+      </li>
+      <li>
+        <a routerLinkActive="active" class="waves-effect waves-purple special">
+          <i class="material-icons left">next_week</i>Budgets &nbsp;
+        </a>
+      </li>&ns
+      <li>
+        <a routerLinkActive="active" class="waves-effect waves-purple special">
+          <i class="material-icons left">info_outline</i>About &nbsp;
+        </a>
+      </li>
+
+
+    </ul>
+
+
+  </div>
+</nav>

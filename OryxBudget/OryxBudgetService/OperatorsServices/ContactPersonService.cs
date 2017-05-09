@@ -29,7 +29,7 @@ namespace OryxBudgetService.OperatorsServices
 
         public IEnumerable<ContactPerson> GetByContactPersonsId(string OperatorId)
         {
-            return this.GetAll().Where(info => info.OperatorId == OperatorId);
+            return this.GetAll().Where(info => info.OperatorId.ToString() == OperatorId);
         }
 
 

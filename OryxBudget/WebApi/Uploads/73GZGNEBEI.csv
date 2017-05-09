@@ -1,0 +1,8 @@
+Code,Description,BudgetId,AmountLC,AmountUSD,AmountLCInUSD
+110.01,Concession rentals on blocks from which hydrocarbon is not being produced,4e99f6cd-c949-4e3d-82c2-9b6c2c9450c6,3500000.00 ,500000.00 ,11666.67 
+110.02,Concession rentals on blocks from which hydrocarbon is being produced          ,4e99f6cd-c949-4e3d-82c2-9b6c2c9450c7,450000.00 ,0.00 ,1500.00 
+110.03,Expenditure incurred in converting from one concession type to another e.g OPL to OML,4e99f6cd-c949-4e3d-82c2-9b6c2c9450c8,750000.00 ,20000.00 ,2500.00 
+110.04,Signature/ lease bonus payable for award of block other pre-licensing fees and license renewal,4e99f6cd-c949-4e3d-82c2-9b6c2c9450c9,0.00 ,60000.00 ,0.00 
+110.05,Cost incurred  when land and/or  mineral rights are purchased in fee or farmed in,4e99f6cd-c949-4e3d-82c2-9b6c2c9450c10,8900000.00 ,0.00 ,29666.67 
+110.5,Indirect Common cost identifiable to acquisition  ,4e99f6cd-c949-4e3d-82c2-9b6c2c9450c11,12600000.00 ,700000.00 ,42000.00 
+110.6,Direct Common cost identifiable to acquisition  ,4e99f6cd-c949-4e3d-82c2-9b6c2c9450c12,0.00 ,600000.00 ,0.00 

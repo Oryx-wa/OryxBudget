@@ -29,9 +29,9 @@ namespace Entities.Operators
         public string LastName { get; set; }
 
         [MaxLength(50), Required]
-        public string OperatorId { get; set; }
+        public Guid OperatorId { get; set; }
 
-        public  Operator Operator { get; set; }
+      
 
 
 
@@ -62,7 +62,7 @@ namespace Entities.Operators
         [MaxLength(50), Required]
         public string OperatorId { get; set; }
 
-        public  Operator Operator { get; set; }
+       
 
 
     }

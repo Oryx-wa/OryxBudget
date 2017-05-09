@@ -16,15 +16,12 @@ namespace Entities.Budgets
         public string Status { get; set; }
         [Required]
         [MaxLength(50)]
-        public string UserSign { get; set; }
-
-        [MaxLength(50), Required]
-        public string BudgetLineId { get; set; }
+        public string UserSign { get; set; }       
 
         [MaxLength(355)]
         public string Comment { get; set; }
         public CommentStatus CommentStatus { get; set; }
-        public  BudgetLine BudgetLine { get; set; }
+        public Guid BudgetLineId { get; set; }
 
     }
 
@@ -39,17 +36,15 @@ namespace Entities.Budgets
         public string Status { get; set; }
         [Required]
         [MaxLength(50)]
-        public string UserSign { get; set; }
-
-        [MaxLength(50), Required]
-        public string BudgetLineId { get; set; }
+        public string UserSign { get; set; }       
 
         [MaxLength(355)]
         public string Comment { get; set; }
 
         public CommentStatus CommentStatus { get; set; }
 
-        public  BudgetLine BudgetLine { get; set; }
+       
+        public Guid BudgetLineId { get; set; }
 
     }
 

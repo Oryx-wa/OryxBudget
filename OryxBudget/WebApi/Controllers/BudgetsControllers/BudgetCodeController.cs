@@ -4,6 +4,10 @@ using OryxWebApi.ViewModels.BudgetsViewModels;
 using Microsoft.AspNetCore.Mvc;
 using AutoMapper;
 using Entities.Budgets;
+using Microsoft.AspNetCore.Http;
+using OryxWebapi.Utilities;
+using System.IO;
+using Hangfire;
 
 namespace OryxWebApi.Controllers.BudgetsControllers
 {
@@ -65,6 +69,24 @@ namespace OryxWebApi.Controllers.BudgetsControllers
         public JsonResult Get(string id)
         {
             return Json(_budgetCodeService.Get(ConvertToGuid(id)));
+        }
+
+        [Route("Upload")]
+        [HttpPost]
+        public JsonResult UploadBasicInfo(IFormFile file)
+        {
+
+            var fileName = string.Concat("Uploads", "\\", Helpers.RandomString(10), ".csv");
+
+            using (FileStream fs = System.IO.File.Create(fileName))
+            {
+                file.CopyTo(fs);
+                fs.Flush();
+                fs.Dispose();
+            }
+            BackgroundJob.Enqueue(() => _budgetCodeService.uploadEntity(fileName));
+           
+            return Json("File Uploaded"); //null just to make error free
         }
     }
 }

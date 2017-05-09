@@ -9,6 +9,10 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
+using OryxWebapi.Utilities;
+using System.IO;
+using Hangfire;
 
 namespace OryxWebApi.Controllers.BudgetLineControllers
 {
@@ -74,7 +78,23 @@ namespace OryxWebApi.Controllers.BudgetLineControllers
             return Json(_budgetLineService.Get(ConvertToGuid(id)));
         }
 
-    
+        [Route("Upload")]
+        [HttpPost]
+        public JsonResult UploadBasicInfo(IFormFile file)
+        {
+
+            var fileName = string.Concat("Uploads", "\\", Helpers.RandomString(10), ".csv");
+
+            using (FileStream fs = System.IO.File.Create(fileName))
+            {
+                file.CopyTo(fs);
+                fs.Flush();
+                fs.Dispose();
+            }
+            BackgroundJob.Enqueue(() => _budgetLineService.uploadEntity(fileName));
+
+            return Json("File Uploaded"); //null just to make error free
+        }
 
     };
 }

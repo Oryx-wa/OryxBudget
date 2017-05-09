@@ -22,9 +22,13 @@ namespace Data.Migrations
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<string>("BudgetId")
-                        .IsRequired()
-                        .HasMaxLength(50);
+                    b.Property<decimal>("AmountLC");
+
+                    b.Property<decimal>("AmountLCInUSD");
+
+                    b.Property<decimal>("AmountUSD");
+
+                    b.Property<Guid>("BudgetId");
 
                     b.Property<string>("Code")
                         .IsRequired()
@@ -36,6 +40,10 @@ namespace Data.Migrations
 
                     b.Property<string>("Description")
                         .HasMaxLength(150);
+
+                    b.Property<DateTime>("PeriodEnd");
+
+                    b.Property<DateTime>("PeriodStart");
 
                     b.Property<string>("Remarks")
                         .HasMaxLength(150);
@@ -55,6 +63,8 @@ namespace Data.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("BudgetId");
+
                     b.HasIndex("Id")
                         .IsUnique();
 
@@ -67,9 +77,13 @@ namespace Data.Migrations
 
                     b.Property<int>("LogInstance");
 
-                    b.Property<string>("BudgetId")
-                        .IsRequired()
-                        .HasMaxLength(50);
+                    b.Property<decimal>("AmountLC");
+
+                    b.Property<decimal>("AmountLCInUSD");
+
+                    b.Property<decimal>("AmountUSD");
+
+                    b.Property<Guid>("BudgetId");
 
                     b.Property<string>("Code")
                         .IsRequired()
@@ -79,6 +93,10 @@ namespace Data.Migrations
 
                     b.Property<string>("Description")
                         .HasMaxLength(150);
+
+                    b.Property<DateTime>("PeriodEnd");
+
+                    b.Property<DateTime>("PeriodStart");
 
                     b.Property<string>("Remarks")
                         .HasMaxLength(150);
@@ -104,12 +122,18 @@ namespace Data.Migrations
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd();
 
+                    b.Property<decimal>("ActualAmount");
+
+                    b.Property<decimal>("ActualAmountLC");
+
+                    b.Property<decimal>("ActualAmountUSD");
+
                     b.Property<string>("AdditionalStatement")
                         .HasMaxLength(300);
 
-                    b.Property<Guid?>("BudgetCategoryId");
-
                     b.Property<string>("BudgetLineCategoryId");
+
+                    b.Property<string>("CategoryId");
 
                     b.Property<DateTime>("CreateDate")
                         .ValueGeneratedOnAdd()
@@ -129,6 +153,10 @@ namespace Data.Migrations
                     b.Property<string>("Status")
                         .HasMaxLength(1);
 
+                    b.Property<decimal>("TotalAmountLC");
+
+                    b.Property<decimal>("TotalAmountUSD");
+
                     b.Property<decimal>("TotalBudgetAmount");
 
                     b.Property<DateTime>("UpdateDate")
@@ -141,8 +169,6 @@ namespace Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("BudgetCategoryId");
-
                     b.HasIndex("Id")
                         .IsUnique();
 
@@ -154,13 +180,11 @@ namespace Data.Migrations
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<bool>("Active");
+                    b.Property<string>("Active")
+                        .HasMaxLength(1);
 
                     b.Property<string>("CategoryId")
-                        .IsRequired()
                         .HasMaxLength(50);
-
-                    b.Property<Guid?>("CategoryId1");
 
                     b.Property<string>("Code")
                         .IsRequired()
@@ -171,7 +195,7 @@ namespace Data.Migrations
                         .HasDefaultValueSql("getDate()");
 
                     b.Property<string>("Description")
-                        .HasMaxLength(150);
+                        .HasMaxLength(1000);
 
                     b.Property<string>("FatherNum")
                         .IsRequired()
@@ -181,8 +205,11 @@ namespace Data.Migrations
                         .IsRequired()
                         .HasMaxLength(100);
 
+                    b.Property<string>("Postable")
+                        .HasMaxLength(1);
+
                     b.Property<string>("SecondDescription")
-                        .HasMaxLength(150);
+                        .HasMaxLength(1000);
 
                     b.Property<string>("Status")
                         .HasMaxLength(1);
@@ -197,8 +224,6 @@ namespace Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("CategoryId1");
-
                     b.HasIndex("Id")
                         .IsUnique();
 
@@ -211,13 +236,10 @@ namespace Data.Migrations
 
                     b.Property<int>("LogInstance");
 
-                    b.Property<bool>("Active");
+                    b.Property<string>("Active");
 
                     b.Property<string>("CategoryId")
-                        .IsRequired()
                         .HasMaxLength(50);
-
-                    b.Property<Guid?>("CategoryId1");
 
                     b.Property<string>("Code")
                         .IsRequired()
@@ -226,7 +248,7 @@ namespace Data.Migrations
                     b.Property<DateTime>("CreateDate");
 
                     b.Property<string>("Description")
-                        .HasMaxLength(150);
+                        .HasMaxLength(1000);
 
                     b.Property<string>("FatherNum")
                         .IsRequired()
@@ -236,8 +258,11 @@ namespace Data.Migrations
                         .IsRequired()
                         .HasMaxLength(100);
 
+                    b.Property<string>("Postable")
+                        .HasMaxLength(1);
+
                     b.Property<string>("SecondDescription")
-                        .HasMaxLength(150);
+                        .HasMaxLength(1000);
 
                     b.Property<string>("Status")
                         .HasMaxLength(1);
@@ -252,8 +277,6 @@ namespace Data.Migrations
 
                     b.HasAlternateKey("Id");
 
-                    b.HasIndex("CategoryId1");
-
                     b.ToTable("BudgetCodeLogs");
                 });
 
@@ -264,21 +287,21 @@ namespace Data.Migrations
 
                     b.Property<decimal>("ActualAmount");
 
+                    b.Property<decimal>("AmountLC");
+
+                    b.Property<decimal>("AmountLCInUSD");
+
+                    b.Property<decimal>("AmountUSD");
+
                     b.Property<decimal>("BudgetAmount");
 
-                    b.Property<string>("BudgetId")
-                        .IsRequired()
-                        .HasMaxLength(100);
-
-                    b.Property<Guid?>("BudgetId1");
-
-                    b.Property<Guid?>("BudgetLineCategoryId");
+                    b.Property<Guid>("BudgetId");
 
                     b.Property<Guid?>("BudgetLogId");
 
                     b.Property<int?>("BudgetLogLogInstance");
 
-                    b.Property<int>("CategoryId");
+                    b.Property<string>("CategoryId");
 
                     b.Property<string>("Code")
                         .IsRequired()
@@ -307,9 +330,7 @@ namespace Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("BudgetId1");
-
-                    b.HasIndex("BudgetLineCategoryId");
+                    b.HasIndex("BudgetId");
 
                     b.HasIndex("Id")
                         .IsUnique();
@@ -327,17 +348,17 @@ namespace Data.Migrations
 
                     b.Property<decimal>("ActualAmount");
 
+                    b.Property<decimal>("AmountLC");
+
+                    b.Property<decimal>("AmountLCInUSD");
+
+                    b.Property<decimal>("AmountUSD");
+
                     b.Property<decimal>("BudgetAmount");
 
-                    b.Property<string>("BudgetId")
-                        .IsRequired()
-                        .HasMaxLength(100);
+                    b.Property<Guid>("BudgetId");
 
-                    b.Property<Guid?>("BudgetId1");
-
-                    b.Property<int>("CategoryId");
-
-                    b.Property<Guid?>("CategoryId1");
+                    b.Property<string>("CategoryId");
 
                     b.Property<string>("Code")
                         .IsRequired()
@@ -362,10 +383,6 @@ namespace Data.Migrations
 
                     b.HasKey("Id", "LogInstance");
 
-                    b.HasIndex("BudgetId1");
-
-                    b.HasIndex("CategoryId1");
-
                     b.ToTable("BudgetLineLogs");
                 });
 
@@ -375,10 +392,16 @@ namespace Data.Migrations
 
                     b.Property<int>("LogInstance");
 
+                    b.Property<decimal>("ActualAmountLC");
+
+                    b.Property<decimal>("ActualAmountUSD");
+
+                    b.Property<decimal>("ActualBudgetAmount");
+
                     b.Property<string>("AdditionalStatement")
                         .HasMaxLength(300);
 
-                    b.Property<Guid?>("BudgetCategoryId");
+                    b.Property<string>("CategoryId");
 
                     b.Property<DateTime>("CreateDate");
 
@@ -395,7 +418,11 @@ namespace Data.Migrations
                     b.Property<string>("Status")
                         .HasMaxLength(1);
 
-                    b.Property<decimal>("TotalBudgetAmount");
+                    b.Property<decimal>("TotalAmount");
+
+                    b.Property<decimal>("TotalAmountLC");
+
+                    b.Property<decimal>("TotalAmountUSD");
 
                     b.Property<DateTime>("UpdateDate");
 
@@ -404,8 +431,6 @@ namespace Data.Migrations
                         .HasMaxLength(50);
 
                     b.HasKey("Id", "LogInstance");
-
-                    b.HasIndex("BudgetCategoryId");
 
                     b.ToTable("BudgetLogs");
                 });
@@ -483,15 +508,7 @@ namespace Data.Migrations
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<string>("BudgetLineId")
-                        .IsRequired()
-                        .HasMaxLength(50);
-
-                    b.Property<Guid?>("BudgetLineId1");
-
-                    b.Property<Guid?>("BudgetLineLogId");
-
-                    b.Property<int?>("BudgetLineLogLogInstance");
+                    b.Property<Guid>("BudgetLineId");
 
                     b.Property<string>("Comment")
                         .HasMaxLength(355);
@@ -515,12 +532,10 @@ namespace Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("BudgetLineId1");
+                    b.HasIndex("BudgetLineId");
 
                     b.HasIndex("Id")
                         .IsUnique();
-
-                    b.HasIndex("BudgetLineLogId", "BudgetLineLogLogInstance");
 
                     b.ToTable("LineComment");
                 });
@@ -531,11 +546,7 @@ namespace Data.Migrations
 
                     b.Property<int>("LogInstance");
 
-                    b.Property<string>("BudgetLineId")
-                        .IsRequired()
-                        .HasMaxLength(50);
-
-                    b.Property<Guid?>("BudgetLineId1");
+                    b.Property<Guid>("BudgetLineId");
 
                     b.Property<string>("Comment")
                         .HasMaxLength(355);
@@ -556,8 +567,6 @@ namespace Data.Migrations
                     b.HasKey("Id", "LogInstance");
 
                     b.HasAlternateKey("Id");
-
-                    b.HasIndex("BudgetLineId1");
 
                     b.ToTable("LineCommentLog");
                 });
@@ -646,11 +655,8 @@ namespace Data.Migrations
                         .IsRequired()
                         .HasMaxLength(100);
 
-                    b.Property<string>("OperatorId")
-                        .IsRequired()
+                    b.Property<Guid>("OperatorId")
                         .HasMaxLength(50);
-
-                    b.Property<Guid?>("OperatorId1");
 
                     b.Property<string>("Status")
                         .HasMaxLength(1);
@@ -668,7 +674,7 @@ namespace Data.Migrations
                     b.HasIndex("Name")
                         .IsUnique();
 
-                    b.HasIndex("OperatorId1");
+                    b.HasIndex("OperatorId");
 
                     b.ToTable("ContactPersons");
                 });
@@ -694,8 +700,6 @@ namespace Data.Migrations
                         .IsRequired()
                         .HasMaxLength(50);
 
-                    b.Property<Guid?>("OperatorId1");
-
                     b.Property<string>("Status")
                         .HasMaxLength(1);
 
@@ -706,8 +710,6 @@ namespace Data.Migrations
                         .HasMaxLength(50);
 
                     b.HasKey("Id", "LogInstance");
-
-                    b.HasIndex("OperatorId1");
 
                     b.ToTable("ContactPersonLogs");
                 });
@@ -721,13 +723,13 @@ namespace Data.Migrations
                         .IsRequired()
                         .HasMaxLength(20);
 
-                    b.Property<string>("ContactPersonId")
-                        .HasMaxLength(50);
-
                     b.Property<DateTime>("CreateDate")
                         .ValueGeneratedOnAdd()
                         .HasDefaultValueSql("getDate()")
                         .HasMaxLength(50);
+
+                    b.Property<string>("ImageSrc")
+                        .HasMaxLength(250);
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -735,12 +737,6 @@ namespace Data.Migrations
 
                     b.Property<string>("OperatorTypeId")
                         .HasMaxLength(50);
-
-                    b.Property<Guid?>("OperatorTypeId1");
-
-                    b.Property<Guid?>("OperatorTypeLogId");
-
-                    b.Property<int?>("OperatorTypeLogLogInstance");
 
                     b.Property<string>("Status")
                         .HasMaxLength(1);
@@ -758,10 +754,6 @@ namespace Data.Migrations
                     b.HasIndex("Name")
                         .IsUnique();
 
-                    b.HasIndex("OperatorTypeId1");
-
-                    b.HasIndex("OperatorTypeLogId", "OperatorTypeLogLogInstance");
-
                     b.ToTable("Operators");
                 });
 
@@ -775,13 +767,11 @@ namespace Data.Migrations
                         .IsRequired()
                         .HasMaxLength(20);
 
-                    b.Property<string>("ContactPersonId")
-                        .HasMaxLength(50);
-
-                    b.Property<Guid?>("ContactPersonId1");
-
                     b.Property<DateTime>("CreateDate")
                         .HasMaxLength(50);
+
+                    b.Property<string>("ImageSrc")
+                        .HasMaxLength(250);
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -800,8 +790,6 @@ namespace Data.Migrations
                         .HasMaxLength(50);
 
                     b.HasKey("Id", "LogInstance");
-
-                    b.HasIndex("ContactPersonId1");
 
                     b.ToTable("OperatorLogs");
                 });
@@ -866,108 +854,40 @@ namespace Data.Migrations
                     b.ToTable("OperatorTypeLogs");
                 });
 
-            modelBuilder.Entity("Entities.Budgets.Budget", b =>
+            modelBuilder.Entity("Entities.Budgets.Actual", b =>
                 {
-                    b.HasOne("Entities.Budgets.Category", "BudgetCategory")
-                        .WithMany()
-                        .HasForeignKey("BudgetCategoryId");
-                });
-
-            modelBuilder.Entity("Entities.Budgets.BudgetCode", b =>
-                {
-                    b.HasOne("Entities.Budgets.Category", "Category")
-                        .WithMany()
-                        .HasForeignKey("CategoryId1");
-                });
-
-            modelBuilder.Entity("Entities.Budgets.BudgetCodeLog", b =>
-                {
-                    b.HasOne("Entities.Budgets.Category", "Category")
-                        .WithMany()
-                        .HasForeignKey("CategoryId1");
+                    b.HasOne("Entities.Budgets.Budget")
+                        .WithMany("Actuals")
+                        .HasForeignKey("BudgetId")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("Entities.Budgets.BudgetLine", b =>
                 {
-                    b.HasOne("Entities.Budgets.Budget", "Budget")
+                    b.HasOne("Entities.Budgets.Budget")
                         .WithMany("BudgetLines")
-                        .HasForeignKey("BudgetId1");
-
-                    b.HasOne("Entities.Budgets.Category", "BudgetLineCategory")
-                        .WithMany()
-                        .HasForeignKey("BudgetLineCategoryId");
+                        .HasForeignKey("BudgetId")
+                        .OnDelete(DeleteBehavior.Cascade);
 
                     b.HasOne("Entities.Budgets.BudgetLog")
                         .WithMany("BudgetLines")
                         .HasForeignKey("BudgetLogId", "BudgetLogLogInstance");
                 });
 
-            modelBuilder.Entity("Entities.Budgets.BudgetLineLog", b =>
-                {
-                    b.HasOne("Entities.Budgets.Budget", "Budget")
-                        .WithMany()
-                        .HasForeignKey("BudgetId1");
-
-                    b.HasOne("Entities.Budgets.Category", "Category")
-                        .WithMany()
-                        .HasForeignKey("CategoryId1");
-                });
-
-            modelBuilder.Entity("Entities.Budgets.BudgetLog", b =>
-                {
-                    b.HasOne("Entities.Budgets.Category", "BudgetCategory")
-                        .WithMany()
-                        .HasForeignKey("BudgetCategoryId");
-                });
-
             modelBuilder.Entity("Entities.Budgets.LineComment", b =>
                 {
-                    b.HasOne("Entities.Budgets.BudgetLine", "BudgetLine")
+                    b.HasOne("Entities.Budgets.BudgetLine")
                         .WithMany("LineComments")
-                        .HasForeignKey("BudgetLineId1");
-
-                    b.HasOne("Entities.Budgets.BudgetLineLog")
-                        .WithMany("LineComments")
-                        .HasForeignKey("BudgetLineLogId", "BudgetLineLogLogInstance");
-                });
-
-            modelBuilder.Entity("Entities.Budgets.LineCommentLog", b =>
-                {
-                    b.HasOne("Entities.Budgets.BudgetLine", "BudgetLine")
-                        .WithMany()
-                        .HasForeignKey("BudgetLineId1");
+                        .HasForeignKey("BudgetLineId")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("Entities.Operators.ContactPerson", b =>
                 {
-                    b.HasOne("Entities.Operators.Operator", "Operator")
-                        .WithMany()
-                        .HasForeignKey("OperatorId1");
-                });
-
-            modelBuilder.Entity("Entities.Operators.ContactPersonLog", b =>
-                {
-                    b.HasOne("Entities.Operators.Operator", "Operator")
-                        .WithMany()
-                        .HasForeignKey("OperatorId1");
-                });
-
-            modelBuilder.Entity("Entities.Operators.Operator", b =>
-                {
-                    b.HasOne("Entities.Operators.OperatorType")
-                        .WithMany("Operators")
-                        .HasForeignKey("OperatorTypeId1");
-
-                    b.HasOne("Entities.Operators.OperatorTypeLog")
-                        .WithMany("Operators")
-                        .HasForeignKey("OperatorTypeLogId", "OperatorTypeLogLogInstance");
-                });
-
-            modelBuilder.Entity("Entities.Operators.OperatorLog", b =>
-                {
-                    b.HasOne("Entities.Operators.ContactPerson", "ContactPerson")
-                        .WithMany()
-                        .HasForeignKey("ContactPersonId1");
+                    b.HasOne("Entities.Operators.Operator")
+                        .WithMany("ContactPersons")
+                        .HasForeignKey("OperatorId")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
         }
     }

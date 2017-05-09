@@ -23,7 +23,7 @@ namespace OryxWebApi.ViewModels.BudgetsViewModels
         [MaxLength(100), Required]
         public string Level { get; set; }
 
-        public bool Active { get; set; }
+        public string Active { get; set; }
 
         [MaxLength(50), Required]
         public string CategoryId { get; set; }

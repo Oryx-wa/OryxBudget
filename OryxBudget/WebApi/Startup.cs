@@ -117,7 +117,7 @@ namespace OryxWebApi
             services.AddDbContext<SecurityContext>(options => options.UseSqlServer(conString, opt => opt.UseRowNumberForPaging()));
             services.AddDbContext<OryxBudgetContext>(options => options.UseSqlServer(conString, opt => opt.UseRowNumberForPaging()));
 
-            //services.AddHangfire(x => x.UseSqlServerStorage(conString));
+            services.AddHangfire(x => x.UseSqlServerStorage(conString));
 
             Mapper.Initialize(x => x.AddProfile<MappingProfile>());
 
@@ -297,8 +297,8 @@ namespace OryxWebApi
                     throw e;
                 }
             }
-          //  app.UseHangfireDashboard();
-          //  app.UseHangfireServer();
+            app.UseHangfireDashboard();
+            app.UseHangfireServer();
 
             if (!Directory.Exists("Uploads"))
             {

@@ -8,6 +8,10 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
+using OryxWebapi.Utilities;
+using System.IO;
+using Hangfire;
 
 namespace OryxWebApi.Controllers.BudgetControllers
 {
@@ -67,6 +71,42 @@ namespace OryxWebApi.Controllers.BudgetControllers
         public JsonResult Get(string id)
         {
             return Json(_budgetService.Get(ConvertToGuid(id)));
+        }
+
+        [Route("UploadBudget")]
+        [HttpPost]
+        public JsonResult UploadBudget(string id, IFormFile file)
+        {
+
+            var fileName = string.Concat("Uploads", "\\", Helpers.RandomString(10), ".csv");
+
+            using (FileStream fs = System.IO.File.Create(fileName))
+            {
+                file.CopyTo(fs);
+                fs.Flush();
+                fs.Dispose();
+            }
+            BackgroundJob.Enqueue(() => _budgetService.UploadBudget(fileName, ConvertToGuid(id)));
+
+            return Json("File Uploaded"); //null just to make error free
+        }
+
+        [Route("UploadActual")]
+        [HttpPost]
+        public JsonResult UploadActual(string id, IFormFile file)
+        {
+
+            var fileName = string.Concat("Uploads", "\\", Helpers.RandomString(10), ".csv");
+
+            using (FileStream fs = System.IO.File.Create(fileName))
+            {
+                file.CopyTo(fs);
+                fs.Flush();
+                fs.Dispose();
+            }
+            BackgroundJob.Enqueue(() => _budgetService.UploadActual(fileName, ConvertToGuid(id)));
+
+            return Json("File Uploaded"); //null just to make error free
         }
     }
 }
