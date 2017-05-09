@@ -1,3 +1,38 @@
-<p>
-  operator-view works!
-</p>
+<div *ngIf="role==='Operator'" class="row">
+  <div class="container">
+  <div class="col l3">
+     <img src="{{item.imageSrc}}">
+  </div>
+  <div class="col l9">
+     <table class="bordered">
+        <thead>
+          <tr>
+              <th>Description</th>              
+              <th>Total Budget Amount</th>
+              <th>Total Amount USD</th>
+              <th>Total Amount LC</th>
+              <th>Actual Amount</th>
+              <th>Actual Amount USD</th>
+              <th>Actual Amount LC</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          <tr>
+            <td>{{item.descripton}}</td>            
+            <td>{{item.totalBudgetAmount}}</td>
+             <td>{{item.totalAmountLC}}</td>
+             <td>{{item.totalAmountUSD}}</td>
+            <td>{{item.actualBudgetAmount}}</td>
+            <td>{{item.actualAmountLC}}</td>
+             <td>{{item.actualAmountUSD}}</td>
+          </tr>
+         
+        </tbody>
+      </table>
+  </div>
+  </div>
+</div>
+<div class="row">
+  <a  href="#"class="waves-effect waves-light btn">button</a>
+</div>
