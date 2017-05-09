@@ -1,6 +1,10 @@
 
 <div *ngIf="securityService.IsAuthorized()">
     <h6> Welcome {{name}} Role:{{role}} </h6>}
-  <app-oryx-dashboard [name]="name" [operatorId]="opearatorId" [role]="role"
+  <app-oryx-dashboard *ngIf="role === Napims;else operator" [name]="name" [operatorId]="opearatorId" [role]="role"
     [operators]="operators$ | async" ></app-oryx-dashboard>
 </div>
+<ng-template #operator>
+    <app-operator-view  [name]="name" [operatorId]="opearatorId"> 
+    </app-operator-view>
+</ng-template>
