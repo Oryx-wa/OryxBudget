@@ -36,7 +36,9 @@ namespace OryxWebApi
 
         public Guid ConvertToGuid(string id)
         {
-            var NewId = Guid.Parse(id);
+
+            Guid NewId;
+            NewId = (string.IsNullOrEmpty(id))? Guid.NewGuid() :Guid.Parse(id);
             return NewId;
         }
 
