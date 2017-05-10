@@ -1,3 +1,38 @@
-<p>
-  operator-details works!
-</p>
+
+<div class="row">
+  <div class="container">
+  <!--<div class="col l3">
+     <img src="{{item.imageSrc}}">
+  </div>-->
+  <div class="col l9">
+     <table class="bordered">
+        <thead>
+          <tr>
+              <th>Description</th>              
+              <th>Total Budget </th>
+              <th>Budget USD</th>
+              <th>Budget LC</th>
+              <th>Total Actual </th>
+              <th>Actual USD</th>
+              <th>Actual LC</th>
+          </tr>
+        </thead>
+
+        <tbody *ngIf="budgets$ | async; let budgets; else loading">
+          <tr   *ngFor="let item of budgets">
+            <td><a>{{item.description}}</a></td>            
+            <td>{{item.totalBudgetAmount | currency:'USD':true:'4.0-0'}}</td>
+             <td>{{item.totalAmountLC | currency:'NGN':true:'4.0-0'}}</td>
+             <td>{{item.totalAmountUSD | currency:'USD':true:'4.0-0'}}</td>
+            <td>{{item.actualBudgetAmount | currency:'USD':true:'4.0-0'}}</td>
+            <td>{{item.actualAmountLC | currency:'NGN':true:'4.0-0'}}</td>
+             <td>{{item.actualAmountUSD | currency:'USD':true:'4.0-0'}}</td>
+          </tr>
+         
+        </tbody>
+        <ng-template #loading>Loading User Data...</ng-template>
+      </table>
+  </div>
+  </div>
+</div>
+

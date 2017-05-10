@@ -70,7 +70,7 @@ namespace OryxWebApi.Controllers.OperatorsControllers
             IList<dynamic> ret = new List<dynamic>();
             foreach (var op in ops)
             {
-                var budget = _budgetService.GetByOperatorId(op.Id.ToString());
+                var budget = _budgetService.GetByOperatorId(op.Id.ToString()).FirstOrDefault();
                 decimal totalbudget = 0;
                 decimal totalActual = 0;
                 if (budget != null)
@@ -102,7 +102,7 @@ namespace OryxWebApi.Controllers.OperatorsControllers
         public JsonResult Get(string id)
         {
             var op = _operatorService.Get(ConvertToGuid(id));
-            var budget = _budgetService.GetByOperatorId(id);
+            var budget = _budgetService.GetByOperatorId(id).FirstOrDefault();
 
             var ret = Json(new
             {
