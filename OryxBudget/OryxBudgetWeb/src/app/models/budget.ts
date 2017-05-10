@@ -1,5 +1,6 @@
 export interface Budgets {
     id: string;
+    operatorId: string;
     totalBudgetAmount: number;
     totalAmountLC: number;
     totalAmountUSD: number;
