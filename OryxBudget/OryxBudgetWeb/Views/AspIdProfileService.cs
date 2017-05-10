@@ -39,15 +39,46 @@ namespace OryxBudgetWeb
         claims = claims.Where(claim => context.RequestedClaimTypes.Contains(claim.Type)).ToList();
 
         //claims.Add(new Claim(JwtClaimTypes., $"{ user.LastName}, {user.FirstName}"));
-        claims.Add(new Claim(JwtClaimTypes.FamilyName, user.LastName));
-        claims.Add(new Claim(JwtClaimTypes.GivenName, user.FirstName));
+        if (!string.IsNullOrEmpty(user.LastName))
+        {
+          claims.Add(new Claim(JwtClaimTypes.FamilyName, user.LastName));
+          claims.Add(new Claim(JwtClaimTypes.GivenName, user.FirstName));
+          claims.Add(new System.Security.Claims.Claim(JwtClaimTypes.Name, $"{ user.LastName}, {user.FirstName}"));
+        }
+        else
+        {
+          claims.Add(new Claim(JwtClaimTypes.FamilyName, ""));
+          claims.Add(new Claim(JwtClaimTypes.GivenName, ""));
+          claims.Add(new System.Security.Claims.Claim(JwtClaimTypes.Name, ""));
+        }
+
 
 
         //claims.Add(new System.Security.Claims.Claim(StandardScopes.Email, user.Email));
-        claims.Add(new System.Security.Claims.Claim(JwtClaimTypes.Name, $"{ user.LastName}, {user.FirstName}"));
-        claims.Add(new System.Security.Claims.Claim(JwtClaimTypes.Role, user.MemberRole));
-        claims.Add(new System.Security.Claims.Claim(JwtClaimTypes.Role, user.Role));
-        claims.Add(new System.Security.Claims.Claim(JwtClaimTypes.Id, user.OperatorId));
+        if (!string.IsNullOrEmpty(user.MemberRole))
+        {
+          claims.Add(new System.Security.Claims.Claim(JwtClaimTypes.Role, user.MemberRole));          
+        }
+        else
+        {
+          claims.Add(new System.Security.Claims.Claim(JwtClaimTypes.Role, ""));
+        }
+        if (!string.IsNullOrEmpty(user.Role))
+        {
+           claims.Add(new System.Security.Claims.Claim(JwtClaimTypes.Role, ""));
+        }
+        else
+        {
+          claims.Add(new System.Security.Claims.Claim(JwtClaimTypes.Role, ""));
+        }
+        if (!string.IsNullOrEmpty(user.OperatorId))
+        {
+          claims.Add(new System.Security.Claims.Claim(JwtClaimTypes.Id, user.OperatorId)); 
+        }
+        else
+        {
+          claims.Add(new System.Security.Claims.Claim(JwtClaimTypes.Id, ""));
+        }
 
 
         context.IssuedClaims = claims;

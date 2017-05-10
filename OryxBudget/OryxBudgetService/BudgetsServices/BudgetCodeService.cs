@@ -11,7 +11,7 @@ using OryxBudgetService.CsvMapping;
 
 namespace OryxBudgetService.BudgetsServices
 {
-   public class BudgetCodeService : BaseBudgetService<BudgetCode>
+    public class BudgetCodeService : BaseBudgetService<BudgetCode>
     {
         private readonly IBaseLogBudgetRepository<BudgetCode, BudgetCodeLog, Guid> _repository;
 
@@ -23,8 +23,8 @@ namespace OryxBudgetService.BudgetsServices
         public override void Add(BudgetCode entity)
         {
 
-           
-            
+
+
 
             base.Add(entity);
         }
@@ -63,7 +63,7 @@ namespace OryxBudgetService.BudgetsServices
                 item.Active = item.Active.Trim();
                 item.Postable = item.Postable.Trim();
                 this.Add(item);
-                
+
             };
             this.SaveChanges();
             dataFile.Dispose();
@@ -71,10 +71,73 @@ namespace OryxBudgetService.BudgetsServices
             GC.Collect();
 
             System.IO.File.Delete(fileName);
-           
+
         }
 
-         
+        public IEnumerable<BudgetCodeView> GenerateCodeView()
+        {
+            var Level1Codes = this.GetAll().Where(code => code.Level == "1");
+            var Level2Codes = this.GetAll().Where(code => code.Level == "2");
+            var Level3Codes = this.GetAll().Where(code => code.Level == "3");
+
+            IList<BudgetCodeView> codeList = new List<BudgetCodeView>();
+
+            foreach (var item in Level1Codes)
+            {
+                BudgetCodeView codeView = new BudgetCodeView();
+                codeView.Code = item.Code;
+                codeView.Description = item.Description;
+                codeView.Level = item.Level;
+                codeView.Level2 = "";
+                codeView.level2Description = "";
+                codeView.Level = "";
+                codeView.Level1 = "";
+
+
+
+                codeList.Add(codeView);
+            }
+
+            foreach (var item in Level2Codes)
+            {
+                BudgetCodeView codeView = new BudgetCodeView();
+                codeView.Code = item.Code;
+                codeView.Description = item.Description;
+                codeView.Level = item.Level;
+                codeView.Level1 = item.FatherNum;
+                codeView.Level2 = "";
+                codeView.level2Description = "";
+
+                codeView.level1Description = Level1Codes
+                    .FirstOrDefault(c => c.Code == item.FatherNum).Description;
+
+                codeList.Add(codeView);
+            }
+
+            foreach (var item in Level3Codes)
+            {
+                BudgetCodeView codeView = new BudgetCodeView();
+                codeView.Code = item.Code;
+                codeView.Description = item.Description;
+                codeView.Level = item.Level;
+                codeView.Level2 = item.FatherNum;
+
+                var level2 = Level2Codes
+                     .FirstOrDefault(c => c.Code == item.FatherNum);
+
+                codeView.level2Description = level2.Description;
+
+                var level1 = Level1Codes.FirstOrDefault(c => c.Code == level2.FatherNum);
+
+                codeView.Level1 = level1.Code;
+                codeView.level1Description = level1.Description;                
+
+                codeList.Add(codeView);
+            }
+
+            return codeList;
+
+        }
 
     }
 }

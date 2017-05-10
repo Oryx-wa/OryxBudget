@@ -46,7 +46,7 @@ namespace OryxBudgetWeb.Controllers
       _emailSender = emailSender;
       _smsSender = smsSender;
       _logger = loggerFactory.CreateLogger<AccountController>();
-      interaction = interaction;
+      _interaction = interaction;
     }
 
     //

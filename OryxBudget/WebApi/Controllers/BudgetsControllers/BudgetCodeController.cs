@@ -63,6 +63,12 @@ namespace OryxWebApi.Controllers.BudgetsControllers
             return Json(_budgetCodeService.GetAll());
         }
 
+        [HttpGet]
+        [Route("CodeHierarchy")]
+        public  JsonResult GetHierarchy()
+        {
+            return Json(_budgetCodeService.GenerateCodeView());
+        }
 
         [HttpGet]
         [Route("GetById")]

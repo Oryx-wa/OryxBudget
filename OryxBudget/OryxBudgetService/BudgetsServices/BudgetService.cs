@@ -15,11 +15,14 @@ namespace OryxBudgetService.BudgetsServices
     {
         private readonly BudgetRepository _repository;
         private readonly BudgetLineRepository _lineRepository;
+        private readonly BudgetCodeService _budgetCodeService;
 
-        public BudgetService(BudgetRepository repository, BudgetLineRepository lineRepository, IBudgetUnitOfWork unitOfWork) : base(repository, unitOfWork)
+        public BudgetService(BudgetRepository repository, BudgetCodeService budgetCodeService,
+            BudgetLineRepository lineRepository, IBudgetUnitOfWork unitOfWork) : base(repository, unitOfWork)
         {
             _repository = repository;
             _lineRepository = lineRepository;
+            _budgetCodeService = budgetCodeService;
         }
 
         public override void Update(Budget entity)
@@ -37,6 +40,40 @@ namespace OryxBudgetService.BudgetsServices
         public Budget GetByOperatorId(string operatorId)
         {
             return this.GetAll().Where(info => info.OperatorId == operatorId).FirstOrDefault();
+        }
+
+        public IEnumerable<BudgetCodeView> GetOperatorBudget(string id)
+        {
+            var budgets = this.GetAllIncluding()
+                .Where(b => b.OperatorId == id)
+                .FirstOrDefault().BudgetLines
+                .GroupBy(b => b.Code)
+                .Select(newb => new {
+                    Code = newb.Key,
+                    BudgetAmount = newb.Sum(c => c.BudgetAmount),
+                    BudgetAmountLC = newb.Sum(c => c.AmountLC),
+                    BudgetAmountUSD = newb.Sum(c => c.AmountUSD)
+                });
+                
+
+            var codes = _budgetCodeService.GenerateCodeView();
+
+            var budgetView = from c in codes
+                             join b in budgets
+                             on c.Code equals b.Code
+                             select new { c, b };
+
+            foreach (var match in budgetView)
+            {
+                match.c.BudgetAmount = match.b.BudgetAmount;
+                match.c.BudgetAmountLC = match.b.BudgetAmountLC;
+                match.c.BudgetAmountUSD = match.b.BudgetAmountUSD;
+    
+            }
+
+            return budgetView.Select(c => c.c).ToList();
+
+            
         }
 
         public void UploadBudget(string fileName, Guid id)
