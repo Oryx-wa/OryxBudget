@@ -1,38 +1,63 @@
-
-<div class="row">
-  <div class="container">
-  <!--<div class="col l3">
-     <img src="{{item.imageSrc}}">
-  </div>-->
-  <div class="col l9">
-     <table class="bordered">
-        <thead>
-          <tr>
-              <th>Description</th>              
-              <th>Total Budget </th>
-              <th>Budget USD</th>
-              <th>Budget LC</th>
-              <th>Total Actual </th>
-              <th>Actual USD</th>
-              <th>Actual LC</th>
-          </tr>
-        </thead>
-
-        <tbody *ngIf="budgets$ | async; let budgets; else loading">
-          <tr   *ngFor="let item of budgets">
-            <td><a>{{item.description}}</a></td>            
-            <td>{{item.totalBudgetAmount | currency:'USD':true:'4.0-0'}}</td>
-             <td>{{item.totalAmountLC | currency:'NGN':true:'4.0-0'}}</td>
-             <td>{{item.totalAmountUSD | currency:'USD':true:'4.0-0'}}</td>
-            <td>{{item.actualBudgetAmount | currency:'USD':true:'4.0-0'}}</td>
-            <td>{{item.actualAmountLC | currency:'NGN':true:'4.0-0'}}</td>
-             <td>{{item.actualAmountUSD | currency:'USD':true:'4.0-0'}}</td>
-          </tr>
-         
-        </tbody>
-        <ng-template #loading>Loading User Data...</ng-template>
-      </table>
-  </div>
+<!--
+<div class="col l2">
+  <div class="card horizontal def-dashboard-image">
+    <div class="card-image">
+      <div *ngIf="operator$ | async; let op; else loading1">
+        <img src="{{op.imageSrc}}" alt="" />
+        <span class="{{op.name}}"></span>
+      </div>
+    </div>
+    <ng-template #loading1>Loading Operator Data...</ng-template>
   </div>
 </div>
+-->
 
+<div class="row">
+  <div class=" ">
+    <div class=" card  horizontal">
+      <div class="card-image  def-dashboard-image">
+        <div *ngIf="operator$ | async; let op; else loading1">
+          <img src="{{op.imageSrc}}" alt="" />
+          <span class="{{op.name}}"></span>
+        </div>
+      </div>
+      <ng-template #loading1>Loading Operator Data...</ng-template>
+      <div class="container">
+        <div class="card-content">
+          <table class=" responsive-table">
+            <thead>
+              <tr>
+                <th>Description</th>
+                <th>Total Budget </th>
+                <th>Budget USD</th>
+                <th>Budget LC</th>
+                <th>Total Actual </th>
+                <th>Actual USD</th>
+                <th>Actual LC</th>
+                <th>Details</th>
+                <th>Notes</th>
+              </tr>
+            </thead>
+
+            <tbody *ngIf="budgets$ | async; let budgets; else loading">
+              <tr *ngFor="let item of budgets">
+                <td><a>{{item.description}}</a></td>
+                <td>{{item.totalBudgetAmount | currency:'USD':true:'4.0-0'}}</td>
+                <td>{{item.totalAmountLC | currency:'NGN':true:'4.0-0'}}</td>
+                <td>{{item.totalAmountUSD | currency:'USD':true:'4.0-0'}}</td>
+                <td>{{item.actualBudgetAmount | currency:'USD':true:'4.0-0'}}</td>
+                <td>{{item.actualAmountLC | currency:'NGN':true:'4.0-0'}}</td>
+                <td>{{item.actualAmountUSD | currency:'USD':true:'4.0-0'}}</td>
+                <td> <a class="waves-effect waves-light"><i class="material-icons right">details</i> </a></td>
+                <td> <a class="waves-effect waves-light"><i class="material-icons right">message</i></a></td>
+
+              </tr>
+
+            </tbody>
+            <ng-template #loading>Loading Operator Data...</ng-template>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
