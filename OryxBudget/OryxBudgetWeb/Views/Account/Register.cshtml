@@ -10,6 +10,35 @@
     <hr />
     <div asp-validation-summary="All" class="text-danger"></div>
     <div class="form-group">
+      <label asp-for="FirstName" class="col-md-2 control-label"></label>
+      <div class="col-md-10">
+        <input asp-for="FirstName" class="form-control" />
+        <span asp-validation-for="FirstName" class="text-danger"></span>
+      </div>
+    </div>
+    <div class="form-group">
+      <label asp-for="LastName" class="col-md-2 control-label"></label>
+      <div class="col-md-10">
+        <input asp-for="LastName" class="form-control" />
+        <span asp-validation-for="LastName" class="text-danger"></span>
+      </div>
+    </div>
+    @*<div class="form-group">
+      <label asp-for="Role" class="col-md-2 control-label"></label>
+      <div class="col-md-10">
+        <input asp-for="Role" class="form-control" />
+        <span asp-validation-for="Email" class="text-danger"></span>
+      </div>
+    </div>*@
+    <div class="form-group">
+      @Html.LabelFor(model => model.OperatorId, "Operator")
+      @*<label asp-for="OperatorId" class="col-md-2 control-label"></label>*@
+      <div class="col-md-10">
+        @Html.DropDownListFor(model => model.OperatorId, (IEnumerable<SelectListItem>)ViewBag.Operators, "---Select---", htmlAttributes: new { @class = "form -control" })
+        @Html.ValidationMessageFor(model => model.OperatorId, "Required")
+      </div>
+    </div>
+    <div class="form-group">
         <label asp-for="Email" class="col-md-2 control-label"></label>
         <div class="col-md-10">
             <input asp-for="Email" class="form-control" />
