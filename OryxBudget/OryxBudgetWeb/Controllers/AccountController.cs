@@ -17,6 +17,8 @@ using IdentityModel;
 using IdentityServer4.Extensions;
 using Microsoft.AspNetCore.Http.Authentication;
 using IdentityServer4.Services;
+using Data;
+using Data.Repositories.OperatorsRepositories;
 
 namespace OryxBudgetWeb.Controllers
 {
@@ -106,9 +108,17 @@ namespace OryxBudgetWeb.Controllers
     [AllowAnonymous]
     public IActionResult Register(string returnUrl = null)
     {
+      var operatorsClient = new OperatorsClient();
+      ViewBag.Operators = operatorsClient.GetOperatorsList().Select(x => new SelectListItem
+      {
+        Value = x.Id.ToString(),
+        Text = x.Name
+      });
       ViewData["ReturnUrl"] = returnUrl;
       return View();
     }
+
+    
 
     //
     // POST: /Account/Register
@@ -120,7 +130,7 @@ namespace OryxBudgetWeb.Controllers
       ViewData["ReturnUrl"] = returnUrl;
       if (ModelState.IsValid)
       {
-        var user = new ApplicationUser { UserName = model.Email, Email = model.Email };
+        var user = new ApplicationUser { UserName = model.Email, Email = model.Email, FirstName = model.FirstName, LastName = model.LastName, OperatorId = model.OperatorId, Role = model.Role };
         var result = await _userManager.CreateAsync(user, model.Password);
         if (result.Succeeded)
         {

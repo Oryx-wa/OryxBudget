@@ -13,6 +13,7 @@ using OryxBudgetWeb.Data;
 using OryxBudgetWeb.Models;
 using OryxBudgetWeb.Services;
 using System.IO;
+using Data.Repositories.OperatorsRepositories;
 
 namespace OryxBudgetWeb
 {
@@ -53,6 +54,9 @@ namespace OryxBudgetWeb
       // Add application services.
       services.AddTransient<IEmailSender, AuthMessageSender>();
       services.AddTransient<ISmsSender, AuthMessageSender>();
+
+
+      //services.AddTransient <IOpe, OperatorRepository>();
 
       services.AddIdentityServer()
                .AddTemporarySigningCredential()
