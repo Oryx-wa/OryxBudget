@@ -1,5 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { Operators } from './../models';
+import { Budgets } from './../models/budget';
+import { Operators } from './../models/operators';
 
 @Component({
   selector: 'app-operator-view',
@@ -7,12 +8,16 @@ import { Operators } from './../models';
   styleUrls: ['./operator-view.component.scss']
 })
 export class OperatorViewComponent implements OnInit {
-   @Input() name = '';
+  @Input() name = '';
   @Input() operatorId = '';
   @Input() role = '';
+   @Input() operators: Operators[] = [];
+ 
+
   constructor() { }
 
   ngOnInit() {
+    console.log(this.role)
   }
 
 }
