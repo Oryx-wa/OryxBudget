@@ -79,6 +79,13 @@ namespace OryxWebApi.Controllers.BudgetControllers
             return Json(_budgetService.Get(ConvertToGuid(id)));
         }
 
+        [HttpGet]
+        [Route("GetByOperator")]
+        public JsonResult GetByOperator(string operatorId)
+        {
+            return Json(_budgetService.GetByOperatorId(operatorId));
+        }
+
         [Route("UploadBudget")]
         [HttpPost]
         public JsonResult UploadBudget(string id, IFormFile file)
