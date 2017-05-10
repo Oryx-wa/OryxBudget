@@ -6,7 +6,7 @@
   <app-oryx-dashboard *ngIf="role === 'Napims';else operator" [name]="name" [operatorId]="opearatorId" [role]="role"
     [operators]="operators$ | async" ></app-oryx-dashboard>
     <ng-template #operator>
-    <app-operator-view *ngIf="role === 'Operator'" [name]="name" [operatorId]="opearatorId" > 
+    <app-operator-view *ngIf="role === 'Operator'"  [operatorid]="opearatorId" [budgets]="budgets$ | async"> 
     </app-operator-view>
 </ng-template>
 </div>

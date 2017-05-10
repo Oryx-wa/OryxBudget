@@ -1,38 +1,41 @@
-<div *ngIf="role==='Operator'" class="row">
+<div class="row" *ngIf="role==='Operator'">
   <div class="container">
-  <div class="col l3">
-     <img src="{{item.imageSrc}}">
-  </div>
-  <div class="col l9">
-     <table class="bordered">
-        <thead>
-          <tr>
-              <th>Description</th>              
+    <div class="col l3" *ngFor="let item of operators">
+      <img src="{{item.imageSrc}}">
+    </div>
+    <div class="col l9" >
+      <div class="row">
+        <table class="bordered">
+          <thead>
+            <tr>
+              <th>Description</th>
               <th>Total Budget Amount</th>
               <th>Total Amount USD</th>
               <th>Total Amount LC</th>
               <th>Actual Amount</th>
               <th>Actual Amount USD</th>
               <th>Actual Amount LC</th>
-          </tr>
-        </thead>
+            </tr>
+          </thead>
 
-        <tbody>
-          <tr>
-            <td>{{item.descripton}}</td>            
-            <td>{{item.totalBudgetAmount}}</td>
-             <td>{{item.totalAmountLC}}</td>
-             <td>{{item.totalAmountUSD}}</td>
-            <td>{{item.actualBudgetAmount}}</td>
-            <td>{{item.actualAmountLC}}</td>
-             <td>{{item.actualAmountUSD}}</td>
-          </tr>
-         
-        </tbody>
-      </table>
+          <tbody *ngIf="budgets$ | async; let budgets; else loading">
+            <tr *ngFor="let item of budgets">
+              <td>{{item.descripton}}</td>
+              <td>{{item.totalBudgetAmount}}</td>
+              <td>{{item.totalAmountLC}}</td>
+              <td>{{item.totalAmountUSD}}</td>
+              <td>{{item.actualBudgetAmount}}</td>
+              <td>{{item.actualAmountLC}}</td>
+              <td>{{item.actualAmountUSD}}</td>
+            </tr>
+
+          </tbody>
+        </table>
+      </div>
+      <div class="row">
+        <a href="#" class="waves-effect waves-light btn">button</a>
+      </div>
+    </div>
   </div>
-  </div>
-</div>
-<div class="row">
-  <a  href="#"class="waves-effect waves-light btn">button</a>
+
 </div>
