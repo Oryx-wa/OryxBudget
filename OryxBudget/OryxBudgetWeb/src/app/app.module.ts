@@ -1,12 +1,12 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
 //import { LoginComponent } from './login/login.component';
 import { SecurityService } from './login/security.service';
 import { AppComponent } from './app.component';
 import { HomeModule } from './home/home.module';
-import { BudgetModule} from './budget/budget.module';
+import { BudgetModule } from './budget/budget.module';
 
 import { MainNavComponent } from './shared/main-nav/main-nav.component';
 import { OryxDashboardComponent } from './shared/oryx-dashboard/oryx-dashboard.component';
@@ -17,19 +17,21 @@ import { AppRoutingModule } from './app.routing.module';
 @NgModule({
   declarations: [
     AppComponent,
-  MainNavComponent,
+    MainNavComponent,
     //OryxDashboardComponent
   ],
   imports: [
     BrowserModule,
     FormsModule,
+    ReactiveFormsModule,
     HttpModule,
-     HomeModule,
-     BudgetModule,     
-     AppRoutingModule,
-    
-   
+    HomeModule,
+    BudgetModule,
+    AppRoutingModule,
+
+
   ],
+
   providers: [SecurityService, Configuration],
   bootstrap: [AppComponent]
 })
