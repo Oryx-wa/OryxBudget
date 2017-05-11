@@ -1,41 +1,58 @@
-<div class="row" *ngIf="role==='Operator'">
-  <div class="container">
-    <div class="col l3" *ngFor="let item of operators">
-      <img src="{{item.imageSrc}}">
-    </div>
-    <div class="col l9" >
-      <div class="row">
-        <table class="bordered">
-          <thead>
-            <tr>
-              <th>Description</th>
-              <th>Total Budget Amount</th>
-              <th>Total Amount USD</th>
-              <th>Total Amount LC</th>
-              <th>Actual Amount</th>
-              <th>Actual Amount USD</th>
-              <th>Actual Amount LC</th>
-            </tr>
-          </thead>
-
-          <tbody *ngIf="budgets$ | async; let budgets; else loading">
-            <tr *ngFor="let item of budgets">
-              <td>{{item.descripton}}</td>
-              <td>{{item.totalBudgetAmount}}</td>
-              <td>{{item.totalAmountLC}}</td>
-              <td>{{item.totalAmountUSD}}</td>
-              <td>{{item.actualBudgetAmount}}</td>
-              <td>{{item.actualAmountLC}}</td>
-              <td>{{item.actualAmountUSD}}</td>
-            </tr>
-
-          </tbody>
-        </table>
+<div class="row">
+  <div class=" ">
+    <div class=" card  horizontal">
+      <div class="card-image  def-dashboard-image">
+        <div *ngIf="operator$ | async; let op; else loading1">
+          <img src="{{op.imageSrc}}" alt="" />
+          <span class="{{op.name}}"></span>
+        </div>
       </div>
-      <div class="row">
-        <a href="#" class="waves-effect waves-light btn">button</a>
+      <ng-template #loading1>Loading Operator Data...</ng-template>
+      <div class="container">
+        <div class="card-content">
+          <table class=" responsive-table">
+            <thead>
+              <tr>
+                <th>Description</th>
+                <th>Total Budget </th>
+                <th>Budget USD</th>
+                <th>Budget LC</th>
+                <th>Total Actual </th>
+                <th>Actual USD</th>
+                <th>Actual LC</th>
+                <th>Details</th>
+                <th>Upload</th>
+              </tr>
+            </thead>
+
+            <tbody *ngIf="budgets$ | async; let budgets; else loading">
+              <tr *ngFor="let item of budgets">
+                <td><a>{{item.description}}</a></td>
+                <td>{{item.totalBudgetAmount | currency:'USD':true:'4.0-0'}}</td>
+                <td>{{item.totalAmountLC | currency:'NGN':true:'4.0-0'}}</td>
+                <td>{{item.totalAmountUSD | currency:'USD':true:'4.0-0'}}</td>
+                <td>{{item.actualBudgetAmount | currency:'USD':true:'4.0-0'}}</td>
+                <td>{{item.actualAmountLC | currency:'NGN':true:'4.0-0'}}</td>
+                <td>{{item.actualAmountUSD | currency:'USD':true:'4.0-0'}}</td>
+                <td> <a class="waves-effect waves-light"><i class="material-icons right">details</i> </a></td>
+                <td> <a class="waves-effect waves-light" (click)="upload(item.id)"><i class="material-icons right">file_upload</i></a></td>
+
+              </tr>
+
+            </tbody>
+            <ng-template #loading>Loading Operator Data...</ng-template>
+          </table>
+        </div>
       </div>
     </div>
   </div>
+  <div *ngIf="displayMode == displayModeEnum.Details" class="row">
 
+  </div>
+  <div *ngIf="displayMode == displayModeEnum.Upload" class="row">
+    <div class="container">
+      <app-fileuploader [data]="data" [url]="uploadUrl">
+      </app-fileuploader>
+    </div>
+  </div>
 </div>
