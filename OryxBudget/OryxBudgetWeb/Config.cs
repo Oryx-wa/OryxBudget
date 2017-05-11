@@ -115,12 +115,14 @@ namespace OryxBudgetWeb
 
 
                     },
-                    PostLogoutRedirectUris = new List<string>
-                    {
-                        "http://localhost:3000/unauthorized.html",
-                        "http://localhost:4200/home",
-                        "http://10.211.55.2:4200/unauthorized.html",
-                    },
+                   // PostLogoutRedirectUris = new List<string>
+                   // {
+                   //     "http://localhost:3000/unauthorized.html",
+                   //     "http://localhost:4200/home",
+                   //     "http://10.211.55.2:4200/unauthorized.html",
+                   // },
+                    //RedirectUris = { "http://localhost:4200/signin-oidc" },
+                    PostLogoutRedirectUris = { "http://localhost:4200/unauthorised" },
                      AllowedScopes = new List<string>
                     {
                        IdentityServerConstants.StandardScopes.OpenId,

@@ -1,5 +1,5 @@
 import { Routes, RouterModule, PreloadAllModules } from '@angular/router';
-import { HomeComponent } from './home';
+import { HomeComponent, UnauthorisedComponent } from './home';
 import { OperatorDetailsComponent } from './budget/operator-details.component';
 // import { LoginComponent } from './login/login.component';
 import { AuthGuard } from './login/auth.guard';
@@ -7,11 +7,11 @@ import { NgModule } from '@angular/core';
 
 const appRoutes: Routes = [
   { path: '', redirectTo: 'home', pathMatch: 'full' },
- // { path: 'login', component: LoginComponent },
+  // { path: 'login', component: LoginComponent },
   { path: 'home', component: HomeComponent },
-  {path: 'operatordetails/:id', component: OperatorDetailsComponent}
- 
- 
+  { path: 'operatordetails/:id', component: OperatorDetailsComponent },
+  { path: 'unauthorised', component: UnauthorisedComponent }
+
 ];
 
 @NgModule({
@@ -22,7 +22,7 @@ const appRoutes: Routes = [
     RouterModule
   ],
   providers: [AuthGuard],
-  
+
 })
 export class AppRoutingModule { }
 

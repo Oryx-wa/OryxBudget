@@ -261,7 +261,7 @@ export class SecurityService {
         let authorizationUrl = this.idServerUrl + 'connect/endsession';
 
         let id_token_hint = this.retrieve('authorizationDataIdToken');
-        let post_logout_redirect_uri = this.idServerUrl + '/home';
+        let post_logout_redirect_uri = this.returnUrl + 'unauthorised';
 
         let url =
             authorizationUrl + '?' +
