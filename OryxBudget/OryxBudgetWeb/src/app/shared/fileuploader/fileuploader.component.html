@@ -1,0 +1,49 @@
+<div materialize class="col s12">
+  <div class="">
+    <div class="card oryx-card-radius">
+      <div class="card-content oryx-card-header">
+        <span class="title-span">{{title}} </span>
+      </div>
+      <div class="col s12">
+        <div class="card oryx-card-radius">
+          <div class="card content">
+          <div class="row">
+            <label class="upload-button is-pulled-left">
+                <input type="file" ngFileSelect (uploadOutput)="onUploadOutput($event)" [uploadInput]="uploadInput" multiple>
+  or choose file(s)
+              </label>
+          </div>
+
+
+          <!--<div class="row">
+            <span>  Allowed extensions: <code><b>.csv</b>, <b>.txt</b></code></span>
+          </div>-->
+          <div class="row">
+            <div class="col l4">
+            <div class="input-field col l6 m6 s12 ">
+              <button type="button" class="wave-effect wave-light btn" (click)="startUpload()">Start Upload</button>
+            </div>
+            <div class="input-field col l6 m6 s12 ">
+              <button type="button" class="wave-effect wave-light btn" (click)="this.done.emit()">Done</button>
+            </div>
+            </div>
+          </div>
+          <!--
+          <div *ngIf="response">
+            <pre><code>{{ response | json }}</code></pre>
+          </div>
+
+          <div *ngIf="errorMessage">
+            <code>{{ errorMessage }}</code>
+          </div>
+
+          <div *ngIf="previewData && !response">
+            <img [src]="previewData">
+          </div>
+        -->
+        </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

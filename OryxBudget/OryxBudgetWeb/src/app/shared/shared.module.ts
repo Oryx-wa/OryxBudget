@@ -4,15 +4,20 @@ import { RouterModule } from '@angular/router';
 import { MainNavComponent } from './main-nav/main-nav.component';
 import { OryxDashboardComponent } from './oryx-dashboard/oryx-dashboard.component';
 import { SecurityService } from './../login/security.service';
+import { FileuploaderComponent } from './fileuploader/fileuploader.component';
+import { NgUploaderModule } from 'ngx-uploader';
 @NgModule({
   imports: [
     CommonModule,
-    RouterModule
+    RouterModule,
+    NgUploaderModule
   ],
   declarations: [// MainNavComponent, 
-    OryxDashboardComponent],
+    OryxDashboardComponent,
+    FileuploaderComponent],
   providers: [SecurityService],
   exports: [// MainNavComponent, 
-    OryxDashboardComponent]
+    OryxDashboardComponent,
+    FileuploaderComponent]
 })
 export class SharedModule { }
