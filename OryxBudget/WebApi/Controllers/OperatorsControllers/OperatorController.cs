@@ -117,6 +117,19 @@ namespace OryxWebApi.Controllers.OperatorsControllers
             return ret;
         }
 
+        [HttpGet]
+        [Route("Lookup")]
+        public JsonResult Lookup()
+        {
+            var op = _operatorService.GetAll()
+           .Select(o => new
+           {
+               Id = o.Id,
+               name = o.Name
+           }).ToList();           
+
+            return  Json(op);
+        }
 
     }
 }
