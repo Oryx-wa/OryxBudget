@@ -1,6 +1,7 @@
 import { Routes, RouterModule, PreloadAllModules } from '@angular/router';
 import { HomeComponent, UnauthorisedComponent } from './home';
 import { OperatorDetailsComponent } from './budget/operator-details.component';
+import { BudgetInitialisationComponent } from './budget/budget-initialisation.component';
 // import { LoginComponent } from './login/login.component';
 import { AuthGuard } from './login/auth.guard';
 import { NgModule } from '@angular/core';
@@ -10,7 +11,8 @@ const appRoutes: Routes = [
   // { path: 'login', component: LoginComponent },
   { path: 'home', component: HomeComponent },
   { path: 'operatordetails/:id', component: OperatorDetailsComponent },
-  { path: 'unauthorised', component: UnauthorisedComponent }
+  { path: 'unauthorised', component: UnauthorisedComponent },
+   { path: 'budgetInitialisation', component: BudgetInitialisationComponent }
 
 ];
 
