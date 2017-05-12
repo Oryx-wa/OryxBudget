@@ -104,14 +104,19 @@ namespace OryxWebApi.Controllers.OperatorsControllers
             var op = _operatorService.Get(ConvertToGuid(id));
             var budget = _budgetService.GetByOperatorId(id).FirstOrDefault();
 
+            if (true)
+            {
+
+            }
+
             var ret = Json(new
             {
                 Id = op.Id,
                 Name = op.Name,
                 Code = op.Code,
                 ImageSrc = op.ImageSrc,
-                TotalBudget = budget.TotalBudgetAmount,
-                TotalActual = budget.TotalAmountUSD
+                TotalBudget = (budget== null) ? 0: budget.TotalBudgetAmount,
+                TotalActual = (budget == null) ? 0 : budget.TotalAmountUSD
             });
 
             return ret;
