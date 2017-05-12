@@ -13,6 +13,49 @@
   <PropertyGroup>
     <UserSecretsId>aspnet-OryxBudgetWeb-06a9e18a-e313-4964-ae37-258395edab8f</UserSecretsId>
   </PropertyGroup>
+
+  <ItemGroup>
+    <Content Include="wwwroot\css\fonts\Roboto-Bold.eot" />
+    <Content Include="wwwroot\css\fonts\Roboto-Bold.ttf" />
+    <Content Include="wwwroot\css\fonts\Roboto-Bold.woff" />
+    <Content Include="wwwroot\css\fonts\Roboto-Bold.woff2" />
+    <Content Include="wwwroot\css\fonts\Roboto-Light.eot" />
+    <Content Include="wwwroot\css\fonts\Roboto-Light.ttf" />
+    <Content Include="wwwroot\css\fonts\Roboto-Light.woff" />
+    <Content Include="wwwroot\css\fonts\Roboto-Light.woff2" />
+    <Content Include="wwwroot\css\fonts\Roboto-Medium.eot" />
+    <Content Include="wwwroot\css\fonts\Roboto-Medium.ttf" />
+    <Content Include="wwwroot\css\fonts\Roboto-Medium.woff" />
+    <Content Include="wwwroot\css\fonts\Roboto-Medium.woff2" />
+    <Content Include="wwwroot\css\fonts\Roboto-Regular.eot" />
+    <Content Include="wwwroot\css\fonts\Roboto-Regular.ttf" />
+    <Content Include="wwwroot\css\fonts\Roboto-Regular.woff" />
+    <Content Include="wwwroot\css\fonts\Roboto-Regular.woff2" />
+    <Content Include="wwwroot\css\fonts\Roboto-Thin.eot" />
+    <Content Include="wwwroot\css\fonts\Roboto-Thin.ttf" />
+    <Content Include="wwwroot\css\fonts\Roboto-Thin.woff" />
+    <Content Include="wwwroot\css\fonts\Roboto-Thin.woff2" />
+    <Content Include="wwwroot\css\fonts\roboto\Roboto-Bold.eot" />
+    <Content Include="wwwroot\css\fonts\roboto\Roboto-Bold.ttf" />
+    <Content Include="wwwroot\css\fonts\roboto\Roboto-Bold.woff" />
+    <Content Include="wwwroot\css\fonts\roboto\Roboto-Bold.woff2" />
+    <Content Include="wwwroot\css\fonts\roboto\Roboto-Light.eot" />
+    <Content Include="wwwroot\css\fonts\roboto\Roboto-Light.ttf" />
+    <Content Include="wwwroot\css\fonts\roboto\Roboto-Light.woff" />
+    <Content Include="wwwroot\css\fonts\roboto\Roboto-Light.woff2" />
+    <Content Include="wwwroot\css\fonts\roboto\Roboto-Medium.eot" />
+    <Content Include="wwwroot\css\fonts\roboto\Roboto-Medium.ttf" />
+    <Content Include="wwwroot\css\fonts\roboto\Roboto-Medium.woff" />
+    <Content Include="wwwroot\css\fonts\roboto\Roboto-Medium.woff2" />
+    <Content Include="wwwroot\css\fonts\roboto\Roboto-Regular.eot" />
+    <Content Include="wwwroot\css\fonts\roboto\Roboto-Regular.ttf" />
+    <Content Include="wwwroot\css\fonts\roboto\Roboto-Regular.woff" />
+    <Content Include="wwwroot\css\fonts\roboto\Roboto-Regular.woff2" />
+    <Content Include="wwwroot\css\fonts\roboto\Roboto-Thin.eot" />
+    <Content Include="wwwroot\css\fonts\roboto\Roboto-Thin.ttf" />
+    <Content Include="wwwroot\css\fonts\roboto\Roboto-Thin.woff" />
+    <Content Include="wwwroot\css\fonts\roboto\Roboto-Thin.woff2" />
+  </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.ApplicationInsights.AspNetCore" Version="2.0.0" />
     <PackageReference Include="Microsoft.AspNetCore" Version="1.1.1" />
