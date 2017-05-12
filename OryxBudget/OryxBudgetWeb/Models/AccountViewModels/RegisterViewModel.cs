@@ -21,8 +21,8 @@ namespace OryxBudgetWeb.Models.AccountViewModels
         [Required, StringLength(100)]
         public string OperatorId { get; set; }
 
-        [Required, StringLength(50)]
-        public string Role { get; set; }
+        [Required]
+        public UserRole Role { get; set; }
 
         [Required]
         [EmailAddress]
@@ -39,5 +39,11 @@ namespace OryxBudgetWeb.Models.AccountViewModels
         [Display(Name = "Confirm password")]
         [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
         public string ConfirmPassword { get; set; }
+    }
+
+    public enum UserRole
+    {
+      Operator,
+      NAPIMS
     }
 }

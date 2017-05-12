@@ -63,7 +63,7 @@ namespace OryxBudgetWeb
         {
           claims.Add(new System.Security.Claims.Claim(JwtClaimTypes.Role, ""));
         }
-        if (!string.IsNullOrEmpty(user.Role))
+        if (!string.IsNullOrEmpty(user.Role.ToString()))
         {
            claims.Add(new System.Security.Claims.Claim(JwtClaimTypes.Role, ""));
         }
