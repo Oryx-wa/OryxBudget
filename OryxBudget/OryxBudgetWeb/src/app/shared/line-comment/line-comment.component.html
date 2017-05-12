@@ -1,0 +1,27 @@
+<div materialize class="container">
+  <div class="col s12 m12 l8">
+    <div class="card oryx-card-radius">
+      <div class="col s12">
+        <form materialize materialize="updateTextFields" [formGroup]="form" (ngSubmit)="save(form.value)">
+          <div class="col s12" formArrayName="formArray">
+            <div *ngFor="let control of formArray.controls; let i = index">
+              <span *ngIf="formArray.controls.length > 1" (click)="removeDetail(i)"><i class="material-icons right" >delete</i></span>
+              <app-line-comment>
+              </app-line-comment>
+            </div>
+          </div>
+          <div class="col s12">
+            <div class="row">
+              <a class="wave-effect wave-light" (click)="addDetail(null)">
+								More Comment
+							</a>
+            </div>
+          </div>
+          <div class="row">
+            <button [disabled]="form.invalid || form.pristine" class="wave-effect wave-light btn" type="submit" name="action">&nbsp; Add</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
