@@ -63,12 +63,12 @@ namespace OryxWebApi.Controllers.BudgetsControllers
             return Json(_budgetCodeService.GetAll());
         }
 
-        [HttpGet]
-        [Route("CodeHierarchy")]
-        public  JsonResult GetHierarchy()
-        {
-            return Json(_budgetCodeService.GenerateCodeView());
-        }
+        //[HttpGet]
+        //[Route("CodeHierarchy")]
+        //public  JsonResult GetHierarchy()
+        //{
+        //    return Json(_budgetCodeService.GenerateCodeView());
+        //}
 
         [HttpGet]
         [Route("GetById")]
@@ -90,7 +90,7 @@ namespace OryxWebApi.Controllers.BudgetsControllers
                 fs.Flush();
                 fs.Dispose();
             }
-            BackgroundJob.Enqueue(() => _budgetCodeService.uploadEntity(fileName));
+            BackgroundJob.Enqueue(() => _budgetCodeService.UploadEntity(fileName));
            
             return Json("File Uploaded"); //null just to make error free
         }

@@ -15,6 +15,7 @@ namespace OryxBudgetWeb.Models
     public string OperatorId { get; set; }
     public string LastName { get; set; }
     public string FirstName { get; set; }
+    public int Level { get; set; }
 
   }
 }

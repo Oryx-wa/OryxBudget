@@ -1,10 +1,11 @@
 <div class="row">
-  <div class=" ">
+  <div class="container ">
     <div class=" card  horizontal">
       <div class="card-image  def-dashboard-image">
         <div *ngIf="operator$ | async; let op; else loading1">
           <img src="{{op.imageSrc}}" alt="" />
           <span class="{{op.name}}"></span>
+          <a   class="waves-effect waves-light" (click)="getOperator()"><i class="material-icons right">refresh</i></a>
         </div>
       </div>
       <ng-template #loading1>Loading Operator Data...</ng-template>
@@ -28,14 +29,14 @@
             <tbody *ngIf="budgets$ | async; let budgets; else loading">
               <tr *ngFor="let item of budgets">
                 <td><a>{{item.description}}</a></td>
-                <td>{{item.totalBudgetAmount | currency:'USD':true:'4.0-0'}}</td>
-                <td>{{item.totalAmountLC | currency:'NGN':true:'4.0-0'}}</td>
-                <td>{{item.totalAmountUSD | currency:'USD':true:'4.0-0'}}</td>
-                <td>{{item.actualBudgetAmount | currency:'USD':true:'4.0-0'}}</td>
-                <td>{{item.actualAmountLC | currency:'NGN':true:'4.0-0'}}</td>
-                <td>{{item.actualAmountUSD | currency:'USD':true:'4.0-0'}}</td>
-                <td> <a class="waves-effect waves-light"><i class="material-icons right">details</i> </a></td>
-                <td> <a class="waves-effect waves-light" (click)="upload(item.id)"><i class="material-icons right">file_upload</i></a></td>
+                <td>{{item.budget | currency:'USD':true:'4.0-0'}}</td>
+                 <td>{{item.budgetUSD | currency:'USD':true:'4.0-0'}}</td>
+                <td>{{item.budgetLC | currency:'NGN':true:'4.0-0'}}</td>               
+                <td>{{item.actual | currency:'USD':true:'4.0-0'}}</td>
+                <td>{{item.actualLC | currency:'NGN':true:'4.0-0'}}</td>
+                <td>{{item.actualUSD | currency:'USD':true:'4.0-0'}}</td>
+                <td> <a class="waves-effect waves-light"><i class="material-icons right" (click)="showDetails(item.id)">details</i> </a></td>
+                <td> <a class="waves-effect waves-light" (click)="upload(item.id, item.description)"><i class="material-icons right">file_upload</i></a></td>
 
               </tr>
 
@@ -50,8 +51,21 @@
 
   </div>
   <div *ngIf="displayMode == displayModeEnum.Upload" class="row">
+
     <div class="container">
-      <app-fileuploader [data]="data" [url]="uploadUrl">
+      <div class="col s4 ">
+        <div class="card ">
+          <ul materialize="tabs" [materializeParams]="tabSelectionParams" class="tabs">            
+              <li class="tab col s6">
+                <a (click)="setUploadType('Budget')" class="waves-effect waves-light"> Budget </a>
+              </li>
+              <li class="tab col s6">
+                <a (click)="setUploadType('Actual')" class=" waves-effect waves-light"> Actual </a>
+              </li>    
+          </ul>
+        </div>
+      </div>
+      <app-fileuploader [data]="data" [url]="uploadUrl" [title]="uploadTitle">
       </app-fileuploader>
     </div>
   </div>

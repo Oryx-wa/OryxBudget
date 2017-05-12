@@ -112,7 +112,8 @@ namespace OryxBudgetWeb.Controllers
         Value = x.Id.ToString(),
         Text = x.Name
       });
-      ViewBag.Operators = data;
+      //ViewBag.Operators = data;
+      ViewData["OperatorId"] = new SelectList(data.ToList(), "Value", "Text");
       ViewData["ReturnUrl"] = returnUrl;
       return View();
     }
@@ -127,9 +128,16 @@ namespace OryxBudgetWeb.Controllers
     public async Task<IActionResult> Register(RegisterViewModel model, string returnUrl = null)
     {
       ViewData["ReturnUrl"] = returnUrl;
+      var operatorsClient = new OperatorsClient();
+      var data = operatorsClient.GetOperatorsList().Select(x => new SelectListItem
+      {
+        Value = x.Id.ToString(),
+        Text = x.Name
+      });
+      ViewData["OperatorId"] = new SelectList(data.ToList(), "Value", "Text");
       if (ModelState.IsValid)
       {
-        var user = new ApplicationUser { UserName = model.Email, Email = model.Email, FirstName = model.FirstName, LastName = model.LastName, OperatorId = model.OperatorId, Role = model.Role };
+        var user = new ApplicationUser { UserName = model.Email, Email = model.Email, FirstName = model.FirstName, LastName = model.LastName, OperatorId = model.OperatorId, Role = Enum.GetName(typeof(UserRole), model.Role) };
         var result = await _userManager.CreateAsync(user, model.Password);
         if (result.Succeeded)
         {

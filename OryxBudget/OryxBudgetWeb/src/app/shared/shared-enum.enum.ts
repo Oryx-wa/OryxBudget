@@ -7,8 +7,8 @@ export enum DisplayModeEnum {
   Details = 4,
   Create = 5,
   Upload = 6,
-  Option1 = 7,
-  Option2 = 8,
+  Budget = 7,
+  Actual = 8,
   Option3 = 9,
   Option4 = 10
 }

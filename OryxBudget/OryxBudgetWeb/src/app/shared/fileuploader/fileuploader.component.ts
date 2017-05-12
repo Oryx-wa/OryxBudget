@@ -27,6 +27,7 @@ export class FileuploaderComponent implements OnInit {
   @Input() maxUploads: number = 1;
   @Input() showDownload: boolean = false;
   @Input() templatePath: string;
+  @Input() title = '';
 
   @Output() done = new EventEmitter();
 

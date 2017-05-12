@@ -22,6 +22,8 @@ export class OperatorViewComponent implements OnInit, OnChanges {
   public displayModeEnum = DisplayModeEnum;
   public data: any;
   public uploadUrl = 'Budget/UploadBudget';
+  public uploadTitle = '';
+  private budgetDesc = '';
 
   constructor(private route: ActivatedRoute,
     private router: Router,
@@ -75,9 +77,27 @@ export class OperatorViewComponent implements OnInit, OnChanges {
     this.displayMode = mode;
   }
 
-  upload(id: string){
-    this.data = {id: id};
+  upload(id: string, description: string) {
+    this.data = { id: id };
     this.changeDisplayMode(this.displayModeEnum.Upload);
+    this.budgetDesc = description;
+    this.uploadTitle = 'Upload Budget for ' + this.budgetDesc;
+  }
+
+  setUploadType(type: string) {
+    if (type === 'Budget') {
+      // this.changeDisplayMode(this.displayModeEnum.Budget);
+      this.uploadUrl = 'Budget/UploadBudget';
+      this.uploadTitle = 'Upload Budget for ' + this.budgetDesc;
+    } else {
+      // this.changeDisplayMode(this.displayModeEnum.Actual);
+      this.uploadUrl = 'Budget/UploadActual' ;
+      this.uploadTitle = 'Upload Actual for ' + this.budgetDesc;
+    }
+  }
+
+  showDetails(id: string) {
+    this.changeDisplayMode(this.displayModeEnum.Details);
   }
 
 }

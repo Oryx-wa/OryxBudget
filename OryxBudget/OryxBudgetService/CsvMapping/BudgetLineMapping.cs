@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Entities.Budgets;
+using System.Globalization;
 
 namespace OryxBudgetService.CsvMapping
 {
@@ -12,7 +13,7 @@ namespace OryxBudgetService.CsvMapping
         public BudgetLineMapping()
         {
 
-            Map(m => m.BudgetId).ConvertUsing(row => Guid.Parse(row.GetField("BudgetId")));
+            
             Map(m => m.Code);
             Map(m => m.Description);            
             Map(m => m.AmountLC);
@@ -28,14 +29,14 @@ namespace OryxBudgetService.CsvMapping
         public BudgetActualMapping()
         {
 
-            Map(m => m.BudgetId).ConvertUsing(row => Guid.Parse(row.GetField("BudgetId")));
+            
             Map(m => m.Code);
             Map(m => m.Description);
             Map(m => m.AmountLC);
             Map(m => m.AmountLCInUSD);
             Map(m => m.AmountUSD);
-            Map(m => m.PeriodStart);
-            Map(m => m.PeriodEnd);
+            Map(m => m.PeriodStart).ConvertUsing(row => DateTime.Parse(row.GetField("PeriodStart"), new CultureInfo("en-GB"))); 
+            Map(m => m.PeriodEnd).ConvertUsing(row => DateTime.Parse(row.GetField("PeriodEnd"), new CultureInfo("en-GB")));
             Map(m => m.Remarks);
         }
 

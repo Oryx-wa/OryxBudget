@@ -40,6 +40,12 @@ namespace Entities.Budgets
        
         [MaxLength(1)]
         public string Postable { get; set; }
+
+        [MaxLength(20)]
+        public string Level1 { get; set; }       
+        [MaxLength(30)]
+        public string Level2 { get; set; }
+      
     }
 
     public class BudgetCodeLog : IEntityBase<Guid>, ILogEntityBase<Guid>
@@ -80,5 +86,10 @@ namespace Entities.Budgets
 
         [MaxLength(1)]
         public string Postable { get; set; }
+
+        [MaxLength(20)]
+        public string Level1 { get; set; }
+        [MaxLength(30)]
+        public string Level2 { get; set; }
     }
 }

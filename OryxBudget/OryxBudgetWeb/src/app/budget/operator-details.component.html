@@ -22,42 +22,52 @@
         </div>
       </div>
       <ng-template #loading1>Loading Operator Data...</ng-template>
-      <div class="container">
-        <div class="card-content">
-          <table class=" responsive-table">
-            <thead>
-              <tr>
-                <th>Description</th>
-                <th>Total Budget </th>
-                <th>Budget USD</th>
-                <th>Budget LC</th>
-                <th>Total Actual </th>
-                <th>Actual USD</th>
-                <th>Actual LC</th>
-                <th>Details</th>
-                <th>Notes</th>
-              </tr>
-            </thead>
+      <div class="row">
+        <div class="container">
+          <div class="card-content">
+            <table class=" responsive-table">
+              <thead>
+                <tr>
+                  <th>Description</th>
+                  <th>Total Budget </th>
+                  <th>Budget USD</th>
+                  <th>Budget LC</th>
+                  <th>Total Actual </th>
+                  <th>Actual USD</th>
+                  <th>Actual LC</th>
+                  <th>Notes</th>
+                </tr>
+              </thead>
 
-            <tbody *ngIf="budgets$ | async; let budgets; else loading">
-              <tr *ngFor="let item of budgets">
-                <td><a>{{item.description}}</a></td>
-                <td>{{item.totalBudgetAmount | currency:'USD':true:'4.0-0'}}</td>
-                <td>{{item.totalAmountLC | currency:'NGN':true:'4.0-0'}}</td>
-                <td>{{item.totalAmountUSD | currency:'USD':true:'4.0-0'}}</td>
-                <td>{{item.actualBudgetAmount | currency:'USD':true:'4.0-0'}}</td>
-                <td>{{item.actualAmountLC | currency:'NGN':true:'4.0-0'}}</td>
-                <td>{{item.actualAmountUSD | currency:'USD':true:'4.0-0'}}</td>
-                <td> <a class="waves-effect waves-light"><i class="material-icons right">details</i> </a></td>
-                <td> <a class="waves-effect waves-light"><i class="material-icons right">message</i></a></td>
+              <tbody *ngIf="budgets$ | async; let budgets; else loading">
+                <tr *ngFor="let item of budgets">
+                  <td> <a class="waves-effect waves-light" (click)="getLineDetails(item.id)">{{item.description}}</a></td>
+                  <td>{{item.totalBudgetAmount | currency:'USD':true:'4.0-0'}}</td>
+                  <td>{{item.totalAmountUSD | currency:'USD':true:'4.0-0'}}</td>
+                  <td>{{item.totalAmountLC | currency:'NGN':true:'4.0-0'}}</td>
+                  <td>{{item.actualBudgetAmount | currency:'USD':true:'4.0-0'}}</td>
+                  <td>{{item.actualAmountLC | currency:'NGN':true:'4.0-0'}}</td>
+                  <td>{{item.actualAmountUSD | currency:'USD':true:'4.0-0'}}</td>
+                  <td> <a class="waves-effect waves-light"><i class="material-icons right">message</i></a></td>
+                  <td> <a class="waves-effect waves-light" (click)="getOperator(op.id)"><i class="material-icons right">refresh</i></a></td>
+                </tr>
 
-              </tr>
-
-            </tbody>
-            <ng-template #loading>Loading Operator Data...</ng-template>
-          </table>
+              </tbody>
+              <ng-template #loading>Loading Operator Data...</ng-template>
+            </table>
+          </div>
         </div>
       </div>
     </div>
   </div>
 </div>
+
+<div *ngIf="showDetail" class="row">
+  <div class="container">
+    <div *ngIf="lines$ | async;let lines; else loading2">
+      <app-line-details [lines]="lines">
+      </app-line-details>
+    </div>
+  </div>
+</div>
+<ng-template #loading2>Loading Details ...</ng-template>
