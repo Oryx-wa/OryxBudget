@@ -3,7 +3,7 @@ import { Router, ActivatedRoute, Params } from '@angular/router';
 import { Http, URLSearchParams } from '@angular/http';
 import 'rxjs/add/operator/switchMap';
 import 'rxjs/add/operator/map';
-import { Budgets, Operators } from './../models';
+import { Budgets, Operators, BudgetLines } from './../models';
 import { Observable } from 'rxjs';
 import { SecurityService } from './../login/security.service';
 @Component({
@@ -15,6 +15,8 @@ export class OperatorDetailsComponent implements OnInit {
   budgets$: Observable<Budgets[]>;
   operator$: Observable<Operators>;
   operator: Operators;
+  lines$: Observable<BudgetLines[]>;
+  showDetail = false;
   constructor(
     private route: ActivatedRoute,
     private router: Router,
@@ -52,9 +54,19 @@ export class OperatorDetailsComponent implements OnInit {
 
     this.operator$.subscribe(operator => this.operator = operator);
 
+  }
 
-    
+  getLineDetails(id: string) {
+    this.showDetail = true;
+    const url = this.securityService.getUrl('Budget/GetBudgetDetails');
+    const params1: URLSearchParams = new URLSearchParams();
+    params1.append('id', id);
 
+    this.lines$ = this._http.get(url, {
+      headers: this.securityService.getHeaders(),
+      body: '',
+      params: params1
+    }).map(res => res.json());
   }
 
 }

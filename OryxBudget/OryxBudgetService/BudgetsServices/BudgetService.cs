@@ -8,6 +8,7 @@ using Data.Repositories;
 using CsvHelper;
 using OryxBudgetService.CsvMapping;
 using Data.Repositories.BudgetsRepositories;
+using OryxBudgetService.Utilties;
 
 namespace OryxBudgetService.BudgetsServices
 {
@@ -42,38 +43,11 @@ namespace OryxBudgetService.BudgetsServices
             return this.GetAll().Where(info => info.OperatorId == operatorId);
         }
 
-        public IEnumerable<BudgetCodeView> GetOperatorBudget(string id)
+        public IEnumerable<OperatorBudget> GetOperatorBudget(string id)
         {
-            var budgets = this.GetAllIncluding()
-                .Where(b => b.OperatorId == id)
-                .FirstOrDefault().BudgetLines
-                .GroupBy(b => b.Code)
-                .Select(newb => new {
-                    Code = newb.Key,
-                    BudgetAmount = newb.Sum(c => c.BudgetAmount),
-                    BudgetAmountLC = newb.Sum(c => c.AmountLC),
-                    BudgetAmountUSD = newb.Sum(c => c.AmountUSD)
-                });
-                
+            return _repository.GetOperatorBudget(id);         
 
-            var codes = _budgetCodeService.GenerateCodeView();
 
-            var budgetView = from c in codes
-                             join b in budgets
-                             on c.Code equals b.Code
-                             select new { c, b };
-
-            foreach (var match in budgetView)
-            {
-                match.c.BudgetAmount = match.b.BudgetAmount;
-                match.c.BudgetAmountLC = match.b.BudgetAmountLC;
-                match.c.BudgetAmountUSD = match.b.BudgetAmountUSD;
-    
-            }
-
-            return budgetView.Select(c => c.c).ToList();
-
-            
         }
 
         public void UploadBudget(string fileName, Guid id)
@@ -93,15 +67,20 @@ namespace OryxBudgetService.BudgetsServices
 
             foreach (var item in records)
             {
+                var code = _budgetCodeService.GetByBudgetCodeByCode(item.Code);
+                if (!code.Postable.Trim().Equals("Y"))
+                {
+                    continue;
+                }
                 item.Code = item.Code.Trim();
                 item.Description = (item.Description.Trim().Length > 99) ? item.Description.Trim().Substring(0, 99) : item.Description.Trim();
                 item.UserSign = "e317f2dc-deb1-4463-8b67-7f435211d652";
                 item.UpdateDate = System.DateTime.Now;
-                item.CreateDate = System.DateTime.Now;               
+                item.CreateDate = System.DateTime.Now;
                 budget.BudgetLines.Add(item);
                 totalLC += item.AmountLC;
                 totalUSD += item.AmountUSD;
-                total += item.AmountLCInUSD + item.AmountUSD;               
+                total += item.AmountLCInUSD + item.AmountUSD;
 
             };
 
@@ -136,11 +115,17 @@ namespace OryxBudgetService.BudgetsServices
 
             foreach (var item in records)
             {
+                var code = _budgetCodeService.GetByBudgetCodeByCode(item.Code);
+                if (!code.Postable.Trim().Equals("Y"))
+                {
+                    continue;
+                }
                 item.Code = item.Code.Trim();
                 item.Description = (item.Description.Trim().Length > 99) ? item.Description.Trim().Substring(0, 99) : item.Description.Trim();
                 item.UserSign = "e317f2dc-deb1-4463-8b67-7f435211d652";
                 item.UpdateDate = System.DateTime.Now;
                 item.CreateDate = System.DateTime.Now;
+
                 budget.Actuals.Add(item);
                 totalLC += item.AmountLC;
                 totalUSD += item.AmountUSD;
@@ -164,7 +149,7 @@ namespace OryxBudgetService.BudgetsServices
 
         public IEnumerable<Budget> GetAllIncluding()
         {
-            return _repository.AllIncluding(c => c.BudgetLines).ToList();
+            return _repository.AllIncluding(c => c.BudgetLines, c => c.Actuals).ToList();
         }
 
         public Budget GetAllIncluding(Guid id, bool noTracking = false)
@@ -180,6 +165,52 @@ namespace OryxBudgetService.BudgetsServices
 
         }
 
+        public IEnumerable<BudgetCodeView> GetBudgetDetails(string id)
+        {
+            IList<BudgetCodeView> bd = new List<BudgetCodeView>();
+
+            var budgetActuals = _repository.GetBudgetActuals(id);
+            var budgetCodes = _budgetCodeService.GetAll()
+                .Select(c => new { c.Code, c.Description, c.Level, c.FatherNum, c.Postable });
+
+            var budgetView = from b in budgetActuals
+                             join c in budgetCodes
+                             on b.Code equals c.Code
+                             select new
+                             {
+                                 Code = c.Code,
+                                 Description = c.Description,
+                                 FatherNum = c.FatherNum,
+                                 Level = c.Level,
+                                 Budget = b.Budget,
+                                 BudgetLC = b.BudgetLC,
+                                 BudgetUSD = b.BudgetUSD,
+                                 Actual = b.Actual,
+                                 ActualLC = b.ActualLC,
+                                 ActualUSD = b.ActualUSD
+                             };
+
+
+
+            foreach (var item in budgetView)
+            {
+                BudgetCodeView b = new BudgetCodeView();
+                b.Actual = item.Actual;
+                b.ActualLC = item.ActualLC;
+                b.ActualUSD = item.ActualUSD;
+                b.Budget = item.Budget;
+                b.BudgetLC = item.BudgetLC;
+                b.BudgetUSD = item.BudgetUSD;
+                b.Code = item.Code;
+                b.Description = item.Description;
+                b.FatherNum = item.FatherNum;
+                b.Level = Convert.ToInt16(item.Level);
+                bd.Add(b);
+            }
+            return bd.ToList();
+        }
 
     }
+
+
 }

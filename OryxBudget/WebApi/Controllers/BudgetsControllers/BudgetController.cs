@@ -73,6 +73,13 @@ namespace OryxWebApi.Controllers.BudgetControllers
         }
 
         [HttpGet]
+        [Route("GetBudgetDetails")]
+        public JsonResult GetBudgetDetails(string id)
+        {
+            return Json(_budgetService.GetBudgetDetails(id));
+        }
+
+        [HttpGet]
         [Route("GetById")]
         public JsonResult Get(string id)
         {

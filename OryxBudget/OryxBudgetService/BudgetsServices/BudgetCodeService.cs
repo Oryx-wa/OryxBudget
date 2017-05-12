@@ -44,7 +44,12 @@ namespace OryxBudgetService.BudgetsServices
             return this.GetAll().Where(info => info.Code == bgtCode);
         }
 
-        public void uploadEntity(string fileName)
+        public BudgetCode GetByBudgetCodeByCode(string code)
+        {
+            return this.GetAll().Where(info => info.Code == code).FirstOrDefault();
+        }
+
+        public void UploadEntity(string fileName)
         {
             var file = System.IO.File.OpenRead(fileName);
             System.IO.TextReader dataFile = new System.IO.StreamReader(file);
@@ -74,70 +79,72 @@ namespace OryxBudgetService.BudgetsServices
 
         }
 
-        public IEnumerable<BudgetCodeView> GenerateCodeView()
-        {
-            var Level1Codes = this.GetAll().Where(code => code.Level == "1");
-            var Level2Codes = this.GetAll().Where(code => code.Level == "2");
-            var Level3Codes = this.GetAll().Where(code => code.Level == "3");
+        //public IEnumerable<BudgetCodeView> GenerateCodeView()
+        //{
+        //    var Level1Codes = this.GetAll().Where(code => code.Level == "1");
+        //    var Level2Codes = this.GetAll().Where(code => code.Level == "2");
+        //    var Level3Codes = this.GetAll().Where(code => code.Level == "3");
 
-            IList<BudgetCodeView> codeList = new List<BudgetCodeView>();
+        //    IList<BudgetCodeView> codeList = new List<BudgetCodeView>();
 
-            foreach (var item in Level1Codes)
-            {
-                BudgetCodeView codeView = new BudgetCodeView();
-                codeView.Code = item.Code;
-                codeView.Description = item.Description;
-                codeView.Level = item.Level;
-                codeView.Level2 = "";
-                codeView.level2Description = "";
-                codeView.Level = "";
-                codeView.Level1 = "";
+        //    foreach (var item in Level1Codes)
+        //    {
+        //        BudgetCodeView codeView = new BudgetCodeView();
+        //        codeView.Code = item.Code;
+        //        codeView.Description = item.Description;
+        //        codeView.Level = 1;
+        //        codeView.Level2 = "";
+        //        codeView.level2Description = "";
+        //        codeView.FatherNum = item.FatherNum;
+
+        //        codeView.Level1 = "";
 
 
 
-                codeList.Add(codeView);
-            }
+        //        codeList.Add(codeView);
+        //    }
 
-            foreach (var item in Level2Codes)
-            {
-                BudgetCodeView codeView = new BudgetCodeView();
-                codeView.Code = item.Code;
-                codeView.Description = item.Description;
-                codeView.Level = item.Level;
-                codeView.Level1 = item.FatherNum;
-                codeView.Level2 = "";
-                codeView.level2Description = "";
+        //    foreach (var item in Level2Codes)
+        //    {
+        //        BudgetCodeView codeView = new BudgetCodeView();
+        //        codeView.Code = item.Code;
+        //        codeView.Description = item.Description;
+        //        codeView.Level = 2;
+        //        codeView.Level1 = item.FatherNum;
+        //        codeView.Level2 = "";
+        //        codeView.level2Description = "";
+        //        codeView.FatherNum = item.FatherNum;
 
-                codeView.level1Description = Level1Codes
-                    .FirstOrDefault(c => c.Code == item.FatherNum).Description;
+        //        codeView.level1Description = Level1Codes
+        //            .FirstOrDefault(c => c.Code == item.FatherNum).Description;
 
-                codeList.Add(codeView);
-            }
+        //        codeList.Add(codeView);
+        //    }
 
-            foreach (var item in Level3Codes)
-            {
-                BudgetCodeView codeView = new BudgetCodeView();
-                codeView.Code = item.Code;
-                codeView.Description = item.Description;
-                codeView.Level = item.Level;
-                codeView.Level2 = item.FatherNum;
+        //    foreach (var item in Level3Codes)
+        //    {
+        //        BudgetCodeView codeView = new BudgetCodeView();
+        //        codeView.Code = item.Code;
+        //        codeView.Description = item.Description;
+        //        codeView.Level = 3;
+        //        codeView.Level2 = item.FatherNum;
+        //        codeView.FatherNum = item.FatherNum;
+        //        var level2 = Level2Codes
+        //             .FirstOrDefault(c => c.Code == item.FatherNum);
 
-                var level2 = Level2Codes
-                     .FirstOrDefault(c => c.Code == item.FatherNum);
+        //        codeView.level2Description = level2.Description;
 
-                codeView.level2Description = level2.Description;
+        //        var level1 = Level1Codes.FirstOrDefault(c => c.Code == level2.FatherNum);
 
-                var level1 = Level1Codes.FirstOrDefault(c => c.Code == level2.FatherNum);
+        //        codeView.Level1 = level1.Code;
+        //        codeView.level1Description = level1.Description;                
 
-                codeView.Level1 = level1.Code;
-                codeView.level1Description = level1.Description;                
+        //        codeList.Add(codeView);
+        //    }
 
-                codeList.Add(codeView);
-            }
+        //    return codeList;
 
-            return codeList;
-
-        }
+        //}
 
     }
 }
