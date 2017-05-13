@@ -17,9 +17,6 @@
         <a class="dropdown-button waves-effect waves-light" href="#!"><i class="material-icons">add_alert</i></a>
       </li>
 
-      <li><a class="waves-effect waves-light" *ngIf="!securityService.IsAuthorized()" (click)="Login()"><i class="material-icons">power_settings_new</i></a></li>
-      <li><a class="waves-effect waves-light" *ngIf="securityService.IsAuthorized()" (click)="Logout()"><i class="material-icons">ic_exit_to_app_black</i></a></li>
-     
        <li><a class="waves-effect waves-light" *ngIf="!securityService.IsAuthorized()" (click)="Login()"><i class="material-icons">power_settings_new</i></a></li>
       <li><a class="waves-effect waves-light" *ngIf="securityService.IsAuthorized()" (click)="Logout()"><i class="material-icons">power_settings_new</i></a></li>
 
@@ -33,7 +30,7 @@
       </li>
       <li>
         <a routerLinkActive="active" class="waves-effect waves-purple special">
-          <i class="material-icons left">persons</i>Operator &nbsp;
+          <i class="material-icons left">persons</i>Operators &nbsp;
         </a>
       </li>
       <li>
@@ -43,7 +40,7 @@
       </li>
       <li>
         <a routerLinkActive="active" class="waves-effect waves-purple special">
-          <i class="material-icons left">persons</i>Budget Code &nbsp;
+          <i class="material-icons left">persons</i>Budget Codes &nbsp;
         </a>
       </li>
       <li>
