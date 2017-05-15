@@ -3,7 +3,7 @@ import { Router, ActivatedRoute, Params } from '@angular/router';
 import { Http, URLSearchParams } from '@angular/http';
 import 'rxjs/add/operator/switchMap';
 import 'rxjs/add/operator/map';
-import { Budgets, Operators, BudgetLines } from './../models';
+import { Budgets, Operators, BudgetLines, LineComments } from './../models';
 import { Observable } from 'rxjs';
 import { SecurityService } from './../login/security.service';
 @Component({
@@ -16,6 +16,9 @@ export class OperatorDetailsComponent implements OnInit {
   operator$: Observable<Operators>;
   operator: Operators;
   lines$: Observable<BudgetLines[]>;
+  lineComments$: Observable<LineComments[]>;
+  line$: Observable<BudgetLines>;
+
   showDetail = false;
   constructor(
     private route: ActivatedRoute,
@@ -27,7 +30,8 @@ export class OperatorDetailsComponent implements OnInit {
   ngOnInit() {
     console.log(this.route.snapshot.paramMap.get('id'));
     this.getOperator(this.route.snapshot.paramMap.get('id'));
-    //console.log(this.route);
+    // console.log(this.route);
+
 
   }
 
@@ -67,6 +71,23 @@ export class OperatorDetailsComponent implements OnInit {
       body: '',
       params: params1
     }).map(res => res.json());
+
+
+  }
+
+  getComments(line: {code: string, budgetId: string} ) {
+    const url = this.securityService.getUrl('Budget/GetLineComment');
+    const params1: URLSearchParams = new URLSearchParams();
+    params1.append('budgetId', line.budgetId);
+    params1.append('code', line.code);
+
+    this.line$ = this._http.get(url, {
+      headers: this.securityService.getHeaders(),
+      body: '',
+      params: params1
+    }).map(res => res.json());
+
+   
   }
 
 }

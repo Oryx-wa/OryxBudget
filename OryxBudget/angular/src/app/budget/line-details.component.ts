@@ -1,5 +1,7 @@
-import { Component, OnInit, Input, OnChanges } from '@angular/core';
-import { Budgets, Operators, BudgetLines } from './../models';
+import { Component, OnInit, Input, OnChanges, Output, EventEmitter } from '@angular/core';
+import {BehaviorSubject} from 'rxjs'; 
+import { MaterializeAction } from 'angular2-materialize';
+import { Budgets, Operators, BudgetLines, LineComments } from './../models';
 
 @Component({
   selector: 'app-line-details',
@@ -8,10 +10,18 @@ import { Budgets, Operators, BudgetLines } from './../models';
 })
 export class LineDetailsComponent implements OnInit, OnChanges {
   @Input() lines: BudgetLines[] = [];
+  @Input() lineComments: LineComments[] = [];
+  @Input() lineObs: BehaviorSubject<BudgetLines>;
+  @Output() comments = new EventEmitter();
+  @Output() saveComments = new EventEmitter();
+
+  modalActions = new EventEmitter<string | MaterializeAction>();
   filtered: BudgetLines[] = [];
   selectedCode: BudgetLines;
   parentCode: BudgetLines;
   level: number;
+  showComment = false;
+  line: BudgetLines = null;
 
 
   history: string[] = ['home'];
@@ -45,6 +55,7 @@ export class LineDetailsComponent implements OnInit, OnChanges {
       if (this.history.indexOf(code) === -1) {
         if (addToHistory) { this.addHistory(code); }
       }
+      this.comments.emit({code: this.selectedCode.code, budgetId: this.selectedCode.budgetId});
     }
 
 
@@ -52,6 +63,20 @@ export class LineDetailsComponent implements OnInit, OnChanges {
 
   showDetails(code: string) {
 
+  }
+
+  getComments(code: string) {
+    this.showComment = true;
+    // this.line = this.lines.filter(bd => bd.code === code)[0];
+    // this.Comments.emit();
+    this.modalActions.emit({ action: 'modal', params: ['open'] });
+
+  }
+
+  updateComments(data: any) {
+    // this.showComment = false;
+    this.modalActions.emit({ action: 'modal', params: ['close'] });
+    this.saveComments.emit(data);
   }
 
 }

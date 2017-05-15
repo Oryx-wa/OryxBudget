@@ -17,13 +17,15 @@ namespace OryxBudgetService.BudgetsServices
         private readonly BudgetRepository _repository;
         private readonly BudgetLineRepository _lineRepository;
         private readonly BudgetCodeService _budgetCodeService;
+        private readonly LineCommentRepository _lineCommentRepository;
 
         public BudgetService(BudgetRepository repository, BudgetCodeService budgetCodeService,
-            BudgetLineRepository lineRepository, IBudgetUnitOfWork unitOfWork) : base(repository, unitOfWork)
+            BudgetLineRepository lineRepository, IBudgetUnitOfWork unitOfWork, LineCommentRepository lineCommentRepository) : base(repository, unitOfWork)
         {
             _repository = repository;
             _lineRepository = lineRepository;
             _budgetCodeService = budgetCodeService;
+            _lineCommentRepository = lineCommentRepository;
         }
 
         public override void Update(Budget entity)
@@ -205,11 +207,32 @@ namespace OryxBudgetService.BudgetsServices
                 b.Description = item.Description;
                 b.FatherNum = item.FatherNum;
                 b.Level = Convert.ToInt16(item.Level);
+                b.BudgetId = id;
                 bd.Add(b);
             }
             return bd.ToList();
         }
 
+        public IEnumerable<LineComment> GetLineComment(string id, string code)
+        {
+            return _lineCommentRepository.GetAll().Where(c => c.BudgetId.ToString() == id && c.Code == code);
+        }
+
+        public void AddLineComments (IEnumerable<LineComment> lineComments)
+        {
+            foreach (var item in lineComments)
+            {
+                if (item.Id == null)
+                {
+                    this._lineCommentRepository.Add(item);
+                }
+                else
+                {
+                    this._lineCommentRepository.Update(item);
+                }
+               
+            }
+        }
     }
 
 

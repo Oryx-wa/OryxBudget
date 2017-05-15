@@ -40,6 +40,7 @@ namespace Data
             builder.RegisterType<ContactPersonRepository>();
             builder.RegisterType<OperatorRepository>();
             builder.RegisterType<OperatorTypeRepository>();
+            builder.RegisterType<LineCommentRepository>();
 
 
 

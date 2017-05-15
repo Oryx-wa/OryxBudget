@@ -16,8 +16,8 @@ namespace OryxSecurity.Services
         public string GetUser()
         {
             // Debug.Write(_context.HttpContext.User);
-            return "eb5d17b2-e4e8-470f-8436-ae5a10dd8eba";
-            // return _context.HttpContext.User?.Claims.Where(c => c.Type == "sub").FirstOrDefault().Value;
+            //return "eb5d17b2-e4e8-470f-8436-ae5a10dd8eba";
+            return _context.HttpContext.User?.Claims.Where(c => c.Type == "sub").FirstOrDefault().Value;
         }
     }
 

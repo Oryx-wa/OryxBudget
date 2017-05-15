@@ -25,6 +25,7 @@ namespace Entities.Budgets
         public Decimal Actual { get; set; }
         public Decimal ActualLC { get; set; }
         public Decimal ActualUSD { get; set; }
+        public string BudgetId { get; set; }
 
     }
 

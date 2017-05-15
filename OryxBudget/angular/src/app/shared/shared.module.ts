@@ -17,11 +17,9 @@ import { MaterializeModule } from 'angular2-materialize';
     CommonModule,
     RouterModule,
     NgUploaderModule,
-
     FormsModule,
     ReactiveFormsModule,
-
-     MaterializeModule,
+    MaterializeModule,
 
   ],
   declarations: [// MainNavComponent, 
@@ -33,6 +31,6 @@ import { MaterializeModule } from 'angular2-materialize';
   exports: [// MainNavComponent, 
     OryxDashboardComponent,
     FileuploaderComponent,
-     MaterializeModule,]
+    MaterializeModule, LineCommentComponent]
 })
 export class SharedModule { }

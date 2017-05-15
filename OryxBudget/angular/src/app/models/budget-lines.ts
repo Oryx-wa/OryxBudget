@@ -1,4 +1,5 @@
 export interface BudgetLines {
+    id: string;
     code: string;
     description: string;
     level: number;
@@ -9,5 +10,5 @@ export interface BudgetLines {
     actual: number;
     actualLC: number;
     actualUSD: number;
-   
+    budgetId: string;   
 }

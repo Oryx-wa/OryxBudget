@@ -21,7 +21,8 @@ namespace Entities.Budgets
         [MaxLength(355)]
         public string Comment { get; set; }
         public CommentStatus CommentStatus { get; set; }
-        public Guid BudgetLineId { get; set; }
+        public Guid BudgetId { get; set; }
+        public string Code { get; set; }
 
     }
 
@@ -42,9 +43,8 @@ namespace Entities.Budgets
         public string Comment { get; set; }
 
         public CommentStatus CommentStatus { get; set; }
-
-       
-        public Guid BudgetLineId { get; set; }
+        public Guid BudgetId { get; set; }
+        public string Code { get; set; }
 
     }
 

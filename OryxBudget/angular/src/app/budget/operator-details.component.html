@@ -65,9 +65,11 @@
 <div *ngIf="showDetail" class="row">
   <div class="container">
     <div *ngIf="lines$ | async;let lines; else loading2">
-      <app-line-details [lines]="lines">
+      <app-line-details [lines]="lines" (comments)="getComments($event)"
+         [lineComments]="lineComments$ | async" [lineObs]="line$">
       </app-line-details>
     </div>
   </div>
 </div>
+
 <ng-template #loading2>Loading Details ...</ng-template>

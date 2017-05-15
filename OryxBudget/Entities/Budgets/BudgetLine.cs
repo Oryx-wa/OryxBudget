@@ -8,11 +8,7 @@ namespace Entities.Budgets
 {
     public class BudgetLine : IEntityBase<Guid>
     {
-        public BudgetLine()
-        {
-            this.LineComments = new List<LineComment>();
-        }
-
+       
         [Key]
         public Guid Id { get; set; }
         public DateTime CreateDate { get; set; }
@@ -43,7 +39,7 @@ namespace Entities.Budgets
 
         public string CategoryId { get; set; }
 
-        public ICollection<LineComment> LineComments { get; set; }
+       
 
     }
 
