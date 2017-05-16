@@ -134,6 +134,15 @@ namespace OryxWebApi.Controllers.BudgetControllers
             return Json("File Uploaded"); //null just to make error free
         }
 
+        [Route("InitializeBudgetForAllOperators")]
+        [HttpPost]
+        public JsonResult InitializeBudgetForAllOperators(string periodId, string description)
+        {
+            BackgroundJob.Enqueue(() => _budgetService.InitializeBudgetForAllOperators(periodId, description));
+
+            return Json("Budget initialized for all operators");
+        }
+
         [Route("UploadActual")]
         [HttpPost]
         public JsonResult UploadActual(string id, IFormFile file)

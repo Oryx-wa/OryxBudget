@@ -9,6 +9,7 @@ using CsvHelper;
 using OryxBudgetService.CsvMapping;
 using Data.Repositories.BudgetsRepositories;
 using OryxBudgetService.Utilties;
+using Data.Repositories.OperatorsRepositories;
 
 namespace OryxBudgetService.BudgetsServices
 {
@@ -18,14 +19,17 @@ namespace OryxBudgetService.BudgetsServices
         private readonly BudgetLineRepository _lineRepository;
         private readonly BudgetCodeService _budgetCodeService;
         private readonly LineCommentRepository _lineCommentRepository;
+        private readonly OperatorRepository _operatorRepository;
 
         public BudgetService(BudgetRepository repository, BudgetCodeService budgetCodeService,
-            BudgetLineRepository lineRepository, IBudgetUnitOfWork unitOfWork, LineCommentRepository lineCommentRepository) : base(repository, unitOfWork)
+            BudgetLineRepository lineRepository, IBudgetUnitOfWork unitOfWork, LineCommentRepository lineCommentRepository,
+            OperatorRepository operatorRepository) : base(repository, unitOfWork)
         {
             _repository = repository;
             _lineRepository = lineRepository;
             _budgetCodeService = budgetCodeService;
             _lineCommentRepository = lineCommentRepository;
+            _operatorRepository = operatorRepository;
         }
 
         public override void Update(Budget entity)
@@ -50,6 +54,34 @@ namespace OryxBudgetService.BudgetsServices
             return _repository.GetOperatorBudget(id);         
 
 
+        }
+
+        public void InitializeBudgetForAllOperators(string periodId, string description)
+        {
+            var operators = _operatorRepository.GetAll()
+                .Where(o => o.Status.Equals("A")).ToList();
+
+            foreach(var op in operators)
+            {
+                var budget = new Budget
+                {
+                    CreateDate = DateTime.Now,
+                    Description = op.Name + "_" + description,
+                    OperatorId = op.Id.ToString(),
+                    PeriodId = periodId,
+                    Status = "A",
+                    TotalBudgetAmount = 0,
+                    UpdateDate = DateTime.Now,
+                    UserSign = "e317f2dc-deb1-4463-8b67-7f435211d652",
+                    TotalAmountLC = 0,
+                    TotalAmountUSD = 0,
+                    ActualAmount = 0,
+                    ActualAmountLC = 0,
+                    ActualAmountUSD = 0
+                };
+
+                base.Add(budget);
+            }
         }
 
         public void UploadBudget(string fileName, Guid id)
