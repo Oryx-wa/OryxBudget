@@ -21,15 +21,15 @@ namespace Entities.Budgets
         [MaxLength(355)]
         public string Comment { get; set; }
         public CommentStatus CommentStatus { get; set; }
-        public Guid BudgetId { get; set; }
+        public string BudgetId { get; set; }
         public string Code { get; set; }
 
     }
 
     public class LineCommentLog : IEntityBase<Guid>, ILogEntityBase<Guid>
     {
-        public int LogInstance { get; set; }
-        [Key]
+
+        public int LogInstance { get; set; }       
         public Guid Id { get; set; }
         public DateTime CreateDate { get; set; }
         public DateTime UpdateDate { get; set; }
@@ -43,7 +43,7 @@ namespace Entities.Budgets
         public string Comment { get; set; }
 
         public CommentStatus CommentStatus { get; set; }
-        public Guid BudgetId { get; set; }
+        public string BudgetId { get; set; }
         public string Code { get; set; }
 
     }

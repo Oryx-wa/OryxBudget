@@ -43,11 +43,11 @@ namespace OryxWebApi.Controllers.BudgetControllers
         [HttpPost]
         [ValidateModelState]
         [Route("AddLineComment")]
-        public JsonResult AddLineComment([FromBody] IEnumerable<BudgetLineViewModel> vm, string budgetId, string code)
+        public JsonResult AddLineComment(string budgetId, string code,[FromBody] IEnumerable<LineCommentViewModel> vm)
         {
 
-            var budget = Mapper.Map<IEnumerable<LineComment>>(vm);
-            _budgetService.AddLineComments(budget);
+            var lineComment = Mapper.Map<IEnumerable<LineComment>>(vm);
+            _budgetService.AddLineComments(lineComment);
             _budgetService.SaveChanges();
             return Json(_budgetService.GetLineComment(budgetId, code));
 

@@ -9,9 +9,10 @@ using Entities.Budgets;
 namespace Data.Migrations
 {
     [DbContext(typeof(OryxBudgetContext))]
-    partial class OryxBudgetContextModelSnapshot : ModelSnapshot
+    [Migration("20170515163015_Budget22")]
+    partial class Budget22
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
             modelBuilder
                 .HasAnnotation("ProductVersion", "1.1.2")
@@ -579,6 +580,8 @@ namespace Data.Migrations
                         .HasMaxLength(50);
 
                     b.HasKey("Id", "LogInstance");
+
+                    b.HasAlternateKey("Id");
 
                     b.ToTable("LineCommentLog");
                 });

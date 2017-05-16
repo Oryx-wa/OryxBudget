@@ -222,7 +222,7 @@ namespace OryxBudgetService.BudgetsServices
         {
             foreach (var item in lineComments)
             {
-                if (item.Id == null)
+                if (item.Id == Guid.Empty)
                 {
                     this._lineCommentRepository.Add(item);
                 }

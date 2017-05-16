@@ -1,5 +1,5 @@
 import { Component, OnInit, Input, OnChanges, Output, EventEmitter } from '@angular/core';
-import {BehaviorSubject} from 'rxjs'; 
+import { Observable } from 'rxjs';
 import { MaterializeAction } from 'angular2-materialize';
 import { Budgets, Operators, BudgetLines, LineComments } from './../models';
 
@@ -11,9 +11,9 @@ import { Budgets, Operators, BudgetLines, LineComments } from './../models';
 export class LineDetailsComponent implements OnInit, OnChanges {
   @Input() lines: BudgetLines[] = [];
   @Input() lineComments: LineComments[] = [];
-  @Input() lineObs: BehaviorSubject<BudgetLines>;
   @Output() comments = new EventEmitter();
   @Output() saveComments = new EventEmitter();
+  @Input() commentSaved: Observable<boolean>;
 
   modalActions = new EventEmitter<string | MaterializeAction>();
   filtered: BudgetLines[] = [];
@@ -21,13 +21,15 @@ export class LineDetailsComponent implements OnInit, OnChanges {
   parentCode: BudgetLines;
   level: number;
   showComment = false;
-  line: BudgetLines = null;
+  line: BudgetLines;
+
 
 
   history: string[] = ['home'];
   constructor() { }
 
   ngOnInit() {
+    this.commentSaved.subscribe(saved => this.showComment = !saved);
 
   }
 
@@ -55,7 +57,7 @@ export class LineDetailsComponent implements OnInit, OnChanges {
       if (this.history.indexOf(code) === -1) {
         if (addToHistory) { this.addHistory(code); }
       }
-      this.comments.emit({code: this.selectedCode.code, budgetId: this.selectedCode.budgetId});
+
     }
 
 
@@ -67,15 +69,15 @@ export class LineDetailsComponent implements OnInit, OnChanges {
 
   getComments(code: string) {
     this.showComment = true;
-    // this.line = this.lines.filter(bd => bd.code === code)[0];
-    // this.Comments.emit();
-    this.modalActions.emit({ action: 'modal', params: ['open'] });
+    // this.comments.emit({ code: this.selectedCode.code, budgetId: this.selectedCode.budgetId });
+    this.line = this.lines.filter(bd => bd.code === code)[0];
+    this.comments.emit(this.line);
+    // this.modalActions.emit({ action: 'modal', params: ['open'] });
 
   }
 
-  updateComments(data: any) {
-    // this.showComment = false;
-    this.modalActions.emit({ action: 'modal', params: ['close'] });
+  updateComments(comments: any) {
+    const data = { data: comments, code: this.line.code, budgetId: this.line.budgetId };
     this.saveComments.emit(data);
   }
 

@@ -1,4 +1,4 @@
-import { Component, OnInit, ChangeDetectionStrategy, OnChanges, Input, Output } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy, OnChanges, Input, Output, EventEmitter } from '@angular/core';
 import { FormGroup, FormControl, FormBuilder, FormArray, Validators } from '@angular/forms';
 import { LineComments, BudgetLines } from './../../models/';
 
@@ -8,11 +8,12 @@ import { LineComments, BudgetLines } from './../../models/';
   styleUrls: ['./line-comment.component.scss']
 })
 export class LineCommentComponent implements OnInit, OnChanges {
-  @Input() budgetLines: BudgetLines;
+  @Input() line: BudgetLines;
   @Input() lineComments: LineComments[] = [{
     id: '', budgetId: '',
     code: '', comment: '', commentStatus: ''
   }];
+  @Output() update = new EventEmitter();
   form: FormGroup;
 
 
@@ -32,23 +33,19 @@ export class LineCommentComponent implements OnInit, OnChanges {
     }
 
     if (this.lineComments.length === 0) {
-      this.lineComments.push({
-        id: '', budgetId: '',
-        code: '', comment: '', commentStatus: ''
-      });
-
-      this.lineComments.map(comment => {
-        this.addDetail(comment);
-      });
+     this.addDetail(null);
     }
+    this.lineComments.map(comment => {
+      this.addDetail(comment);
+    });
   }
 
   addDetail(data: any) {
     const arrayControl = <FormArray>this.form.controls['formArray'];
     const lineComment: LineComments = (data === null) ?
-      { id: '', budgetId: this.budgetLines.budgetId, code: this.budgetLines.code, comment: '', commentStatus: '' } : data;
+      { id: null, budgetId: this.line.budgetId, code: this.line.code, comment: '', commentStatus: '' } : data;
     const newDetail = this.fb.group({
-      comments: new FormControl(lineComment.comment, Validators.required),
+      comment: new FormControl(lineComment.comment, Validators.required),
       id: new FormControl(lineComment.id),
       budgetId: new FormControl(lineComment.budgetId),
       commentStatus: new FormControl(lineComment.commentStatus),
@@ -60,7 +57,15 @@ export class LineCommentComponent implements OnInit, OnChanges {
 
   }
 
-  save(data: any[]) {
+  save(data: any) {
+    let comments: LineComments[] = [];
+    let newComments: any[] = data.formArray;
+
+    newComments.map(lineComment => {
+      comments.push(lineComment);
+    });
+    this.update.emit(comments);
+
   }
   removeDetail(i: number) {
     const control = <FormArray>this.form.controls['formArray'];

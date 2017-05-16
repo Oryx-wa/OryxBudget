@@ -144,7 +144,8 @@
 </div>
 -->
 <!-- Modal Structure -->
-<div class="container" *ngIf="showComment === true"  >
-  <app-line-comment [budgetLines]="lineObs | async" [lineComments]="lineComments">
-  </app-line-comment>
+<div class="container" *ngIf="showComment === true">  
+    <app-line-comment [line]="line" [lineComments]="lineComments" (update)="updateComments($event)">
+    </app-line-comment> 
+  <ng-template #loading2>Loading Comments ...</ng-template>
 </div>

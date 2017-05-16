@@ -6,8 +6,8 @@
           <div class="col s12" formArrayName="formArray">
             <div *ngFor="let control of formArray.controls; let i = index">
               <span *ngIf="formArray.controls.length > 1" (click)="removeDetail(i)"><i class="material-icons right" >delete</i></span>
-              <app-line-comment>
-              </app-line-comment>
+              <app-line-comment-details [lineCommentForm]=formArray.controls[i]>
+              </app-line-comment-details>
             </div>
           </div>
           <div class="col s12">
@@ -18,7 +18,7 @@
             </div>
           </div>
           <div class="row">
-            <button [disabled]="form.invalid || form.pristine" class="wave-effect wave-light btn" type="submit" name="action">&nbsp; Add</button>
+            <button [disabled]="form.invalid || form.pristine" class="wave-effect wave-light btn" type="submit" name="action">Update Comment</button>
           </div>
         </form>
       </div>
