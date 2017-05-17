@@ -14,6 +14,7 @@ export class LineCommentComponent implements OnInit, OnChanges {
     code: '', comment: '', commentStatus: ''
   }];
   @Output() update = new EventEmitter();
+
   form: FormGroup;
 
 

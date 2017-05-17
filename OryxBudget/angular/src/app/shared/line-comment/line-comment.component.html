@@ -1,7 +1,8 @@
-<div materialize class="container">
+<div materialize class="container line"  >
   <div class="col s12 m12 l8">
     <div class="card oryx-card-radius">
       <div class="col s12">
+        
         <form materialize materialize="updateTextFields" [formGroup]="form" (ngSubmit)="save(form.value)">
           <div class="col s12" formArrayName="formArray">
             <div *ngFor="let control of formArray.controls; let i = index">
