@@ -81,6 +81,7 @@ namespace OryxBudgetService.BudgetsServices
                 };
 
                 base.Add(budget);
+                base.SaveChanges();
             }
         }
 

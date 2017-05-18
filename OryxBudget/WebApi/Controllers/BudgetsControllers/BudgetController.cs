@@ -139,7 +139,6 @@ namespace OryxWebApi.Controllers.BudgetControllers
         public JsonResult InitializeBudgetForAllOperators(string periodId, string description)
         {
             BackgroundJob.Enqueue(() => _budgetService.InitializeBudgetForAllOperators(periodId, description));
-
             return Json("Budget initialized for all operators");
         }
 
