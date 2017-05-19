@@ -34,7 +34,24 @@ namespace Entities.Budgets
 
         public decimal ActualAmount { get; set; }
 
-       
+        public decimal? SubComAmountLC { get; set; }
+
+        public decimal? TecComAmountLC { get; set; }
+
+        public decimal? UpComAmountLC { get; set; }
+
+        public decimal? SubComAmountUSD { get; set; }
+
+        public decimal? TecComAmountUSD { get; set; }
+
+        public decimal? UpComAmountUSD { get; set; }
+
+        public decimal? FinalAmountLC { get; set; }
+
+        public decimal? FinalAmountUSD { get; set; }
+
+        public bool? IsOkay { get; set; }
+
         public Guid BudgetId { get; set; }
 
         public string CategoryId { get; set; }

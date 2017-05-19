@@ -38,6 +38,22 @@ namespace Entities.Budgets
         public decimal TotalAmountLC { get; set; }
         public decimal TotalAmountUSD { get; set; }
 
+        public decimal? SubComTotalBudgetAmountLC { get; set; }
+
+        public decimal? TecComTotalBudgetAmountLC { get; set; }
+
+        public decimal? UpComTotalBudgetAmountLC { get; set; }
+
+        public decimal? SubComTotalBudgetAmountUSD { get; set; }
+
+        public decimal? TecComTotalBudgetAmountUSD { get; set; }
+
+        public decimal? UpComTotalBudgetAmountUSD { get; set; }
+
+        public decimal? FinalTotalBudgetAmountLC { get; set; }
+
+        public decimal? FinalTotalBudgetAmountUSD { get; set; }
+
         public decimal ActualAmount { get; set; }
         public decimal ActualAmountLC { get; set; }
         public decimal ActualAmountUSD { get; set; }
