@@ -20,7 +20,7 @@ export class HomeComponent implements OnInit, OnChanges {
  
 
   constructor(private _router: Router,
-    private securityService: SecurityService,
+    public securityService: SecurityService,
     private _http: Http) {
 
   }

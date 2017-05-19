@@ -15,7 +15,7 @@
             <thead>
               <tr>
                 <th>Description</th>
-                <th>Total Budget </th>
+                <th>Budget </th>
                 <th>Budget USD</th>
                 <th>Budget LC</th>
                 <th>Total Actual </th>
@@ -29,12 +29,12 @@
             <tbody *ngIf="budgets$ | async; let budgets; else loading">
               <tr *ngFor="let item of budgets">
                 <td><a>{{item.description}}</a></td>
-                <td>{{item.budget | currency:'USD':true:'4.0-0'}}</td>
-                 <td>{{item.budgetUSD | currency:'USD':true:'4.0-0'}}</td>
-                <td>{{item.budgetLC | currency:'NGN':true:'4.0-0'}}</td>               
-                <td>{{item.actual | currency:'USD':true:'4.0-0'}}</td>
-                <td>{{item.actualLC | currency:'NGN':true:'4.0-0'}}</td>
-                <td>{{item.actualUSD | currency:'USD':true:'4.0-0'}}</td>
+                <td>{{item.totalBudgetAmount | currency:'USD':true:'4.0-0'}}</td>
+                 <td>{{item.totalAmountUSD | currency:'USD':true:'4.0-0'}}</td>
+                <td>{{item.totalAmountLC | currency:'NGN':true:'4.0-0'}}</td>               
+                <td>{{item.actualBudgetAmount | currency:'USD':true:'4.0-0'}}</td>
+                <td>{{item.actualAmountLC | currency:'NGN':true:'4.0-0'}}</td>
+                <td>{{item.actualAmountUSD | currency:'USD':true:'4.0-0'}}</td>
                 <td> <a class="waves-effect waves-light"><i class="material-icons right" (click)="showDetails(item.id)">details</i> </a></td>
                 <td> <a class="waves-effect waves-light" (click)="upload(item.id, item.description)"><i class="material-icons right">file_upload</i></a></td>
 
