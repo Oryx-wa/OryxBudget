@@ -7,6 +7,7 @@ using Microsoft.Extensions.Logging;
 using Autofac;
 using Autofac.Extensions.DependencyInjection;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc.Authorization;
 using Newtonsoft.Json.Serialization;
 using Microsoft.EntityFrameworkCore;
 using Data.Infrastructure;
@@ -16,23 +17,19 @@ using Serilog;
 using System.Text.Encodings.Web;
 using OryxWebapi.Utilities.ErrorHandling;
 using OryxWebapi.Utilities.ActionFilters;
+using System.IdentityModel.Tokens.Jwt;
 using OryxSecurity.Services;
 using AutoMapper;
 using OryxWebapi.ViewModels.Mappings;
 using Data;
 using OryxBudgetService;
 //using Hangfire;
+using System.Collections.Generic;
+using IdentityServer4.AccessTokenValidation;
 using System.IO;
 using Hangfire;
 using OryxSecurity;
 using OryxMailer;
-
-using Autofac.Signalr;
-using System.Reflection;
-using IdentityServer4.AccessTokenValidation;
-using System.Collections.Generic;
-using System.IdentityModel.Tokens.Jwt;
-using Microsoft.AspNetCore.Mvc.Authorization;
 
 namespace OryxWebApi
 {
@@ -79,27 +76,27 @@ namespace OryxWebApi
                 .RequireClaim("scope", "OryxBudget")
                 .Build();
 
-            services.AddAuthorization(options =>
-            {
+           // services.AddAuthorization(options =>
+          //  {
+//
+          //      options.AddPolicy("Administrator", policyAdmin =>
+          //      {
+          //          policyAdmin.RequireClaim("role", "Administrator");
+          //      });
+          //      options.AddPolicy("HR", policyAdmin =>
+         //       {
+         //           policyAdmin.RequireClaim("role", "HR");
+         //       });
+           //     options.AddPolicy("Employee", policyUser =>
+         //       {
+       //             policyUser.RequireClaim("role", "OryxBudget.user");
+        //        });
 
-                options.AddPolicy("Administrator", policyAdmin =>
-                {
-                    policyAdmin.RequireClaim("role", "Administrator");
-                });
-                options.AddPolicy("Napims", policyAdmin =>
-                {
-                    policyAdmin.RequireClaim("role", "Napims");
-                });
-                options.AddPolicy("Operator", policyUser =>
-                {
-                    policyUser.RequireClaim("role", "Operator");
-                });
-
-            });
+        //    });
 
             services.AddMvcCore(config =>
             {
-              config.Filters.Add(new AuthorizeFilter(MCIPolicy));
+              //  config.Filters.Add(new AuthorizeFilter(MCIPolicy));
             })
            .AddJsonFormatters(opt =>
            {
@@ -113,8 +110,6 @@ namespace OryxWebApi
                     jsonOptions.SerializerSettings.NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore;
                     //jsonOptions.SerializerSettings.DateTimeZoneHandling = Newtonsoft.Json.DateTimeZoneHandling.RoundtripKind;
                 });
-
-            services.AddSignalR(options => options.Hubs.EnableDetailedErrors = true);
 
             string conString = Configuration["Data:DefaultConnection:OryxBudgetConnectionString"];
 
@@ -142,6 +137,10 @@ namespace OryxWebApi
             
 
 
+
+         
+
+
             builder.RegisterType<OryxBudgetContext>()
            .As<DbContext>()
            .WithParameter("options", opt1)
@@ -151,7 +150,8 @@ namespace OryxWebApi
 
             builder.RegisterType<DbFactory>()
                 .As<IDbFactory>()
-                .InstancePerLifetimeScope();              
+                .InstancePerLifetimeScope();
+                
 
 
 
@@ -173,7 +173,7 @@ namespace OryxWebApi
             builder.RegisterType<ValidateModelState>();
 
 
-            builder.RegisterHubs(typeof(Startup).GetTypeInfo().Assembly);
+
 
 
             builder.Populate(services);
@@ -262,23 +262,22 @@ namespace OryxWebApi
             app.UseCors("corsGlobalPolicy");
 
 
-            IdentityServerAuthenticationOptions identityServerAuthenticationOptions = new IdentityServerAuthenticationOptions();
-            identityServerAuthenticationOptions.Authority = "http://localhost:5000/";
-            identityServerAuthenticationOptions.AllowedScopes = new List<string> { "OryxBudget" };
-            identityServerAuthenticationOptions.ApiSecret = "F621F470-9731-4A25-80EF-67A6F7C5F4B8";
-            identityServerAuthenticationOptions.ApiName = "OryxBudget";
-            identityServerAuthenticationOptions.AutomaticAuthenticate = true;
-            identityServerAuthenticationOptions.SupportedTokens = SupportedTokens.Both;
-            //required if you want to return a 403 and not a 401 for forbidden responses
-
-            identityServerAuthenticationOptions.AutomaticChallenge = true;
-            identityServerAuthenticationOptions.RequireHttpsMetadata = false;
-
-
-            JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();
-            app.UseIdentityServerAuthentication(identityServerAuthenticationOptions);
+            // IdentityServerAuthenticationOptions identityServerAuthenticationOptions = new IdentityServerAuthenticationOptions();
+            // identityServerAuthenticationOptions.Authority = "http://localhost:5000/";
+            // identityServerAuthenticationOptions.AllowedScopes = new List<string> { "OryxBudget" };
+            // identityServerAuthenticationOptions.ApiSecret = "F621F470-9731-4A25-80EF-67A6F7C5F4B8";
+            // identityServerAuthenticationOptions.ApiName = "OryxBudget";
+            // identityServerAuthenticationOptions.AutomaticAuthenticate = true;
+            // identityServerAuthenticationOptions.SupportedTokens = SupportedTokens.Both;
+            // required if you want to return a 403 and not a 401 for forbidden responses
+            // identityServerAuthenticationOptions.AutomaticChallenge = true;
+            // identityServerAuthenticationOptions.RequireHttpsMetadata = false;
 
 
+            //JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();
+            //app.UseIdentityServerAuthentication(identityServerAuthenticationOptions);
+
+          
             if (env.IsDevelopment())
             {
                 try
@@ -316,9 +315,7 @@ namespace OryxWebApi
 
             });
 
-            app.UseSignalR();
-
-
+           
         }
     }
 }

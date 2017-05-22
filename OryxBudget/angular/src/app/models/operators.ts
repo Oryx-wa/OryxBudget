@@ -3,7 +3,7 @@ export interface Operators {
     code: string;
     name: string;
     imageSrc: string;
-    budget: number;
-    actual: number;
+    totalBudget: number;
+    totalActual: number;
     
 }

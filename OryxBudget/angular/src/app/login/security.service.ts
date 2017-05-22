@@ -29,7 +29,7 @@ export class SecurityService {
     private scope: string;
     private dataFolder: string;
     public authenticated = false;
-    public roles: any[] = [];
+    public role = 'Napims';
     public name = '';
     public operatorId = '';
 
@@ -230,11 +230,22 @@ export class SecurityService {
             //let dataIdToken: any = this.getDataFromToken(id_token);
             let dataIdToken: any = this.getDataFromToken(token);
             this.name = dataIdToken.name;
-            this.roles = dataIdToken.role;
+            this.role = dataIdToken.role[0];
             this.operatorId = dataIdToken.id;
             console.log(dataIdToken);
             //console.log(accessIdToken);
-           
+            /*
+            let user: UserModel.User = {
+                authenticated: true, full_name: dataIdToken.full_name,
+                given_name: dataIdToken.given_name, email: dataIdToken.email, name: dataIdToken.name,
+                family_name: dataIdToken.family_name, branch: dataIdToken.branch,
+                sub: dataIdToken.sub, role: dataIdToken.role, token: id_token, groups: []
+            };
+            */
+            // this.ngrxStore.dispatch(new LoginActions.LoginSuccess(user));
+            // this.GetUserMenu(user);
+            // console.log(user);
+
             this.SetAuthorizationData(token, id_token);
         } else {
             this.ResetAuthorizationData();

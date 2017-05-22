@@ -12,7 +12,6 @@ namespace Entities.Budgets
         {
             BudgetLines = new List<BudgetLine>();
             Actuals = new List<Actual>();
-            LineComments = new List<LineComment>();
         }
 
         public string BudgetLineCategoryId { get; set; }
@@ -35,50 +34,20 @@ namespace Entities.Budgets
         [MaxLength(50)]
         public string PeriodId { get; set; }
 
-        public decimal OpBudgetFC { get; set; }
-        public decimal OpBudgetLC { get; set; }
-        public decimal OpBudgetUSD { get; set; }
-        public decimal SubComBudgetFC { get; set; }
-        public decimal SubComBudgetLC { get; set; }
-        public decimal SubComBudgetUSD { get; set; }
-        public decimal TecComBudgetFC { get; set; }
-        public decimal TecComBudgetLC { get; set; }
-        public decimal TecComBudgetUSD { get; set; }
-        public decimal MalComBudgetFC { get; set; }
-        public decimal MalComBudgetLC { get; set; }
-        public decimal MalComBudgetUSD { get; set; }
-        public decimal FinalBudgetFC { get; set; }
-        public decimal FinalBudgetLC { get; set; }
-        public decimal FinalBudgetUSD { get; set; }
-        
-        public decimal OpActualFC { get; set; }
-        public decimal OpActualLC { get; set; }
-        public decimal OpActualUSD { get; set; }
-        public decimal SubComActualFC { get; set; }
-        public decimal SubComActualLC { get; set; }
-        public decimal SubComActualUSD { get; set; }
-        public decimal TecComActualFC { get; set; }
-        public decimal TecComActualLC { get; set; }
-        public decimal TecComActualUSD { get; set; }
-        public decimal MalComActualFC { get; set; }
-        public decimal MalComActualLC { get; set; }
-        public decimal MalComActualUSD { get; set; }
-        public decimal FinalActualFC { get; set; }
-        public decimal FinalActualLC { get; set; }
-        public decimal FinalActualUSD { get; set; }
+        public decimal TotalBudgetAmount { get; set; }
+        public decimal TotalAmountLC { get; set; }
+        public decimal TotalAmountUSD { get; set; }
 
-
-        [Required]
-        public BudgetStatus BudgetStatus { get; set; }
-        [Required]
-        public BudgetStatus ActualStatus { get; set; }
+        public decimal ActualAmount { get; set; }
+        public decimal ActualAmountLC { get; set; }
+        public decimal ActualAmountUSD { get; set; }
 
         [MaxLength(50), Required]
         public string OperatorId { get; set; }
 
-        public ICollection<BudgetLine> BudgetLines { get; set; }
+        public  ICollection<BudgetLine> BudgetLines { get; set; }
         public ICollection<Actual> Actuals { get; set; }
-        public ICollection<LineComment> LineComments { get; set; }
+
 
         public  string CategoryId { get; set; }
 
@@ -103,43 +72,12 @@ namespace Entities.Budgets
 
         public string PeriodId { get; set; }
 
-        public decimal OpBudgetFC { get; set; }
-        public decimal OpBudgetLC { get; set; }
-        public decimal OpBudgetUSD { get; set; }
-        public decimal SubComBudgetFC { get; set; }
-        public decimal SubComBudgetLC { get; set; }
-        public decimal SubComBudgetUSD { get; set; }
-        public decimal TecComBudgetFC { get; set; }
-        public decimal TecComBudgetLC { get; set; }
-        public decimal TecComBudgetUSD { get; set; }
-        public decimal MalComBudgetFC { get; set; }
-        public decimal MalComBudgetLC { get; set; }
-        public decimal MalComBudgetUSD { get; set; }
-        public decimal FinalBudgetFC { get; set; }
-        public decimal FinalBudgetLC { get; set; }
-        public decimal FinalBudgetUSD { get; set; }
-
-        public decimal OpActualFC { get; set; }
-        public decimal OpActualLC { get; set; }
-        public decimal OpActualUSD { get; set; }
-        public decimal SubComActualFC { get; set; }
-        public decimal SubComActualLC { get; set; }
-        public decimal SubComActualUSD { get; set; }
-        public decimal TecComActualFC { get; set; }
-        public decimal TecComActualLC { get; set; }
-        public decimal TecComActualUSD { get; set; }
-        public decimal MalComActualFC { get; set; }
-        public decimal MalComActualLC { get; set; }
-        public decimal MalComActualUSD { get; set; }
-        public decimal FinalActualFC { get; set; }
-        public decimal FinalActualLC { get; set; }
-        public decimal FinalActualUSD { get; set; }
-
-
-        [Required]
-        public BudgetStatus BudgetStatus { get; set; }
-        [Required]
-        public BudgetStatus ActualStatus { get; set; }
+        public decimal TotalAmount { get; set; }
+        public decimal TotalAmountLC { get; set; }
+        public decimal TotalAmountUSD { get; set; }
+        public decimal ActualBudgetAmount { get; set; }
+        public decimal ActualAmountLC { get; set; }
+        public decimal ActualAmountUSD { get; set; }
 
         [MaxLength(50), Required]
         public string OperatorId { get; set; }
@@ -148,7 +86,7 @@ namespace Entities.Budgets
 
         public string CategoryId { get; set; }
 
-    }
 
-   
+
+    }
 }
