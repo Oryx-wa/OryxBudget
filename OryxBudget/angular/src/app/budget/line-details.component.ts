@@ -220,7 +220,8 @@ export class LineDetailsComponent implements OnInit, OnChanges {
             headerName: 'Budget LC', field: 'tecComBudgetLC',
             width: this.colWidth, pinned: true,
             cellRendererFramework: CurrencyComponent,
-            currency: 'NGN'
+            currency: 'NGN',
+            editable: true
           },
           {
             headerName: 'Budget USD', field: 'tecComBudgetUSD',
@@ -234,6 +235,11 @@ export class LineDetailsComponent implements OnInit, OnChanges {
             cellRendererFramework: CurrencyComponent,
             currency: 'USD'
           },
+          {
+            headerName: 'Comment',
+            width: this.colWidth, pinned: true,
+            cellTemplate: '<div><a href="#">Visible text</a></div>'
+          }
         ]
       },
       {
