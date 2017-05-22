@@ -1,11 +1,20 @@
 export interface Budgets {
     id: string;
     operatorId: string;
-    budget: number;
-    budgetLC: number;
-    budgetUSD: number;
-    actual: number;
-    actualLC: number;
-    actualUSD: number;
+    opBudgetFC: number;
+    opBudgetLC: number;
+    opBudgetUSD: number;
+    subComBudgetFC: number;
+    subComBudgetLC: number;
+    subComBudetUSD: number;
+    tecComBudgetFC: number;
+    tecComBudgetLC: number;
+    tecComBudetUSD: number;
+    malComBudgetFC: number;
+    malComBudgetLC: number;
+    malComBudetUSD: number;
+    finalBudgetFC: number;
+    finalBudgetLC: number;
+    finalBudetUSD: number;
     description: string;
 }

@@ -40,6 +40,7 @@ namespace OryxBudgetService
             builder.RegisterType<BudgetLineService>();
             builder.RegisterType<CategoryService>();
             builder.RegisterType<BudgetCodeService>();
+            
 
         }
     }

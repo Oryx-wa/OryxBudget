@@ -12,14 +12,17 @@ using Microsoft.AspNetCore.Http;
 using OryxWebapi.Utilities;
 using System.IO;
 using Hangfire;
+using OryxWebApi.Utilities.SignalRHubs;
+using Microsoft.AspNetCore.SignalR.Infrastructure;
 
 namespace OryxWebApi.Controllers.BudgetControllers
 {
-    public class BudgetController : BaseController
+    public class BudgetController :  ApiHubController<NotificationHub>
     {
         private readonly BudgetService _budgetService;
 
-        public BudgetController(BudgetService budgetService)
+        public BudgetController(BudgetService budgetService, IConnectionManager signalRConnectionManager)
+             : base(signalRConnectionManager)
         {
             _budgetService = budgetService;
         }
@@ -34,6 +37,19 @@ namespace OryxWebApi.Controllers.BudgetControllers
             _budgetService.Add(budget);
             _budgetService.SaveChanges();
             return Json(_budgetService.Get(budget.Id));
+
+        }
+
+        [HttpPost]
+        [ValidateModelState]
+        [Route("AddLineComment")]
+        public JsonResult AddLineComment(string budgetId, string code,[FromBody] IEnumerable<LineCommentViewModel> vm)
+        {
+
+            var lineComment = Mapper.Map<IEnumerable<LineComment>>(vm);
+            _budgetService.AddLineComments(lineComment);
+            _budgetService.SaveChanges();
+            return Json(_budgetService.GetLineComment(budgetId, code));
 
         }
 
@@ -76,7 +92,8 @@ namespace OryxWebApi.Controllers.BudgetControllers
         [Route("GetBudgetDetails")]
         public JsonResult GetBudgetDetails(string id)
         {
-            return Json(_budgetService.GetBudgetDetails(id));
+            var ret = _budgetService.GetBudgetDetails(id);
+            return Json(ret);
         }
 
         [HttpGet]
@@ -91,6 +108,13 @@ namespace OryxWebApi.Controllers.BudgetControllers
         public JsonResult GetByOperator(string operatorId)
         {
             return Json(_budgetService.GetByOperatorId(operatorId));
+        }
+
+        [HttpGet]
+        [Route("GetLineComment")]
+        public JsonResult GetLineComment(string budgetId, string code)
+        {
+            return Json(_budgetService.GetLineComment(budgetId, code));
         }
 
         [Route("UploadBudget")]
@@ -109,6 +133,14 @@ namespace OryxWebApi.Controllers.BudgetControllers
             BackgroundJob.Enqueue(() => _budgetService.UploadBudget(fileName, ConvertToGuid(id)));
 
             return Json("File Uploaded"); //null just to make error free
+        }
+
+        [Route("InitializeBudgetForAllOperators")]
+        [HttpPost]
+        public JsonResult InitializeBudgetForAllOperators(string periodId, string description)
+        {
+            BackgroundJob.Enqueue(() => _budgetService.InitializeBudgetForAllOperators(periodId, description));
+            return Json("Budget initialized for all operators");
         }
 
         [Route("UploadActual")]

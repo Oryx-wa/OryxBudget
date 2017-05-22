@@ -1,11 +1,14 @@
 import { Component, OnInit, Input, OnChanges } from '@angular/core';
+import { GridOptions } from 'ag-grid/main';
+
 import { Budgets } from './../models/budget';
 import { Operators } from './../models/operators';
 import { SecurityService } from './../login/security.service';
 import { Observable } from 'rxjs/Observable';
 import { Router, ActivatedRoute, Params } from '@angular/router';
 import { Http, URLSearchParams } from '@angular/http';
-import { DisplayModeEnum } from './../shared/shared-enum.enum'
+import { DisplayModeEnum } from './../shared/shared-enum.enum';
+import { CurrencyComponent } from './../shared/renderers/currency.component';
 @Component({
   selector: 'app-operator-view',
   templateUrl: './operator-view.component.html',
@@ -15,7 +18,7 @@ export class OperatorViewComponent implements OnInit, OnChanges {
 
   public name = '';
   public operatorId = '';
-  public role = '';
+  public role: any;
   budgets$: Observable<Budgets[]>;
   operator$: Observable<Operators>;
   public displayMode: DisplayModeEnum;
@@ -24,11 +27,16 @@ export class OperatorViewComponent implements OnInit, OnChanges {
   public uploadUrl = 'Budget/UploadBudget';
   public uploadTitle = '';
   private budgetDesc = '';
+  public columnDefs: any[];
+  public gridOptions: GridOptions;
+
 
   constructor(private route: ActivatedRoute,
     private router: Router,
     private securityService: SecurityService,
     private _http: Http) {
+    this.gridOptions = <GridOptions>{};
+    this.createColumnDefs();
 
   }
 
@@ -36,7 +44,7 @@ export class OperatorViewComponent implements OnInit, OnChanges {
     if (this.securityService.IsAuthorized()) {
       this.name = this.securityService.name;
       this.operatorId = this.securityService.operatorId;
-      this.role = this.securityService.role;
+      this.role = this.securityService.roles;
       this.getOperator();
     }
   }
@@ -91,7 +99,7 @@ export class OperatorViewComponent implements OnInit, OnChanges {
       this.uploadTitle = 'Upload Budget for ' + this.budgetDesc;
     } else {
       // this.changeDisplayMode(this.displayModeEnum.Actual);
-      this.uploadUrl = 'Budget/UploadActual' ;
+      this.uploadUrl = 'Budget/UploadActual';
       this.uploadTitle = 'Upload Actual for ' + this.budgetDesc;
     }
   }
@@ -100,4 +108,40 @@ export class OperatorViewComponent implements OnInit, OnChanges {
     this.changeDisplayMode(this.displayModeEnum.Details);
   }
 
+  private createColumnDefs() {
+    this.columnDefs = [
+
+      {
+        headerName: 'Operator Budget',
+        children: [
+          {
+            headerName: 'Budget LC', field: 'opBudgetLC',
+            width: 200, pinned: true,
+            cellRendererFramework: CurrencyComponent,
+            currency: 'NGN'
+          },
+          {
+            headerName: 'Budget USD', field: 'opBudgetUSD',
+            width: 140, pinned: true,
+            cellRendererFramework: CurrencyComponent,
+            currency: 'USD'
+          },
+          {
+            headerName: 'Budget FC', field: 'opBudgetFC',
+            width: 140, pinned: true,
+            cellRendererFramework: CurrencyComponent,
+            currency: 'USD'
+          },
+        ]
+      }
+    ];
+  }
+
+
+
+
+}
+
+function currencyRenderer(params) {
+  return `{{` + params.value + ` | currency:'USD':true:'4.0-0'}}`;
 }

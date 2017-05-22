@@ -8,11 +8,7 @@ namespace Entities.Budgets
 {
     public class BudgetLine : IEntityBase<Guid>
     {
-        public BudgetLine()
-        {
-            this.LineComments = new List<LineComment>();
-        }
-
+       
         [Key]
         public Guid Id { get; set; }
         public DateTime CreateDate { get; set; }
@@ -31,19 +27,35 @@ namespace Entities.Budgets
         [Required, MaxLength(100)]
         public string Description { get; set; } //ItemName
 
-        public decimal AmountLC { get; set; }
-        public decimal AmountLCInUSD { get; set; }
-        public decimal AmountUSD { get; set; }
-        public decimal BudgetAmount { get; set; }
+        public decimal OpBudgetLC { get; set; }
+        public decimal OpBudgetLCInUSD { get; set; }
+        public decimal OpBudgetUSD { get; set; }
+        public decimal OpBudgetFC { get; set; }
 
-        public decimal ActualAmount { get; set; }
+        //public decimal ActualAmount { get; set; }
 
-       
+        public decimal SubComBudgetFC { get; set; }
+        public decimal SubComBudgetLC { get; set; }
+        public decimal SubComBudgetUSD { get; set; }
+        public decimal TecComBudgetFC { get; set; }
+        public decimal TecComBudgetLC { get; set; }
+        public decimal TecComBudgetUSD { get; set; }
+        public decimal MalComBudgetFC { get; set; }
+        public decimal MalComBudgetLC { get; set; }
+        public decimal MalComBudgetUSD { get; set; }
+        public decimal FinalBudgetFC { get; set; }
+        public decimal FinalBudgetLC { get; set; }
+        public decimal FinalBudgetUSD { get; set; }
+
+        [Required]
+        public BudgetStatus LineStatus { get; set; }
+
+
         public Guid BudgetId { get; set; }
 
         public string CategoryId { get; set; }
 
-        public ICollection<LineComment> LineComments { get; set; }
+       
 
     }
 
@@ -68,12 +80,28 @@ namespace Entities.Budgets
         [Required, MaxLength(100)]
         public string Description { get; set; } //ItemName
 
-        public decimal AmountLC { get; set; }
-        public decimal AmountUSD { get; set; }
-        public decimal AmountLCInUSD { get; set; }
-        public decimal BudgetAmount { get; set; }
-        public decimal ActualAmount { get; set; }
+        public decimal OpBudgetLC { get; set; }
+        public decimal OpBudgetUSD { get; set; }
+        public decimal OpBudgetLCInUSD { get; set; }
+        public decimal OpBudgetFC { get; set; }
+        // public decimal ActualAmount { get; set; }
 
+
+        public decimal SubComBudgetFC { get; set; }
+        public decimal SubComBudgetLC { get; set; }
+        public decimal SubComBudgetUSD { get; set; }
+        public decimal TecComBudgetFC { get; set; }
+        public decimal TecComBudgetLC { get; set; }
+        public decimal TecComBudgetUSD { get; set; }
+        public decimal MalComBudgetFC { get; set; }
+        public decimal MalComBudgetLC { get; set; }
+        public decimal MalComBudgetUSD { get; set; }
+        public decimal FinalBudgetFC { get; set; }
+        public decimal FinalBudgetLC { get; set; }
+        public decimal FinalBudgetUSD { get; set; }
+
+        [Required]
+        public BudgetStatus LineStatus { get; set; }
 
         public Guid BudgetId { get; set; }
 

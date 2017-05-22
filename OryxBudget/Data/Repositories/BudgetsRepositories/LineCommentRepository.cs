@@ -14,5 +14,15 @@ namespace Data.Repositories.BudgetsRepositories
         {
         }
 
+        public override void Update(LineComment entity)
+        {
+            LineComment dbComment = this.Get(entity.Id);
+
+            dbComment.Comment = entity.Comment;
+            dbComment.CommentStatus = entity.CommentStatus;
+
+            base.Update(dbComment);
+        }
+
     }
 }

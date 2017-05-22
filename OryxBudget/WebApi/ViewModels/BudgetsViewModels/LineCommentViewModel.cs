@@ -5,13 +5,15 @@ using System.Threading.Tasks;
 
 namespace OryxWebApi.ViewModels.BudgetsViewModels
 {
-    public class LineCommentViewModel
+    public class LineCommentViewModel: BaseViewModel
     {
-        public string BudgetLineId { get; set; }
+        public string BudgetId { get; set; }
 
         public string Comment { get; set; }
 
-        // public CommentStatus Status { get; set; }
+        public string Code { get; set; }
+
+        public string CommentStatus  { get; set; }
 
        // public virtual BudgetLine BudgetLine { get; set; }
 

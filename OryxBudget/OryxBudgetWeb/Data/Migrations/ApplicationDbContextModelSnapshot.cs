@@ -13,7 +13,7 @@ namespace OryxBudgetWeb.Data.Migrations
         protected override void BuildModel(ModelBuilder modelBuilder)
         {
             modelBuilder
-                .HasAnnotation("ProductVersion", "1.1.1")
+                .HasAnnotation("ProductVersion", "1.1.2")
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.EntityFrameworkCore.IdentityRole", b =>
@@ -138,6 +138,8 @@ namespace OryxBudgetWeb.Data.Migrations
 
                     b.Property<bool>("EmailConfirmed");
 
+                    b.Property<bool>("Final");
+
                     b.Property<string>("FirstName");
 
                     b.Property<string>("LastName");
@@ -147,6 +149,8 @@ namespace OryxBudgetWeb.Data.Migrations
                     b.Property<bool>("LockoutEnabled");
 
                     b.Property<DateTimeOffset?>("LockoutEnd");
+
+                    b.Property<bool>("MalCom");
 
                     b.Property<string>("MemberRole");
 
@@ -167,6 +171,10 @@ namespace OryxBudgetWeb.Data.Migrations
                     b.Property<string>("Role");
 
                     b.Property<string>("SecurityStamp");
+
+                    b.Property<bool>("SubCom");
+
+                    b.Property<bool>("TecCom");
 
                     b.Property<bool>("TwoFactorEnabled");
 

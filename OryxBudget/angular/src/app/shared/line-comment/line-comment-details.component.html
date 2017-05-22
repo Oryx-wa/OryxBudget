@@ -3,11 +3,53 @@
     <div class="card-content">
       <div class="row">
         <div class="input-field col s12">
+          <div class="card-content">
+            <h5>{{title}} </h5>
+          </div>
+          <hr>
+          <div class="row" *ngIf="budgets$ | async; let budgets; else loading">
+            <div class="row" *ngFor="let item of budgets">
+              <div class="row lined">
+                <div class="col l2">
+                  <h6><b>Budget: </b></h6>
+                  <span>{{item.totalBudgetAmount | currency:'USD':true:'4.0-0'}} </span>
+                </div>
+                <div class="col l2">
+                  <h6><b>Budget USD:</b></h6>
+                  <span>{{item.totalAmountUSD | currency:'USD':true:'4.0-0'}}</span>
+                </div>
+                <div class="col l2 ">
+                  <h6><b>Budget LC:</b></h6>
+                  <span>{{item.totalAmountLC | currency:'NGN':true:'4.0-0'}}</span>
+
+                </div>
+                <div class="col l2">
+                  <h6><b>Actual: </b></h6>
+                  <span>{{item.actualBudgetAmount | currency:'USD':true:'4.0-0'}} </span>
+                </div>
+                <div class="col l2 ">
+                  <h6><b>Actual USD:</b></h6>
+                  <span>{{item.actualAmountLC | currency:'NGN':true:'4.0-0'}}</span>
+                </div>
+                <div class="col l2">
+                  <h6><b>Actual LC:</b></h6>
+                  <span>{{item.actualAmountUSD | currency:'USD':true:'4.0-0'}}</span>
+                </div>
+              </div>
+              <hr>
+            </div>
+          </div>
+          <ng-template #loading>Loading Operator Data...</ng-template>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="input-field col s12">
           <textarea class="materialize-textarea validate" formControlName="comment" name="comment">
             </textarea>
           <label for="comment" data-error="Please enter a valid name">Comment</label>
         </div>
-      </div>      
+      </div>
     </div>
   </div>
 </div>
