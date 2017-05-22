@@ -64,6 +64,11 @@ namespace Data.Configurations
             builder.Entity<Actual>().Property(m => m.UpdateDate).HasDefaultValueSql("getDate()");
             builder.Entity<ActualLog>().HasKey(c => new { c.Id, c.LogInstance });
 
+            builder.Entity<StatusHistory>().HasIndex(m => new { m.Id }).IsUnique();
+            builder.Entity<StatusHistory>().Property(m => m.CreateDate).HasDefaultValueSql("getDate()");
+            builder.Entity<StatusHistory>().Property(m => m.UpdateDate).HasDefaultValueSql("getDate()");
+            builder.Entity<StatusHistoryLog>().HasKey(c => new { c.Id, c.LogInstance });
+
         }
     }
 }

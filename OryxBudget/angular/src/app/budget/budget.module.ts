@@ -1,22 +1,30 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { OperatorDetailsComponent } from './operator-details.component';
-import { SharedModule } from './../shared/shared.module'
+import { AgGridModule } from 'ag-grid-angular/main';
+import { SharedModule } from './../shared/shared.module';
 
 import { BudgetInitialisationComponent } from './budget-initialisation.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { LineDetailsComponent } from './line-details.component';
-
+import { CurrencyComponent } from './../shared/renderers/currency.component';
+import { WordWrapComponent} from './../shared/renderers/word-wrap.component'
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     ReactiveFormsModule,
-    SharedModule
+    SharedModule,
+    AgGridModule.withComponents([
+      CurrencyComponent,
+      WordWrapComponent
+      ])
   ],
 
-  declarations: [OperatorDetailsComponent, BudgetInitialisationComponent, LineDetailsComponent]
+  declarations: [OperatorDetailsComponent, BudgetInitialisationComponent, LineDetailsComponent,
+  WordWrapComponent
+  ]
 
 })
 export class BudgetModule { }

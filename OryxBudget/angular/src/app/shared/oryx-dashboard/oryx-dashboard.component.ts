@@ -10,12 +10,16 @@ export class OryxDashboardComponent implements OnInit {
   @Input() operators: Operators[] = [];
   @Input() name = '';
   @Input() operatorId = '';
-  @Input() role = '';
+  @Input() role: any[] = [];
 
+  showNapims = false;
   constructor() { }
 
   ngOnInit() {
-    console.log(this.role)
+    console.log(this.operators);
+    if (this.role.indexOf('NAPIMS') !== -1) {
+      this.showNapims = true;
+    }
   }
 
 }

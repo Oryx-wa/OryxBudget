@@ -77,6 +77,24 @@ namespace OryxBudgetWeb
                     }
                 },
 
+                  new Client
+                {
+                    ClientId = "OryxBudgetClientCred",
+                    AllowedGrantTypes = GrantTypes.ClientCredentials,
+
+                    ClientSecrets =
+                    {
+                        new Secret("F621F470-9731-4A25-80EF-67A6F7C5F4B8".Sha256())
+                    },
+                     AllowedScopes = new List<string>
+                    {
+                       IdentityServerConstants.StandardScopes.OpenId,
+                        IdentityServerConstants.StandardScopes.Profile,
+                        "OryxBudget"
+                    }
+                },
+
+
                 // OpenID Connect hybrid flow and client credentials client (MVC)
                 new Client
                 {

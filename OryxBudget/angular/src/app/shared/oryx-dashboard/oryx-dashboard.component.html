@@ -1,5 +1,5 @@
 <br/>
-<div *ngIf="role==='Napims'" class="row">
+<div *ngIf="showNapims" class="row">
 
   <div class="container">
 
@@ -23,18 +23,18 @@
                 </div>
                 <div class="row">
                   <div class="col s5 ">
-                    Budget:
+                    Operator Budget:
                   </div>
                   <div class="col s7">
-                    <a [routerLink]="['/operatordetails',item.id]" routerLinkActive="active">{{item.totalBudget | currency:'USD':true:'4.0-0'}}</a>
+                    <a [routerLink]="['/operatordetails',item.id]" routerLinkActive="active">{{item.budget | currency:'USD':true:'4.0-0'}}</a>
                   </div>
                 </div>
                 <div class="row">
                   <div class="col s5 ">
-                    Actual :
+                    Operator Performance :
                   </div>
                   <div class="col s7">
-                     <a [routerLink]="['/employee/basicinfo']" routerLinkActive="active">{{item.totalActual | currency:'USD':true:'4.0-0'}}</a>
+                     <a [routerLink]="['/employee/basicinfo']" routerLinkActive="active">{{item.actual | currency:'USD':true:'4.0-0'}}</a>
                   </div>
                 </div>
               </div>

@@ -23,6 +23,7 @@ namespace Entities.Budgets
         public CommentStatus CommentStatus { get; set; }
         public string BudgetId { get; set; }
         public string Code { get; set; }
+        public BudgetStatus CommentType { get; set;  }
 
     }
 
@@ -45,6 +46,7 @@ namespace Entities.Budgets
         public CommentStatus CommentStatus { get; set; }
         public string BudgetId { get; set; }
         public string Code { get; set; }
+        public BudgetStatus CommentType { get; set; }
 
     }
 

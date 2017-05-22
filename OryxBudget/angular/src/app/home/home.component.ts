@@ -15,9 +15,10 @@ import { Operators } from './../models/operators';
 export class HomeComponent implements OnInit, OnChanges {
   public name = '';
   public operatorId = '';
-  public role = '';
+  public role = [];
   public operators$: Observable<Operators>;
- 
+  public showNapims = false;
+  public showOperator = false;
 
   constructor(private _router: Router,
     public securityService: SecurityService,
@@ -26,20 +27,24 @@ export class HomeComponent implements OnInit, OnChanges {
   }
 
   ngOnInit() {
-    console.log(this.securityService.role);
+    console.log(this.securityService.roles);
 
     if (this.securityService.IsAuthorized()) {
       this.name = this.securityService.name;
       this.operatorId = this.securityService.operatorId;
-      this.role = this.securityService.role;
+      this.role = this.securityService.roles;
 
-      if (this.role === 'Napims') {
+      if (this.role.indexOf('NAPIMS') !== -1) {
+        this.showNapims = true;
         const url = this.securityService.getUrl('Operator');
 
         this.operators$ = this._http.get(url, {
           headers: this.securityService.getHeaders(),
           body: ''
         }).map(res => res.json());
+      }
+      if (this.role.indexOf('Operator') !== -1) {
+        this.showOperator = true;
       }
     }
   }

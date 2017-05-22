@@ -7,6 +7,7 @@
 </nav>
 <div *ngIf="showComment === false" materialize class="container">
   <div class="card-content">
+    <!--
     <table class=" responsive-table">
       <thead>
         <tr>
@@ -15,23 +16,15 @@
           <th>Code</th>
           <th>Description</th>
           <th>
-            <div class="right">Budget</div>
+            <div class="right">Budget LC</div>
           </th>
           <th>
             <div class="right">Budget USD</div>
           </th>
           <th>
-            <div class="right">Budget LC</div>
+            <div class="right">Budget FC</div>
           </th>
-          <th>
-            <div class="right"> Actual</div>
-          </th>
-          <th>
-            <div class="right">Actual USD</div>
-          </th>
-          <th>
-            <div class="right">Actual LC</div>
-          </th>
+          
           <th>Comments</th>
           <th></th>
         </tr>
@@ -53,16 +46,8 @@
           </td>
           <td>
             <div class="right">{{parentCode.budgetLC | number:'4.0-0'}}</div>
-          </td>
-          <td>
-            <div class="right">{{parentCode.actual | number:'4.0-0'}}</div>
-          </td>
-          <td>
-            <div class="right">{{parentCode.actualLC | number:'4.0-0'}}</div>
-          </td>
-          <td>
-            <div class="right">{{parentCode.actualUSD | number:'4.0-0'}}</div>
-          </td>
+          </td>        
+          
           <td> <a class="waves-effect waves-light" (click)="getComments(parentCode.code)"><i class="material-icons right" >message</i> </a></td>
 
         </tr>
@@ -132,6 +117,20 @@
       </tbody>
       <ng-template #loading>Loading Operator Data...</ng-template>
     </table>
+    -->
+     <div class="row">
+                <ag-grid-angular style="width: 100%; height: 500px;" class="ag-material" 
+                  [gridOptions]="gridOptions" 
+                  [columnDefs]="columnDefs"
+                  [rowData]="rowData" groupHeaders 
+                  rowHeight="96" rowSelection="single" 
+                  (gridReady)="onReady($event)"
+                  >
+                </ag-grid-angular>
+    </div>
+    
+
+
   </div>
 
 </div>

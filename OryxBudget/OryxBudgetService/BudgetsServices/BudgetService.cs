@@ -70,14 +70,14 @@ namespace OryxBudgetService.BudgetsServices
                     OperatorId = op.Id.ToString(),
                     PeriodId = periodId,
                     Status = "A",
-                    TotalBudgetAmount = 0,
+                    OpBudgetFC = 0,
                     UpdateDate = DateTime.Now,
                     UserSign = "e317f2dc-deb1-4463-8b67-7f435211d652",
-                    TotalAmountLC = 0,
-                    TotalAmountUSD = 0,
-                    ActualAmount = 0,
-                    ActualAmountLC = 0,
-                    ActualAmountUSD = 0
+                    OpBudgetLC = 0,
+                    OpBudgetUSD = 0,
+                    OpActualFC = 0,
+                    OpActualLC = 0,
+                    OpActualUSD = 0
                 };
 
                 base.Add(budget);
@@ -96,9 +96,9 @@ namespace OryxBudgetService.BudgetsServices
             var records = csv.GetRecords<BudgetLine>().ToList();
 
             var budget = this.Get(id);
-            decimal totalUSD = budget.TotalAmountUSD;
-            decimal totalLC = budget.TotalAmountLC;
-            decimal total = budget.TotalBudgetAmount;
+            decimal totalUSD = budget.OpBudgetUSD;
+            decimal totalLC = budget.OpBudgetLC;
+            decimal total = budget.OpBudgetFC;
 
             foreach (var item in records)
             {
@@ -113,15 +113,15 @@ namespace OryxBudgetService.BudgetsServices
                 item.UpdateDate = System.DateTime.Now;
                 item.CreateDate = System.DateTime.Now;
                 budget.BudgetLines.Add(item);
-                totalLC += item.AmountLC;
-                totalUSD += item.AmountUSD;
-                total += item.AmountLCInUSD + item.AmountUSD;
+                totalLC += item.OpBudgetLC;
+                totalUSD += item.OpBudgetUSD;
+                total += item.OpBudgetLCInUSD + item.OpBudgetUSD;
 
             };
 
-            budget.TotalAmountLC = totalLC;
-            budget.TotalAmountUSD = totalUSD;
-            budget.TotalBudgetAmount = total;
+            budget.OpBudgetLC = totalLC;
+            budget.OpBudgetUSD = totalUSD;
+            budget.OpBudgetFC = total;
 
             base.Update(budget);
             this.SaveChanges();
@@ -144,9 +144,9 @@ namespace OryxBudgetService.BudgetsServices
             var records = csv.GetRecords<Actual>().ToList();
 
             var budget = this.Get(id);
-            decimal totalUSD = budget.ActualAmountUSD;
-            decimal totalLC = budget.ActualAmountLC;
-            decimal total = budget.ActualAmount;
+            decimal totalUSD = budget.OpActualUSD;
+            decimal totalLC = budget.OpActualLC;
+            decimal total = budget.OpActualFC;
 
             foreach (var item in records)
             {
@@ -162,15 +162,15 @@ namespace OryxBudgetService.BudgetsServices
                 item.CreateDate = System.DateTime.Now;
 
                 budget.Actuals.Add(item);
-                totalLC += item.AmountLC;
-                totalUSD += item.AmountUSD;
-                total += item.AmountLCInUSD + item.AmountUSD;
+                totalLC += item.OpActualLC;
+                totalUSD += item.OpActualUSD;
+                total += item.OpActualLCInUSD + item.OpActualUSD;
 
             };
 
-            budget.ActualAmountLC = totalLC;
-            budget.ActualAmountUSD = totalUSD;
-            budget.ActualAmount = total;
+            budget.OpActualLC = totalLC;
+            budget.OpActualUSD = totalUSD;
+            budget.OpActualFC = total;
 
             base.Update(budget);
             this.SaveChanges();
@@ -202,48 +202,9 @@ namespace OryxBudgetService.BudgetsServices
 
         public IEnumerable<BudgetCodeView> GetBudgetDetails(string id)
         {
-            IList<BudgetCodeView> bd = new List<BudgetCodeView>();
-
-            var budgetActuals = _repository.GetBudgetActuals(id);
-            var budgetCodes = _budgetCodeService.GetAll()
-                .Select(c => new { c.Code, c.Description, c.Level, c.FatherNum, c.Postable });
-
-            var budgetView = from b in budgetActuals
-                             join c in budgetCodes
-                             on b.Code equals c.Code
-                             select new
-                             {
-                                 Code = c.Code,
-                                 Description = c.Description,
-                                 FatherNum = c.FatherNum,
-                                 Level = c.Level,
-                                 Budget = b.Budget,
-                                 BudgetLC = b.BudgetLC,
-                                 BudgetUSD = b.BudgetUSD,
-                                 Actual = b.Actual,
-                                 ActualLC = b.ActualLC,
-                                 ActualUSD = b.ActualUSD
-                             };
-
-
-
-            foreach (var item in budgetView)
-            {
-                BudgetCodeView b = new BudgetCodeView();
-                b.Actual = item.Actual;
-                b.ActualLC = item.ActualLC;
-                b.ActualUSD = item.ActualUSD;
-                b.Budget = item.Budget;
-                b.BudgetLC = item.BudgetLC;
-                b.BudgetUSD = item.BudgetUSD;
-                b.Code = item.Code;
-                b.Description = item.Description;
-                b.FatherNum = item.FatherNum;
-                b.Level = Convert.ToInt16(item.Level);
-                b.BudgetId = id;
-                bd.Add(b);
-            }
-            return bd.ToList();
+            
+          return _repository.GetBudgetLines(id);
+            
         }
 
         public IEnumerable<LineComment> GetLineComment(string id, string code)

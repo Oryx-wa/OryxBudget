@@ -9,9 +9,10 @@ using Entities.Budgets;
 namespace Data.Migrations
 {
     [DbContext(typeof(OryxBudgetContext))]
-    partial class OryxBudgetContextModelSnapshot : ModelSnapshot
+    [Migration("20170520095047_Budget25")]
+    partial class Budget25
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
             modelBuilder
                 .HasAnnotation("ProductVersion", "1.1.2")
@@ -837,60 +838,6 @@ namespace Data.Migrations
                     b.HasKey("Id", "LogInstance");
 
                     b.ToTable("PeriodLogs");
-                });
-
-            modelBuilder.Entity("Entities.Budgets.StatusHistory", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<DateTime>("CreateDate")
-                        .ValueGeneratedOnAdd()
-                        .HasDefaultValueSql("getDate()");
-
-                    b.Property<int>("ItemStatus");
-
-                    b.Property<string>("Status")
-                        .HasMaxLength(1);
-
-                    b.Property<DateTime>("UpdateDate")
-                        .ValueGeneratedOnAdd()
-                        .HasDefaultValueSql("getDate()");
-
-                    b.Property<string>("UserSign")
-                        .IsRequired()
-                        .HasMaxLength(50);
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("Id")
-                        .IsUnique();
-
-                    b.ToTable("StatusHistory");
-                });
-
-            modelBuilder.Entity("Entities.Budgets.StatusHistoryLog", b =>
-                {
-                    b.Property<Guid>("Id");
-
-                    b.Property<int>("LogInstance");
-
-                    b.Property<DateTime>("CreateDate");
-
-                    b.Property<int>("ItemStatus");
-
-                    b.Property<string>("Status")
-                        .HasMaxLength(1);
-
-                    b.Property<DateTime>("UpdateDate");
-
-                    b.Property<string>("UserSign")
-                        .IsRequired()
-                        .HasMaxLength(50);
-
-                    b.HasKey("Id", "LogInstance");
-
-                    b.ToTable("StatusHistoryLog");
                 });
 
             modelBuilder.Entity("Entities.Operators.ContactPerson", b =>

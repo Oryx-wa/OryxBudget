@@ -20,11 +20,17 @@
           <img src="{{op.imageSrc}}" alt="" />
           <span class="{{op.name}}"></span>
         </div>
+        <div *ngIf="budgets$ | async; let budgets;">
+          <h6> 
+            <a class="waves-effect waves-light" (click)="getLineDetails(budgets[0].id)">{{budgets[0].description}}</a>
+          </h6>
+        </div>
       </div>
       <ng-template #loading1>Loading Operator Data...</ng-template>
       <div class="row">
         <div class="container">
           <div class="card-content">
+            <!--
             <table class=" responsive-table">
               <thead>
                 <tr>
@@ -55,6 +61,42 @@
               </tbody>
               <ng-template #loading>Loading Operator Data...</ng-template>
             </table>
+            -->
+            <div *ngIf="budgets$ | async; let budgets; else loading">
+              <div class="row">
+                <form materialize class="col s12">
+                  <div class="input-field col s2">
+                    <input type="checkbox" name="subCom" id="subCom" [checked]="showSubCom$ | async " (change)="showSubCom$.next($event.target.checked)"
+                    />
+                    <label for="subCom">Sub Committee</label>
+                  </div>
+                  <div class="input-field col s2">
+                    <input type="checkbox" name="tecCom" id="tecCom" [checked]="showTecCom$ | async " (change)="showTecCom$.next($event.target.checked)"
+                    />
+                    <label for="tecCom">Technical Committee</label>
+                  </div>
+                 
+                  <div class="input-field col s3">
+                    <input type="checkbox" name="malCom" id="malCom" [checked]="showMalCom$ | async " (change)="showMalCom$.next($event.target.checked)"
+                    />
+                    <label for="malCom">Management Committee</label>
+                  </div>
+                  <div class="input-field col s2">
+                    <input type="checkbox" name="final" id="final" [checked]="showFinal$ | async " (change)="showFinal$.next($event.target.checked)"
+                    />
+                    <label for="final">Final Budget</label>
+                  </div>
+                </form>
+              </div>
+              <div class="row">
+                <ag-grid-angular style="width: 100%; height: 120px;" class="ag-material" [gridOptions]="gridOptions" [columnDefs]="columnDefs"
+                  [rowData]="budgets" groupHeaders                    
+                  toolPanelSuppressGroups 
+                  toolPanelSuppressValues
+                  rowHeight="48" rowSelection="single" (gridReady)="onReady($event)">
+                </ag-grid-angular>
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -65,8 +107,8 @@
 <div *ngIf="showDetail" class="row">
   <div class="container">
     <div *ngIf="lines$ | async;let lines; else loading2">
-      <app-line-details [lines]="lines" (comments)="getComments($event)" [commentSaved]="commentSaved$"
-         [lineComments]="lineComments$ | async"  (saveComments)="saveComments($event)">
+      <app-line-details [lines]="lines" (comments)="getComments($event)" [commentSaved]="commentSaved$" [lineComments]="lineComments$ | async"
+        (saveComments)="saveComments($event)" [roles]="roles">
       </app-line-details>
     </div>
   </div>

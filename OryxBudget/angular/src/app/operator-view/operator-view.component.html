@@ -11,16 +11,15 @@
       <ng-template #loading1>Loading Operator Data...</ng-template>
       <div class="container">
         <div class="card-content">
+          <!--
           <table class=" responsive-table">
             <thead>
               <tr>
                 <th>Description</th>
-                <th>Budget </th>
-                <th>Budget USD</th>
+                <th>Budget USD </th>
                 <th>Budget LC</th>
-                <th>Total Actual </th>
-                <th>Actual USD</th>
-                <th>Actual LC</th>
+                <th>Budget FC</th>
+                
                 <th>Details</th>
                 <th>Upload</th>
               </tr>
@@ -29,12 +28,10 @@
             <tbody *ngIf="budgets$ | async; let budgets; else loading">
               <tr *ngFor="let item of budgets">
                 <td><a>{{item.description}}</a></td>
-                <td>{{item.totalBudgetAmount | currency:'USD':true:'4.0-0'}}</td>
-                 <td>{{item.totalAmountUSD | currency:'USD':true:'4.0-0'}}</td>
-                <td>{{item.totalAmountLC | currency:'NGN':true:'4.0-0'}}</td>               
-                <td>{{item.actualBudgetAmount | currency:'USD':true:'4.0-0'}}</td>
-                <td>{{item.actualAmountLC | currency:'NGN':true:'4.0-0'}}</td>
-                <td>{{item.actualAmountUSD | currency:'USD':true:'4.0-0'}}</td>
+                <td>{{item.opBudgetLC | currency:'USD':true:'4.0-0'}}</td>
+                 <td>{{item.opBudgetUSD | currency:'USD':true:'4.0-0'}}</td>
+                <td>{{item.opBudgetFC | currency:'NGN':true:'4.0-0'}}</td>              
+                
                 <td> <a class="waves-effect waves-light"><i class="material-icons right" (click)="showDetails(item.id)">details</i> </a></td>
                 <td> <a class="waves-effect waves-light" (click)="upload(item.id, item.description)"><i class="material-icons right">file_upload</i></a></td>
 
@@ -43,6 +40,21 @@
             </tbody>
             <ng-template #loading>Loading Operator Data...</ng-template>
           </table>
+          -->
+          <div  *ngIf="budgets$ | async; let budgets; else loading">
+           <ag-grid-angular style="width: 50%; height: 350px;" class="ag-material"
+                     [gridOptions]="gridOptions"
+                     [columnDefs]="columnDefs"                    
+                     [rowData]="budgets"                     
+                     groupHeaders
+                     suppressRowClickSelection
+                     toolPanelSuppressGroups
+                     toolPanelSuppressValues
+                     rowHeight="48"
+                     rowSelection="multiple">
+            </ag-grid-angular>
+          </div>
+          <ng-template #loading>Loading Operator Data...</ng-template>
         </div>
       </div>
     </div>

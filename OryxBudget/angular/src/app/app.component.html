@@ -1,3 +1,6 @@
 <app-main-nav></app-main-nav>
+<div class="row" *ngIf="securityService.IsAuthorized()">
+    <h6> Welcome {{name}} Roles:{{securityService.roles}} </h6>}
+</div>
 <router-outlet></router-outlet>
 
