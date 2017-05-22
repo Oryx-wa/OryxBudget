@@ -91,8 +91,7 @@ export class FileuploaderComponent implements OnInit {
       url: this.securityService.getUrl(this.url),
       method: 'POST',
       data: this.data,
-      concurrency: 1, // set sequential uploading of files with concurrency 1,
-      headers: {['Authorization']: 'Bearer ' + this.securityService.GetToken()}
+      concurrency: 1, // set sequential uploading of files with concurrency 1
 
     }
 

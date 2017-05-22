@@ -14,13 +14,19 @@ namespace Data.Migrations
         protected override void BuildModel(ModelBuilder modelBuilder)
         {
             modelBuilder
-                .HasAnnotation("ProductVersion", "1.1.2")
+                .HasAnnotation("ProductVersion", "1.1.1")
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
             modelBuilder.Entity("Entities.Budgets.Actual", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd();
+
+                    b.Property<decimal>("AmountLC");
+
+                    b.Property<decimal>("AmountLCInUSD");
+
+                    b.Property<decimal>("AmountUSD");
 
                     b.Property<Guid>("BudgetId");
 
@@ -35,31 +41,7 @@ namespace Data.Migrations
                     b.Property<string>("Description")
                         .HasMaxLength(150);
 
-                    b.Property<decimal>("FinalActualFC");
-
-                    b.Property<decimal>("FinalActualLC");
-
-                    b.Property<decimal>("FinalActualUSD");
-
-                    b.Property<int>("LineStatus");
-
-                    b.Property<decimal>("MalComActualFC");
-
-                    b.Property<decimal>("MalComActualLC");
-
-                    b.Property<decimal>("MalComActualUSD");
-
-                    b.Property<decimal>("OpActualFC");
-
-                    b.Property<decimal>("OpActualLC");
-
-                    b.Property<decimal>("OpActualLCInUSD");
-
-                    b.Property<decimal>("OpActualUSD");
-
                     b.Property<DateTime>("PeriodEnd");
-
-                    b.Property<string>("PeriodId");
 
                     b.Property<DateTime>("PeriodStart");
 
@@ -69,17 +51,7 @@ namespace Data.Migrations
                     b.Property<string>("Status")
                         .HasMaxLength(1);
 
-                    b.Property<decimal>("SubComActualFC");
-
-                    b.Property<decimal>("SubComActualLC");
-
-                    b.Property<decimal>("SubComActualUSD");
-
-                    b.Property<decimal>("TecComActualFC");
-
-                    b.Property<decimal>("TecComActualLC");
-
-                    b.Property<decimal>("TecComActualUSD");
+                    b.Property<decimal>("TotalAmount");
 
                     b.Property<DateTime>("UpdateDate")
                         .ValueGeneratedOnAdd()
@@ -124,8 +96,6 @@ namespace Data.Migrations
 
                     b.Property<DateTime>("PeriodEnd");
 
-                    b.Property<string>("PeriodId");
-
                     b.Property<DateTime>("PeriodStart");
 
                     b.Property<string>("Remarks")
@@ -152,14 +122,16 @@ namespace Data.Migrations
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<int>("ActualStatus");
+                    b.Property<decimal>("ActualAmount");
+
+                    b.Property<decimal>("ActualAmountLC");
+
+                    b.Property<decimal>("ActualAmountUSD");
 
                     b.Property<string>("AdditionalStatement")
                         .HasMaxLength(300);
 
                     b.Property<string>("BudgetLineCategoryId");
-
-                    b.Property<int>("BudgetStatus");
 
                     b.Property<string>("CategoryId");
 
@@ -171,42 +143,6 @@ namespace Data.Migrations
                         .IsRequired()
                         .HasMaxLength(100);
 
-                    b.Property<decimal>("FinalActualFC");
-
-                    b.Property<decimal>("FinalActualLC");
-
-                    b.Property<decimal>("FinalActualUSD");
-
-                    b.Property<decimal>("FinalBudgetFC");
-
-                    b.Property<decimal>("FinalBudgetLC");
-
-                    b.Property<decimal>("FinalBudgetUSD");
-
-                    b.Property<decimal>("MalComActualFC");
-
-                    b.Property<decimal>("MalComActualLC");
-
-                    b.Property<decimal>("MalComActualUSD");
-
-                    b.Property<decimal>("MalComBudgetFC");
-
-                    b.Property<decimal>("MalComBudgetLC");
-
-                    b.Property<decimal>("MalComBudgetUSD");
-
-                    b.Property<decimal>("OpActualFC");
-
-                    b.Property<decimal>("OpActualLC");
-
-                    b.Property<decimal>("OpActualUSD");
-
-                    b.Property<decimal>("OpBudgetFC");
-
-                    b.Property<decimal>("OpBudgetLC");
-
-                    b.Property<decimal>("OpBudgetUSD");
-
                     b.Property<string>("OperatorId")
                         .IsRequired()
                         .HasMaxLength(50);
@@ -217,29 +153,11 @@ namespace Data.Migrations
                     b.Property<string>("Status")
                         .HasMaxLength(1);
 
-                    b.Property<decimal>("SubComActualFC");
+                    b.Property<decimal>("TotalAmountLC");
 
-                    b.Property<decimal>("SubComActualLC");
+                    b.Property<decimal>("TotalAmountUSD");
 
-                    b.Property<decimal>("SubComActualUSD");
-
-                    b.Property<decimal>("SubComBudgetFC");
-
-                    b.Property<decimal>("SubComBudgetLC");
-
-                    b.Property<decimal>("SubComBudgetUSD");
-
-                    b.Property<decimal>("TecComActualFC");
-
-                    b.Property<decimal>("TecComActualLC");
-
-                    b.Property<decimal>("TecComActualUSD");
-
-                    b.Property<decimal>("TecComBudgetFC");
-
-                    b.Property<decimal>("TecComBudgetLC");
-
-                    b.Property<decimal>("TecComBudgetUSD");
+                    b.Property<decimal>("TotalBudgetAmount");
 
                     b.Property<DateTime>("UpdateDate")
                         .ValueGeneratedOnAdd()
@@ -379,6 +297,16 @@ namespace Data.Migrations
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd();
 
+                    b.Property<decimal>("ActualAmount");
+
+                    b.Property<decimal>("AmountLC");
+
+                    b.Property<decimal>("AmountLCInUSD");
+
+                    b.Property<decimal>("AmountUSD");
+
+                    b.Property<decimal>("BudgetAmount");
+
                     b.Property<Guid>("BudgetId");
 
                     b.Property<Guid?>("BudgetLogId");
@@ -399,44 +327,10 @@ namespace Data.Migrations
                         .IsRequired()
                         .HasMaxLength(100);
 
-                    b.Property<decimal>("FinalBudgetFC");
-
-                    b.Property<decimal>("FinalBudgetLC");
-
-                    b.Property<decimal>("FinalBudgetUSD");
-
-                    b.Property<int>("LineStatus");
-
-                    b.Property<decimal>("MalComBudgetFC");
-
-                    b.Property<decimal>("MalComBudgetLC");
-
-                    b.Property<decimal>("MalComBudgetUSD");
-
-                    b.Property<decimal>("OpBudgetFC");
-
-                    b.Property<decimal>("OpBudgetLC");
-
-                    b.Property<decimal>("OpBudgetLCInUSD");
-
-                    b.Property<decimal>("OpBudgetUSD");
-
                     b.Property<int?>("RowNumber");
 
                     b.Property<string>("Status")
                         .HasMaxLength(1);
-
-                    b.Property<decimal>("SubComBudgetFC");
-
-                    b.Property<decimal>("SubComBudgetLC");
-
-                    b.Property<decimal>("SubComBudgetUSD");
-
-                    b.Property<decimal>("TecComBudgetFC");
-
-                    b.Property<decimal>("TecComBudgetLC");
-
-                    b.Property<decimal>("TecComBudgetUSD");
 
                     b.Property<DateTime>("UpdateDate")
                         .ValueGeneratedOnAdd()
@@ -464,6 +358,16 @@ namespace Data.Migrations
 
                     b.Property<int>("LogInstance");
 
+                    b.Property<decimal>("ActualAmount");
+
+                    b.Property<decimal>("AmountLC");
+
+                    b.Property<decimal>("AmountLCInUSD");
+
+                    b.Property<decimal>("AmountUSD");
+
+                    b.Property<decimal>("BudgetAmount");
+
                     b.Property<Guid>("BudgetId");
 
                     b.Property<string>("CategoryId");
@@ -478,44 +382,10 @@ namespace Data.Migrations
                         .IsRequired()
                         .HasMaxLength(100);
 
-                    b.Property<decimal>("FinalBudgetFC");
-
-                    b.Property<decimal>("FinalBudgetLC");
-
-                    b.Property<decimal>("FinalBudgetUSD");
-
-                    b.Property<int>("LineStatus");
-
-                    b.Property<decimal>("MalComBudgetFC");
-
-                    b.Property<decimal>("MalComBudgetLC");
-
-                    b.Property<decimal>("MalComBudgetUSD");
-
-                    b.Property<decimal>("OpBudgetFC");
-
-                    b.Property<decimal>("OpBudgetLC");
-
-                    b.Property<decimal>("OpBudgetLCInUSD");
-
-                    b.Property<decimal>("OpBudgetUSD");
-
                     b.Property<int?>("RowNumber");
 
                     b.Property<string>("Status")
                         .HasMaxLength(1);
-
-                    b.Property<decimal>("SubComBudgetFC");
-
-                    b.Property<decimal>("SubComBudgetLC");
-
-                    b.Property<decimal>("SubComBudgetUSD");
-
-                    b.Property<decimal>("TecComBudgetFC");
-
-                    b.Property<decimal>("TecComBudgetLC");
-
-                    b.Property<decimal>("TecComBudgetUSD");
 
                     b.Property<DateTime>("UpdateDate");
 
@@ -534,12 +404,14 @@ namespace Data.Migrations
 
                     b.Property<int>("LogInstance");
 
-                    b.Property<int>("ActualStatus");
+                    b.Property<decimal>("ActualAmountLC");
+
+                    b.Property<decimal>("ActualAmountUSD");
+
+                    b.Property<decimal>("ActualBudgetAmount");
 
                     b.Property<string>("AdditionalStatement")
                         .HasMaxLength(300);
-
-                    b.Property<int>("BudgetStatus");
 
                     b.Property<string>("CategoryId");
 
@@ -548,42 +420,6 @@ namespace Data.Migrations
                     b.Property<string>("Description")
                         .IsRequired()
                         .HasMaxLength(100);
-
-                    b.Property<decimal>("FinalActualFC");
-
-                    b.Property<decimal>("FinalActualLC");
-
-                    b.Property<decimal>("FinalActualUSD");
-
-                    b.Property<decimal>("FinalBudgetFC");
-
-                    b.Property<decimal>("FinalBudgetLC");
-
-                    b.Property<decimal>("FinalBudgetUSD");
-
-                    b.Property<decimal>("MalComActualFC");
-
-                    b.Property<decimal>("MalComActualLC");
-
-                    b.Property<decimal>("MalComActualUSD");
-
-                    b.Property<decimal>("MalComBudgetFC");
-
-                    b.Property<decimal>("MalComBudgetLC");
-
-                    b.Property<decimal>("MalComBudgetUSD");
-
-                    b.Property<decimal>("OpActualFC");
-
-                    b.Property<decimal>("OpActualLC");
-
-                    b.Property<decimal>("OpActualUSD");
-
-                    b.Property<decimal>("OpBudgetFC");
-
-                    b.Property<decimal>("OpBudgetLC");
-
-                    b.Property<decimal>("OpBudgetUSD");
 
                     b.Property<string>("OperatorId")
                         .IsRequired()
@@ -594,29 +430,11 @@ namespace Data.Migrations
                     b.Property<string>("Status")
                         .HasMaxLength(1);
 
-                    b.Property<decimal>("SubComActualFC");
+                    b.Property<decimal>("TotalAmount");
 
-                    b.Property<decimal>("SubComActualLC");
+                    b.Property<decimal>("TotalAmountLC");
 
-                    b.Property<decimal>("SubComActualUSD");
-
-                    b.Property<decimal>("SubComBudgetFC");
-
-                    b.Property<decimal>("SubComBudgetLC");
-
-                    b.Property<decimal>("SubComBudgetUSD");
-
-                    b.Property<decimal>("TecComActualFC");
-
-                    b.Property<decimal>("TecComActualLC");
-
-                    b.Property<decimal>("TecComActualUSD");
-
-                    b.Property<decimal>("TecComBudgetFC");
-
-                    b.Property<decimal>("TecComBudgetLC");
-
-                    b.Property<decimal>("TecComBudgetUSD");
+                    b.Property<decimal>("TotalAmountUSD");
 
                     b.Property<DateTime>("UpdateDate");
 
@@ -702,18 +520,12 @@ namespace Data.Migrations
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<string>("BudgetId");
-
-                    b.Property<Guid?>("BudgetId1");
-
-                    b.Property<string>("Code");
+                    b.Property<Guid>("BudgetLineId");
 
                     b.Property<string>("Comment")
                         .HasMaxLength(355);
 
                     b.Property<int>("CommentStatus");
-
-                    b.Property<int>("CommentType");
 
                     b.Property<DateTime>("CreateDate")
                         .ValueGeneratedOnAdd()
@@ -732,7 +544,7 @@ namespace Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("BudgetId1");
+                    b.HasIndex("BudgetLineId");
 
                     b.HasIndex("Id")
                         .IsUnique();
@@ -746,16 +558,12 @@ namespace Data.Migrations
 
                     b.Property<int>("LogInstance");
 
-                    b.Property<string>("BudgetId");
-
-                    b.Property<string>("Code");
+                    b.Property<Guid>("BudgetLineId");
 
                     b.Property<string>("Comment")
                         .HasMaxLength(355);
 
                     b.Property<int>("CommentStatus");
-
-                    b.Property<int>("CommentType");
 
                     b.Property<DateTime>("CreateDate");
 
@@ -769,6 +577,8 @@ namespace Data.Migrations
                         .HasMaxLength(50);
 
                     b.HasKey("Id", "LogInstance");
+
+                    b.HasAlternateKey("Id");
 
                     b.ToTable("LineCommentLog");
                 });
@@ -837,60 +647,6 @@ namespace Data.Migrations
                     b.HasKey("Id", "LogInstance");
 
                     b.ToTable("PeriodLogs");
-                });
-
-            modelBuilder.Entity("Entities.Budgets.StatusHistory", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<DateTime>("CreateDate")
-                        .ValueGeneratedOnAdd()
-                        .HasDefaultValueSql("getDate()");
-
-                    b.Property<int>("ItemStatus");
-
-                    b.Property<string>("Status")
-                        .HasMaxLength(1);
-
-                    b.Property<DateTime>("UpdateDate")
-                        .ValueGeneratedOnAdd()
-                        .HasDefaultValueSql("getDate()");
-
-                    b.Property<string>("UserSign")
-                        .IsRequired()
-                        .HasMaxLength(50);
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("Id")
-                        .IsUnique();
-
-                    b.ToTable("StatusHistory");
-                });
-
-            modelBuilder.Entity("Entities.Budgets.StatusHistoryLog", b =>
-                {
-                    b.Property<Guid>("Id");
-
-                    b.Property<int>("LogInstance");
-
-                    b.Property<DateTime>("CreateDate");
-
-                    b.Property<int>("ItemStatus");
-
-                    b.Property<string>("Status")
-                        .HasMaxLength(1);
-
-                    b.Property<DateTime>("UpdateDate");
-
-                    b.Property<string>("UserSign")
-                        .IsRequired()
-                        .HasMaxLength(50);
-
-                    b.HasKey("Id", "LogInstance");
-
-                    b.ToTable("StatusHistoryLog");
                 });
 
             modelBuilder.Entity("Entities.Operators.ContactPerson", b =>
@@ -1132,9 +888,10 @@ namespace Data.Migrations
 
             modelBuilder.Entity("Entities.Budgets.LineComment", b =>
                 {
-                    b.HasOne("Entities.Budgets.Budget")
+                    b.HasOne("Entities.Budgets.BudgetLine")
                         .WithMany("LineComments")
-                        .HasForeignKey("BudgetId1");
+                        .HasForeignKey("BudgetLineId")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("Entities.Operators.ContactPerson", b =>

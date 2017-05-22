@@ -9,10 +9,10 @@ import { NgModule } from '@angular/core';
 const appRoutes: Routes = [
   { path: '', redirectTo: 'home', pathMatch: 'full' },
   // { path: 'login', component: LoginComponent },
-  { path: 'home', component: HomeComponent, canLoad: [AuthGuard] },
+  { path: 'home', component: HomeComponent },
   { path: 'operatordetails/:id', component: OperatorDetailsComponent },
   { path: 'unauthorised', component: UnauthorisedComponent },
-  { path: 'budgetInitialisation', component: BudgetInitialisationComponent }
+   { path: 'budgetInitialisation', component: BudgetInitialisationComponent }
 
 ];
 

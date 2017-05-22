@@ -9,7 +9,6 @@ using CsvHelper;
 using OryxBudgetService.CsvMapping;
 using Data.Repositories.BudgetsRepositories;
 using OryxBudgetService.Utilties;
-using Data.Repositories.OperatorsRepositories;
 
 namespace OryxBudgetService.BudgetsServices
 {
@@ -18,18 +17,13 @@ namespace OryxBudgetService.BudgetsServices
         private readonly BudgetRepository _repository;
         private readonly BudgetLineRepository _lineRepository;
         private readonly BudgetCodeService _budgetCodeService;
-        private readonly LineCommentRepository _lineCommentRepository;
-        private readonly OperatorRepository _operatorRepository;
 
         public BudgetService(BudgetRepository repository, BudgetCodeService budgetCodeService,
-            BudgetLineRepository lineRepository, IBudgetUnitOfWork unitOfWork, LineCommentRepository lineCommentRepository,
-            OperatorRepository operatorRepository) : base(repository, unitOfWork)
+            BudgetLineRepository lineRepository, IBudgetUnitOfWork unitOfWork) : base(repository, unitOfWork)
         {
             _repository = repository;
             _lineRepository = lineRepository;
             _budgetCodeService = budgetCodeService;
-            _lineCommentRepository = lineCommentRepository;
-            _operatorRepository = operatorRepository;
         }
 
         public override void Update(Budget entity)
@@ -56,35 +50,6 @@ namespace OryxBudgetService.BudgetsServices
 
         }
 
-        public void InitializeBudgetForAllOperators(string periodId, string description)
-        {
-            var operators = _operatorRepository.GetAll()
-                .Where(o => o.Status.Equals("A")).ToList();
-
-            foreach(var op in operators)
-            {
-                var budget = new Budget
-                {
-                    CreateDate = DateTime.Now,
-                    Description = op.Name + "_" + description,
-                    OperatorId = op.Id.ToString(),
-                    PeriodId = periodId,
-                    Status = "A",
-                    OpBudgetFC = 0,
-                    UpdateDate = DateTime.Now,
-                    UserSign = "e317f2dc-deb1-4463-8b67-7f435211d652",
-                    OpBudgetLC = 0,
-                    OpBudgetUSD = 0,
-                    OpActualFC = 0,
-                    OpActualLC = 0,
-                    OpActualUSD = 0
-                };
-
-                base.Add(budget);
-                base.SaveChanges();
-            }
-        }
-
         public void UploadBudget(string fileName, Guid id)
         {
             var file = System.IO.File.OpenRead(fileName);
@@ -96,9 +61,9 @@ namespace OryxBudgetService.BudgetsServices
             var records = csv.GetRecords<BudgetLine>().ToList();
 
             var budget = this.Get(id);
-            decimal totalUSD = budget.OpBudgetUSD;
-            decimal totalLC = budget.OpBudgetLC;
-            decimal total = budget.OpBudgetFC;
+            decimal totalUSD = budget.TotalAmountUSD;
+            decimal totalLC = budget.TotalAmountLC;
+            decimal total = budget.TotalBudgetAmount;
 
             foreach (var item in records)
             {
@@ -113,15 +78,15 @@ namespace OryxBudgetService.BudgetsServices
                 item.UpdateDate = System.DateTime.Now;
                 item.CreateDate = System.DateTime.Now;
                 budget.BudgetLines.Add(item);
-                totalLC += item.OpBudgetLC;
-                totalUSD += item.OpBudgetUSD;
-                total += item.OpBudgetLCInUSD + item.OpBudgetUSD;
+                totalLC += item.AmountLC;
+                totalUSD += item.AmountUSD;
+                total += item.AmountLCInUSD + item.AmountUSD;
 
             };
 
-            budget.OpBudgetLC = totalLC;
-            budget.OpBudgetUSD = totalUSD;
-            budget.OpBudgetFC = total;
+            budget.TotalAmountLC = totalLC;
+            budget.TotalAmountUSD = totalUSD;
+            budget.TotalBudgetAmount = total;
 
             base.Update(budget);
             this.SaveChanges();
@@ -144,9 +109,9 @@ namespace OryxBudgetService.BudgetsServices
             var records = csv.GetRecords<Actual>().ToList();
 
             var budget = this.Get(id);
-            decimal totalUSD = budget.OpActualUSD;
-            decimal totalLC = budget.OpActualLC;
-            decimal total = budget.OpActualFC;
+            decimal totalUSD = budget.ActualAmountUSD;
+            decimal totalLC = budget.ActualAmountLC;
+            decimal total = budget.ActualAmount;
 
             foreach (var item in records)
             {
@@ -162,15 +127,15 @@ namespace OryxBudgetService.BudgetsServices
                 item.CreateDate = System.DateTime.Now;
 
                 budget.Actuals.Add(item);
-                totalLC += item.OpActualLC;
-                totalUSD += item.OpActualUSD;
-                total += item.OpActualLCInUSD + item.OpActualUSD;
+                totalLC += item.AmountLC;
+                totalUSD += item.AmountUSD;
+                total += item.AmountLCInUSD + item.AmountUSD;
 
             };
 
-            budget.OpActualLC = totalLC;
-            budget.OpActualUSD = totalUSD;
-            budget.OpActualFC = total;
+            budget.ActualAmountLC = totalLC;
+            budget.ActualAmountUSD = totalUSD;
+            budget.ActualAmount = total;
 
             base.Update(budget);
             this.SaveChanges();
@@ -202,31 +167,49 @@ namespace OryxBudgetService.BudgetsServices
 
         public IEnumerable<BudgetCodeView> GetBudgetDetails(string id)
         {
-            
-          return _repository.GetBudgetLines(id);
-            
-        }
+            IList<BudgetCodeView> bd = new List<BudgetCodeView>();
 
-        public IEnumerable<LineComment> GetLineComment(string id, string code)
-        {
-            return _lineCommentRepository.GetAll().Where(c => c.BudgetId.ToString() == id && c.Code == code);
-        }
+            var budgetActuals = _repository.GetBudgetActuals(id);
+            var budgetCodes = _budgetCodeService.GetAll()
+                .Select(c => new { c.Code, c.Description, c.Level, c.FatherNum, c.Postable });
 
-        public void AddLineComments (IEnumerable<LineComment> lineComments)
-        {
-            foreach (var item in lineComments)
+            var budgetView = from b in budgetActuals
+                             join c in budgetCodes
+                             on b.Code equals c.Code
+                             select new
+                             {
+                                 Code = c.Code,
+                                 Description = c.Description,
+                                 FatherNum = c.FatherNum,
+                                 Level = c.Level,
+                                 Budget = b.Budget,
+                                 BudgetLC = b.BudgetLC,
+                                 BudgetUSD = b.BudgetUSD,
+                                 Actual = b.Actual,
+                                 ActualLC = b.ActualLC,
+                                 ActualUSD = b.ActualUSD
+                             };
+
+
+
+            foreach (var item in budgetView)
             {
-                if (item.Id == Guid.Empty)
-                {
-                    this._lineCommentRepository.Add(item);
-                }
-                else
-                {
-                    this._lineCommentRepository.Update(item);
-                }
-               
+                BudgetCodeView b = new BudgetCodeView();
+                b.Actual = item.Actual;
+                b.ActualLC = item.ActualLC;
+                b.ActualUSD = item.ActualUSD;
+                b.Budget = item.Budget;
+                b.BudgetLC = item.BudgetLC;
+                b.BudgetUSD = item.BudgetUSD;
+                b.Code = item.Code;
+                b.Description = item.Description;
+                b.FatherNum = item.FatherNum;
+                b.Level = Convert.ToInt16(item.Level);
+                bd.Add(b);
             }
+            return bd.ToList();
         }
+
     }
 
 

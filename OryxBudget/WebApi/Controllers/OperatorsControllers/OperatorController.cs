@@ -75,8 +75,8 @@ namespace OryxWebApi.Controllers.OperatorsControllers
                 decimal totalActual = 0;
                 if (budget != null)
                 {
-                    totalbudget = budget.OpBudgetFC;
-                    totalActual = budget.OpBudgetUSD;
+                    totalbudget = budget.TotalBudgetAmount;
+                    totalActual = budget.TotalAmountUSD;
                 }
                 var cm = new
                 {
@@ -84,11 +84,12 @@ namespace OryxWebApi.Controllers.OperatorsControllers
                     Name = op.Name,
                     Code = op.Code,
                     ImageSrc = op.ImageSrc,
-                    Budget = totalbudget,
-                    Actual = totalActual
+                    TotalBudget = totalbudget,
+                    TotalActual = totalActual
                 };
 
                 ret.Add(cm);
+
 
             }
 
@@ -114,8 +115,8 @@ namespace OryxWebApi.Controllers.OperatorsControllers
                 Name = op.Name,
                 Code = op.Code,
                 ImageSrc = op.ImageSrc,
-                TotalBudget = (budget== null) ? 0: budget.OpBudgetFC,
-                TotalActual = (budget == null) ? 0 : budget.OpBudgetUSD
+                TotalBudget = (budget== null) ? 0: budget.TotalBudgetAmount,
+                TotalActual = (budget == null) ? 0 : budget.TotalAmountUSD
             });
 
             return ret;

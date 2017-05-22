@@ -5,9 +5,8 @@
     </div>
   </div>
 </nav>
-<div *ngIf="showComment === false" materialize class="container">
+<div class="container">
   <div class="card-content">
-    <!--
     <table class=" responsive-table">
       <thead>
         <tr>
@@ -16,15 +15,23 @@
           <th>Code</th>
           <th>Description</th>
           <th>
-            <div class="right">Budget LC</div>
+            <div class="right">Budget</div>
           </th>
           <th>
             <div class="right">Budget USD</div>
           </th>
           <th>
-            <div class="right">Budget FC</div>
+            <div class="right">Budget LC</div>
           </th>
-          
+          <th>
+            <div class="right"> Actual</div>
+          </th>
+          <th>
+            <div class="right">Actual USD</div>
+          </th>
+          <th>
+            <div class="right">Actual LC</div>
+          </th>
           <th>Comments</th>
           <th></th>
         </tr>
@@ -32,8 +39,8 @@
 
       <tbody>
         <tr *ngIf="level === 3">
-          <td>
-            <a class="waves-effect waves-light" (click)="filterLines(parentCode.code, true)">{{parentCode.code}}</a>
+          <td>           
+              <a class="waves-effect waves-light" (click)="filterLines(parentCode.code, true)">{{parentCode.code}}</a>           
           </td>
           <td> </td>
           <td> </td>
@@ -46,16 +53,24 @@
           </td>
           <td>
             <div class="right">{{parentCode.budgetLC | number:'4.0-0'}}</div>
-          </td>        
-          
-          <td> <a class="waves-effect waves-light" (click)="getComments(parentCode.code)"><i class="material-icons right" >message</i> </a></td>
+          </td>
+          <td>
+            <div class="right">{{parentCode.actual | number:'4.0-0'}}</div>
+          </td>
+          <td>
+            <div class="right">{{parentCode.actualLC | number:'4.0-0'}}</div>
+          </td>
+          <td>
+            <div class="right">{{parentCode.actualUSD | number:'4.0-0'}}</div>
+          </td>
+          <td> <a class="waves-effect waves-light"><i class="material-icons right" >message</i> </a></td>
 
         </tr>
         <tr *ngIf="level >= 2 ">
           <td *ngIf="level ===3 "> </td>
-          <td *ngIf="level  === 2 || level === 3  ">
-            <a class="waves-effect waves-light" (click)="filterLines(selectedCode.code, true)">{{selectedCode.code}}</a>
-          </td>
+          <td *ngIf="level  === 2 || level === 3  ">            
+              <a class="waves-effect waves-light" (click)="filterLines(selectedCode.code, true)">{{selectedCode.code}}</a>           
+          </td>          
           <td> </td>
           <td> {{selectedCode.description}} </td>
           <td>
@@ -76,13 +91,13 @@
           <td>
             <div class="right">{{selectedCode.actualUSD | number:'4.0-0'}}</div>
           </td>
-          <td> <a class="waves-effect waves-light" (click)="getComments(selectedCode.code)"><i class="material-icons right" >message</i> </a></td>
+          <td> <a class="waves-effect waves-light"><i class="material-icons right" >message</i> </a></td>
 
         </tr>
         <tr *ngFor="let item of filtered">
-          <td *ngIf="level === 3 "> </td>
+          <td *ngIf="level === 3 ">  </td>
           <td *ngIf="level  === 2 || level === 3"> </td>
-          <td>
+          <td >
             <div *ngIf="item.level<3;else level3">
               <a class="waves-effect waves-light" (click)="filterLines(item.code, true)">{{item.code}}</a>
             </div>
@@ -110,41 +125,12 @@
           <td>
             <div class="right">{{item.actualUSD | number:'4.0-0'}}</div>
           </td>
-          <td> <a class="waves-effect waves-light" (click)="getComments(item.code)"><i class="material-icons right" >message</i> </a></td>
+          <td> <a class="waves-effect waves-light"><i class="material-icons right" >message</i> </a></td>
 
         </tr>
 
       </tbody>
       <ng-template #loading>Loading Operator Data...</ng-template>
     </table>
-    -->
-     <div class="row">
-                <ag-grid-angular style="width: 100%; height: 500px;" class="ag-material" 
-                  [gridOptions]="gridOptions" 
-                  [columnDefs]="columnDefs"
-                  [rowData]="rowData" groupHeaders 
-                  rowHeight="96" rowSelection="single" 
-                  (gridReady)="onReady($event)"
-                  >
-                </ag-grid-angular>
-    </div>
-    
-
-
   </div>
-
-</div>
-<!--
-<div  *ngIf="showComment === true" class="container">
-  <div>
-    <app-line-comment [budgetLines]="line" [lineComments]="lineComments">
-    </app-line-comment>
-  </div>
-</div>
--->
-<!-- Modal Structure -->
-<div class="container" *ngIf="showComment === true">  
-    <app-line-comment [line]="line" [lineComments]="lineComments" (update)="updateComments($event)">
-    </app-line-comment> 
-  <ng-template #loading2>Loading Comments ...</ng-template>
 </div>

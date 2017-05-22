@@ -47,14 +47,14 @@ export class AuthGuard implements CanActivate, CanActivateChild, CanLoad, OnInit
 
   checkLogin(url: string): boolean {
 
-    if (this.securityService.IsAuthorized()) {
+    if (this.securityService.authenticated) {
       return true;
     } else {
       // Store the attempted URL for redirecting
       this.securityService.redirectUrl = url;
 
       // Navigate to the login page with extras
-      this.router.navigate(['/unauthorised'], { queryParams: { returnUrl: url } });
+      this.router.navigate(['/login'], { queryParams: { returnUrl: url } });
       return false;
     }
   }

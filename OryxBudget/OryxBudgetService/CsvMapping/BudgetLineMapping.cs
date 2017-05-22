@@ -14,11 +14,11 @@ namespace OryxBudgetService.CsvMapping
         {
 
             
-            Map(m => m.Code).Index(0);
-            Map(m => m.Description).Index(1);            
-            Map(m => m.OpBudgetLC).Index(2);
-            Map(m => m.OpBudgetLCInUSD).Index(4);
-            Map(m => m.OpBudgetUSD).Index(3);
+            Map(m => m.Code);
+            Map(m => m.Description);            
+            Map(m => m.AmountLC);
+            Map(m => m.AmountLCInUSD);
+            Map(m => m.AmountUSD);
         }
 
        
@@ -30,11 +30,11 @@ namespace OryxBudgetService.CsvMapping
         {
 
             
-            Map(m => m.Code).Index(0);
-            Map(m => m.Description).Index(1);
-            Map(m => m.OpActualLC).Index(2);
-            Map(m => m.OpActualLCInUSD).Index(4);
-            Map(m => m.OpActualUSD).Index(3);
+            Map(m => m.Code);
+            Map(m => m.Description);
+            Map(m => m.AmountLC);
+            Map(m => m.AmountLCInUSD);
+            Map(m => m.AmountUSD);
             Map(m => m.PeriodStart).ConvertUsing(row => DateTime.Parse(row.GetField("PeriodStart"), new CultureInfo("en-GB"))); 
             Map(m => m.PeriodEnd).ConvertUsing(row => DateTime.Parse(row.GetField("PeriodEnd"), new CultureInfo("en-GB")));
             Map(m => m.Remarks);
