@@ -1,10 +1,10 @@
-<nav>
+<!--<nav>
   <div class="nav-wrapper teal accent-4">
     <div class="col s12">
       <a class="breadcrumb waves-effect waves-light" *ngFor="let item of history" (click)="filterLines(item, false)">{{item}}</a>
     </div>
   </div>
-</nav>
+</nav>-->
 <div *ngIf="showComment === false" materialize class="container">
   <div class="card-content">
     <!--
@@ -123,7 +123,7 @@
                   [gridOptions]="gridOptions" 
                   [columnDefs]="columnDefs"
                   [rowData]="rowData" groupHeaders 
-                  rowHeight="96" rowSelection="single" 
+                  rowHeight="48" rowSelection="single" 
                   (gridReady)="onReady($event)"
                   >
                 </ag-grid-angular>
@@ -134,6 +134,14 @@
   </div>
 
 </div>
+<app-dialog [(visible)]="showDialog">
+  <div class="container" *ngIf="showComment === true">  
+    <app-line-comment [line]="line" [lineComments]="lineComments" (update)="updateComments($event)">
+    </app-line-comment> 
+  <ng-template #loading2>Loading Comments ...</ng-template>
+</div>
+  <button (click)="showDialog = !showDialog" class="btn">Close</button>
+</app-dialog>
 <!--
 <div  *ngIf="showComment === true" class="container">
   <div>

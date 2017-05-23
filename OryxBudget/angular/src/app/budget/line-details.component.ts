@@ -6,7 +6,9 @@ import { MaterializeAction } from 'angular2-materialize';
 import { GridOptions } from 'ag-grid/main';
 import { Budgets, Operators, BudgetLines, LineComments } from './../models';
 import { CurrencyComponent } from './../shared/renderers/currency.component';
-import { WordWrapComponent } from './../shared/renderers/word-wrap.component'
+import { WordWrapComponent } from './../shared/renderers/word-wrap.component';
+import { TextComponent } from './../shared/renderers/text.component';
+import { ChildMessageComponent} from './../shared/renderers/child-message.component';
 
 @Component({
   selector: 'app-line-details',
@@ -33,7 +35,8 @@ export class LineDetailsComponent implements OnInit, OnChanges {
   public showTecCom$: BehaviorSubject<boolean> = new BehaviorSubject(false);
   public showMalCom$: BehaviorSubject<boolean> = new BehaviorSubject(false);
   public showFinal$: BehaviorSubject<boolean> = new BehaviorSubject(false);
-  private colWidth = 110;
+  public showOp$: BehaviorSubject<boolean> = new BehaviorSubject(false);
+  private colWidth = 120;
   public columnDefs: any[];
 
   public gridOptions: GridOptions;
@@ -53,6 +56,9 @@ export class LineDetailsComponent implements OnInit, OnChanges {
 
     this.createColumnDefs();
     this.gridOptions = <GridOptions>{
+      context: {
+                componentParent: this
+            },
       getNodeChildDetails: getNodeChildDetails,
     };
 
@@ -71,6 +77,9 @@ export class LineDetailsComponent implements OnInit, OnChanges {
           break;
         case 'Final':
           this.showFinal$.next(true);
+          break;
+        case 'Operator':
+          this.showOp$.next(true);
           break;
         default:
           break;
@@ -110,9 +119,7 @@ export class LineDetailsComponent implements OnInit, OnChanges {
   
     }
   */
-  showDetails(code: string) {
-
-  }
+  showDetails(code: string) { }
 
   getComments(code: string) {
     this.showComment = true;
@@ -129,10 +136,14 @@ export class LineDetailsComponent implements OnInit, OnChanges {
   }
 
   structureData() {
+    const data = _.assign(this.lines, { comment: '' })
     const level1: BudgetLines[] = this.lines.filter(line => line.level === '1');
     const level2: BudgetLines[] = this.lines.filter(line => line.level === '2');
     const level3: BudgetLines[] = this.lines.filter(line => line.level === '3');
     let leve2Data: any[] = [];
+
+
+
     level2.map(line => {
       const children = level3.filter(l2 => l2.fatherNum === line.code);
       const bd = _.assign(line, { level2: line.code, level3: children });
@@ -162,7 +173,7 @@ export class LineDetailsComponent implements OnInit, OnChanges {
             headerName: 'Description', field: 'description',
             width: 300, pinned: true,
             // cellRendererFramework: WordWrapComponent
-            cellStyle: {  'word-wrap': 'break-word' }
+            cellStyle: { 'word-wrap': 'break-word' }
           }
         ]
       },
@@ -174,13 +185,13 @@ export class LineDetailsComponent implements OnInit, OnChanges {
             headerName: 'Budget LC', field: 'opBudgetLC',
             width: this.colWidth, pinned: true,
             cellRendererFramework: CurrencyComponent,
-            currency: 'NGN'
+            currency: 'NGN', hidden: true
           },
           {
             headerName: 'Budget USD', field: 'opBudgetUSD',
             width: this.colWidth, pinned: true,
             cellRendererFramework: CurrencyComponent,
-            currency: 'USD'
+            currency: 'USD', hidden: true
           },
           {
             headerName: 'Budget FC', field: 'opBudgetFC',
@@ -197,20 +208,20 @@ export class LineDetailsComponent implements OnInit, OnChanges {
             headerName: 'Budget LC', field: 'subComBudgetLC',
             width: this.colWidth, pinned: true,
             cellRendererFramework: CurrencyComponent,
-            currency: 'NGN'
+            currency: 'NGN', hidden: true, editable: true
           },
           {
             headerName: 'Budget USD', field: 'subComBudgetUSD',
             width: this.colWidth, pinned: true,
             cellRendererFramework: CurrencyComponent,
-            currency: 'USD'
+            currency: 'USD', hidden: true, editable: true
           },
           {
             headerName: 'Budget FC', field: 'subComBudgetFC',
             width: this.colWidth, pinned: true,
             cellRendererFramework: CurrencyComponent,
-            currency: 'USD'
-          },
+            currency: 'USD', editable: true
+          }
         ]
       },
       {
@@ -220,25 +231,20 @@ export class LineDetailsComponent implements OnInit, OnChanges {
             headerName: 'Budget LC', field: 'tecComBudgetLC',
             width: this.colWidth, pinned: true,
             cellRendererFramework: CurrencyComponent,
-            currency: 'NGN',
-            editable: true
+            currency: 'NGN', hidden: true, editable: true
+
           },
           {
             headerName: 'Budget USD', field: 'tecComBudgetUSD',
             width: this.colWidth, pinned: true,
             cellRendererFramework: CurrencyComponent,
-            currency: 'USD'
+            currency: 'USD', hidden: true, editable: true
           },
           {
             headerName: 'Budget FC', field: 'tecComBudgetFC',
             width: this.colWidth, pinned: true,
             cellRendererFramework: CurrencyComponent,
-            currency: 'USD'
-          },
-          {
-            headerName: 'Comment',
-            width: this.colWidth, pinned: true,
-            cellTemplate: '<div><a href="#">Visible text</a></div>'
+            currency: 'USD', editable: true
           }
         ]
       },
@@ -287,6 +293,20 @@ export class LineDetailsComponent implements OnInit, OnChanges {
             currency: 'USD'
           },
         ]
+      },
+      {
+        headerName: 'Comments',
+        children: [
+
+          {
+            headerName: 'Comment', field: 'id',
+            width: 400, pinned: true,
+            // cellTemplate: '<div><a href="#">Visible text</a></div>',
+            editable: true, 
+            cellRendererFramework: ChildMessageComponent
+
+          }
+        ]
       }
 
     ];
@@ -323,12 +343,17 @@ export class LineDetailsComponent implements OnInit, OnChanges {
       // this.gridOptions.api.sizeColumnsToFit();
     });
 
-
-
-    // this.gridOptions.api.sizeColumnsToFit();
-
+    this.showOp$.subscribe(checked => {
+      this.gridOptions.columnApi.setColumnsVisible(
+        ['finalBudgetFC', 'malComBudgetFC', 'tecComBudgetFC', 'subComBudgetFC'],
+        checked);
+    });
 
   }
+
+   public methodFromParent(id: string) {
+       this.getComments(id);
+    }
 
 }
 
