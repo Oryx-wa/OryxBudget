@@ -9,10 +9,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { LineDetailsComponent } from './line-details.component';
 import { CurrencyComponent } from './../shared/renderers/currency.component';
-import { WordWrapComponent } from './../shared/renderers/word-wrap.component';
-import { TextComponent } from './../shared/renderers/text.component';
-import { ChildMessageComponent } from './../shared/renderers/child-message.component';
-import { DialogComponent } from './../shared/dialog/dialog.component';
+import { WordWrapComponent} from './../shared/renderers/word-wrap.component'
 @NgModule({
   imports: [
     CommonModule,
@@ -21,16 +18,13 @@ import { DialogComponent } from './../shared/dialog/dialog.component';
     SharedModule,
     AgGridModule.withComponents([
       CurrencyComponent,
-      WordWrapComponent,
-      TextComponent,
-      ChildMessageComponent
-    ])
+      WordWrapComponent
+      ])
   ],
 
   declarations: [OperatorDetailsComponent, BudgetInitialisationComponent, LineDetailsComponent,
-    WordWrapComponent, TextComponent, LineDetailsComponent, ChildMessageComponent
-  ],
-  exports: [LineDetailsComponent]
+  WordWrapComponent
+  ]
 
 })
 export class BudgetModule { }

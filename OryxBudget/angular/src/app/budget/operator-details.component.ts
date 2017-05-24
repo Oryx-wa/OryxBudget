@@ -32,7 +32,7 @@ export class OperatorDetailsComponent implements OnInit {
   public showFinal$: BehaviorSubject<boolean> = new BehaviorSubject(false);
   private colWidth = 90;
   public budgetDesc = '';
-  public roles: any[] = [];
+  private roles: any[] = [];
 
   showDetail = false;
   constructor(
@@ -97,7 +97,6 @@ export class OperatorDetailsComponent implements OnInit {
     this.budgets$.subscribe(budgets => {
       if (budgets) {
         this.budgetDesc = budgets[0].description;
-        this.getLineDetails(budgets[0].id);
       }
     });
 
