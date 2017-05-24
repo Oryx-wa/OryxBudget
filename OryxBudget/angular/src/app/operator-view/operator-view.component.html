@@ -1,40 +1,64 @@
 <div class="row">
-  <div >
-    <div class=" card  horizontal">
-      <div class="card-image  def-dashboard-image">
-        <div *ngIf="operator$ | async; let op; else loading1">
-          <img src="{{op.imageSrc}}" alt="" />
-          <span class="{{op.name}}"></span>
-          <!--<a class="waves-effect waves-light" (click)="getOperator()"><i class="material-icons right">refresh</i></a>-->
+  <div class=" card  horizontal">
+    <div class="row">
+      <div class="col l2">
+        <div class="card-image  def-dashboard-image">
+          <div *ngIf="operator$ | async; let op; else loading1">
+            <img src="{{op.imageSrc}}" alt="" />
+            <span class="{{op.name}}"></span>
+            <!--<a class="waves-effect waves-light" (click)="getOperator()"><i class="material-icons right">refresh</i></a>-->
+          </div>
         </div>
       </div>
       <ng-template #loading1>Loading Operator Data...</ng-template>
-      <div class="row">
-        <div>
-          <div class="card-content">
-            <div class="row">
-              <div *ngIf="budgets$ | async; let budgets; else loading">
-                <ag-grid-angular style="width: 100%; height: 120px;" class="ag-material" [gridOptions]="gridOptions" [columnDefs]="columnDefs"
-                  [rowData]="budgets" groupHeaders suppressRowClickSelection toolPanelSuppressGroups toolPanelSuppressValues
-                  rowHeight="48" rowSelection="multiple">
-                </ag-grid-angular>
+      <div class="col l12">
+        <div class="card-content">
+          <div class="row">
+            <div *ngIf="budgets$ | async; let budgets; else loading">
+              <div class="row">
+                <form materialize class="col s12">
+                  <div class="input-field col s2">
+                    <input type="checkbox" name="subCom" id="subCom" [checked]="showSubCom$ | async " (change)="showSubCom$.next($event.target.checked)"
+                    />
+                    <label for="subCom">Sub Committee</label>
+                  </div>
+                  <div class="input-field col s2">
+                    <input type="checkbox" name="tecCom" id="tecCom" [checked]="showTecCom$ | async " (change)="showTecCom$.next($event.target.checked)"
+                    />
+                    <label for="tecCom">Technical Committee</label>
+                  </div>
+                  <div class="input-field col s3">
+                    <input type="checkbox" name="malCom" id="malCom" [checked]="showMalCom$ | async " (change)="showMalCom$.next($event.target.checked)"
+                    />
+                    <label for="malCom">Management Committee</label>
+                  </div>
+                  <div class="input-field col s2">
+                    <input type="checkbox" name="final" id="final" [checked]="showFinal$ | async " (change)="showFinal$.next($event.target.checked)"
+                    />
+                    <label for="final">Final Budget</label>
+                  </div>
+                </form>
               </div>
-               <ng-template #loading>Loading Operator Data...</ng-template>
-            </div>           
-            <div class="row">
-              <div >
-                <div *ngIf="lines$ | async;let lines; else loading2">
-                  <app-line-details [lines]="lines" (comments)="getComments($event)" [commentSaved]="commentSaved$" [lineComments]="lineComments$ | async"
-                    (saveComments)="saveComments($event)" [roles]="roles">
-                  </app-line-details>
-                </div>
-              </div>
-              <ng-template #loading2>Loading Details ...</ng-template>
+              <ag-grid-angular style="width: 100%; height: 120px;" class="ag-material" [gridOptions]="gridOptions" [columnDefs]="columnDefs"
+                [rowData]="budgets" groupHeaders suppressRowClickSelection toolPanelSuppressGroups toolPanelSuppressValues
+                rowHeight="48" rowSelection="multiple" (gridReady)="onReady($event)">
+              </ag-grid-angular>
             </div>
+            <ng-template #loading>Loading Operator Data...</ng-template>
           </div>
         </div>
       </div>
     </div>
+  </div>
+  <div class="row">
+    <div>
+      <div *ngIf="lines$ | async;let lines; else loading2">
+        <app-line-details [lines]="lines" (comments)="getComments($event)" [commentSaved]="commentSaved$" [lineComments]="lineComments$ | async"
+          (saveComments)="saveComments($event)" [roles]="roles">
+        </app-line-details>
+      </div>
+    </div>
+    <ng-template #loading2>Loading Details ...</ng-template>
   </div>
   <div *ngIf="displayMode == displayModeEnum.Details" class="row">
 
