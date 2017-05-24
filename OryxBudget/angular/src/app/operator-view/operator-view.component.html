@@ -1,60 +1,37 @@
 <div class="row">
-  <div class="container ">
+  <div >
     <div class=" card  horizontal">
       <div class="card-image  def-dashboard-image">
         <div *ngIf="operator$ | async; let op; else loading1">
           <img src="{{op.imageSrc}}" alt="" />
           <span class="{{op.name}}"></span>
-          <a   class="waves-effect waves-light" (click)="getOperator()"><i class="material-icons right">refresh</i></a>
+          <!--<a class="waves-effect waves-light" (click)="getOperator()"><i class="material-icons right">refresh</i></a>-->
         </div>
       </div>
       <ng-template #loading1>Loading Operator Data...</ng-template>
-      <div class="container">
-        <div class="card-content">
-          <!--
-          <table class=" responsive-table">
-            <thead>
-              <tr>
-                <th>Description</th>
-                <th>Budget USD </th>
-                <th>Budget LC</th>
-                <th>Budget FC</th>
-                
-                <th>Details</th>
-                <th>Upload</th>
-              </tr>
-            </thead>
-
-            <tbody *ngIf="budgets$ | async; let budgets; else loading">
-              <tr *ngFor="let item of budgets">
-                <td><a>{{item.description}}</a></td>
-                <td>{{item.opBudgetLC | currency:'USD':true:'4.0-0'}}</td>
-                 <td>{{item.opBudgetUSD | currency:'USD':true:'4.0-0'}}</td>
-                <td>{{item.opBudgetFC | currency:'NGN':true:'4.0-0'}}</td>              
-                
-                <td> <a class="waves-effect waves-light"><i class="material-icons right" (click)="showDetails(item.id)">details</i> </a></td>
-                <td> <a class="waves-effect waves-light" (click)="upload(item.id, item.description)"><i class="material-icons right">file_upload</i></a></td>
-
-              </tr>
-
-            </tbody>
-            <ng-template #loading>Loading Operator Data...</ng-template>
-          </table>
-          -->
-          <div  *ngIf="budgets$ | async; let budgets; else loading">
-           <ag-grid-angular style="width: 50%; height: 350px;" class="ag-material"
-                     [gridOptions]="gridOptions"
-                     [columnDefs]="columnDefs"                    
-                     [rowData]="budgets"                     
-                     groupHeaders
-                     suppressRowClickSelection
-                     toolPanelSuppressGroups
-                     toolPanelSuppressValues
-                     rowHeight="48"
-                     rowSelection="multiple">
-            </ag-grid-angular>
+      <div class="row">
+        <div>
+          <div class="card-content">
+            <div class="row">
+              <div *ngIf="budgets$ | async; let budgets; else loading">
+                <ag-grid-angular style="width: 100%; height: 120px;" class="ag-material" [gridOptions]="gridOptions" [columnDefs]="columnDefs"
+                  [rowData]="budgets" groupHeaders suppressRowClickSelection toolPanelSuppressGroups toolPanelSuppressValues
+                  rowHeight="48" rowSelection="multiple">
+                </ag-grid-angular>
+              </div>
+               <ng-template #loading>Loading Operator Data...</ng-template>
+            </div>           
+            <div class="row">
+              <div >
+                <div *ngIf="lines$ | async;let lines; else loading2">
+                  <app-line-details [lines]="lines" (comments)="getComments($event)" [commentSaved]="commentSaved$" [lineComments]="lineComments$ | async"
+                    (saveComments)="saveComments($event)" [roles]="roles">
+                  </app-line-details>
+                </div>
+              </div>
+              <ng-template #loading2>Loading Details ...</ng-template>
+            </div>
           </div>
-          <ng-template #loading>Loading Operator Data...</ng-template>
         </div>
       </div>
     </div>
@@ -67,13 +44,13 @@
     <div class="container">
       <div class="col s4 ">
         <div class="card ">
-          <ul materialize="tabs" [materializeParams]="tabSelectionParams" class="tabs">            
-              <li class="tab col s6">
-                <a (click)="setUploadType('Budget')" class="waves-effect waves-light"> Budget </a>
-              </li>
-              <li class="tab col s6">
-                <a (click)="setUploadType('Actual')" class=" waves-effect waves-light"> Actual </a>
-              </li>    
+          <ul materialize="tabs" [materializeParams]="tabSelectionParams" class="tabs">
+            <li class="tab col s6">
+              <a (click)="setUploadType('Budget')" class="waves-effect waves-light"> Budget </a>
+            </li>
+            <li class="tab col s6">
+              <a (click)="setUploadType('Actual')" class=" waves-effect waves-light"> Actual </a>
+            </li>
           </ul>
         </div>
       </div>

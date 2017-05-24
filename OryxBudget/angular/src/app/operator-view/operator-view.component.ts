@@ -1,10 +1,11 @@
 import { Component, OnInit, Input, OnChanges } from '@angular/core';
 import { GridOptions } from 'ag-grid/main';
 
-import { Budgets } from './../models/budget';
-import { Operators } from './../models/operators';
-import { SecurityService } from './../login/security.service';
+import { Budgets, Operators, BudgetLines, LineComments } from './../models';
+import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { Observable } from 'rxjs/Observable';
+import { SecurityService } from './../login/security.service';
+
 import { Router, ActivatedRoute, Params } from '@angular/router';
 import { Http, URLSearchParams } from '@angular/http';
 import { DisplayModeEnum } from './../shared/shared-enum.enum';
@@ -18,9 +19,13 @@ export class OperatorViewComponent implements OnInit, OnChanges {
 
   public name = '';
   public operatorId = '';
-  public role: any;
+  public roles: any[] = [];
   budgets$: Observable<Budgets[]>;
   operator$: Observable<Operators>;
+  lines$: Observable<BudgetLines[]>;
+  lineComments$: Observable<LineComments[]>;
+  line$: Observable<BudgetLines>;
+  commentSaved$: BehaviorSubject<boolean> = new BehaviorSubject(true);
   public displayMode: DisplayModeEnum;
   public displayModeEnum = DisplayModeEnum;
   public data: any;
@@ -29,7 +34,7 @@ export class OperatorViewComponent implements OnInit, OnChanges {
   private budgetDesc = '';
   public columnDefs: any[];
   public gridOptions: GridOptions;
-
+  showDetail = false;
 
   constructor(private route: ActivatedRoute,
     private router: Router,
@@ -44,7 +49,8 @@ export class OperatorViewComponent implements OnInit, OnChanges {
     if (this.securityService.IsAuthorized()) {
       this.name = this.securityService.name;
       this.operatorId = this.securityService.operatorId;
-      this.role = this.securityService.roles;
+      this.roles = this.securityService.roles;
+      console.log(this.roles)
       this.getOperator();
     }
   }
@@ -76,7 +82,12 @@ export class OperatorViewComponent implements OnInit, OnChanges {
       params: params1
     }).map(res => res.json());
     //this.budgets$.subscribe(b => console.log(b));
-
+    this.budgets$.subscribe(budgets => {
+      if (budgets) {
+        this.budgetDesc = budgets[0].description;
+        this.getLineDetails(budgets[0].id);
+      }
+    });
 
   }
 
@@ -137,7 +148,21 @@ export class OperatorViewComponent implements OnInit, OnChanges {
     ];
   }
 
+  getLineDetails(id: string) {
 
+    this.showDetail = true;
+    const url = this.securityService.getUrl('Budget/GetBudgetDetails');
+    const params1: URLSearchParams = new URLSearchParams();
+    params1.append('id', id);
+
+    this.lines$ = this._http.get(url, {
+      headers: this.securityService.getHeaders(),
+      body: '',
+      params: params1
+    }).map(res => res.json());
+    this.commentSaved$.next(true);
+
+  }
 
 
 }
