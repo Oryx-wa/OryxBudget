@@ -23,6 +23,7 @@ export class LineDetailsComponent implements OnInit, OnChanges {
   @Input() commentSaved: Observable<boolean>;
   @Input() roles: any[] = [];
 
+
   modalActions = new EventEmitter<string | MaterializeAction>();
   filtered: BudgetLines[] = [];
   selectedCode: BudgetLines;
@@ -30,6 +31,7 @@ export class LineDetailsComponent implements OnInit, OnChanges {
   level: number;
   showComment = false;
   line: BudgetLines;
+  role: string;
 
   public showSubCom$: BehaviorSubject<boolean> = new BehaviorSubject(false);
   public showTecCom$: BehaviorSubject<boolean> = new BehaviorSubject(false);
@@ -67,7 +69,7 @@ export class LineDetailsComponent implements OnInit, OnChanges {
     this.roles.map(role => {
       switch (role) {
         case 'SubCom':
-          this.showSubCom$.next(true);
+          this.showSubCom$.next(true);          
           break;
         case 'TecCom':
           this.showTecCom$.next(true);
@@ -122,16 +124,18 @@ export class LineDetailsComponent implements OnInit, OnChanges {
   showDetails(code: string) { }
 
   getComments(code: string) {
+    this.line = this.lines.filter(bd => bd.code === code)[0];
+    console.log(this.line);
     this.showComment = true;
     // this.comments.emit({ code: this.selectedCode.code, budgetId: this.selectedCode.budgetId });
-    this.line = this.lines.filter(bd => bd.code === code)[0];
+   
     this.comments.emit(this.line);
     // this.modalActions.emit({ action: 'modal', params: ['open'] });
 
   }
 
-  updateComments(comments: any) {
-    const data = { data: comments, code: this.line.code, budgetId: this.line.budgetId };
+  updateComments(budegetLine: any) {
+    const data = { data: budegetLine.comments, code: this.line.code, budgetId: this.line.budgetId, line: budegetLine.line };
     this.saveComments.emit(data);
   }
 

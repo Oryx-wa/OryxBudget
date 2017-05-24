@@ -3,8 +3,8 @@ import {ICellRendererAngularComp} from 'ag-grid-angular/main';
 
 @Component({
     selector: 'app-child-cell',
-    template: `<span><button  class="wave-effect wave-light btn btn-small"
-    style="height: 30px" (click)="invokeParentMethod()">Comments</button></span>`
+    template: `<span><a class="waves-effect waves-light"
+     (click)="invokeParentMethod()"><i class="material-icons right" >message</i></a></span>`
 })
 export class ChildMessageComponent implements ICellRendererAngularComp {
     public params: any;
