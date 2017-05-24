@@ -30,7 +30,7 @@ export class OperatorDetailsComponent implements OnInit {
   public showTecCom$: BehaviorSubject<boolean> = new BehaviorSubject(false);
   public showMalCom$: BehaviorSubject<boolean> = new BehaviorSubject(false);
   public showFinal$: BehaviorSubject<boolean> = new BehaviorSubject(false);
-  private colWidth = 90;
+  private colWidth = 120;
   public budgetDesc = '';
   public roles: any[] = [];
 
@@ -104,7 +104,7 @@ export class OperatorDetailsComponent implements OnInit {
   }
 
   getLineDetails(id: string) {
-    
+
     this.showDetail = true;
     const url = this.securityService.getUrl('Budget/GetBudgetDetails');
     const params1: URLSearchParams = new URLSearchParams();
@@ -134,21 +134,20 @@ export class OperatorDetailsComponent implements OnInit {
 
   }
 
-  saveComments(comments: any) {
+  saveComments(data: any) {
     const url = this.securityService.getUrl('Budget/AddLineComment');
     const params1: URLSearchParams = new URLSearchParams();
-    params1.append('budgetId', comments.budgetId);
-    params1.append('code', comments.code);
-    console.log(JSON.stringify(comments.data));
+    params1.append('budgetId', data.budgetId);
+    params1.append('code', data.code);
+    console.log(JSON.stringify(data.data));
     const ret = this._http.post(url,
-      JSON.stringify(comments.data), {
+      { comments: JSON.stringify(data.data), budgetline: JSON.stringify(data.line) }, {
         headers: this.securityService.getHeaders(),
         search: params1
       })
       .map(res => res.json())
       .subscribe();
     this.commentSaved$.next(true);
-
   }
 
   private createColumnDefs() {
@@ -318,7 +317,7 @@ export class OperatorDetailsComponent implements OnInit {
       // this.gridOptions.api.sizeColumnsToFit();
     });
 
-    
+
 
     // this.gridOptions.api.sizeColumnsToFit();
 

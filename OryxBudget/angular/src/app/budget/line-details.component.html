@@ -5,7 +5,7 @@
     </div>
   </div>
 </nav>-->
-<div *ngIf="showComment === false" materialize class="container">
+<div materialize class="container">
   <div class="card-content">
     <!--
     <table class=" responsive-table">
@@ -134,14 +134,17 @@
   </div>
 
 </div>
-<app-dialog [(visible)]="showDialog">
-  <div class="container" *ngIf="showComment === true">  
-    <app-line-comment [line]="line" [lineComments]="lineComments" (update)="updateComments($event)">
-    </app-line-comment> 
-  <ng-template #loading2>Loading Comments ...</ng-template>
+<div class="container" *ngIf="showComment === true">
+  <app-dialog [(visible)]="showComment">
+
+    <app-line-comment [line]="line" [lineComments]="lineComments" (update)="updateComments($event)" (close)="showComment = !showComment"
+    [showSubCom]="showSubCom$ | async"  [showTecCom]="showTecCom$ | async" [showMalCom]="showMalCom$ | async" >
+    </app-line-comment>
+    <ng-template #loading2>Loading Comments ...</ng-template>
+
+    <!--<button (click)="showComment = !showComment" class="wave-effect wave-light btn ">Close</button>-->
+  </app-dialog>
 </div>
-  <button (click)="showDialog = !showDialog" class="btn">Close</button>
-</app-dialog>
 <!--
 <div  *ngIf="showComment === true" class="container">
   <div>
@@ -151,8 +154,8 @@
 </div>
 -->
 <!-- Modal Structure -->
-<div class="container" *ngIf="showComment === true">  
+<!--<div class="container" *ngIf="showComment === true">  
     <app-line-comment [line]="line" [lineComments]="lineComments" (update)="updateComments($event)">
     </app-line-comment> 
   <ng-template #loading2>Loading Comments ...</ng-template>
-</div>
+</div>-->
