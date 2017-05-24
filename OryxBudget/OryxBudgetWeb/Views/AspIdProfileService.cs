@@ -58,7 +58,6 @@ namespace OryxBudgetWeb
                 if (!string.IsNullOrEmpty(user.Role))
                 {
                     claims.Add(new System.Security.Claims.Claim(JwtClaimTypes.Role, user.Role));
-                    claims.Add(new System.Security.Claims.Claim(JwtClaimTypes.Role, user.Role));
                 }
 
 
@@ -66,7 +65,6 @@ namespace OryxBudgetWeb
                 if (!string.IsNullOrEmpty(user.OperatorId))
                 {
                     claims.Add(new System.Security.Claims.Claim(JwtClaimTypes.Id, user.OperatorId));
-                    claims.Add(new System.Security.Claims.Claim(JwtClaimTypes.Role, user.UserName));
                 }
 
                 if (user.TecCom)

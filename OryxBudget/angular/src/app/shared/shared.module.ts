@@ -24,7 +24,7 @@ import { DialogComponent } from './dialog/dialog.component';
     ReactiveFormsModule,
     MaterializeModule,
     BrowserAnimationsModule,
-
+    
 
   ],
   declarations: [// MainNavComponent, 
@@ -32,11 +32,11 @@ import { DialogComponent } from './dialog/dialog.component';
     FileuploaderComponent,
     LineCommentComponent,
     LineCommentDetailsComponent,
-    DialogComponent, CurrencyComponent],
+    DialogComponent,CurrencyComponent],
   providers: [SecurityService],
   exports: [// MainNavComponent, 
     OryxDashboardComponent,
     FileuploaderComponent,
-    MaterializeModule, LineCommentComponent, CurrencyComponent, DialogComponent]
+    MaterializeModule, LineCommentComponent, CurrencyComponent]
 })
 export class SharedModule { }

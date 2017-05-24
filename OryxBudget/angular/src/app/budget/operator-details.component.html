@@ -21,7 +21,7 @@
           <span class="{{op.name}}"></span>
         </div>
         <div *ngIf="budgets$ | async; let budgets;">
-          <h6>
+          <h6> 
             <a class="waves-effect waves-light" (click)="getLineDetails(budgets[0].id)">{{budgets[0].description}}</a>
           </h6>
         </div>
@@ -75,7 +75,7 @@
                     />
                     <label for="tecCom">Technical Committee</label>
                   </div>
-
+                 
                   <div class="input-field col s3">
                     <input type="checkbox" name="malCom" id="malCom" [checked]="showMalCom$ | async " (change)="showMalCom$.next($event.target.checked)"
                     />
@@ -90,23 +90,12 @@
               </div>
               <div class="row">
                 <ag-grid-angular style="width: 100%; height: 120px;" class="ag-material" [gridOptions]="gridOptions" [columnDefs]="columnDefs"
-                  [rowData]="budgets" groupHeaders toolPanelSuppressGroups toolPanelSuppressValues rowHeight="48" rowSelection="single"
-                  (gridReady)="onReady($event)">
+                  [rowData]="budgets" groupHeaders                    
+                  toolPanelSuppressGroups 
+                  toolPanelSuppressValues
+                  rowHeight="48" rowSelection="single" (gridReady)="onReady($event)">
                 </ag-grid-angular>
               </div>
-
-
-              
-                <div class="container">
-                  <div *ngIf="lines$ | async;let lines; else loading2">
-                    <app-line-details [lines]="lines" (comments)="getComments($event)" [commentSaved]="commentSaved$" [lineComments]="lineComments$ | async"
-                      (saveComments)="saveComments($event)" [roles]="roles">
-                    </app-line-details>
-                  </div>
-                </div>
-              
-
-              <ng-template #loading2>Loading Details ...</ng-template>
             </div>
           </div>
         </div>
@@ -114,3 +103,15 @@
     </div>
   </div>
 </div>
+
+<div *ngIf="showDetail" class="row">
+  <div class="container">
+    <div *ngIf="lines$ | async;let lines; else loading2">
+      <app-line-details [lines]="lines" (comments)="getComments($event)" [commentSaved]="commentSaved$" [lineComments]="lineComments$ | async"
+        (saveComments)="saveComments($event)" [roles]="roles">
+      </app-line-details>
+    </div>
+  </div>
+</div>
+
+<ng-template #loading2>Loading Details ...</ng-template>
