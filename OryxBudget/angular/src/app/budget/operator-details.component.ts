@@ -30,7 +30,7 @@ export class OperatorDetailsComponent implements OnInit {
   public showTecCom$: BehaviorSubject<boolean> = new BehaviorSubject(false);
   public showMalCom$: BehaviorSubject<boolean> = new BehaviorSubject(false);
   public showFinal$: BehaviorSubject<boolean> = new BehaviorSubject(false);
-  private colWidth = 120;
+  private colWidth = 110;
   public budgetDesc = '';
   public roles: any[] = [];
 

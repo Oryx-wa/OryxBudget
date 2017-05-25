@@ -15,6 +15,7 @@ import { CurrencyComponent } from './../shared/renderers/currency.component';
 
 import { MaterializeModule } from 'angular2-materialize';
 import { DialogComponent } from './dialog/dialog.component';
+import { AttachmentComponent } from './attachment/attachment.component';
 @NgModule({
   imports: [
     CommonModule,
@@ -32,7 +33,7 @@ import { DialogComponent } from './dialog/dialog.component';
     FileuploaderComponent,
     LineCommentComponent,
     LineCommentDetailsComponent,
-    DialogComponent, CurrencyComponent],
+    DialogComponent, CurrencyComponent, AttachmentComponent],
   providers: [SecurityService],
   exports: [// MainNavComponent, 
     OryxDashboardComponent,
