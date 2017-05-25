@@ -1,0 +1,33 @@
+<div materialize class="row" [formGroup]="lineCommentForm">
+  <div class="card oryx-card-radius">
+    <div class="row">
+      <div class="card-content oryx-card-header ">
+        <span class="title-span">{{titled}}</span>
+      </div>
+    </div>
+    <div class="card-content">
+      <div class="input-field row">
+        <input type="text" class=" validate" formControlName='email' name="email">
+        <label for="email" data-error="Please select an item frmm the list">Email</label>
+      </div>
+      <div class="input-field row">
+        <select materialize="material_select" id="userName" name="userName" formControlName='userName'>										
+              							<option  value="" disabled selected > </option>	
+								<option  [value]="1" >SubCom</option>
+                <option  [value]="2" >TecCom</option>
+                <option  [value]="3" >MalCom</option>
+                
+							</select>
+        <label for="userName" data-error="Please select an item frmm the list">Role</label>
+      </div>
+      <div class="input-field row">
+        <input type="text" class=" validate" formControlName='firstName' name="firstName">
+        <label for="firstName" data-error="Please enter a valid name">First Name</label>
+      </div>
+      <div class="input-field row">
+        <input type="text" class=" validate" formControlName='lastName' name="lastName">
+        <label for="lastName" data-error="Please enter a valid name">Last Name</label>
+      </div>
+    </div>
+  </div>
+</div>
