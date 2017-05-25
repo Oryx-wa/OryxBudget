@@ -20,16 +20,18 @@ namespace OryxBudgetService.BudgetsServices
         private readonly BudgetCodeService _budgetCodeService;
         private readonly LineCommentRepository _lineCommentRepository;
         private readonly OperatorRepository _operatorRepository;
+        private readonly AttachmentRepository _attachmentRepository;
 
         public BudgetService(BudgetRepository repository, BudgetCodeService budgetCodeService,
             BudgetLineRepository lineRepository, IBudgetUnitOfWork unitOfWork, LineCommentRepository lineCommentRepository,
-            OperatorRepository operatorRepository) : base(repository, unitOfWork)
+            OperatorRepository operatorRepository, AttachmentRepository attachmentRepository) : base(repository, unitOfWork)
         {
             _repository = repository;
             _lineRepository = lineRepository;
             _budgetCodeService = budgetCodeService;
             _lineCommentRepository = lineCommentRepository;
             _operatorRepository = operatorRepository;
+            _attachmentRepository = attachmentRepository;
         }
 
         public override void Update(Budget entity)
@@ -226,6 +228,32 @@ namespace OryxBudgetService.BudgetsServices
                 }
                
             }
+        }
+
+        public void UpdateAttachment(Attachment entity)
+        {
+            var attachment = this.Get(entity.Id);
+            _attachmentRepository.Update(entity);
+        }
+
+        public void AddAttachment(Attachment entity)
+        {
+            _attachmentRepository.Add(entity);
+        }
+
+        public Attachment GetAttachment(Guid id)
+        {
+            return _attachmentRepository.Get(id);
+        }
+
+        public IEnumerable<Attachment> GetAttachments()
+        {
+            return _attachmentRepository.GetAll();
+        }
+
+        public IEnumerable<Attachment> GetAttachmentsByBudgetLine(string lineId)
+        {
+            return _attachmentRepository.GetAll().Where(a => a.BudgetLineId.ToString() == lineId);
         }
     }
 

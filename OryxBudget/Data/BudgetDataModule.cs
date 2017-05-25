@@ -41,7 +41,7 @@ namespace Data
             builder.RegisterType<OperatorRepository>();
             builder.RegisterType<OperatorTypeRepository>();
             builder.RegisterType<LineCommentRepository>();
-
+            builder.RegisterType<AttachmentRepository>();
 
 
         }

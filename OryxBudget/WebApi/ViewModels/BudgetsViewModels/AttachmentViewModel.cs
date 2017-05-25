@@ -11,11 +11,11 @@ namespace OryxWebApi.ViewModels.BudgetsViewModels
         
         public string Code { get; set; }
 
-        public byte[] FileData { get; set; }
+        //public byte[] FileData { get; set; }
         
-        public string FileName { get; set; }
+        //public string FileName { get; set; }
         
-        public string FileType { get; set; }
+        //public string FileType { get; set; }
 
         public Guid BudgetId { get; set; }
     }

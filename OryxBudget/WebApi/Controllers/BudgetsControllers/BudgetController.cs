@@ -14,6 +14,7 @@ using System.IO;
 using Hangfire;
 using OryxWebApi.Utilities.SignalRHubs;
 using Microsoft.AspNetCore.SignalR.Infrastructure;
+using Microsoft.Net.Http.Headers;
 
 namespace OryxWebApi.Controllers.BudgetControllers
 {
@@ -159,6 +160,46 @@ namespace OryxWebApi.Controllers.BudgetControllers
             BackgroundJob.Enqueue(() => _budgetService.UploadActual(fileName, ConvertToGuid(id)));
 
             return Json("File Uploaded"); //null just to make error free
+        }
+
+        [Route("UploadAttachment")]
+        [HttpPost]
+        public JsonResult UploadAttachment([FromBody] AttachmentViewModel attachmentVm, IList<IFormFile> files)
+        {
+            foreach (var file in files)
+            {
+                if (file.Length > 0)
+                {
+                    byte[] fileBytes = null;
+                    var filename = ContentDispositionHeaderValue
+                                .Parse(file.ContentDisposition)
+                                .FileName
+                                .Trim('"');
+
+                    using (var reader = new StreamReader(file.OpenReadStream()))
+                    {
+                        string contentAsString = reader.ReadToEnd();
+                        fileBytes = new byte[contentAsString.Length * sizeof(char)];
+                        System.Buffer.BlockCopy(contentAsString.ToCharArray(), 0, fileBytes, 0, fileBytes.Length);
+                    }
+
+                    var attachment = new Attachment
+                    {
+                        FileData = fileBytes,
+                        FileName = filename,
+                        FileType = file.ContentType,
+                        BudgetId = attachmentVm.BudgetId,
+                        BudgetLineId = attachmentVm.BudgetLineId
+                    };
+
+                    _budgetService.AddAttachment(attachment);
+                }
+
+            }
+
+            _budgetService.SaveChanges();
+
+            return Json("File(s) Uploaded!"); //null just to make error free
         }
     }
 }
