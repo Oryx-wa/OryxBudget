@@ -16,11 +16,14 @@ import { Configuration } from './app.constants';
 
 // import { Routes, RouterModule, PreloadAllModules } from '@angular/router';
 import { AppRoutingModule } from './app.routing.module';
+import { OperatorsModule } from './operators/operators.module';
+
 
 @NgModule({
   declarations: [
     AppComponent,
     MainNavComponent,
+   
     
     //OryxDashboardComponent
   ],
@@ -32,7 +35,8 @@ import { AppRoutingModule } from './app.routing.module';
     HomeModule,
     BudgetModule,
     AppRoutingModule,
-    AgGridModule
+    AgGridModule,
+    OperatorsModule
 
 
   ],
