@@ -1,5 +1,7 @@
 import { Component, OnInit, Input, OnChanges, Output, EventEmitter } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
+import { Router, ActivatedRoute, Params } from '@angular/router';
+import { Http, URLSearchParams } from '@angular/http';
 import * as _ from 'lodash';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { MaterializeAction } from 'angular2-materialize';
@@ -9,6 +11,7 @@ import { CurrencyComponent } from './../shared/renderers/currency.component';
 import { WordWrapComponent } from './../shared/renderers/word-wrap.component';
 import { TextComponent } from './../shared/renderers/text.component';
 import { ChildMessageComponent } from './../shared/renderers/child-message.component';
+import { SecurityService } from './../login/security.service';
 
 @Component({
   selector: 'app-line-details',
@@ -38,7 +41,7 @@ export class LineDetailsComponent implements OnInit, OnChanges {
   public showMalCom$: BehaviorSubject<boolean> = new BehaviorSubject(false);
   public showFinal$: BehaviorSubject<boolean> = new BehaviorSubject(false);
   public showOp$: BehaviorSubject<boolean> = new BehaviorSubject(false);
-  private colWidth = 120;
+  private colWidth = 110;
   public columnDefs: any[];
 
   public gridOptions: GridOptions;
@@ -47,7 +50,7 @@ export class LineDetailsComponent implements OnInit, OnChanges {
 
   history: string[] = ['home'];
   constructor() {
-
+    
 
 
   }
@@ -57,7 +60,7 @@ export class LineDetailsComponent implements OnInit, OnChanges {
     this.structureData();
 
     this.createColumnDefs();
-    this.gridOptions = <GridOptions>{
+   this.gridOptions = <GridOptions>{
       context: {
         componentParent: this
       },
@@ -177,12 +180,12 @@ export class LineDetailsComponent implements OnInit, OnChanges {
         children: [
           {
             headerName: 'Code', field: 'code',
-            width: 100, pinned: true,
+            width: 90, pinned: true,
             cellRenderer: 'group'
           },
           {
             headerName: 'Description', field: 'description',
-            width: 300, pinned: true,
+            width: 200, pinned: true,
             // cellRendererFramework: WordWrapComponent
             cellStyle: { 'word-wrap': 'break-word' }
           }

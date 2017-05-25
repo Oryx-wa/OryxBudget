@@ -10,7 +10,6 @@ import { Router, ActivatedRoute, Params } from '@angular/router';
 import { Http, URLSearchParams } from '@angular/http';
 import { DisplayModeEnum } from './../shared/shared-enum.enum';
 import { CurrencyComponent } from './../shared/renderers/currency.component';
-import 'rxjs/add/operator/debounce';
 @Component({
   selector: 'app-operator-view',
   templateUrl: './operator-view.component.html',
@@ -29,11 +28,16 @@ export class OperatorViewComponent implements OnInit, OnChanges {
   commentSaved$: BehaviorSubject<boolean> = new BehaviorSubject(true);
   public displayMode: DisplayModeEnum;
   public displayModeEnum = DisplayModeEnum;
+  public showSubCom$: BehaviorSubject<boolean> = new BehaviorSubject(false);
+  public showTecCom$: BehaviorSubject<boolean> = new BehaviorSubject(false);
+  public showMalCom$: BehaviorSubject<boolean> = new BehaviorSubject(false);
+  public showFinal$: BehaviorSubject<boolean> = new BehaviorSubject(false);
   public data: any;
   public uploadUrl = 'Budget/UploadBudget';
   public uploadTitle = '';
   private budgetDesc = '';
   public columnDefs: any[];
+   private colWidth = 110;
   public gridOptions: GridOptions;
   showDetail = false;
 
@@ -53,7 +57,27 @@ export class OperatorViewComponent implements OnInit, OnChanges {
       this.roles = this.securityService.roles;
       console.log(this.roles)
       this.getOperator();
+        this.roles.map(role => {
+      switch (role) {
+        case 'SubCom':
+          this.showSubCom$.next(true);
+          break;
+        case 'TecCom':
+          this.showTecCom$.next(true);
+          break;
+        case 'MalCom':
+          this.showMalCom$.next(true);
+          break;
+        case 'Final':
+          this.showFinal$.next(true);
+          break;
+        default:
+          break;
+      }
+    });
     }
+
+
   }
 
   ngOnChanges(changes: any) {
@@ -87,16 +111,40 @@ export class OperatorViewComponent implements OnInit, OnChanges {
       if (budgets) {
         this.budgetDesc = budgets[0].description;
         this.getLineDetails(budgets[0].id);
-        this.upload(budgets[0].id,budgets[0].description )
       }
     });
 
-    
+  }
+ getComments(line: BudgetLines) {
+    const url = this.securityService.getUrl('Budget/GetLineComment');
+    const params1: URLSearchParams = new URLSearchParams();
+    params1.append('budgetId', line.budgetId);
+    params1.append('code', line.code);
 
-    
+    this.lineComments$ = this._http.get(url, {
+      headers: this.securityService.getHeaders(),
+      body: '',
+      params: params1
+    }).map(res => res.json());
+    this.commentSaved$.next(false);
 
   }
 
+  saveComments(data: any) {
+    const url = this.securityService.getUrl('Budget/AddLineComment');
+    const params1: URLSearchParams = new URLSearchParams();
+    params1.append('budgetId', data.budgetId);
+    params1.append('code', data.code);
+    console.log(JSON.stringify(data.data));
+    const ret = this._http.post(url,
+      { comments: JSON.stringify(data.data), budgetline: JSON.stringify(data.line) }, {
+        headers: this.securityService.getHeaders(),
+        search: params1
+      })
+      .map(res => res.json())
+      .subscribe();
+    this.commentSaved$.next(true);
+  }
   changeDisplayMode(mode: DisplayModeEnum) {
     // console.log(mode); 
     this.displayMode = mode;
@@ -125,7 +173,7 @@ export class OperatorViewComponent implements OnInit, OnChanges {
     this.changeDisplayMode(this.displayModeEnum.Details);
   }
 
-  private createColumnDefs() {
+   private createColumnDefs() {
     this.columnDefs = [
 
       {
@@ -133,24 +181,117 @@ export class OperatorViewComponent implements OnInit, OnChanges {
         children: [
           {
             headerName: 'Budget LC', field: 'opBudgetLC',
-            width: 140, pinned: true,
+            width: this.colWidth, pinned: true,
             cellRendererFramework: CurrencyComponent,
             currency: 'NGN'
           },
           {
             headerName: 'Budget USD', field: 'opBudgetUSD',
-            width: 120, pinned: true,
+            width: this.colWidth, pinned: true,
             cellRendererFramework: CurrencyComponent,
             currency: 'USD'
           },
           {
             headerName: 'Budget FC', field: 'opBudgetFC',
-            width: 120, pinned: true,
+            width: this.colWidth, pinned: true,
+            cellRendererFramework: CurrencyComponent,
+            currency: 'USD'
+          },
+        ]
+      },
+      {
+        headerName: 'Sub Commitee',
+        children: [
+          {
+            headerName: 'Budget LC', field: 'subComBudgetLC',
+            width: this.colWidth, pinned: true,
+            cellRendererFramework: CurrencyComponent,
+            currency: 'NGN'
+          },
+          {
+            headerName: 'Budget USD', field: 'subComBudgetUSD',
+            width: this.colWidth, pinned: true,
+            cellRendererFramework: CurrencyComponent,
+            currency: 'USD'
+          },
+          {
+            headerName: 'Budget FC', field: 'subComBudgetFC',
+            width: this.colWidth, pinned: true,
+            cellRendererFramework: CurrencyComponent,
+            currency: 'USD'
+          },
+        ]
+      },
+      {
+        headerName: 'Technical Commitee',
+        children: [
+          {
+            headerName: 'Budget LC', field: 'tecComBudgetLC',
+            width: this.colWidth, pinned: true,
+            cellRendererFramework: CurrencyComponent,
+            currency: 'NGN'
+          },
+          {
+            headerName: 'Budget USD', field: 'tecComBudgetUSD',
+            width: this.colWidth, pinned: true,
+            cellRendererFramework: CurrencyComponent,
+            currency: 'USD'
+          },
+          {
+            headerName: 'Budget FC', field: 'tecComBudgetFC',
+            width: this.colWidth, pinned: true,
+            cellRendererFramework: CurrencyComponent,
+            currency: 'USD'
+          },
+        ]
+      },
+      {
+        headerName: 'Management Commitee',
+        children: [
+          {
+            headerName: 'Budget LC', field: 'malComBudgetLC',
+            width: this.colWidth, pinned: true,
+            cellRendererFramework: CurrencyComponent,
+            currency: 'NGN'
+          },
+          {
+            headerName: 'Budget USD', field: 'malComBudgetUSD',
+            width: this.colWidth, pinned: true,
+            cellRendererFramework: CurrencyComponent,
+            currency: 'USD'
+          },
+          {
+            headerName: 'Budget FC', field: 'malComBudgetFC',
+            width: this.colWidth, pinned: true,
+            cellRendererFramework: CurrencyComponent,
+            currency: 'USD'
+          },
+        ]
+      },
+      {
+        headerName: 'Final Budget',
+        children: [
+          {
+            headerName: 'Budget LC', field: 'finalBudgetLC',
+            width: this.colWidth, pinned: true,
+            cellRendererFramework: CurrencyComponent,
+            currency: 'NGN'
+          },
+          {
+            headerName: 'Budget USD', field: 'finalBudgetUSD',
+            width: this.colWidth, pinned: true,
+            cellRendererFramework: CurrencyComponent,
+            currency: 'USD'
+          },
+          {
+            headerName: 'Budget FC', field: 'finalBudgetFC',
+            width: this.colWidth, pinned: true,
             cellRendererFramework: CurrencyComponent,
             currency: 'USD'
           },
         ]
       }
+
     ];
   }
 
@@ -169,7 +310,57 @@ export class OperatorViewComponent implements OnInit, OnChanges {
     this.commentSaved$.next(true);
 
   }
+ public showColumn(columnType: string) {
+    let columns: any[] = [];
+    switch (columnType) {
 
+      case 'subCom':
+        columns = ['subComBudgetLC', 'subComBudgetUSD', 'subComBudgetFC'];
+        // this.gridOptions.columnApi.setColumnsVisible(columns, !this.showSubCom);
+        // this.showSubCom = !this.showSubCom;
+        break;
+      default:
+        break;
+
+    }
+  }
+
+  private onReady() {
+    // console.log('onReady');
+    this.showSubCom$.subscribe(checked => {
+      this.gridOptions.columnApi.setColumnsVisible(
+        ['subComBudgetLC', 'subComBudgetUSD', 'subComBudgetFC'],
+        checked);
+      // this.gridOptions.api.sizeColumnsToFit();
+    });
+
+    this.showTecCom$.subscribe(checked => {
+      this.gridOptions.columnApi.setColumnsVisible(
+        ['tecComBudgetLC', 'tecComBudgetUSD', 'tecComBudgetFC'],
+        checked);
+      // this.gridOptions.api.sizeColumnsToFit();
+    });
+
+    this.showMalCom$.subscribe(checked => {
+      this.gridOptions.columnApi.setColumnsVisible(
+        ['malComBudgetLC', 'malComBudgetUSD', 'malComBudgetFC'],
+        checked);
+      //this.gridOptions.api.sizeColumnsToFit();
+    });
+
+    this.showFinal$.subscribe(checked => {
+      this.gridOptions.columnApi.setColumnsVisible(
+        ['finalBudgetLC', 'finalBudgetUSD', 'finalBudgetFC'],
+        checked);
+      // this.gridOptions.api.sizeColumnsToFit();
+    });
+
+
+
+    // this.gridOptions.api.sizeColumnsToFit();
+
+
+  }
 
 }
 
