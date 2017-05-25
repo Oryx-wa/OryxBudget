@@ -20,11 +20,13 @@ namespace OryxWebApi.Controllers.BudgetControllers
     public class BudgetController :  ApiHubController<NotificationHub>
     {
         private readonly BudgetService _budgetService;
+        private readonly BudgetLineService _lineService;
 
-        public BudgetController(BudgetService budgetService, IConnectionManager signalRConnectionManager)
+        public BudgetController(BudgetService budgetService, BudgetLineService lineService, IConnectionManager signalRConnectionManager)
              : base(signalRConnectionManager)
         {
             _budgetService = budgetService;
+            _lineService = lineService;
         }
 
         // POST api/values
@@ -43,11 +45,14 @@ namespace OryxWebApi.Controllers.BudgetControllers
         [HttpPost]
         [ValidateModelState]
         [Route("AddLineComment")]
-        public JsonResult AddLineComment(string budgetId, string code,[FromBody] IEnumerable<LineCommentViewModel> vm)
+        public JsonResult AddLineComment(string budgetId, string code, string type,[FromBody] CombinedLineViewModel vm)
         {
 
-            var lineComment = Mapper.Map<IEnumerable<LineComment>>(vm);
+            var lineComment = Mapper.Map<IEnumerable<LineComment>>(vm.LineComments);
             _budgetService.AddLineComments(lineComment);
+
+            var budgetLine = Mapper.Map<BudgetLine>(vm.BudgetLine);
+            _lineService.UpdateNapimsReview(type, budgetLine, code);
             _budgetService.SaveChanges();
             return Json(_budgetService.GetLineComment(budgetId, code));
 

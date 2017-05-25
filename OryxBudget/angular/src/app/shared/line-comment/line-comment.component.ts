@@ -72,7 +72,7 @@ export class LineCommentComponent implements OnInit, OnChanges {
     const lineComment: LineComments = (data === null) ?
       { id: null, budgetId: this.line.budgetId, code: this.line.code, comment: '', commentStatus: '' } : data;
     const newDetail = this.fb.group({
-      comment: new FormControl(lineComment.comment, Validators.required),
+      comment: new FormControl(lineComment.comment),
       id: new FormControl(lineComment.id),
       budgetId: new FormControl(lineComment.budgetId),
       commentStatus: new FormControl(lineComment.commentStatus),
@@ -93,7 +93,8 @@ export class LineCommentComponent implements OnInit, OnChanges {
     newComments.map(lineComment => {
       comments.push(lineComment);
     });
-    this.update.emit({comments: comments, line: line});
+    console.log(comments);
+    this.update.emit({lineComments: comments, budgetLine: line});
 
   }
   removeDetail(i: number) {

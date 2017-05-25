@@ -10,40 +10,40 @@ namespace OryxWebApi.ViewModels.BudgetsViewModels
     {
      
         public string BudgetId { get; set; }
-
-        public int? RowNumber { get; set; }
-
-        //public int BudgetCategoryId { get; set; }
-
-      //  public string Code
-      //  {
-            //get { return BudgetLineCategory.Code + "." + RowNumber; }
-      //      get; set;
-      //  }
-
-        [Required, MaxLength(100)]
+        public int? RowNumber { get; set; }    
         public string Description { get; set; } //ItemName
+        
+        public decimal SubComBudgetFC { get; set; }
 
-        //public string Description { get; set; }
+        public decimal SubComBudgetLC { get; set; }
 
-        public decimal BudgetAmount { get; set; }
+        public decimal SubComBudgetUSD { get; set; }
 
-        public decimal ActualAmount { get; set; }
+        public decimal TecComBudgetFC { get; set; }
 
-        //public int? TenantId { get; set; }
+        public decimal TecComBudgetLC { get; set; }
 
-       //  public virtual Budget Budget { get; set; }
+        public decimal TecComBudgetUSD { get; set; }
 
-        //public virtual BudgetLineCategory BudgetLineCategory { get; set; }
+        public decimal MalComBudgetFC { get; set; }
 
-      //  public virtual ICollection<LineComment> LineComments { get; set; }
+        public decimal MalComBudgetLC { get; set; }
+
+        public decimal MalComBudgetUSD { get; set; }
+
+        public decimal FinalBudgetFC { get; set; }
+
+        public decimal FinalBudgetLC { get; set; }
+
+        public decimal FinalBudgetUSD { get; set; }
+
     }
 
-   //  public class CombinedEducationViewModel
-   //  {
-     //    public IEnumerable<BudgetLineViewModel> EducationInfo { get; set; }
-       // public IEnumerable<AccreditationInfoViewModel> AccreditationInfo { get; set; }
-       // public IEnumerable<TrainingInfoViewModel> TrainingInfo { get; set; }
+    public class CombinedLineViewModel
+    {
+        public BudgetLineViewModel BudgetLine { get; set; }
+        public IEnumerable<LineCommentViewModel> LineComments { get; set; }
         
-   // }
+
+    }
 }

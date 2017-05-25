@@ -67,7 +67,7 @@ Group by f.OperatorId, f.Description, f.id";
 	SUM(a.TecComBudgetFC) TecComBudgetFC, SUM(a.TecComBudgetLC) TecComBudgetLC, SUM(a.TecComBudgetUSD) TecComBudgetUSD,
 	SUM(a.MalComBudgetFC) MalComBudgetFC, SUM(a.MalComBudgetLC) MalComBudgetLC, SUM(a.MalComBudgetUSD) MalComBudgetUSD,
 	SUM(a.FinalBudgetFC) FinalBudgetFC, SUM(a.FinalBudgetLC) FinalBudgetLC, SUM(a.FinalBudgetUSD) FinalBudgetUSD, 
-	f.OperatorId,  f.Id, g.Name OperatorName, h.Code, h.Description, h.FatherNum, h.Level
+	f.OperatorId,  f.Id BudgetId, g.Name OperatorName, h.Code, h.Description, h.FatherNum, h.Level
 from Budgets f join BudgetLines a 
 	on f.id = a.BudgetId
 	join Operators g on f.OperatorId = g.id

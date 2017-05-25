@@ -9,7 +9,7 @@ import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { Observable } from 'rxjs/Observable';
 import { SecurityService } from './../login/security.service';
 import { CurrencyComponent } from './../shared/renderers/currency.component';
-
+import * as _ from 'lodash';
 
 @Component({
   selector: 'app-operator-details',
@@ -139,9 +139,11 @@ export class OperatorDetailsComponent implements OnInit {
     const params1: URLSearchParams = new URLSearchParams();
     params1.append('budgetId', data.budgetId);
     params1.append('code', data.code);
-    console.log(JSON.stringify(data.data));
+    params1.append('type', data.type);
+    const bd = { lineComments: data.lineComments, budgetLine: _.assign(data.budgetLine, { code: data.code }) };
+    console.log(JSON.stringify(bd));
     const ret = this._http.post(url,
-      { comments: JSON.stringify(data.data), budgetline: JSON.stringify(data.line) }, {
+      JSON.stringify(bd), {
         headers: this.securityService.getHeaders(),
         search: params1
       })

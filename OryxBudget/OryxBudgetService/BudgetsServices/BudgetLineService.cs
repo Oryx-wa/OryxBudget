@@ -65,68 +65,68 @@ namespace OryxBudgetService.BudgetsServices
 
         }
 
-        public void UpdateNapimsReview(string napimsUserType, BudgetLine budgetEntity, LineComment lineCommentEntity)
+        public void UpdateNapimsReview(string napimsUserType, BudgetLine budgetEntity, string code)
         {
-            var budgetLine = this.Get(budgetEntity.Id);
+            var budgetLine = this.GetAll()
+                .Where(b => b.Code == code && b.BudgetId == budgetEntity.BudgetId ).FirstOrDefault();
+
+            var forSaveBd = this.Get(budgetLine.Id);
 
             if (napimsUserType.Equals("TecCom"))
-                budgetLine = CreateBudgetLineForTecCom(budgetEntity);
+                budgetLine = CreateBudgetLineForTecCom(budgetEntity, forSaveBd);
             else if (napimsUserType.Equals("SubCom"))
-                budgetLine = CreateBudgetLineForSubCom(budgetEntity);
+                budgetLine = CreateBudgetLineForSubCom(budgetEntity, forSaveBd);
             else if (napimsUserType.Equals("MalCom"))
-                budgetLine = CreateBudgetLineForMalCom(budgetEntity);
+                budgetLine = CreateBudgetLineForMalCom(budgetEntity, forSaveBd);
 
             base.Update(budgetLine);
-            this.SaveChanges();
-
-            //Add LineComment
-            _lineCommentRepository.Add(lineCommentEntity);
-            base.SaveChanges();
+           
         }
 
-        private BudgetLine CreateBudgetLineForMalCom(BudgetLine budgetEntity)
+        private BudgetLine CreateBudgetLineForMalCom(BudgetLine budgetEntity , BudgetLine bd)
         {
-            var budgetLine = _repository.Get(budgetEntity.Id);
-            if (budgetLine != null)
+           
+            if (bd != null)
             {
-                budgetLine.BudgetId = budgetEntity.BudgetId;
-                budgetLine.RowNumber = budgetEntity.RowNumber;
-                budgetLine.MalComBudgetFC = budgetEntity.MalComBudgetFC;
-                budgetLine.MalComBudgetLC = budgetEntity.MalComBudgetLC;
-                budgetLine.MalComBudgetUSD = budgetEntity.MalComBudgetUSD;
+                bd.BudgetId = budgetEntity.BudgetId;
+                bd.RowNumber = budgetEntity.RowNumber;
+                bd.MalComBudgetFC = budgetEntity.MalComBudgetFC;
+                bd.MalComBudgetLC = budgetEntity.MalComBudgetLC;
+                bd.MalComBudgetUSD = budgetEntity.MalComBudgetUSD;
             }
 
-            return budgetLine;
+            return bd;
         }
 
-        private BudgetLine CreateBudgetLineForSubCom(BudgetLine budgetEntity)
+        private BudgetLine CreateBudgetLineForSubCom(BudgetLine budgetEntity,  BudgetLine bd)
         {
-            var budgetLine = _repository.Get(budgetEntity.Id);
-            if (budgetLine != null)
+            
+                
+            if (budgetEntity != null)
             {
-                budgetLine.BudgetId = budgetEntity.BudgetId;
-                budgetLine.RowNumber = budgetEntity.RowNumber;
-                budgetLine.SubComBudgetFC = budgetEntity.SubComBudgetFC;
-                budgetLine.SubComBudgetLC = budgetEntity.SubComBudgetLC;
-                budgetLine.SubComBudgetUSD = budgetEntity.SubComBudgetUSD;
+                bd.BudgetId = budgetEntity.BudgetId;
+                bd.RowNumber = budgetEntity.RowNumber;
+                bd.SubComBudgetFC = budgetEntity.SubComBudgetFC;
+                bd.SubComBudgetLC = budgetEntity.SubComBudgetLC;
+                bd.SubComBudgetUSD = budgetEntity.SubComBudgetUSD;
             }
 
-            return budgetLine;
+            return bd;
         }
 
-        private BudgetLine CreateBudgetLineForTecCom(BudgetLine budgetEntity)
+        private BudgetLine CreateBudgetLineForTecCom(BudgetLine budgetEntity, BudgetLine bd)
         {
-            var budgetLine = _repository.Get(budgetEntity.Id);
-            if (budgetLine != null)
+            
+            if (bd != null)
             {
-                budgetLine.BudgetId = budgetEntity.BudgetId;
-                budgetLine.RowNumber = budgetEntity.RowNumber;
-                budgetLine.TecComBudgetFC = budgetEntity.TecComBudgetFC;
-                budgetLine.TecComBudgetLC = budgetEntity.TecComBudgetLC;
-                budgetLine.TecComBudgetUSD = budgetEntity.TecComBudgetUSD;
+                bd.BudgetId = budgetEntity.BudgetId;
+                bd.RowNumber = budgetEntity.RowNumber;
+                bd.TecComBudgetFC = budgetEntity.TecComBudgetFC;
+                bd.TecComBudgetLC = budgetEntity.TecComBudgetLC;
+                bd.TecComBudgetUSD = budgetEntity.TecComBudgetUSD;
             }
 
-            return budgetLine;
+            return bd;
         }
     }
 }

@@ -8,7 +8,7 @@ import { Budgets, Operators, BudgetLines, LineComments } from './../models';
 import { CurrencyComponent } from './../shared/renderers/currency.component';
 import { WordWrapComponent } from './../shared/renderers/word-wrap.component';
 import { TextComponent } from './../shared/renderers/text.component';
-import { ChildMessageComponent} from './../shared/renderers/child-message.component';
+import { ChildMessageComponent } from './../shared/renderers/child-message.component';
 
 @Component({
   selector: 'app-line-details',
@@ -59,17 +59,19 @@ export class LineDetailsComponent implements OnInit, OnChanges {
     this.createColumnDefs();
     this.gridOptions = <GridOptions>{
       context: {
-                componentParent: this
-            },
+        componentParent: this
+      },
       getNodeChildDetails: getNodeChildDetails,
     };
 
 
 
     this.roles.map(role => {
+      this.role = role;
       switch (role) {
         case 'SubCom':
-          this.showSubCom$.next(true);          
+          this.showSubCom$.next(true);
+          this.role = role;
           break;
         case 'TecCom':
           this.showTecCom$.next(true);
@@ -128,15 +130,20 @@ export class LineDetailsComponent implements OnInit, OnChanges {
     console.log(this.line);
     this.showComment = true;
     // this.comments.emit({ code: this.selectedCode.code, budgetId: this.selectedCode.budgetId });
-   
+
     this.comments.emit(this.line);
     // this.modalActions.emit({ action: 'modal', params: ['open'] });
 
   }
 
-  updateComments(budegetLine: any) {
-    const data = { data: budegetLine.comments, code: this.line.code, budgetId: this.line.budgetId, line: budegetLine.line };
-    this.saveComments.emit(data);
+  updateComments(data: any) {
+    const forUpd = {
+      lineComments: data.lineComments,
+      code: this.line.code, budgetId: this.line.budgetId,
+      budgetLine: data.budgetLine, type: this.role
+    };
+    console.log(forUpd);
+    this.saveComments.emit(forUpd);
   }
 
   structureData() {
@@ -231,13 +238,7 @@ export class LineDetailsComponent implements OnInit, OnChanges {
       {
         headerName: 'Technical Commitee',
         children: [
-          {
-            headerName: 'Budget LC', field: 'tecComBudgetLC',
-            width: this.colWidth, pinned: true,
-            cellRendererFramework: CurrencyComponent,
-            currency: 'NGN', hidden: true, editable: true
-
-          },
+          
           {
             headerName: 'Budget USD', field: 'tecComBudgetUSD',
             width: this.colWidth, pinned: true,
@@ -248,7 +249,7 @@ export class LineDetailsComponent implements OnInit, OnChanges {
             headerName: 'Budget FC', field: 'tecComBudgetFC',
             width: this.colWidth, pinned: true,
             cellRendererFramework: CurrencyComponent,
-            currency: 'USD', editable: true
+            currency: 'USD', editable: true, hidden: false,
           }
         ]
       },
@@ -304,9 +305,9 @@ export class LineDetailsComponent implements OnInit, OnChanges {
 
           {
             headerName: 'Comment', field: 'id',
-            width: 400, pinned: true,
+            width: 50, pinned: true,
             // cellTemplate: '<div><a href="#">Visible text</a></div>',
-            editable: true, 
+            editable: true,
             cellRendererFramework: ChildMessageComponent
 
           }
@@ -355,9 +356,10 @@ export class LineDetailsComponent implements OnInit, OnChanges {
 
   }
 
-   public methodFromParent(id: string) {
-       this.getComments(id);
-    }
+  public methodFromParent(id: string) {
+    this.getComments(id);
+    // this.line = 
+  }
 
 }
 
@@ -375,6 +377,8 @@ function getNodeChildDetails(rowItem) {
       // relavent if you are doing multi levels of groupings, not just one
       // as in this example.
       field: 'level1',
+
+      expanded: true,
       // the key is used by the default group cellRenderer
       key: rowItem.level1
     };
@@ -386,6 +390,7 @@ function getNodeChildDetails(rowItem) {
         children: rowItem.level3,
 
         field: 'level2',
+        expanded: true,
         // the key is used by the default group cellRenderer
         key: rowItem.level2
       };

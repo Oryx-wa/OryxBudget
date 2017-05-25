@@ -10,6 +10,7 @@ import { Router, ActivatedRoute, Params } from '@angular/router';
 import { Http, URLSearchParams } from '@angular/http';
 import { DisplayModeEnum } from './../shared/shared-enum.enum';
 import { CurrencyComponent } from './../shared/renderers/currency.component';
+import 'rxjs/add/operator/debounce';
 @Component({
   selector: 'app-operator-view',
   templateUrl: './operator-view.component.html',
@@ -86,8 +87,13 @@ export class OperatorViewComponent implements OnInit, OnChanges {
       if (budgets) {
         this.budgetDesc = budgets[0].description;
         this.getLineDetails(budgets[0].id);
+        this.upload(budgets[0].id,budgets[0].description )
       }
     });
+
+    
+
+    
 
   }
 
@@ -127,19 +133,19 @@ export class OperatorViewComponent implements OnInit, OnChanges {
         children: [
           {
             headerName: 'Budget LC', field: 'opBudgetLC',
-            width: 200, pinned: true,
+            width: 140, pinned: true,
             cellRendererFramework: CurrencyComponent,
             currency: 'NGN'
           },
           {
             headerName: 'Budget USD', field: 'opBudgetUSD',
-            width: 140, pinned: true,
+            width: 120, pinned: true,
             cellRendererFramework: CurrencyComponent,
             currency: 'USD'
           },
           {
             headerName: 'Budget FC', field: 'opBudgetFC',
-            width: 140, pinned: true,
+            width: 120, pinned: true,
             cellRendererFramework: CurrencyComponent,
             currency: 'USD'
           },
