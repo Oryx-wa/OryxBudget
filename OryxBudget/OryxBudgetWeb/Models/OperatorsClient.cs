@@ -10,18 +10,23 @@ using Newtonsoft.Json;
 using IdentityModel.Client;
 using Microsoft.Extensions.Options;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 
 namespace OryxBudgetWeb.Models
 {
     public class OperatorsClient
     {
+        readonly ILogger<OperatorsClient> _logger;
         private string _apiUrl, _idSrv;
-        private readonly Options _options;
+        private readonly OpOptions _options;
         //DropDown
-        public OperatorsClient(Options options)
+        public OperatorsClient(OpOptions opOptions, ILogger<OperatorsClient> logger)
         {
-            _apiUrl = options.ApiPath;
-            _idSrv = options.IdPath;
+            _apiUrl = opOptions.ApiPath;
+            _idSrv = opOptions.IdPath;
+            _logger = logger;
+
+            _logger.LogDebug(_apiUrl);
         }
 
         public async Task<IEnumerable<OperatorClientModel>> GetOperatorsList()

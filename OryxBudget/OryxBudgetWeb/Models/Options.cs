@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace OryxBudgetWeb.Models
 {
-    public  class Options
+    public  class OpOptions
     {
         public string ApiPath { get; set; }
         public string IdPath { get; set; }

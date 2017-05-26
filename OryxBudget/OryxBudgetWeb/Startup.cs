@@ -71,16 +71,17 @@ namespace OryxBudgetWeb
                      .AddProfileService<AspIdProfileService>();
 
             
-            var opOptions = new Options();
+            var opOptions = new OpOptions();
             opOptions.IdPath = Configuration["IdPath"];
-            opOptions.ApiPath = Configuration["ApiPath"];
+            opOptions.ApiPath =  Configuration["ApiPath"];
 
 
             var builder = new ContainerBuilder();
 
             builder.RegisterType<OperatorsClient>()
-                .WithParameter("options", opOptions)
-                .InstancePerLifetimeScope(); 
+                .WithParameter("opOptions", opOptions)
+                 .InstancePerLifetimeScope();
+               
 
 
             builder.Populate(services);
