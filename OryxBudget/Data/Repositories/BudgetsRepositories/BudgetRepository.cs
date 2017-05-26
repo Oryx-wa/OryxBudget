@@ -104,7 +104,8 @@ from Budgets f join BudgetLines a
 from BudgetCodes a join BudgetCodes b
 	on a.level1 = b.Code) h on a.Code = h.Code
 where f.id = '{id}'
-Group by f.OperatorId,  f.id,h.level2, h.Description, h.FatherNum, h.Level, g.Name";
+Group by f.OperatorId,  f.id,h.level2, h.Description, h.FatherNum, h.Level, g.Name
+Order by 19";
 
             return RDFacadeExtensions.GetModelFromQuery<BudgetCodeView>(this.dataContext.Database, sql);
         }

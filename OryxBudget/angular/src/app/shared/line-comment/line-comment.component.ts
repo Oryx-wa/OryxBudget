@@ -93,7 +93,7 @@ export class LineCommentComponent implements OnInit, OnChanges {
     newComments.map(lineComment => {
       comments.push(lineComment);
     });
-    console.log(comments);
+    // console.log(comments);
     this.update.emit({lineComments: comments, budgetLine: line});
 
   }

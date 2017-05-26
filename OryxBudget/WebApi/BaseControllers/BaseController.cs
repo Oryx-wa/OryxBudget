@@ -9,7 +9,7 @@ using OryxDomainServices;
 
 // For more information on enabling Web API for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
 
-namespace OryxWebApi
+namespace OryxBudgetService
 {
     [Route("api/[controller]")]
     public abstract  class BaseController : Controller

@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Entities.Budgets;
 using OryxBudgetService.BudgetsServices;
 using OryxWebapi.Utilities.ActionFilters;
-using OryxWebApi.ViewModels.BudgetsViewModels;
+using OryxBudgetService.ViewModels.BudgetsViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,21 +12,25 @@ using Microsoft.AspNetCore.Http;
 using OryxWebapi.Utilities;
 using System.IO;
 using Hangfire;
-using OryxWebApi.Utilities.SignalRHubs;
+using OryxBudgetService.Utilities.SignalRHubs;
 using Microsoft.AspNetCore.SignalR.Infrastructure;
 
-namespace OryxWebApi.Controllers.BudgetControllers
+namespace OryxBudgetService.Controllers.BudgetControllers
 {
     public class BudgetController :  ApiHubController<NotificationHub>
     {
         private readonly BudgetService _budgetService;
         private readonly BudgetLineService _lineService;
+        private readonly PeriodService _periodService;
+        private readonly BackgroundJobClient _jobs = new BackgroundJobClient();
 
-        public BudgetController(BudgetService budgetService, BudgetLineService lineService, IConnectionManager signalRConnectionManager)
+        public BudgetController(BudgetService budgetService, BudgetLineService lineService,  PeriodService periodService,
+            IConnectionManager signalRConnectionManager)
              : base(signalRConnectionManager)
         {
             _budgetService = budgetService;
             _lineService = lineService;
+            _periodService = periodService;
         }
 
         // POST api/values
@@ -135,15 +139,17 @@ namespace OryxWebApi.Controllers.BudgetControllers
                 fs.Flush();
                 fs.Dispose();
             }
-            BackgroundJob.Enqueue(() => _budgetService.UploadBudget(fileName, ConvertToGuid(id)));
+            var x = _jobs.Enqueue(() => _budgetService.UploadBudget(fileName, ConvertToGuid(id)));
+            //BackgroundJob.Enqueue(() => _budgetService.UploadBudget(fileName, ConvertToGuid(id)));
 
             return Json("File Uploaded"); //null just to make error free
         }
 
         [Route("InitializeBudgetForAllOperators")]
         [HttpPost]
-        public JsonResult InitializeBudgetForAllOperators(string periodId, string description)
+        public JsonResult InitializeBudgetForAllOperators(int year, string description)
         {
+            string periodId =_periodService.GetAll().Where(p => p.StartDate.Year == year).FirstOrDefault().Id.ToString();
             BackgroundJob.Enqueue(() => _budgetService.InitializeBudgetForAllOperators(periodId, description));
             return Json("Budget initialized for all operators");
         }

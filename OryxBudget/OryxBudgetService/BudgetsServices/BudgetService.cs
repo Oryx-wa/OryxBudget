@@ -10,6 +10,9 @@ using OryxBudgetService.CsvMapping;
 using Data.Repositories.BudgetsRepositories;
 using OryxBudgetService.Utilties;
 using Data.Repositories.OperatorsRepositories;
+using Microsoft.AspNetCore.SignalR;
+using Microsoft.AspNetCore.SignalR.Infrastructure;
+using OryxBudgetService.Utilities.SignalRHubs;
 
 namespace OryxBudgetService.BudgetsServices
 {
@@ -20,16 +23,19 @@ namespace OryxBudgetService.BudgetsServices
         private readonly BudgetCodeService _budgetCodeService;
         private readonly LineCommentRepository _lineCommentRepository;
         private readonly OperatorRepository _operatorRepository;
+        private readonly IConnectionManager _connectionManager;
 
         public BudgetService(BudgetRepository repository, BudgetCodeService budgetCodeService,
             BudgetLineRepository lineRepository, IBudgetUnitOfWork unitOfWork, LineCommentRepository lineCommentRepository,
-            OperatorRepository operatorRepository) : base(repository, unitOfWork)
+            OperatorRepository operatorRepository, IConnectionManager signalRConnectionManager) : base(repository, unitOfWork)
         {
             _repository = repository;
             _lineRepository = lineRepository;
             _budgetCodeService = budgetCodeService;
             _lineCommentRepository = lineCommentRepository;
             _operatorRepository = operatorRepository;
+            _connectionManager = signalRConnectionManager;
+            
         }
 
         public override void Update(Budget entity)
@@ -130,6 +136,8 @@ namespace OryxBudgetService.BudgetsServices
             GC.Collect();
 
             System.IO.File.Delete(fileName);
+            var hubContext = _connectionManager.GetHubContext<NotificationHub>();
+            hubContext.Clients.All.
 
         }
 

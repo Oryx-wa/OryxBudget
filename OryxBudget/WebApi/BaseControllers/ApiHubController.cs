@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.SignalR;
 using Microsoft.AspNetCore.SignalR.Infrastructure;
 using Microsoft.AspNetCore.SignalR.Hubs;
 
-namespace OryxWebApi
+namespace OryxBudgetService
 {
     public abstract class ApiHubController<T> : BaseController
         where T : Hub

@@ -27,7 +27,7 @@ export class HomeComponent implements OnInit, OnChanges {
   }
 
   ngOnInit() {
-    console.log(this.securityService.roles);
+    // console.log(this.securityService.roles);
 
     if (this.securityService.IsAuthorized()) {
       this.name = this.securityService.name;

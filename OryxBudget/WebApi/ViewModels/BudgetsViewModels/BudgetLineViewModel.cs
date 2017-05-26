@@ -4,7 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.ComponentModel.DataAnnotations;
 
-namespace OryxWebApi.ViewModels.BudgetsViewModels
+namespace OryxBudgetService.ViewModels.BudgetsViewModels
 {
     public class BudgetLineViewModel : BaseViewModel
     {

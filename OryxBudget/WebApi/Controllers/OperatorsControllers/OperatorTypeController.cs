@@ -6,10 +6,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using OryxBudgetService.OperatorsServices;
-using OryxWebApi.ViewModels.OperatorsViewModels;
+using OryxBudgetService.ViewModels.OperatorsViewModels;
 using Entities.Operators;
 
-namespace OryxWebApi.Controllers.OperatorsControllers
+namespace OryxBudgetService.Controllers.OperatorsControllers
 {
     public class OperatorTypeController : BaseController
     {

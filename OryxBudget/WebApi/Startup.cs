@@ -33,8 +33,9 @@ using IdentityServer4.AccessTokenValidation;
 using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
 using Microsoft.AspNetCore.Mvc.Authorization;
+using OryxBudgetService.Utilities.SignalRHubs;
 
-namespace OryxWebApi
+namespace OryxBudgetService
 {
     public class Startup
     {
@@ -172,6 +173,7 @@ namespace OryxWebApi
             builder.RegisterType<ApiExceptionFilter>();
             builder.RegisterType<ValidateModelState>();
 
+            builder.RegisterType<NotificationHub>();
 
             builder.RegisterHubs(typeof(Startup).GetTypeInfo().Assembly);
 

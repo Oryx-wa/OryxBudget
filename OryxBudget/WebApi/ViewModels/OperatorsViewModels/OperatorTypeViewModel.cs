@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace OryxWebApi.ViewModels.OperatorsViewModels
+namespace OryxBudgetService.ViewModels.OperatorsViewModels
 {
     public class OperatorTypeViewModel : BaseViewModel
     {

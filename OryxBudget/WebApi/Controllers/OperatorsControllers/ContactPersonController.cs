@@ -3,10 +3,10 @@ using Entities.Operators;
 using Microsoft.AspNetCore.Mvc;
 using OryxBudgetService.OperatorsServices;
 using OryxWebapi.Utilities.ActionFilters;
-using OryxWebApi.ViewModels.OperatorsViewModels;
+using OryxBudgetService.ViewModels.OperatorsViewModels;
 
 
-namespace OryxWebApi.Controllers.OperatorsControllers
+namespace OryxBudgetService.Controllers.OperatorsControllers
 {
     public class ContactPersonController : BaseController
     {

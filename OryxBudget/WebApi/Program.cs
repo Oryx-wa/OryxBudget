@@ -3,9 +3,9 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Configuration.CommandLine;
-using OryxWebApi;
+using OryxBudgetService;
 
-namespace OryxWebApi
+namespace OryxBudgetService
 {
     public class Program
     {

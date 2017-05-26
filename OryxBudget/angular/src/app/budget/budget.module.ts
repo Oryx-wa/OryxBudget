@@ -12,6 +12,7 @@ import { CurrencyComponent } from './../shared/renderers/currency.component';
 import { WordWrapComponent } from './../shared/renderers/word-wrap.component';
 import { TextComponent } from './../shared/renderers/text.component';
 import { ChildMessageComponent } from './../shared/renderers/child-message.component';
+import { StyledComponent } from './../shared/renderers/styled-component';
 import { DialogComponent } from './../shared/dialog/dialog.component';
 @NgModule({
   imports: [
@@ -23,12 +24,13 @@ import { DialogComponent } from './../shared/dialog/dialog.component';
       CurrencyComponent,
       WordWrapComponent,
       TextComponent,
-      ChildMessageComponent
+      ChildMessageComponent,
+      StyledComponent
     ])
   ],
 
   declarations: [OperatorDetailsComponent, BudgetInitialisationComponent, LineDetailsComponent,
-    WordWrapComponent, TextComponent, LineDetailsComponent, ChildMessageComponent
+    WordWrapComponent, TextComponent, LineDetailsComponent, ChildMessageComponent, StyledComponent
   ],
   exports: [LineDetailsComponent]
 

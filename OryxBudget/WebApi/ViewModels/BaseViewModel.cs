@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace OryxWebApi.ViewModels
+namespace OryxBudgetService.ViewModels
 
 {
     public class BaseViewModel

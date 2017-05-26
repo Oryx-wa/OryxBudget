@@ -1,6 +1,6 @@
 ﻿using OryxBudgetService.BudgetsServices;
 using OryxWebapi.Utilities.ActionFilters;
-using OryxWebApi.ViewModels.BudgetsViewModels;
+using OryxBudgetService.ViewModels.BudgetsViewModels;
 using Microsoft.AspNetCore.Mvc;
 using AutoMapper;
 using Entities.Budgets;
@@ -9,7 +9,7 @@ using OryxWebapi.Utilities;
 using System.IO;
 using Hangfire;
 
-namespace OryxWebApi.Controllers.BudgetsControllers
+namespace OryxBudgetService.Controllers.BudgetsControllers
 {
     public class BudgetCodeController : BaseController
     {

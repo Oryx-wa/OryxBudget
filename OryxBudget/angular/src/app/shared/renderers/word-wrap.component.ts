@@ -16,6 +16,6 @@ export class WordWrapComponent implements ICellRendererAngularComp {
 
     agInit(params: any): void {
         this.params = params;
-        // console.log(this.params);
+        // // console.log(this.params);
     }
 }
