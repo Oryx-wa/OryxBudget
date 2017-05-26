@@ -359,7 +359,7 @@ export class LineDetailsComponent implements OnInit, OnChanges {
   }
 
 
-  private onReady() {
+  public onReady(data: any) {
     // // console.log('onReady');
     this.ready = true;
     this.setColumns();

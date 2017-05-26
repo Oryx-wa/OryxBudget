@@ -2,7 +2,7 @@
 <div class="row" *ngIf="securityService.IsAuthorized()">
     <div class= "col s6">
         <div class="col s6">
-            <h5> Welcome {{name}} </h5>
+            <h5> Welcome {{securityService.name}} </h5>
         </div>
         <div class="col s6">
             <h6> Roles:{{securityService.roles}} </h6>

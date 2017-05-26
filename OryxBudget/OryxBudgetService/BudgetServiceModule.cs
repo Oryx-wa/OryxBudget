@@ -3,7 +3,7 @@ using OryxDomainServices;
 using Data.Repositories;
 using Data.Infrastructure;
 using OryxBudgetService.BudgetsServices;
-
+using OryxBudgetService.Utilities.SignalRHubs;
 
 namespace OryxBudgetService
 {
@@ -32,8 +32,9 @@ namespace OryxBudgetService
                 .InstancePerLifetimeScope();
             //.InstancePerBackgroundJob();
 
-            
-           
+            //builder.RegisterType<NotificationHub>()
+            //    .As<IHubTrackingService>();
+
             builder.RegisterType<BudgetService>();
             builder.RegisterType<PeriodService>();
             builder.RegisterType<LineCommentService>();

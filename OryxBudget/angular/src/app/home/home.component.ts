@@ -46,6 +46,8 @@ export class HomeComponent implements OnInit, OnChanges {
       if (this.role.indexOf('Operator') !== -1) {
         this.showOperator = true;
       }
+    } else {
+      this._router.navigate(['/unauthorised']);
     }
   }
 

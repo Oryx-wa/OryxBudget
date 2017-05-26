@@ -101,7 +101,7 @@ namespace Entities.Budgets
         public decimal FinalBudgetUSD { get; set; }
 
         [Required]
-        public BudgetStatus LineStatus { get; set; }
+        public CommentStatus LineStatus { get; set; }
 
         public Guid BudgetId { get; set; }
 

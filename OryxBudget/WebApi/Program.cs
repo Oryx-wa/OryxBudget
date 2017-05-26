@@ -5,7 +5,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Configuration.CommandLine;
 using OryxBudgetService;
 
-namespace OryxBudgetService
+namespace OryxWebApi
 {
     public class Program
     {

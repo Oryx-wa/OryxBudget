@@ -6,6 +6,7 @@
           <img src="{{op.imageSrc}}" alt="" />
           <span class="{{op.name}}"></span>
         </div>
+        <ng-template #loading1>Loading Operator Data...</ng-template>
         <div *ngIf="budgets$ | async; let budgets;">
           <h6>
             <a class="waves-effect waves-light" (click)="getLineDetails(budgets[0].id)"><i class="material-icons right" >refresh</i></a>

@@ -3,14 +3,14 @@ using Microsoft.AspNetCore.Mvc;
 using Entities.Budgets;
 using OryxBudgetService.BudgetsServices;
 using OryxWebapi.Utilities.ActionFilters;
-using OryxBudgetService.ViewModels.BudgetsViewModels;
+using OryxWebApi.ViewModels.BudgetsViewModels;
 using OryxBudgetService;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace OryxBudgetService.Controllers.BudgetsControllers
+namespace OryxWebApi.Controllers.BudgetsControllers
 {
     public class CategoryController : BaseController
     {

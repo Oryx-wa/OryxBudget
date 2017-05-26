@@ -138,7 +138,7 @@
   <app-dialog [(visible)]="showComment">
 
     <app-line-comment [line]="line" [lineComments]="lineComments" (update)="updateComments($event)" (close)="showComment = !showComment"
-    [showSubCom]="showSubCom$ | async"  [showTecCom]="showTecCom$ | async" [showMalCom]="showMalCom$ | async" >
+    [showSubCom]="showSubCom"  [showTecCom]="showTecCom" [showMalCom]="showMalCom" >
     </app-line-comment>
     <ng-template #loading2>Loading Comments ...</ng-template>
 

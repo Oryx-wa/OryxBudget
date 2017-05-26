@@ -4,8 +4,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Entities.Budgets;
-using OryxBudgetService.ViewModels.BudgetsViewModels;
-using OryxBudgetService.ViewModels.OperatorsViewModels;
+using OryxWebApi.ViewModels.BudgetsViewModels;
+using OryxWebApi.ViewModels.OperatorsViewModels;
 using Entities.Operators;
 
 namespace OryxWebapi.ViewModels.Mappings

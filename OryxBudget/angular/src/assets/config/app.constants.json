@@ -1,0 +1,11 @@
+{
+    "apiServer":"http://192.168.1.19/budgetapi/api",
+    "idServer":"http://192.168.1.19/budgetidsrv/",
+    "returnUrl":"http://192.168.1.19/napims",
+    "useBackend":"true",
+    "apiLocal":"/api",
+    "clientId":"OryxBudget",
+    "scope":"openid profile OryxBudget",
+    "apiUploadFolder":"http://192.168.1.19/api/uploads"
+
+}

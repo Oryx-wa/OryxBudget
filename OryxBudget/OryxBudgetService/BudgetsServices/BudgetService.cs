@@ -24,10 +24,12 @@ namespace OryxBudgetService.BudgetsServices
         private readonly LineCommentRepository _lineCommentRepository;
         private readonly OperatorRepository _operatorRepository;
         private readonly IConnectionManager _connectionManager;
+        private readonly AttachmentRepository _attachmentRepository;
 
         public BudgetService(BudgetRepository repository, BudgetCodeService budgetCodeService,
             BudgetLineRepository lineRepository, IBudgetUnitOfWork unitOfWork, LineCommentRepository lineCommentRepository,
-            OperatorRepository operatorRepository, IConnectionManager signalRConnectionManager) : base(repository, unitOfWork)
+            OperatorRepository operatorRepository, AttachmentRepository attachmentRepository,
+            IConnectionManager signalRConnectionManager) : base(repository, unitOfWork)
         {
             _repository = repository;
             _lineRepository = lineRepository;
@@ -118,10 +120,11 @@ namespace OryxBudgetService.BudgetsServices
                 item.UserSign = "e317f2dc-deb1-4463-8b67-7f435211d652";
                 item.UpdateDate = System.DateTime.Now;
                 item.CreateDate = System.DateTime.Now;
+                item.OpBudgetFC = item.OpBudgetLCInUSD + item.OpBudgetUSD;
                 budget.BudgetLines.Add(item);
                 totalLC += item.OpBudgetLC;
                 totalUSD += item.OpBudgetUSD;
-                total += item.OpBudgetLCInUSD + item.OpBudgetUSD;
+                total += item.OpBudgetFC;
 
             };
 
@@ -136,8 +139,8 @@ namespace OryxBudgetService.BudgetsServices
             GC.Collect();
 
             System.IO.File.Delete(fileName);
-            var hubContext = _connectionManager.GetHubContext<NotificationHub>();
-            hubContext.Clients.All.
+            //var hubContext = _connectionManager.GetHubContext<NotificationHub>();
+            //hubContext.Clients.All.
 
         }
 

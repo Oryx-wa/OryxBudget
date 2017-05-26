@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Entities.Budgets;
 using OryxBudgetService.BudgetsServices;
 using OryxWebapi.Utilities.ActionFilters;
-using OryxBudgetService.ViewModels.BudgetsViewModels;
+using OryxWebApi.ViewModels.BudgetsViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,9 +16,9 @@ using OryxBudgetService.Utilities.SignalRHubs;
 using Microsoft.AspNetCore.SignalR.Infrastructure;
 using Microsoft.Net.Http.Headers;
 
-namespace OryxBudgetService.Controllers.BudgetControllers
+namespace OryxWebApi.Controllers.BudgetControllers
 {
-    public class BudgetController :  ApiHubController<NotificationHub>
+    public class BudgetController :  BaseController
     {
         private readonly BudgetService _budgetService;
         private readonly BudgetLineService _lineService;
@@ -27,7 +27,7 @@ namespace OryxBudgetService.Controllers.BudgetControllers
 
         public BudgetController(BudgetService budgetService, BudgetLineService lineService,  PeriodService periodService,
             IConnectionManager signalRConnectionManager)
-             : base(signalRConnectionManager)
+             : base()
         {
             _budgetService = budgetService;
             _lineService = lineService;
