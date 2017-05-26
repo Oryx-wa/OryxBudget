@@ -36,6 +36,9 @@ namespace Data
         public DbSet<BudgetCode> BudgetCodes { get; set; }
         public DbSet<BudgetCodeLog> BudgetCodeLogs { get; set; }
 
+        public DbSet<Attachment> Attachments { get; set; }
+        public DbSet<AttachmentLog> AttachmentLogs { get; set; }
+
         //Operator
         public DbSet<Operator> Operators { get; set; }
         public DbSet<OperatorLog> OperatorLogs { get; set; }

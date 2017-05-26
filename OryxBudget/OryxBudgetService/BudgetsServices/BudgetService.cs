@@ -34,7 +34,7 @@ namespace OryxBudgetService.BudgetsServices
             _budgetCodeService = budgetCodeService;
             _lineCommentRepository = lineCommentRepository;
             _operatorRepository = operatorRepository;
-            _connectionManager = signalRConnectionManager;
+            _attachmentRepository = attachmentRepository;
             
         }
 
@@ -234,6 +234,32 @@ namespace OryxBudgetService.BudgetsServices
                 }
                
             }
+        }
+
+        public void UpdateAttachment(Attachment entity)
+        {
+            var attachment = this.Get(entity.Id);
+            _attachmentRepository.Update(entity);
+        }
+
+        public void AddAttachment(Attachment entity)
+        {
+            _attachmentRepository.Add(entity);
+        }
+
+        public Attachment GetAttachment(Guid id)
+        {
+            return _attachmentRepository.Get(id);
+        }
+
+        public IEnumerable<Attachment> GetAttachments()
+        {
+            return _attachmentRepository.GetAll();
+        }
+
+        public IEnumerable<Attachment> GetAttachmentsByBudgetLine(string lineId)
+        {
+            return _attachmentRepository.GetAll().Where(a => a.BudgetLineId.ToString() == lineId);
         }
     }
 

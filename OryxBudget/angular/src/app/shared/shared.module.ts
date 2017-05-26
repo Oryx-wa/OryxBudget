@@ -8,10 +8,12 @@ import { OryxDashboardComponent } from './oryx-dashboard/oryx-dashboard.componen
 import { SecurityService } from './../login/security.service';
 import { FileuploaderComponent } from './fileuploader/fileuploader.component';
 import { NgUploaderModule } from 'ngx-uploader';
-
+import { ListComponent } from './listcomponent/list.component';
 import { LineCommentComponent } from './line-comment/line-comment.component';
 import { LineCommentDetailsComponent } from './line-comment/line-comment-details.component';
 import { CurrencyComponent } from './../shared/renderers/currency.component';
+import { SelectModule } from 'ng-select';
+import { Ng2PaginationModule } from 'ng2-pagination';
 
 import { MaterializeModule } from 'angular2-materialize';
 import { DialogComponent } from './dialog/dialog.component';
@@ -22,6 +24,8 @@ import { AttachmentComponent } from './attachment/attachment.component';
     RouterModule,
     NgUploaderModule,
     FormsModule,
+    Ng2PaginationModule,
+    SelectModule,
     ReactiveFormsModule,
     MaterializeModule,
     BrowserAnimationsModule,
@@ -32,12 +36,14 @@ import { AttachmentComponent } from './attachment/attachment.component';
     OryxDashboardComponent,
     FileuploaderComponent,
     LineCommentComponent,
+    ListComponent,
     LineCommentDetailsComponent,
     DialogComponent, CurrencyComponent, AttachmentComponent],
   providers: [SecurityService],
   exports: [// MainNavComponent, 
     OryxDashboardComponent,
     FileuploaderComponent,
-    MaterializeModule, LineCommentComponent, CurrencyComponent, DialogComponent]
+    MaterializeModule, LineCommentComponent, CurrencyComponent,
+    DialogComponent, ListComponent, Ng2PaginationModule, SelectModule]
 })
 export class SharedModule { }
