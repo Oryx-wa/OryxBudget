@@ -1,19 +1,21 @@
 <div class="row">
-  <div class=" card  horizontal">
-    <div class="row">
-      <div class="col l2">
-        <div class="card-image  def-dashboard-image">
-          <div *ngIf="operator$ | async; let op; else loading1">
-            <img src="{{op.imageSrc}}" alt="" />
-            <span class="{{op.name}}"></span>
-            <!--<a class="waves-effect waves-light" (click)="getOperator()"><i class="material-icons right">refresh</i></a>-->
-          </div>
+  <div class="col s12">
+    <div class=" card  horizontal">
+      <div class="card-image  def-dashboard-image">
+        <div *ngIf="operator$ | async; let op; else loading1">
+          <img src="{{op.imageSrc}}" alt="" />
+          <span class="{{op.name}}"></span>
+        </div>
+        <ng-template #loading1>Loading Operator Data...</ng-template>
+        <div *ngIf="budgets$ | async; let budgets;">
+          <h6>
+            <a class="waves-effect waves-light" (click)="getLineDetails(budgets[0].id)"><i class="material-icons right" >refresh</i></a>
+          </h6>
         </div>
       </div>
-      <ng-template #loading1>Loading Operator Data...</ng-template>
-      <div class="col l12">
-        <div class="card-content">
-          <div class="row">
+      <div class="row">
+        <div class="container">
+          <div class="card-content">
             <div *ngIf="budgets$ | async; let budgets; else loading">
               <div class="row">
                 <form materialize class="col s12">
@@ -43,47 +45,44 @@
                   </div>
                 </form>
               </div>
-              <ag-grid-angular style="width: 100%; height: 120px;" class="ag-material" [gridOptions]="gridOptions" [columnDefs]="columnDefs"
-                [rowData]="budgets" groupHeaders suppressRowClickSelection toolPanelSuppressGroups toolPanelSuppressValues
-                rowHeight="48" rowSelection="multiple" (gridReady)="onReady($event)">
-              </ag-grid-angular>
+              <div *ngIf="lines$ | async;let lines; else loading2">
+                <div *ngIf="lines.length >= 1;else noLines">
+                  <app-line-details [lines]="lines" (comments)="getComments($event)" [commentSaved]="commentSaved$" [lineComments]="lineComments$ | async"
+                    (saveComments)="saveComments($event)" [roles]="roles" [showSubCom]="showSubCom$ | async" [showTecCom]="showTecCom$ | async"
+                    [showMalCom]="showMalCom$ | async" [showFinal]="showFinal$ | async">
+                  </app-line-details>
+                </div>
+                <ng-template #noLines>
+                  <div class="row">
+                    <a class="waves-effect waves-light" (click)="upload(budgets[0])">Upload Budget</a>
+                  </div>
+                </ng-template>
+              </div>
+              <ng-template #loading2>Loading Details ...</ng-template>
             </div>
             <ng-template #loading>Loading Operator Data...</ng-template>
           </div>
+
+          <div *ngIf="displayMode == displayModeEnum.Upload" class="row">
+            <div class="container">
+              <div class="col s4 ">
+                <div class="card ">
+                  <ul materialize="tabs" [materializeParams]="tabSelectionParams" class="tabs">
+                    <li class="tab col s6">
+                      <a (click)="setUploadType('Budget')" class="waves-effect waves-light"> Budget </a>
+                    </li>
+                    <li class="tab col s6">
+                      <a (click)="setUploadType('Actual')" class=" waves-effect waves-light"> Actual </a>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+              <app-fileuploader [data]="data" [url]="uploadUrl" [title]="uploadTitle">
+              </app-fileuploader>
+            </div>
+          </div>
         </div>
       </div>
-    </div>
-  </div>
-  <div class="row">
-    <div>
-      <div *ngIf="lines$ | async;let lines; else loading2">
-        <app-line-details [lines]="lines" (comments)="getComments($event)" [commentSaved]="commentSaved$" [lineComments]="lineComments$ | async"
-          (saveComments)="saveComments($event)" [roles]="roles">
-        </app-line-details>
-      </div>
-    </div>
-    <ng-template #loading2>Loading Details ...</ng-template>
-  </div>
-  <div *ngIf="displayMode == displayModeEnum.Details" class="row">
-
-  </div>
-  <div *ngIf="displayMode == displayModeEnum.Upload" class="row">
-
-    <div class="container">
-      <div class="col s4 ">
-        <div class="card ">
-          <ul materialize="tabs" [materializeParams]="tabSelectionParams" class="tabs">
-            <li class="tab col s6">
-              <a (click)="setUploadType('Budget')" class="waves-effect waves-light"> Budget </a>
-            </li>
-            <li class="tab col s6">
-              <a (click)="setUploadType('Actual')" class=" waves-effect waves-light"> Actual </a>
-            </li>
-          </ul>
-        </div>
-      </div>
-      <app-fileuploader [data]="data" [url]="uploadUrl" [title]="uploadTitle">
-      </app-fileuploader>
     </div>
   </div>
 </div>

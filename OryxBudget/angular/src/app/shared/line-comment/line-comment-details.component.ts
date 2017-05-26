@@ -32,9 +32,9 @@ export class LineCommentDetailsComponent implements OnInit {
   ) { }
 
  ngOnInit() {
-    console.log(this.route.snapshot.paramMap.get('id'));
+    // console.log(this.route.snapshot.paramMap.get('id'));
     this.getOperator(this.route.snapshot.paramMap.get('id'));
-    // console.log(this.route);
+    // // console.log(this.route);
 
 
   }
@@ -100,7 +100,7 @@ export class LineCommentDetailsComponent implements OnInit {
     const params1: URLSearchParams = new URLSearchParams();
     params1.append('budgetId', comments.budgetId);
     params1.append('code', comments.code);
-    console.log(JSON.stringify(comments.data));
+    // console.log(JSON.stringify(comments.data));
     const ret = this._http.post(url,
       JSON.stringify(comments.data), {
         headers: this.securityService.getHeaders(),

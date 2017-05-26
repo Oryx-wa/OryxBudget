@@ -2,9 +2,9 @@
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.SignalR;
 
-namespace OryxWebApi.Utilities.SignalRHubs
+namespace OryxBudgetService.Utilities.SignalRHubs
 {
-    public class NotificationHub : Hub<INotification>
+    public class NotificationHub : Hub
     {
         private readonly IHubTrackingService hubTrackingService;
 
@@ -47,6 +47,7 @@ namespace OryxWebApi.Utilities.SignalRHubs
     public interface INotification
     {
         Task SetConnectionId(string connectionId);
+        Task UploadCompleted(string budgetId);
         //Task UpdateMatch(MatchViewModel match);
         //Task AddFeed(FeedViewModel feed);
         //Task AddChatMessage(ChatMessage message);

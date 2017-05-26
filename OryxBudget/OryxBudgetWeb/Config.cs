@@ -135,6 +135,7 @@ namespace OryxBudgetWeb
                         "http://localhost:3000/",
                         "http://localhost:4200/",
                         "http://10.211.55.2:4200/",
+                        "http://192.168.1.19/napims"
 
 
                     },
@@ -145,7 +146,7 @@ namespace OryxBudgetWeb
                    //     "http://10.211.55.2:4200/unauthorized.html",
                    // },
                     //RedirectUris = { "http://localhost:4200/signin-oidc" },
-                    PostLogoutRedirectUris = { "http://localhost:4200/unauthorised" },
+                    PostLogoutRedirectUris = { "http://localhost:4200/unauthorised", "http://192.168.1.19/napims/unauthorised" },
                      AllowedScopes = new List<string>
                     {
                        IdentityServerConstants.StandardScopes.OpenId,

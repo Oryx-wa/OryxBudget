@@ -33,6 +33,7 @@ using IdentityServer4.AccessTokenValidation;
 using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
 using Microsoft.AspNetCore.Mvc.Authorization;
+using OryxBudgetService.Utilities.SignalRHubs;
 
 namespace OryxWebApi
 {
@@ -172,6 +173,7 @@ namespace OryxWebApi
             builder.RegisterType<ApiExceptionFilter>();
             builder.RegisterType<ValidateModelState>();
 
+            
 
             builder.RegisterHubs(typeof(Startup).GetTypeInfo().Assembly);
 
@@ -195,6 +197,8 @@ namespace OryxWebApi
                     .WriteTo.RollingFile(pathFormat: "logs\\log-{Date}.log")
                     .CreateLogger();
 
+
+            string idSrv = "";
             if (env.IsDevelopment())
             {
                 try
@@ -219,6 +223,7 @@ namespace OryxWebApi
                     .AddSerilog();
 
                 app.UseDeveloperExceptionPage();
+                idSrv = Configuration["IdSrvDev"];
             }
             else
             {
@@ -257,13 +262,15 @@ namespace OryxWebApi
                             await context.Response.WriteAsync("</body></html>\r\n");
                             await context.Response.WriteAsync(new string(' ', 512)); // Padding for IE
                         }));
+
+                idSrv = Configuration["IdSrv"];
             }
 
             app.UseCors("corsGlobalPolicy");
 
 
             IdentityServerAuthenticationOptions identityServerAuthenticationOptions = new IdentityServerAuthenticationOptions();
-            identityServerAuthenticationOptions.Authority = "http://localhost:5000/";
+            identityServerAuthenticationOptions.Authority = idSrv; //"http://localhost:5000/";
             identityServerAuthenticationOptions.AllowedScopes = new List<string> { "OryxBudget" };
             identityServerAuthenticationOptions.ApiSecret = "F621F470-9731-4A25-80EF-67A6F7C5F4B8";
             identityServerAuthenticationOptions.ApiName = "OryxBudget";

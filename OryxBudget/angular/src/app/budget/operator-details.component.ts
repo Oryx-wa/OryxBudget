@@ -3,13 +3,14 @@ import { Router, ActivatedRoute, Params } from '@angular/router';
 import { Http, URLSearchParams } from '@angular/http';
 import 'rxjs/add/operator/switchMap';
 import 'rxjs/add/operator/map';
+
 import { GridOptions } from 'ag-grid/main';
 import { Budgets, Operators, BudgetLines, LineComments } from './../models';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { Observable } from 'rxjs/Observable';
 import { SecurityService } from './../login/security.service';
 import { CurrencyComponent } from './../shared/renderers/currency.component';
-
+import * as _ from 'lodash';
 
 @Component({
   selector: 'app-operator-details',
@@ -46,9 +47,9 @@ export class OperatorDetailsComponent implements OnInit {
   }
 
   ngOnInit() {
-    console.log(this.route.snapshot.paramMap.get('id'));
+    // console.log(this.route.snapshot.paramMap.get('id'));
     this.getOperator(this.route.snapshot.paramMap.get('id'));
-    // console.log(this.route);
+    // // console.log(this.route);
     this.roles = this.securityService.roles;
     this.roles.map(role => {
       switch (role) {
@@ -139,9 +140,11 @@ export class OperatorDetailsComponent implements OnInit {
     const params1: URLSearchParams = new URLSearchParams();
     params1.append('budgetId', data.budgetId);
     params1.append('code', data.code);
-    console.log(JSON.stringify(data.data));
+    params1.append('type', data.type);
+    const bd = { lineComments: data.lineComments, budgetLine: _.assign(data.budgetLine, { code: data.code }) };
+    // console.log(JSON.stringify(bd));
     const ret = this._http.post(url,
-      { comments: JSON.stringify(data.data), budgetline: JSON.stringify(data.line) }, {
+      JSON.stringify(bd), {
         headers: this.securityService.getHeaders(),
         search: params1
       })
@@ -288,7 +291,7 @@ export class OperatorDetailsComponent implements OnInit {
   }
 
   private onReady() {
-    // console.log('onReady');
+    // // console.log('onReady');
     this.showSubCom$.subscribe(checked => {
       this.gridOptions.columnApi.setColumnsVisible(
         ['subComBudgetLC', 'subComBudgetUSD', 'subComBudgetFC'],

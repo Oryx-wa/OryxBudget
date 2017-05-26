@@ -63,7 +63,14 @@
   </ItemGroup>
 
   <ItemGroup Condition="'$(TargetFramework)' == 'netcoreapp1.1'">
-    <DotNetCliToolReference Include="Microsoft.EntityFrameworkCore.Tools.DotNet" Version="1.0.0" />
+    <DotNetCliToolReference Include="Microsoft.EntityFrameworkCore.Tools.DotNet" Version="1.1.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Remove="Utilities\SignalRHubs\**" />
+    <Content Remove="Utilities\SignalRHubs\**" />
+    <EmbeddedResource Remove="Utilities\SignalRHubs\**" />
+    <None Remove="Utilities\SignalRHubs\**" />
   </ItemGroup>
 
   <ItemGroup>

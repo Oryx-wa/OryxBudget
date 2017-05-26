@@ -30,13 +30,13 @@ namespace OryxBudgetWeb.Controllers
         private readonly ILogger _logger;
         private readonly string _externalCookieScheme;
         private readonly IIdentityServerInteractionService _interaction;
-
+        private readonly OperatorsClient _operatorsClient;
         public AccountController(
                 UserManager<ApplicationUser> userManager,
                 SignInManager<ApplicationUser> signInManager,
                 IOptions<IdentityCookieOptions> identityCookieOptions,
                 IEmailSender emailSender,
-                ISmsSender smsSender,
+                ISmsSender smsSender,OperatorsClient operatorsClient,
                 ILoggerFactory loggerFactory,
                  IIdentityServerInteractionService interaction)
         {
@@ -47,6 +47,7 @@ namespace OryxBudgetWeb.Controllers
             _smsSender = smsSender;
             _logger = loggerFactory.CreateLogger<AccountController>();
             _interaction = interaction;
+            _operatorsClient = operatorsClient;
         }
 
         //
@@ -106,8 +107,8 @@ namespace OryxBudgetWeb.Controllers
         [AllowAnonymous]
         public async Task<IActionResult> Register(string returnUrl = null)
         {
-            var operatorsClient = new OperatorsClient();
-            var data1 = await operatorsClient.GetOperatorsList();
+           
+            var data1 = await _operatorsClient.GetOperatorsList();
 
             var data =  data1.Select(x => new SelectListItem
             {
@@ -132,8 +133,8 @@ namespace OryxBudgetWeb.Controllers
         public async Task<IActionResult> Register(RegisterViewModel model, string returnUrl = null)
         {
             ViewData["ReturnUrl"] = returnUrl;
-            var operatorsClient = new OperatorsClient();
-            var data1 = await operatorsClient.GetOperatorsList();
+            // var operatorsClient = new OperatorsClient();
+            var data1 = await _operatorsClient.GetOperatorsList();
             var data = data1.Select(x => new SelectListItem
             {
                 Value = x.Id.ToString(),

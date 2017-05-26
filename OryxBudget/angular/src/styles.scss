@@ -1,5 +1,6 @@
- @import "../node_modules/materialize-css/dist/css/materialize.css";
-
+ 
+$roboto-font-path: "~materialize-css/fonts/roboto/"; /* This is needed so the materialize.scss file can load the font */
+@import "~materialize-css/sass/materialize";
  .brand-logo{
     font-size: 1.5rem !important;
  }
@@ -47,4 +48,80 @@
      padding: 0em!important; 
     resize: none;
     min-height: 3rem;
+}
+
+@font-face {
+  font-family: 'Material Icons';
+  font-style: normal;
+  font-weight: 400;
+  src: url(../node_modules/mdi/fonts/materialdesignicons-webfont.eot); /* For IE6-8 */
+  src: local('Material Icons'),
+       local('MaterialIcons-Regular'),
+       url(../node_modules/mdi/fonts/materialdesignicons-webfont.woff2) format('woff2'),
+       url(../node_modules/mdi/fonts/materialdesignicons-webfont.woff) format('woff'),
+       url(../node_modules/mdi/fonts/materialdesignicons-webfont.ttf) format('truetype'),
+       url(../node_modules/mdi/fonts/materialdesignicons-webfont.svg) format('svg');
+       
+} 
+
+.material-icons {
+  font-family: 'Material Icons';
+  font-weight: normal;
+  font-style: normal;
+  font-size: 24px;  /* Preferred icon size */
+  display: inline-block;
+  line-height: 1;
+  text-transform: none;
+  letter-spacing: normal;
+  word-wrap: normal;
+  white-space: nowrap;
+  direction: ltr;
+
+  /* Support for all WebKit browsers. */
+  -webkit-font-smoothing: antialiased;
+  /* Support for Safari and Chrome. */
+  text-rendering: optimizeLegibility;
+
+  /* Support for Firefox. */
+  -moz-osx-font-smoothing: grayscale;
+
+  /* Support for IE. */
+  font-feature-settings: 'liga';
+}
+
+@font-face {
+  font-family: 'Material Icons';
+  font-style: normal;
+  font-weight: 400;
+  src: url(../node_modules/material-design-icons/iconfont/MaterialIcons-Regular.eot); /* For IE6-8 */
+  src: local('Material Icons'),
+       local('MaterialIcons-Regular'),
+       url(../node_modules/material-design-icons/iconfont/MaterialIcons-Regular.woff2) format('woff2'),
+       url(../node_modules/material-design-icons/iconfont/MaterialIcons-Regular.woff) format('woff'),
+       url(../node_modules/material-design-icons/iconfont/MaterialIcons-Regular.ttf) format('truetype');
+}
+
+.material-icons {
+  font-family: 'Material Icons';
+  font-weight: normal;
+  font-style: normal;
+  font-size: 24px;  /* Preferred icon size */
+  display: inline-block;
+  line-height: 1;
+  text-transform: none;
+  letter-spacing: normal;
+  word-wrap: normal;
+  white-space: nowrap;
+  direction: ltr;
+
+  /* Support for all WebKit browsers. */
+  -webkit-font-smoothing: antialiased;
+  /* Support for Safari and Chrome. */
+  text-rendering: optimizeLegibility;
+
+  /* Support for Firefox. */
+  -moz-osx-font-smoothing: grayscale;
+
+  /* Support for IE. */
+  font-feature-settings: 'liga';
 }

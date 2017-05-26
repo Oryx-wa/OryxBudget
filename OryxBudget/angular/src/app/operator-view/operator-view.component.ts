@@ -3,8 +3,10 @@ import { GridOptions } from 'ag-grid/main';
 
 import { Budgets, Operators, BudgetLines, LineComments } from './../models';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
-import { Observable } from 'rxjs/Observable';
+import { Observable, } from 'rxjs/Observable';
+// import 'rxjs/observable/timer';
 import { SecurityService } from './../login/security.service';
+// import * as Rx from 'rxjs/Rx';
 
 import { Router, ActivatedRoute, Params } from '@angular/router';
 import { Http, URLSearchParams } from '@angular/http';
@@ -37,8 +39,9 @@ export class OperatorViewComponent implements OnInit, OnChanges {
   public uploadTitle = '';
   private budgetDesc = '';
   public columnDefs: any[];
-   private colWidth = 110;
+  private colWidth = 110;
   public gridOptions: GridOptions;
+  
   showDetail = false;
 
   constructor(private route: ActivatedRoute,
@@ -55,27 +58,33 @@ export class OperatorViewComponent implements OnInit, OnChanges {
       this.name = this.securityService.name;
       this.operatorId = this.securityService.operatorId;
       this.roles = this.securityService.roles;
-      console.log(this.roles)
       this.getOperator();
-        this.roles.map(role => {
-      switch (role) {
-        case 'SubCom':
-          this.showSubCom$.next(true);
-          break;
-        case 'TecCom':
-          this.showTecCom$.next(true);
-          break;
-        case 'MalCom':
-          this.showMalCom$.next(true);
-          break;
-        case 'Final':
-          this.showFinal$.next(true);
-          break;
-        default:
-          break;
-      }
-    });
+      // console.log(this.roles)
+      /* const obj = Rx.Observable.timer(1000, 10000);
+      const subsription = obj.subscribe(s => {
+        
+      }); */
+
+      this.roles.map(role => {
+        switch (role) {
+          case 'SubCom':
+            this.showSubCom$.next(true);
+            break;
+          case 'TecCom':
+            this.showTecCom$.next(true);
+            break;
+          case 'MalCom':
+            this.showMalCom$.next(true);
+            break;
+          case 'Final':
+            this.showFinal$.next(true);
+            break;
+          default:
+            break;
+        }
+      });
     }
+
 
 
   }
@@ -106,7 +115,7 @@ export class OperatorViewComponent implements OnInit, OnChanges {
       body: '',
       params: params1
     }).map(res => res.json());
-    //this.budgets$.subscribe(b => console.log(b));
+    //this.budgets$.subscribe(b => // console.log(b));
     this.budgets$.subscribe(budgets => {
       if (budgets) {
         this.budgetDesc = budgets[0].description;
@@ -115,7 +124,7 @@ export class OperatorViewComponent implements OnInit, OnChanges {
     });
 
   }
- getComments(line: BudgetLines) {
+  getComments(line: BudgetLines) {
     const url = this.securityService.getUrl('Budget/GetLineComment');
     const params1: URLSearchParams = new URLSearchParams();
     params1.append('budgetId', line.budgetId);
@@ -135,7 +144,7 @@ export class OperatorViewComponent implements OnInit, OnChanges {
     const params1: URLSearchParams = new URLSearchParams();
     params1.append('budgetId', data.budgetId);
     params1.append('code', data.code);
-    console.log(JSON.stringify(data.data));
+    // console.log(JSON.stringify(data.data));
     const ret = this._http.post(url,
       { comments: JSON.stringify(data.data), budgetline: JSON.stringify(data.line) }, {
         headers: this.securityService.getHeaders(),
@@ -146,15 +155,14 @@ export class OperatorViewComponent implements OnInit, OnChanges {
     this.commentSaved$.next(true);
   }
   changeDisplayMode(mode: DisplayModeEnum) {
-    // console.log(mode); 
+    // // console.log(mode); 
     this.displayMode = mode;
   }
 
-  upload(id: string, description: string) {
-    this.data = { id: id };
+  upload(budget: Budgets) {
+    this.data = { id: budget.id };
     this.changeDisplayMode(this.displayModeEnum.Upload);
-    this.budgetDesc = description;
-    this.uploadTitle = 'Upload Budget for ' + this.budgetDesc;
+    this.uploadTitle = 'Upload Budget for ' + budget.description;
   }
 
   setUploadType(type: string) {
@@ -173,7 +181,7 @@ export class OperatorViewComponent implements OnInit, OnChanges {
     this.changeDisplayMode(this.displayModeEnum.Details);
   }
 
-   private createColumnDefs() {
+  private createColumnDefs() {
     this.columnDefs = [
 
       {
@@ -308,9 +316,10 @@ export class OperatorViewComponent implements OnInit, OnChanges {
       params: params1
     }).map(res => res.json());
     this.commentSaved$.next(true);
+    this.changeDisplayMode(DisplayModeEnum.Budget);
 
   }
- public showColumn(columnType: string) {
+  public showColumn(columnType: string) {
     let columns: any[] = [];
     switch (columnType) {
 
@@ -326,7 +335,7 @@ export class OperatorViewComponent implements OnInit, OnChanges {
   }
 
   private onReady() {
-    // console.log('onReady');
+    // // console.log('onReady');
     this.showSubCom$.subscribe(checked => {
       this.gridOptions.columnApi.setColumnsVisible(
         ['subComBudgetLC', 'subComBudgetUSD', 'subComBudgetFC'],

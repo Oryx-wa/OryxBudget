@@ -8,18 +8,26 @@ using System.Net.Http.Headers;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
 using IdentityModel.Client;
+using Microsoft.Extensions.Options;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace OryxBudgetWeb.Models
 {
     public class OperatorsClient
     {
-        private string _operatorUrl = "http://localhost:5502/api/Operator";
-
+        private string _apiUrl, _idSrv;
+        private readonly Options _options;
         //DropDown
+        public OperatorsClient(Options options)
+        {
+            _apiUrl = options.ApiPath;
+            _idSrv = options.IdPath;
+        }
 
         public async Task<IEnumerable<OperatorClientModel>> GetOperatorsList()
         {
-            var discoveryClient = new DiscoveryClient("http://localhost:5000");
+            string action = "api/Operator";
+            var discoveryClient = new DiscoveryClient(_idSrv);
             var doc =  await discoveryClient.GetAsync();
             var tclient = new TokenClient(
         doc.TokenEndpoint,
@@ -28,7 +36,7 @@ namespace OryxBudgetWeb.Models
             var tresponse = await tclient.RequestClientCredentialsAsync("OryxBudget");
             var token = tresponse.AccessToken;
             HttpClient client = new HttpClient();
-            client.BaseAddress = new Uri(_operatorUrl);
+            client.BaseAddress = new Uri(_apiUrl);
             client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
             client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
             HttpResponseMessage response = client.GetAsync("Operator/Lookup").Result;
@@ -41,4 +49,12 @@ namespace OryxBudgetWeb.Models
             return data;
         }
     }
+
+    public interface IOperatosClient
+    {
+        Task<IEnumerable<OperatorClientModel>> GetOperatorsList();
+    }
+
+    
+
 }

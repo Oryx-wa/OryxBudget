@@ -10,6 +10,9 @@ using OryxBudgetService.CsvMapping;
 using Data.Repositories.BudgetsRepositories;
 using OryxBudgetService.Utilties;
 using Data.Repositories.OperatorsRepositories;
+using Microsoft.AspNetCore.SignalR;
+using Microsoft.AspNetCore.SignalR.Infrastructure;
+using OryxBudgetService.Utilities.SignalRHubs;
 
 namespace OryxBudgetService.BudgetsServices
 {
@@ -20,11 +23,13 @@ namespace OryxBudgetService.BudgetsServices
         private readonly BudgetCodeService _budgetCodeService;
         private readonly LineCommentRepository _lineCommentRepository;
         private readonly OperatorRepository _operatorRepository;
+        private readonly IConnectionManager _connectionManager;
         private readonly AttachmentRepository _attachmentRepository;
 
         public BudgetService(BudgetRepository repository, BudgetCodeService budgetCodeService,
             BudgetLineRepository lineRepository, IBudgetUnitOfWork unitOfWork, LineCommentRepository lineCommentRepository,
-            OperatorRepository operatorRepository, AttachmentRepository attachmentRepository) : base(repository, unitOfWork)
+            OperatorRepository operatorRepository, AttachmentRepository attachmentRepository,
+            IConnectionManager signalRConnectionManager) : base(repository, unitOfWork)
         {
             _repository = repository;
             _lineRepository = lineRepository;
@@ -32,6 +37,7 @@ namespace OryxBudgetService.BudgetsServices
             _lineCommentRepository = lineCommentRepository;
             _operatorRepository = operatorRepository;
             _attachmentRepository = attachmentRepository;
+            
         }
 
         public override void Update(Budget entity)
@@ -114,10 +120,11 @@ namespace OryxBudgetService.BudgetsServices
                 item.UserSign = "e317f2dc-deb1-4463-8b67-7f435211d652";
                 item.UpdateDate = System.DateTime.Now;
                 item.CreateDate = System.DateTime.Now;
+                item.OpBudgetFC = item.OpBudgetLCInUSD + item.OpBudgetUSD;
                 budget.BudgetLines.Add(item);
                 totalLC += item.OpBudgetLC;
                 totalUSD += item.OpBudgetUSD;
-                total += item.OpBudgetLCInUSD + item.OpBudgetUSD;
+                total += item.OpBudgetFC;
 
             };
 
@@ -132,6 +139,8 @@ namespace OryxBudgetService.BudgetsServices
             GC.Collect();
 
             System.IO.File.Delete(fileName);
+            //var hubContext = _connectionManager.GetHubContext<NotificationHub>();
+            //hubContext.Clients.All.
 
         }
 
