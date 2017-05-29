@@ -194,42 +194,47 @@ namespace OryxWebApi.Controllers.BudgetControllers
 
         [Route("UploadAttachment")]
         [HttpPost]
-        public JsonResult UploadAttachment([FromBody] AttachmentViewModel attachmentVm, IList<IFormFile> files)
+        public JsonResult UploadAttachment(IFormFile file, string budgetId, string budgetlineId)
         {
-            foreach (var file in files)
+            if (file.Length > 0)
             {
-                if (file.Length > 0)
+                byte[] fileBytes = null;
+                var filename = ContentDispositionHeaderValue
+                            .Parse(file.ContentDisposition)
+                            .FileName
+                            .Trim('"');
+
+                using (var reader = new StreamReader(file.OpenReadStream()))
                 {
-                    byte[] fileBytes = null;
-                    var filename = ContentDispositionHeaderValue
-                                .Parse(file.ContentDisposition)
-                                .FileName
-                                .Trim('"');
-
-                    using (var reader = new StreamReader(file.OpenReadStream()))
-                    {
-                        string contentAsString = reader.ReadToEnd();
-                        fileBytes = new byte[contentAsString.Length * sizeof(char)];
-                        System.Buffer.BlockCopy(contentAsString.ToCharArray(), 0, fileBytes, 0, fileBytes.Length);
-                    }
-
-                    var attachment = new Attachment
-                    {
-                        FileData = fileBytes,
-                        FileName = filename,
-                        FileType = file.ContentType,
-                        BudgetId = attachmentVm.BudgetId,
-                        BudgetLineId = attachmentVm.BudgetLineId
-                    };
-
-                    _budgetService.AddAttachment(attachment);
+                    string contentAsString = reader.ReadToEnd();
+                    fileBytes = new byte[contentAsString.Length * sizeof(char)];
+                    System.Buffer.BlockCopy(contentAsString.ToCharArray(), 0, fileBytes, 0, fileBytes.Length);
                 }
 
+                var attachment = new Attachment
+                {
+                    FileData = fileBytes,
+                    FileName = filename,
+                    FileType = file.ContentType,
+                    BudgetId = this.ConvertToGuid( budgetId),
+                    BudgetLineId = this.ConvertToGuid(budgetlineId)
+                };
+
+                _budgetService.AddAttachment(attachment);
             }
 
             _budgetService.SaveChanges();
 
             return Json("File(s) Uploaded!"); //null just to make error free
+        }
+
+        public ActionResult DownloadAttachment(string id)
+        {
+            var fileEntity = _budgetService.GetAttachment(new Guid(id));
+            if (fileEntity != null)
+                File(fileEntity.FileData, fileEntity.FileType);
+
+            return Json("File Downloaded!");
         }
     }
 }
