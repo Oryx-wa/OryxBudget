@@ -26,9 +26,6 @@ namespace OryxBudgetService.BudgetsServices
         public override void Update(BudgetLine entity)
         {
             BudgetLine dbBudgetLine = this.Get(entity.Id);
-           
-
-
             base.Update(dbBudgetLine);
 
         }

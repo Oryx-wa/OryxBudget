@@ -21,6 +21,7 @@ import { MaterializeModule } from 'angular2-materialize';
 import { DialogComponent } from './dialog/dialog.component';
 import { AttachmentComponent } from './attachment/attachment.component';
 import { NotificationComponent } from './notification/notification.component';
+import { CommentsComponent } from './comment/comments.component';
 @NgModule({
   imports: [
     CommonModule,
@@ -41,11 +42,11 @@ import { NotificationComponent } from './notification/notification.component';
     LineCommentComponent,
     ListComponent,
     LineCommentDetailsComponent,
-    DialogComponent, CurrencyComponent, AttachmentComponent, NotificationComponent],
+    DialogComponent, CurrencyComponent, AttachmentComponent, NotificationComponent, CommentsComponent],
   providers: [SecurityService, NotificationsService],
   exports: [// MainNavComponent, 
     OryxDashboardComponent, NotificationComponent,
-    FileuploaderComponent,
+    FileuploaderComponent, CommentsComponent, AttachmentComponent,
     MaterializeModule, LineCommentComponent, CurrencyComponent,
     DialogComponent, ListComponent, Ng2PaginationModule, SelectModule]
 })

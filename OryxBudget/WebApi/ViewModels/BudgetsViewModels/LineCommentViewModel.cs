@@ -13,6 +13,8 @@ namespace OryxWebApi.ViewModels.BudgetsViewModels
         public string CommentStatus  { get; set; }
         public string UserName { get; set; }
         public string UserEmail { get; set; }
+        public string UserType { get; set; }
+        
 
        // public virtual BudgetLine BudgetLine { get; set; }
 

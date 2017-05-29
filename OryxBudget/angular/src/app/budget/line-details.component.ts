@@ -14,6 +14,7 @@ import { ChildMessageComponent } from './../shared/renderers/child-message.compo
 import { StyledComponent } from './../shared/renderers/styled-component';
 import { SecurityService } from './../login/security.service';
 
+
 @Component({
   selector: 'app-line-details',
   templateUrl: './line-details.component.html',
@@ -35,7 +36,7 @@ export class LineDetailsComponent implements OnInit, OnChanges {
 
   @Output() comments = new EventEmitter();
   @Output() saveComments = new EventEmitter();
-  
+
 
 
   modalActions = new EventEmitter<string | MaterializeAction>();
@@ -58,14 +59,12 @@ export class LineDetailsComponent implements OnInit, OnChanges {
   private roleList = ['SubCom', 'TecCom', 'MalCom'];
   private userTypeList = ['Operator', 'Napims'];
   history: string[] = ['home'];
+  dialogMode = 'details';
   constructor() { }
 
   ngOnInit() {
     this.commentSaved.subscribe(saved => this.showComment = !saved);
-    
-
     this.structureData();
-
     this.createColumnDefs();
     this.gridOptions = <GridOptions>{
       context: {
@@ -82,15 +81,10 @@ export class LineDetailsComponent implements OnInit, OnChanges {
       floatingTopRowData: this.floatingRow,
       floatingBottomRowData: this.floatingRow,
     };
-
     console.log(this.floatingRow);
-
-
-
   }
 
   ngOnChanges(changes: any) {
-    
     this.setupUser();
     this.filtered = this.lines.filter(bd => bd.level === '1');
     this.level = 0;
@@ -397,7 +391,12 @@ export class LineDetailsComponent implements OnInit, OnChanges {
 
   }
 
+  changeDialog(mode: string) {
+    this.dialogMode = mode;
+  }
 }
+
+
 
 function getNodeChildDetails(rowItem) {
 

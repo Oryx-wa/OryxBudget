@@ -26,13 +26,51 @@
 </div>
 <div class="container" *ngIf="showComment === true">
   <app-dialog [(visible)]="showComment">
-
-    <app-line-comment [line]="line" [lineComments]="lineComments" (userType)="userType"
-    (update)="updateComments($event)" (close)="showComment = !showComment"
-    [showSubCom]="showSubCom"  [showTecCom]="showTecCom" [showMalCom]="showMalCom" 
-    [napims]="napims" [operator]="operator">
-    </app-line-comment>
-    <ng-template #loading2>Loading Comments ...</ng-template>
+    <div class="col s1"></div>
+    <div class="col s10">
+      <div class="row">
+        <ul materialize="tabs" [materializeParams]="tabSelectionParams" class="tabs  z-depth-1  teal accent-4 ">
+          <li class="tab col s4">
+            <a (click)="changeDialog('details')" class="white-text waves-effect waves-light"> Details </a>
+          </li>
+          <li class="tab col s4">
+            <a (click)="changeDialog('comments')" class="white-text waves-effect waves-light"> Comments </a>
+          </li>
+          <li class="tab col s4">
+            <a (click)="changeDialog('attachments')" class="white-text waves-effect waves-light"> Attachments </a>
+          </li>
+        </ul>
+      </div>
+      <div class="row">
+        <div class="col s2 ">
+          <h6 class="right-align"> Code: </h6>
+        </div>
+        <div class="col s2">
+          <h6>{{line.code}}</h6>
+        </div>
+        <div class="col s2 ">
+          <h6 class="right-align"> Description: </h6>
+        </div>
+        <div class="col s6">
+          <h6>{{line.description}}</h6>
+        </div>
+      </div>
+      <div *ngIf="dialogMode === 'details'">
+        <app-line-comment [line]="line" [lineComments]="lineComments" (userType)="userType" (update)="updateComments($event)" (close)="showComment = !showComment"
+        [showSubCom]="showSubCom" [showTecCom]="showTecCom" [showMalCom]="showMalCom" [napims]="napims" [operator]="operator">
+        </app-line-comment>
+      </div>
+      <div *ngIf="dialogMode ==='comments'">
+        <app-attachment> </app-attachment>
+      </div>
+      <div *ngIf="dialogMode ==='attachments'">
+        <app-comments> </app-comments>
+      </div>
+    </div>
+    <div class="col s1"></div>
+    
+    
+    
 
     <!--<button (click)="showComment = !showComment" class="wave-effect wave-light btn ">Close</button>-->
   </app-dialog>

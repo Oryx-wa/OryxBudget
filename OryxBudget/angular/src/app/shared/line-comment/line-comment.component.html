@@ -1,34 +1,8 @@
-<div class="col s1"></div>
-<div class="col s10">
+
+  
+  
   <div class="row">
-    <div class="col s2 ">
-      <h6 class="right-align"> Code: </h6>
-    </div>
-    <div class="col s2">
-      <h6>{{line.code}} </h6>
-    </div>
-    <div class="col s2 ">
-      <h6 class="right-align"> Description: </h6>
-    </div>
-    <div class="col s6">
-      <h6>{{line.description}}</h6>
-    </div>
-  </div>
-  <div class="row">
-    <ul materialize="tabs" [materializeParams]="tabSelectionParams" class="tabs  z-depth-1  teal accent-4 ">
-      <li class="tab col s4">
-        <a (click)="changeDisplay('details')" class="white-text waves-effect waves-light"> Details </a>
-      </li>
-      <li class="tab col s4">
-        <a (click)="changeDisplay('comments')" class="white-text waves-effect waves-light"> Comments </a>
-      </li>
-      <li class="tab col s4">
-        <a (click)="changeDisplay('attachments')" class="white-text waves-effect waves-light"> Attachments </a>
-      </li>
-    </ul>
-  </div>
-  <div class="row">
-    <div *ngIf="displayMode === 'details'" class="row">
+    <div  class="row">
       <form materialize materialize="updateTextFields" [formGroup]="form" (ngSubmit)="save(form.value)">
         <div class="row">
           <div class="input-field col s4">
@@ -59,7 +33,6 @@
             <label for="subComBudgetFC" data-error="Please enter a numeric value">Sub Committe Budget FC</label>
           </div>
         </div>
-
         <div *ngIf="showTecCom" class="row">
           <div class="input-field col s4">
             <input placeholder="" type="text" class="validate" formControlName="tecComBudgetLC" name="TecComBudgetLC">
@@ -74,7 +47,6 @@
             <label for="TecComBudgetFC" data-error="Please enter a numeric value">Technical Committe Budget FC</label>
           </div>
         </div>
-
         <div class="row">
           <div class="input-field col s4">
             <select materialize="material_select" id="lineStatus" name="lineStatus" formControlName="lineStatus">										
@@ -93,7 +65,6 @@
             </div>
           </div>
         </div>
-
 
         <div class="row">
           <div class="col s4">
@@ -118,4 +89,3 @@
     </div>
 
   </div>
-  <div class="col s1"></div>

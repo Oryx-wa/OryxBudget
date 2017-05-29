@@ -11,8 +11,8 @@ import * as _ from 'lodash';
 export class LineCommentComponent implements OnInit, OnChanges {
   @Input() line: BudgetLines;
   @Input() lineComments: LineComments[] = [{
-    id: '', budgetId: '',
-    code: '', comment: '', commentStatus: ''
+    id: '', budgetId: '', userType: '',
+    code: '', comment: '', commentStatus: '', userName: '', commentType: '', createDate: new Date()
   }];
 
   @Input() showSubCom = false;
