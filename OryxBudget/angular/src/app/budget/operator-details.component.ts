@@ -2,8 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute, Params } from '@angular/router';
 import { Http, URLSearchParams } from '@angular/http';
 import { NotificationsService } from 'angular2-notifications';
-import 'rxjs/add/operator/switchMap';
+import 'rxjs/add/operator/mergeMap';
 import 'rxjs/add/operator/map';
+import 'rxjs/add/operator/catch';
 
 import { GridOptions } from 'ag-grid/main';
 import { Budgets, Operators, BudgetLines, LineComments } from './../models';
@@ -149,22 +150,20 @@ export class OperatorDetailsComponent implements OnInit {
     params1.append('code', data.code);
     params1.append('type', data.type);
     const bd = { lineComments: data.lineComments, budgetLine: _.assign(data.budgetLine, { code: data.code }) };
-    // console.log(JSON.stringify(bd));
+   
     const ret$ = this._http.post(url,
       JSON.stringify(bd), {
         headers: this.securityService.getHeaders(),
         search: params1
       })
-      .map(res => res.json())
-      .subscribe( saved => {
-        this.commentSaved$.next(true);
-        this.saving$.next(false);
-        this._service.success('Save', 'Saved successfully');
-      }
-
-      );
-    
-    
+      .subscribe(res => res.json()
+        .map(saved => {
+          this.commentSaved$.next(true);
+          this._service.success('', 'Saved successfully');
+          this.saving$.next(false);
+        })
+        .catch(err => Observable.from([this._service.error('Error', err)])
+        ));
   }
 
   private createColumnDefs() {
