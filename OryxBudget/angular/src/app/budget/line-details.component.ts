@@ -6,7 +6,7 @@ import * as _ from 'lodash';
 //import { Observable } from 'rxjs/Observable';
 import { MaterializeAction } from 'angular2-materialize';
 import { GridOptions } from 'ag-grid/main';
-import { Budgets, Operators, BudgetLines, LineComments } from './../models';
+import { Budgets, Operators, BudgetLines, LineComments, LineStatus } from './../models';
 import { CurrencyComponent } from './../shared/renderers/currency.component';
 import { WordWrapComponent } from './../shared/renderers/word-wrap.component';
 import { TextComponent } from './../shared/renderers/text.component';
@@ -23,6 +23,7 @@ import { SecurityService } from './../login/security.service';
 export class LineDetailsComponent implements OnInit, OnChanges {
   @Input() lines: BudgetLines[] = [];
   @Input() lineComments: LineComments[] = [];
+  @Input() lineStatus: LineStatus[] = [];
 
   @Input() commentSaved: Observable<boolean>;
   @Input() roles: any[] = [];
@@ -113,7 +114,7 @@ export class LineDetailsComponent implements OnInit, OnChanges {
   getComments(code: string) {
     this.line = this.lines.filter(bd => bd.code === code)[0];
     // console.log(this.line);
-    this.showComment = true;
+   
     // this.comments.emit({ code: this.selectedCode.code, budgetId: this.selectedCode.budgetId });
 
     this.comments.emit(this.line);
@@ -125,7 +126,8 @@ export class LineDetailsComponent implements OnInit, OnChanges {
     const forUpd = {
       lineComments: data.lineComments,
       code: this.line.code, budgetId: this.line.budgetId,
-      budgetLine: data.budgetLine, type: this.role
+      budgetLine: data.budgetLine, type: this.role,
+      status: data.status
     };
     // console.log(forUpd);
     this.saveComments.emit(forUpd);
@@ -328,20 +330,20 @@ export class LineDetailsComponent implements OnInit, OnChanges {
 
           {
             headerName: 'Comments', field: 'id',
-            width: 100,
+            width: 140,
             // cellTemplate: '<div><a href="#">Visible text</a></div>',
             editable: true,
             cellRendererFramework: ChildMessageComponent,
             mIcon: 'message', type: 'comment'
           },
-          {
+          /*{
             headerName: 'Attachments', field: 'id',
             width: 110,
             // cellTemplate: '<div><a href="#">Visible text</a></div>',
             editable: true,
             cellRendererFramework: ChildMessageComponent,
             mIcon: 'file_upload', type: 'upload'
-          }
+          }*/
         ]
       }
 
@@ -378,8 +380,10 @@ export class LineDetailsComponent implements OnInit, OnChanges {
   }
 
   public methodFromParent(id: string, type: string) {
+    this.dialogMode = type;
+     this.showComment = true;
     switch (type) {
-      case 'comment':
+      case 'details':
         this.getComments(id);
         break;
       case 'upload':

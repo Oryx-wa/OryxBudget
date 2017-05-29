@@ -9,9 +9,10 @@ using Entities.Budgets;
 namespace Data.Migrations
 {
     [DbContext(typeof(OryxBudgetContext))]
-    partial class OryxBudgetContextModelSnapshot : ModelSnapshot
+    [Migration("20170529154335_Budget37")]
+    partial class Budget37
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
             modelBuilder
                 .HasAnnotation("ProductVersion", "1.1.2")
@@ -944,7 +945,7 @@ namespace Data.Migrations
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<string>("BudgetId");
+                    b.Property<Guid>("BudgetId");
 
                     b.Property<string>("Code");
 
@@ -986,7 +987,7 @@ namespace Data.Migrations
 
                     b.Property<int>("LogInstance");
 
-                    b.Property<string>("BudgetId");
+                    b.Property<Guid>("BudgetId");
 
                     b.Property<string>("Code");
 

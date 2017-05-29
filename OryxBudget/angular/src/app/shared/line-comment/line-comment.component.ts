@@ -1,6 +1,6 @@
 import { Component, OnInit, ChangeDetectionStrategy, OnChanges, Input, Output, EventEmitter } from '@angular/core';
 import { FormGroup, FormControl, FormBuilder, FormArray, Validators } from '@angular/forms';
-import { LineComments, BudgetLines } from './../../models/';
+import { LineComments, BudgetLines, LineStatus } from './../../models/';
 import * as _ from 'lodash';
 
 @Component({
@@ -14,7 +14,7 @@ export class LineCommentComponent implements OnInit, OnChanges {
     id: '', budgetId: '', userType: '',
     code: '', comment: '', commentStatus: '', userName: '', commentType: '', createDate: new Date()
   }];
-
+  @Input() lineStatus: LineStatus[] = [{ budgetId: '', code: '', status: '' }]
   @Input() showSubCom = false;
   @Input() showTecCom = false;
   @Input() showMalCom = false;
@@ -33,25 +33,7 @@ export class LineCommentComponent implements OnInit, OnChanges {
 
   }
   ngOnChanges(changes: any): void {
-    console.log(this.showSubCom);
-    console.log(this.userType);
-
-  }
-
-  addDetail(data: any) {
-    const arrayControl = <FormArray>this.form.controls['formArray'];
-    const lineComment: LineComments = (data === null) ?
-      { id: null, budgetId: this.line.budgetId, code: this.line.code, comment: '', commentStatus: '' } : data;
-    const newDetail = this.fb.group({
-      comment: new FormControl(lineComment.comment),
-      id: new FormControl(lineComment.id),
-      budgetId: new FormControl(lineComment.budgetId),
-      commentStatus: new FormControl(lineComment.commentStatus),
-      code: new FormControl(lineComment.code)
-    });
-    arrayControl.push(newDetail);
-  }
-  ngOnInit() {
+    const status = (this.lineStatus) ? this.lineStatus[0].status : 'New';
     this.form = this.fb.group({
       opBudgetFC: new FormControl({ value: this.line.opBudgetFC, disabled: true }),
       opBudgetLC: new FormControl({ value: this.line.opBudgetLC, disabled: true }),
@@ -107,40 +89,48 @@ export class LineCommentComponent implements OnInit, OnChanges {
       id: new FormControl(this.line.id),
       budgetId: new FormControl(this.line.budgetId),
       lineStatus: new FormControl({
-        value: this.line.lineStatus,
+        value: status,
         disabled: !(this.napims === true)
       }),
       formArray: this.fb.array([])
     });
+    this.addDetail(null);
 
-    const control = <FormArray>this.form.controls['formArray'];
-    for (let i = control.length - 1; i >= 0; i--) {
-      control.removeAt(i);
-    }
-    if (this.lineComments === null) {
-      this.lineComments = [];
-    }
+  }
 
-    if (this.lineComments.length === 0) {
-      this.addDetail(null);
-    }
-    this.lineComments.map(comment => {
-      this.addDetail(comment);
+  addDetail(data: any) {
+    const arrayControl = <FormArray>this.form.controls['formArray'];
+    const lineComment: LineComments = (data === null) ?
+      { id: null, budgetId: this.line.budgetId, code: this.line.code, comment: '', commentStatus: '' } : data;
+    const status = (this.lineStatus) ? this.lineStatus[0].status : '';
+    const newDetail = this.fb.group({
+      comment: new FormControl(lineComment.comment),
+      id: new FormControl(lineComment.id),
+      budgetId: new FormControl(lineComment.budgetId),
+      commentStatus: new FormControl(''),
+      code: new FormControl(lineComment.code)
     });
+    arrayControl.push(newDetail);
+  }
+  ngOnInit() {
+
 
   }
 
   save(data: any) {
     const comments: LineComments[] = [];
     const newComments: any[] = data.formArray;
+    const status = data.lineStatus;
 
     const line: BudgetLines = _.assign({}, data);
 
     newComments.map(lineComment => {
-      comments.push(lineComment);
+      if (lineComment.comment !== '') {
+        comments.push(lineComment);
+      }
     });
     console.log(comments);
-    this.update.emit({ lineComments: comments, budgetLine: line });
+    this.update.emit({ lineComments: comments, budgetLine: line, status: status });
 
   }
   removeDetail(i: number) {
@@ -152,6 +142,11 @@ export class LineCommentComponent implements OnInit, OnChanges {
 
   changeDisplay(type: string) {
     this.displayMode = type;
+  }
 
+  itemSelected(item: string) {
+    this.form.patchValue({
+      lineStatus: item
+    });
   }
 }

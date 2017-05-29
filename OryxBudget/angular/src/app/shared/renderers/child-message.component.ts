@@ -3,8 +3,20 @@ import {ICellRendererAngularComp} from 'ag-grid-angular/main';
 
 @Component({
     selector: 'app-child-cell',
-    template: `<span><a class="waves-effect waves-light"
-     (click)="invokeParentMethod()"><i class="material-icons right" >{{icon}}</i></a></span>`
+    template: `
+     <div class="col s4">
+    <span><a class="waves-effect waves-light"
+     (click)="invokeParentMethod('details')"><i class="material-icons" >details</i></a></span>
+     </div>
+      <div class="col s4">
+    <span><a class="waves-effect waves-light"
+     (click)="invokeParentMethod('comments')"><i class="material-icons " >message</i></a></span>
+     </div>
+     <div class="col s4">
+    <span><a class="waves-effect waves-light"
+     (click)="invokeParentMethod('attachments')"><i class="material-icons" >file_upload</i></a></span>
+     </div>
+`
 })
 export class ChildMessageComponent implements ICellRendererAngularComp {
     public params: any;
@@ -18,7 +30,7 @@ export class ChildMessageComponent implements ICellRendererAngularComp {
         // console.log(this.params);
     }
 
-    public invokeParentMethod() {
-        this.params.context.componentParent.methodFromParent(this.params.data.code, this.type );
+    public invokeParentMethod(type: string) {
+        this.params.context.componentParent.methodFromParent(this.params.data.code, type );
     }
 }

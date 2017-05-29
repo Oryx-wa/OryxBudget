@@ -19,7 +19,7 @@ using OryxSecurity.Services;
 
 namespace OryxWebApi.Controllers.BudgetControllers
 {
-    public class BudgetController :  BaseController
+    public class BudgetController : BaseController
     {
         private readonly BudgetService _budgetService;
         private readonly BudgetLineService _lineService;
@@ -27,7 +27,7 @@ namespace OryxWebApi.Controllers.BudgetControllers
         private readonly BackgroundJobClient _jobs = new BackgroundJobClient();
         protected IUserResolverService _userResolverService;
 
-        public BudgetController(BudgetService budgetService, BudgetLineService lineService,  PeriodService periodService,
+        public BudgetController(BudgetService budgetService, BudgetLineService lineService, PeriodService periodService,
             IConnectionManager signalRConnectionManager, IUserResolverService userResolverService)
              : base()
         {
@@ -38,7 +38,8 @@ namespace OryxWebApi.Controllers.BudgetControllers
         }
 
         // POST api/values
-        [HttpPost][ ValidateModelState]
+        [HttpPost]
+        [ValidateModelState]
         [Route("Add")]
         public JsonResult Add([FromBody] BudgetViewModel BudgetVm)
         {
@@ -53,18 +54,33 @@ namespace OryxWebApi.Controllers.BudgetControllers
         [HttpPost]
         [ValidateModelState]
         [Route("AddLineComment")]
-        public JsonResult AddLineComment(string budgetId, string code, string type,[FromBody] CombinedLineViewModel vm)
+        public JsonResult AddLineComment(string budgetId, string code, string type, string status, [FromBody] CombinedLineViewModel vm)
         {
 
-            var lineComment = Mapper.Map<IEnumerable<LineComment>>(vm.LineComments);
-            _budgetService.AddLineComments(lineComment);
+            if (vm.LineComments != null)
+            {
+                var lineComment = Mapper.Map<IEnumerable<LineComment>>(vm.LineComments);
+                _budgetService.AddLineComments(lineComment); 
+            }
+            if (vm.BudgetLine != null)
+            {
+                var budgetLine = Mapper.Map<BudgetLine>(vm.BudgetLine);
+                _lineService.UpdateNapimsReview(type, budgetLine, code);
+            }
 
-            var budgetLine = Mapper.Map<BudgetLine>(vm.BudgetLine);
-            _lineService.UpdateNapimsReview(type, budgetLine, code);
+            if (!string.IsNullOrEmpty(status))
+            {
+                //var status = vm.StatusHistory;
+                _budgetService.updateStatus(status, code, budgetId);
+            }
+
+
             _budgetService.SaveChanges();
             return Json(_budgetService.GetLineComment(budgetId, code));
 
         }
+
+
 
         [HttpPost]
         [ValidateModelState]
@@ -74,13 +90,14 @@ namespace OryxWebApi.Controllers.BudgetControllers
 
             var lineComment = Mapper.Map<IEnumerable<LineComment>>(vm);
             _budgetService.AddLineComments(lineComment);
-            
+
             _budgetService.SaveChanges();
             return Json(_budgetService.GetLineComment(budgetId, code));
 
         }
 
-        [HttpPost][ ValidateModelState]
+        [HttpPost]
+        [ValidateModelState]
         [Route("Update")]
         public JsonResult Update([FromBody]BudgetViewModel BudgetVm)
         {
@@ -110,7 +127,7 @@ namespace OryxWebApi.Controllers.BudgetControllers
 
         [HttpGet]
         [Route("GetOperatorBudgetDetails")]
-        public  JsonResult GetOperatorBudgetDetails(string id)
+        public JsonResult GetOperatorBudgetDetails(string id)
         {
             return Json(_budgetService.GetOperatorBudget(id));
         }
@@ -141,8 +158,22 @@ namespace OryxWebApi.Controllers.BudgetControllers
         [Route("GetLineComment")]
         public JsonResult GetLineComment(string budgetId, string code)
         {
-            return Json(_budgetService.GetLineComment(budgetId, code));
+            var ret = _budgetService.GetLineComment(budgetId, code);
+            return Json(ret);
         }
+        [HttpGet]
+        [Route("GetLineStatus")]
+        public JsonResult GetLineStatus(string budgetId, string code)
+        {
+            var dbStatus = _budgetService.GetLineStatus(budgetId, code);
+            IList<StatusHistoryViewModel> ret = new List<StatusHistoryViewModel>();
+            foreach (var item in dbStatus)
+            {
+                ret.Add(new StatusHistoryViewModel(item));
+            }             
+            return Json(ret);
+        }
+
 
         [Route("UploadBudget")]
         [HttpPost]
@@ -158,7 +189,7 @@ namespace OryxWebApi.Controllers.BudgetControllers
                 fs.Dispose();
             }
 
-            var x = _jobs.Enqueue(() => _budgetService.UploadBudget(fileName, ConvertToGuid(id), 
+            var x = _jobs.Enqueue(() => _budgetService.UploadBudget(fileName, ConvertToGuid(id),
                 _userResolverService.GetUser()));
             //BackgroundJob.Enqueue(() => _budgetService.UploadBudget(fileName, ConvertToGuid(id)));
 
@@ -169,7 +200,7 @@ namespace OryxWebApi.Controllers.BudgetControllers
         [HttpPost]
         public JsonResult InitializeBudgetForAllOperators(int year, string description)
         {
-            string periodId =_periodService.GetAll().Where(p => p.StartDate.Year == year).FirstOrDefault().Id.ToString();
+            string periodId = _periodService.GetAll().Where(p => p.StartDate.Year == year).FirstOrDefault().Id.ToString();
             BackgroundJob.Enqueue(() => _budgetService.InitializeBudgetForAllOperators(periodId, description));
             return Json("Budget initialized for all operators");
         }
@@ -216,7 +247,7 @@ namespace OryxWebApi.Controllers.BudgetControllers
                     FileData = fileBytes,
                     FileName = filename,
                     FileType = file.ContentType,
-                    BudgetId = this.ConvertToGuid( budgetId),
+                    BudgetId = this.ConvertToGuid(budgetId),
                     BudgetLineId = this.ConvertToGuid(budgetlineId)
                 };
 

@@ -9,9 +9,10 @@ using Entities.Budgets;
 namespace Data.Migrations
 {
     [DbContext(typeof(OryxBudgetContext))]
-    partial class OryxBudgetContextModelSnapshot : ModelSnapshot
+    [Migration("20170529141319_Budget35")]
+    partial class Budget35
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
             modelBuilder
                 .HasAnnotation("ProductVersion", "1.1.2")
@@ -944,16 +945,13 @@ namespace Data.Migrations
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<string>("BudgetId");
+                    b.Property<Guid>("BudgetId");
 
                     b.Property<string>("Code");
 
                     b.Property<DateTime>("CreateDate")
                         .ValueGeneratedOnAdd()
                         .HasDefaultValueSql("getDate()");
-
-                    b.Property<string>("Discriminator")
-                        .IsRequired();
 
                     b.Property<int>("ItemCodeStatus");
 
@@ -976,8 +974,6 @@ namespace Data.Migrations
                         .IsUnique();
 
                     b.ToTable("StatusHistory");
-
-                    b.HasDiscriminator<string>("Discriminator").HasValue("StatusHistory");
                 });
 
             modelBuilder.Entity("Entities.Budgets.StatusHistoryLog", b =>
@@ -986,7 +982,7 @@ namespace Data.Migrations
 
                     b.Property<int>("LogInstance");
 
-                    b.Property<string>("BudgetId");
+                    b.Property<Guid>("BudgetId");
 
                     b.Property<string>("Code");
 
@@ -1007,7 +1003,7 @@ namespace Data.Migrations
 
                     b.HasKey("Id", "LogInstance");
 
-                    b.ToTable("StatusHistoryLogs");
+                    b.ToTable("StatusHistoryLog");
                 });
 
             modelBuilder.Entity("Entities.Operators.ContactPerson", b =>
@@ -1225,16 +1221,6 @@ namespace Data.Migrations
                     b.HasKey("Id", "LogInstance");
 
                     b.ToTable("OperatorTypeLogs");
-                });
-
-            modelBuilder.Entity("Entities.Budgets.BudgetLineStatusHistory", b =>
-                {
-                    b.HasBaseType("Entities.Budgets.StatusHistory");
-
-
-                    b.ToTable("BudgetLineStatusHistory");
-
-                    b.HasDiscriminator().HasValue("BudgetLineStatusHistory");
                 });
 
             modelBuilder.Entity("Entities.Budgets.Actual", b =>

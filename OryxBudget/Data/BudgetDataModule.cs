@@ -42,6 +42,7 @@ namespace Data
             builder.RegisterType<OperatorTypeRepository>();
             builder.RegisterType<LineCommentRepository>();
             builder.RegisterType<AttachmentRepository>();
+            builder.RegisterType<BudgetLineStatusHistoryRepository>();
 
 
         }
