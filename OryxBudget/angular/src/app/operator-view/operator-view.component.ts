@@ -132,9 +132,9 @@ export class OperatorViewComponent implements OnInit, OnChanges {
 
 
   }
-  
 
-    getComments(line: BudgetLines) {
+
+  getComments(line: BudgetLines) {
     let url = this.securityService.getUrl('Budget/GetLineComment');
     const params1: URLSearchParams = new URLSearchParams();
     params1.append('budgetId', line.budgetId);
@@ -147,7 +147,7 @@ export class OperatorViewComponent implements OnInit, OnChanges {
     }).map(res => res.json());
     this.commentSaved$.next(false);
 
-     url = this.securityService.getUrl('Budget/GetLineStatus');
+    url = this.securityService.getUrl('Budget/GetLineStatus');
     this.lineStatus$ = this._http.get(url, {
       headers: this.securityService.getHeaders(),
       body: '',
@@ -171,13 +171,33 @@ export class OperatorViewComponent implements OnInit, OnChanges {
         search: params1
       })
       .map(res => res.json())
-      .subscribe( saved => {
+      .subscribe(saved => {
         this.commentSaved$.next(true);
         this.saving$.next(false);
         this._service.success('Comments', 'Comments successfully');
       });
 
-   // this.commentSaved$.next(true);
+    // this.commentSaved$.next(true);
+  }
+
+  newComment(data: any) {
+    const url = this.securityService.getUrl('Budget/AddComment');
+    const params1: URLSearchParams = new URLSearchParams();
+    // params1.append('budgetId', data.budgetId);
+    // params1.append('code', data.code);
+
+    const ret = this._http.post(url,
+      data, {
+        headers: this.securityService.getHeaders(),
+        // search: params1
+      })
+      .map(res => res.json())
+      .subscribe(saved => {
+        // this.commentSaved$.next(true);
+        // this.saving$.next(false);
+        // this._service.success('Comments', 'Comments successfully');
+      });
+
   }
   changeDisplayMode(mode: DisplayModeEnum) {
     // // console.log(mode); 

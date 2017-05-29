@@ -18,13 +18,14 @@ export class LineCommentComponent implements OnInit, OnChanges {
   @Input() showSubCom = false;
   @Input() showTecCom = false;
   @Input() showMalCom = false;
-  @Output() update = new EventEmitter();
-  @Output() close = new EventEmitter();
+
   @Input() userType = '';
   @Input() napims = false;
   @Input() operator = false;
   @Input() displayMode = 'details';
 
+  @Output() update = new EventEmitter();
+  @Output() close = new EventEmitter();
   form: FormGroup;
 
 

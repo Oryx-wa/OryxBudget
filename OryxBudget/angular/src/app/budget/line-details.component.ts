@@ -37,6 +37,8 @@ export class LineDetailsComponent implements OnInit, OnChanges {
 
   @Output() comments = new EventEmitter();
   @Output() saveComments = new EventEmitter();
+  @Output() addNewComment = new EventEmitter()
+  // @Output() getComments = new EventEmitter();
 
 
 
@@ -100,7 +102,8 @@ export class LineDetailsComponent implements OnInit, OnChanges {
         this.role = role;
       }
       if (this.userTypeList.indexOf(role) > -1) {
-        this.userType = role;
+        this.userType = <string>role;
+        this.userType = this.userType.toLowerCase()
       }
     });
   }
@@ -111,10 +114,10 @@ export class LineDetailsComponent implements OnInit, OnChanges {
 
   showDetails(code: string) { }
 
-  getComments(code: string) {
+  getDetails(code: string) {
     this.line = this.lines.filter(bd => bd.code === code)[0];
     // console.log(this.line);
-   
+
     // this.comments.emit({ code: this.selectedCode.code, budgetId: this.selectedCode.budgetId });
 
     this.comments.emit(this.line);
@@ -132,6 +135,19 @@ export class LineDetailsComponent implements OnInit, OnChanges {
     // console.log(forUpd);
     this.saveComments.emit(forUpd);
   }
+
+  newComment(comment: string) {
+    const newData = _.assign({}, {
+      budgetId: this.line.budgetId, code: this.line.code, comment: comment
+    });
+    console.log(newData);
+    this.addNewComment.emit(newData);
+    
+
+
+  }
+
+
 
   structureData() {
     const data = _.assign(this.lines, { comment: '' });
@@ -381,17 +397,22 @@ export class LineDetailsComponent implements OnInit, OnChanges {
 
   public methodFromParent(id: string, type: string) {
     this.dialogMode = type;
-     this.showComment = true;
+    this.showComment = true;
+    this.getDetails(id);
+
+    /*
     switch (type) {
-      case 'details':
-        this.getComments(id);
+      case 'details':        
         break;
-      case 'upload':
+      case 'comments':
+
+        break;
+      case 'attachments':
 
         break;
       default:
         break;
-    }
+    }*/
 
   }
 

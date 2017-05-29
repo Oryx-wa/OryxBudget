@@ -148,6 +148,9 @@ export class OperatorDetailsComponent implements OnInit {
       params: params1
     }).map(res => res.json());
 
+   
+
+
     this.lineStatus$.subscribe(s => console.log(s));
     this.commentSaved$.next(false);
 
@@ -177,6 +180,26 @@ export class OperatorDetailsComponent implements OnInit {
       });
     //.catch(err => Observable.from([this._service.error('Error', err)])
     // ));
+  }
+
+   newComment(data: any) {
+    const url = this.securityService.getUrl('Budget/AddComment');
+    const params1: URLSearchParams = new URLSearchParams();
+    // params1.append('budgetId', data.budgetId);
+    // params1.append('code', data.code);
+
+    const ret = this._http.post(url,
+      data, {
+        headers: this.securityService.getHeaders(),
+        // search: params1
+      })
+      .map(res => res.json())
+      .subscribe(saved => {
+        // this.commentSaved$.next(true);
+        // this.saving$.next(false);
+        // this._service.success('Comments', 'Comments successfully');
+      });
+
   }
 
   private createColumnDefs() {

@@ -57,12 +57,13 @@
       </div>
       <div *ngIf="dialogMode === 'details'">
         <app-line-comment [line]="line" [lineComments]="lineComments" [lineStatus] = "lineStatus"
-        (userType)="userType" (update)="updateComments($event)" (close)="showComment = !showComment"
+        [userType]="userType" (update)="updateComments($event)" (close)="showComment = !showComment"
         [showSubCom]="showSubCom" [showTecCom]="showTecCom" [showMalCom]="showMalCom" [napims]="napims" [operator]="operator">
         </app-line-comment>
       </div>
       <div *ngIf="dialogMode ==='comments'">
-        <app-comments> </app-comments>
+        <app-comments [lineComments]="lineComments"  (update)="newComment($event)" (close)="showComment = !showComment"
+        [userType]="userType" [napims]="napims" [operator]="operator"> </app-comments>
       </div>
       <div *ngIf="dialogMode ==='attachments'">
          <app-attachment> </app-attachment>       

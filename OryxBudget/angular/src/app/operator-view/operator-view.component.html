@@ -25,7 +25,7 @@
       <div class="row">
         <div class="container">
           <div class="card-content">
-            <div *ngIf="budgets$ | async; let budgets; else loading">
+            <div *ngIf="budgets$ | async; let budgets;">
               <div class="row">
                 <form materialize class="col s12">
                   <div class="input-field col s2">
@@ -57,7 +57,7 @@
               <div *ngIf="lines$ | async;let lines; else loading2">
                 <div *ngIf="lines.length >= 1;else noLines">
                   <app-line-details [lines]="lines" (comments)="getComments($event)" [commentSaved]="commentSaved$" 
-                  [lineComments]="lineComments$ | async" [lineStatus] = "lineStatus$ | async"
+                  [lineComments]="lineComments$ | async" [lineStatus] = "lineStatus$ | async" (addNewComment)="newComment($event)"
                     (saveComments)="saveComments($event)" [roles]="roles" [showSubCom]="showSubCom$ | async" [showTecCom]="showTecCom$ | async"
                     [showMalCom]="showMalCom$ | async" [showFinal]="showFinal$ | async" [roles]="roles" [operator]="true">
                   </app-line-details>

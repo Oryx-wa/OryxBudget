@@ -33,6 +33,7 @@
     "material-design-icons": "^3.0.1",
     "materialize-css": "^0.98.2",
     "mdi": "^1.9.33",
+    "moment": "^2.18.1",
     "ng-select": "1.0.0-beta.5",
     "ng2-pagination": "2.0.1",
     "ng2-signalr": "^2.0.4",
