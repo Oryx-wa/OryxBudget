@@ -32,12 +32,13 @@
           <li class="tab col s4">
             <a (click)="changeDialog('details')" class="white-text waves-effect waves-light"> Details </a>
           </li>
-          <li class="tab col s4">
+            <li class="tab col s4">
             <a (click)="changeDialog('comments')" class="white-text waves-effect waves-light"> Comments </a>
           </li>
           <li class="tab col s4">
             <a (click)="changeDialog('attachments')" class="white-text waves-effect waves-light"> Attachments </a>
           </li>
+        
         </ul>
       </div>
       <div class="row">
@@ -61,10 +62,10 @@
         </app-line-comment>
       </div>
       <div *ngIf="dialogMode ==='comments'">
-        <app-attachment> </app-attachment>
+        <app-comments> </app-comments>
       </div>
       <div *ngIf="dialogMode ==='attachments'">
-        <app-comments> </app-comments>
+         <app-attachment> </app-attachment>       
       </div>
     </div>
     <div class="col s1"></div>

@@ -22,6 +22,9 @@ import { DialogComponent } from './dialog/dialog.component';
 import { AttachmentComponent } from './attachment/attachment.component';
 import { NotificationComponent } from './notification/notification.component';
 import { CommentsComponent } from './comment/comments.component';
+import { LineCommentCommentsComponent } from './line-comment-comments/line-comment-comments.component';
+import { LineCommentCommentsDetailsComponent } from './line-comment-comments/line-comment-comments-details.component';
+import { FileuploadAttachmentComponent } from './fileupload-attachment/fileupload-attachment.component';
 @NgModule({
   imports: [
     CommonModule,
@@ -42,12 +45,13 @@ import { CommentsComponent } from './comment/comments.component';
     LineCommentComponent,
     ListComponent,
     LineCommentDetailsComponent,
-    DialogComponent, CurrencyComponent, AttachmentComponent, NotificationComponent, CommentsComponent],
+    DialogComponent, CurrencyComponent, AttachmentComponent, NotificationComponent,
+     CommentsComponent, LineCommentCommentsComponent, LineCommentCommentsDetailsComponent, FileuploadAttachmentComponent],
   providers: [SecurityService, NotificationsService],
   exports: [// MainNavComponent, 
     OryxDashboardComponent, NotificationComponent,
-    FileuploaderComponent, CommentsComponent, AttachmentComponent,
-    MaterializeModule, LineCommentComponent, CurrencyComponent,
+    FileuploaderComponent, CommentsComponent, AttachmentComponent, FileuploadAttachmentComponent,
+    MaterializeModule, LineCommentComponent, LineCommentCommentsComponent, CurrencyComponent,
     DialogComponent, ListComponent, Ng2PaginationModule, SelectModule]
 })
 export class SharedModule { }
