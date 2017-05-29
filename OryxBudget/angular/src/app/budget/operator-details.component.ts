@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute, Params } from '@angular/router';
 import { Http, URLSearchParams } from '@angular/http';
+import { NotificationsService } from 'angular2-notifications';
 import 'rxjs/add/operator/switchMap';
 import 'rxjs/add/operator/map';
 
@@ -34,13 +35,15 @@ export class OperatorDetailsComponent implements OnInit {
   private colWidth = 110;
   public budgetDesc = '';
   public roles: any[] = [];
-
+  public loading$: BehaviorSubject<boolean> = new BehaviorSubject(false);
+  public saving$: BehaviorSubject<boolean> = new BehaviorSubject(false);
   showDetail = false;
   constructor(
     private route: ActivatedRoute,
     private router: Router,
     private securityService: SecurityService,
-    private _http: Http
+    private _http: Http,
+    private _service: NotificationsService
   ) {
     this.gridOptions = <GridOptions>{};
     this.createColumnDefs();
@@ -73,6 +76,7 @@ export class OperatorDetailsComponent implements OnInit {
   }
 
   getOperator(id: string) {
+    this.loading$.next(true);
     let url = this.securityService.getUrl('Budget/GetByOperator');
     const params: URLSearchParams = new URLSearchParams();
     params.append('operatorId', id);
@@ -99,13 +103,15 @@ export class OperatorDetailsComponent implements OnInit {
       if (budgets) {
         this.budgetDesc = budgets[0].description;
         this.getLineDetails(budgets[0].id);
+        this.loading$.next(false);
+        this._service.success('loaded Successfully', 'Budget loaded successfully');
       }
     });
 
   }
 
   getLineDetails(id: string) {
-
+    this.loading$.next(true);
     this.showDetail = true;
     const url = this.securityService.getUrl('Budget/GetBudgetDetails');
     const params1: URLSearchParams = new URLSearchParams();
@@ -117,7 +123,7 @@ export class OperatorDetailsComponent implements OnInit {
       params: params1
     }).map(res => res.json());
     this.commentSaved$.next(true);
-
+    this.lines$.subscribe(lines => this.loading$.next(false));
   }
 
   getComments(line: BudgetLines) {
@@ -136,6 +142,7 @@ export class OperatorDetailsComponent implements OnInit {
   }
 
   saveComments(data: any) {
+    this.saving$.next(true);
     const url = this.securityService.getUrl('Budget/AddLineComment');
     const params1: URLSearchParams = new URLSearchParams();
     params1.append('budgetId', data.budgetId);
@@ -143,14 +150,21 @@ export class OperatorDetailsComponent implements OnInit {
     params1.append('type', data.type);
     const bd = { lineComments: data.lineComments, budgetLine: _.assign(data.budgetLine, { code: data.code }) };
     // console.log(JSON.stringify(bd));
-    const ret = this._http.post(url,
+    const ret$ = this._http.post(url,
       JSON.stringify(bd), {
         headers: this.securityService.getHeaders(),
         search: params1
       })
       .map(res => res.json())
-      .subscribe();
-    this.commentSaved$.next(true);
+      .subscribe( saved => {
+        this.commentSaved$.next(true);
+        this.saving$.next(false);
+        this._service.success('Save', 'Saved successfully');
+      }
+
+      );
+    
+    
   }
 
   private createColumnDefs() {

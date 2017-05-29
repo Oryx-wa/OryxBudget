@@ -69,17 +69,17 @@
                 throw new ArgumentException(string.Format("{0} with id {1} already exists", typeof(TEntity), entity.Id));
             }
         }
-      //  public virtual void Add(TEntity entity, string userId)
-       // {
-       //     if (!_repository.Contains(entity.Id))
-       //     {
-       //         _repository.Add(entity, userId);
-       //     }
-        //    else
-        //    {
-         //       throw new ArgumentException(string.Format("{0} with id {1} already exists", typeof(TEntity), entity.Id));
-          //  }
-      //  }
+        public virtual void Add(TEntity entity, string userId)
+        {
+            if (!_repository.Contains(entity.Id))
+            {
+                _repository.Add(entity, userId);
+            }
+            else
+            {
+                throw new ArgumentException(string.Format("{0} with id {1} already exists", typeof(TEntity), entity.Id));
+            }
+        }
 
         public virtual void Add(IEnumerable<TEntity> entities)
         {
@@ -97,6 +97,8 @@
             }
         }
 
+
+
         /// <summary>
         /// Updates the specified entity.
         /// </summary>
@@ -107,6 +109,19 @@
             if (_repository.Contains(entity.Id))
             {
                 _repository.Update(entity);
+
+            }
+            else
+            {
+                throw new KeyNotFoundException(string.Format("{0} with id {1} was not found", typeof(TEntity), entity.Id));
+            }
+        }
+
+        public virtual void Update(TEntity entity, string userId)
+        {
+            if (_repository.Contains(entity.Id))
+            {
+                _repository.Update(entity, userId);
 
             }
             else

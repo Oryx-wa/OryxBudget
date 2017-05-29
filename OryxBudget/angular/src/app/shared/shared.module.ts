@@ -14,10 +14,13 @@ import { LineCommentDetailsComponent } from './line-comment/line-comment-details
 import { CurrencyComponent } from './../shared/renderers/currency.component';
 import { SelectModule } from 'ng-select';
 import { Ng2PaginationModule } from 'ng2-pagination';
+import { SimpleNotificationsModule, PushNotificationsModule } from 'angular2-notifications';
+import { NotificationsService } from 'angular2-notifications';
 
 import { MaterializeModule } from 'angular2-materialize';
 import { DialogComponent } from './dialog/dialog.component';
 import { AttachmentComponent } from './attachment/attachment.component';
+import { NotificationComponent } from './notification/notification.component';
 @NgModule({
   imports: [
     CommonModule,
@@ -29,7 +32,7 @@ import { AttachmentComponent } from './attachment/attachment.component';
     ReactiveFormsModule,
     MaterializeModule,
     BrowserAnimationsModule,
-
+    SimpleNotificationsModule, PushNotificationsModule,
 
   ],
   declarations: [// MainNavComponent, 
@@ -38,10 +41,10 @@ import { AttachmentComponent } from './attachment/attachment.component';
     LineCommentComponent,
     ListComponent,
     LineCommentDetailsComponent,
-    DialogComponent, CurrencyComponent, AttachmentComponent],
-  providers: [SecurityService],
+    DialogComponent, CurrencyComponent, AttachmentComponent, NotificationComponent],
+  providers: [SecurityService, NotificationsService],
   exports: [// MainNavComponent, 
-    OryxDashboardComponent,
+    OryxDashboardComponent, NotificationComponent,
     FileuploaderComponent,
     MaterializeModule, LineCommentComponent, CurrencyComponent,
     DialogComponent, ListComponent, Ng2PaginationModule, SelectModule]

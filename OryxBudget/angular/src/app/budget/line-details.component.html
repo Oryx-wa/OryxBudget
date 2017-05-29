@@ -137,8 +137,10 @@
 <div class="container" *ngIf="showComment === true">
   <app-dialog [(visible)]="showComment">
 
-    <app-line-comment [line]="line" [lineComments]="lineComments" (update)="updateComments($event)" (close)="showComment = !showComment"
-    [showSubCom]="showSubCom"  [showTecCom]="showTecCom" [showMalCom]="showMalCom" >
+    <app-line-comment [line]="line" [lineComments]="lineComments" (userType)="userType"
+    (update)="updateComments($event)" (close)="showComment = !showComment"
+    [showSubCom]="showSubCom"  [showTecCom]="showTecCom" [showMalCom]="showMalCom" 
+    [napims]="napims" [operator]="operator">
     </app-line-comment>
     <ng-template #loading2>Loading Comments ...</ng-template>
 

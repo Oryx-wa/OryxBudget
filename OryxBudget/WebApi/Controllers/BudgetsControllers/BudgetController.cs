@@ -15,6 +15,7 @@ using Hangfire;
 using OryxBudgetService.Utilities.SignalRHubs;
 using Microsoft.AspNetCore.SignalR.Infrastructure;
 using Microsoft.Net.Http.Headers;
+using OryxSecurity.Services;
 
 namespace OryxWebApi.Controllers.BudgetControllers
 {
@@ -24,14 +25,16 @@ namespace OryxWebApi.Controllers.BudgetControllers
         private readonly BudgetLineService _lineService;
         private readonly PeriodService _periodService;
         private readonly BackgroundJobClient _jobs = new BackgroundJobClient();
+        protected IUserResolverService _userResolverService;
 
         public BudgetController(BudgetService budgetService, BudgetLineService lineService,  PeriodService periodService,
-            IConnectionManager signalRConnectionManager)
+            IConnectionManager signalRConnectionManager, IUserResolverService userResolverService)
              : base()
         {
             _budgetService = budgetService;
             _lineService = lineService;
             _periodService = periodService;
+            _userResolverService = userResolverService;
         }
 
         // POST api/values
@@ -58,6 +61,20 @@ namespace OryxWebApi.Controllers.BudgetControllers
 
             var budgetLine = Mapper.Map<BudgetLine>(vm.BudgetLine);
             _lineService.UpdateNapimsReview(type, budgetLine, code);
+            _budgetService.SaveChanges();
+            return Json(_budgetService.GetLineComment(budgetId, code));
+
+        }
+
+        [HttpPost]
+        [ValidateModelState]
+        [Route("AddComment")]
+        public JsonResult AddComment(string budgetId, string code, string type, [FromBody] LineCommentViewModel vm)
+        {
+
+            var lineComment = Mapper.Map<IEnumerable<LineComment>>(vm);
+            _budgetService.AddLineComments(lineComment);
+            
             _budgetService.SaveChanges();
             return Json(_budgetService.GetLineComment(budgetId, code));
 
@@ -140,7 +157,9 @@ namespace OryxWebApi.Controllers.BudgetControllers
                 fs.Flush();
                 fs.Dispose();
             }
-            var x = _jobs.Enqueue(() => _budgetService.UploadBudget(fileName, ConvertToGuid(id)));
+
+            var x = _jobs.Enqueue(() => _budgetService.UploadBudget(fileName, ConvertToGuid(id), 
+                _userResolverService.GetUser()));
             //BackgroundJob.Enqueue(() => _budgetService.UploadBudget(fileName, ConvertToGuid(id)));
 
             return Json("File Uploaded"); //null just to make error free

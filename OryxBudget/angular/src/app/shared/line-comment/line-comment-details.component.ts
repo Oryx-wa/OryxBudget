@@ -33,7 +33,7 @@ export class LineCommentDetailsComponent implements OnInit {
 
  ngOnInit() {
     // console.log(this.route.snapshot.paramMap.get('id'));
-    this.getOperator(this.route.snapshot.paramMap.get('id'));
+    // this.getOperator(this.route.snapshot.paramMap.get('id'));
     // // console.log(this.route);
 
 

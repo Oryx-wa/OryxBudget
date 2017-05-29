@@ -20,6 +20,10 @@ export class LineCommentComponent implements OnInit, OnChanges {
   @Input() showMalCom = false;
   @Output() update = new EventEmitter();
   @Output() close = new EventEmitter();
+  @Input() userType = '';
+  @Input() napims = false;
+  @Input() operator = false;
+  @Input() displayMode = 'details';
 
   form: FormGroup;
 
@@ -29,25 +33,83 @@ export class LineCommentComponent implements OnInit, OnChanges {
 
   }
   ngOnChanges(changes: any): void {
+    console.log(this.showSubCom);
+    console.log(this.userType);
+
+  }
+
+  addDetail(data: any) {
+    const arrayControl = <FormArray>this.form.controls['formArray'];
+    const lineComment: LineComments = (data === null) ?
+      { id: null, budgetId: this.line.budgetId, code: this.line.code, comment: '', commentStatus: '' } : data;
+    const newDetail = this.fb.group({
+      comment: new FormControl(lineComment.comment),
+      id: new FormControl(lineComment.id),
+      budgetId: new FormControl(lineComment.budgetId),
+      commentStatus: new FormControl(lineComment.commentStatus),
+      code: new FormControl(lineComment.code)
+    });
+    arrayControl.push(newDetail);
+  }
+  ngOnInit() {
     this.form = this.fb.group({
-      opBudgetFC: new FormControl({value: this.line.opBudgetFC, disabled: true}),
-      opBudgetLC: new FormControl({value: this.line.opBudgetLC, disabled: true}),
-      opBudgetUSD: new FormControl({value: this.line.opBudgetUSD, disabled: true}),
-      subComBudgetFC: new FormControl(this.line.subComBudgetFC),
-      subComBudgetLC: new FormControl(this.line.subComBudgetLC),
-      subComBudgetUSD: new FormControl(this.line.subComBudgetUSD),
-      tecComBudgetFC: new FormControl(this.line.tecComBudgetFC),
-      tecComBudgetLC: new FormControl(this.line.tecComBudgetLC),
-      tecComBudgetUSD: new FormControl(this.line.tecComBudgetUSD),
-      malComBudgetFC: new FormControl(this.line.malComBudgetFC),
-      malComBudgetLC: new FormControl(this.line.malComBudgetLC),
-      malComBudgetUSD: new FormControl(this.line.malComBudgetUSD),
-      finalBudgetFC: new FormControl(this.line.finalBudgetFC),
-      finalBudgetLC: new FormControl(this.line.finalBudgetLC),
-      finalBudgetUSD: new FormControl(this.line.finalBudgetUSD),
+      opBudgetFC: new FormControl({ value: this.line.opBudgetFC, disabled: true }),
+      opBudgetLC: new FormControl({ value: this.line.opBudgetLC, disabled: true }),
+      opBudgetUSD: new FormControl({ value: this.line.opBudgetUSD, disabled: true }),
+      subComBudgetFC: new FormControl({
+        value: this.line.subComBudgetFC,
+        disabled: (this.showSubCom === true && this.napims === true) ? false : true
+      }),
+      subComBudgetLC: new FormControl({
+        value: this.line.subComBudgetLC,
+        disabled: (this.showSubCom === true && this.napims === true) ? false : true
+      }),
+      subComBudgetUSD: new FormControl({
+        value: this.line.subComBudgetUSD,
+        disabled: (this.showSubCom === true && this.napims === true) ? false : true
+      }),
+      tecComBudgetFC: new FormControl({
+        value: this.line.tecComBudgetFC,
+        disabled: (this.showTecCom === true && this.napims === true) ? false : true
+      }),
+      tecComBudgetLC: new FormControl({
+        value: this.line.tecComBudgetFC,
+        disabled: (this.showTecCom === true && this.napims === true) ? false : true
+      }),
+      tecComBudgetUSD: new FormControl({
+        value: this.line.tecComBudgetFC,
+        disabled: (this.showTecCom === true && this.napims === true) ? false : true
+      }),
+      malComBudgetFC: new FormControl({
+        value: this.line.tecComBudgetFC,
+        disabled: (this.showMalCom === true && this.napims === true) ? false : true
+      }),
+      malComBudgetLC: new FormControl({
+        value: this.line.tecComBudgetFC,
+        disabled: (this.showMalCom === true && this.napims === true) ? false : true
+      }),
+      malComBudgetUSD: new FormControl({
+        value: this.line.tecComBudgetFC,
+        disabled: (this.showMalCom === true && this.napims === true) ? false : true
+      }),
+      finalBudgetFC: new FormControl({
+        value: this.line.tecComBudgetFC,
+        disabled: (this.showMalCom === true && this.napims === true) ? false : true
+      }),
+      finalBudgetLC: new FormControl({
+        value: this.line.tecComBudgetFC,
+        disabled: (this.showMalCom === true && this.napims === true) ? false : true
+      }),
+      finalBudgetUSD: new FormControl({
+        value: this.line.tecComBudgetFC,
+        disabled: (this.showMalCom === true && this.napims === true) ? false : true
+      }),
       id: new FormControl(this.line.id),
       budgetId: new FormControl(this.line.budgetId),
-      lineStatus: new FormControl(this.line.lineStatus),
+      lineStatus: new FormControl({
+        value: this.line.lineStatus,
+        disabled: !(this.napims === true)
+      }),
       formArray: this.fb.array([])
     });
 
@@ -65,22 +127,6 @@ export class LineCommentComponent implements OnInit, OnChanges {
     this.lineComments.map(comment => {
       this.addDetail(comment);
     });
-  }
-
-  addDetail(data: any) {
-    const arrayControl = <FormArray>this.form.controls['formArray'];
-    const lineComment: LineComments = (data === null) ?
-      { id: null, budgetId: this.line.budgetId, code: this.line.code, comment: '', commentStatus: '' } : data;
-    const newDetail = this.fb.group({
-      comment: new FormControl(lineComment.comment),
-      id: new FormControl(lineComment.id),
-      budgetId: new FormControl(lineComment.budgetId),
-      commentStatus: new FormControl(lineComment.commentStatus),
-      code: new FormControl(lineComment.code)
-    });
-    arrayControl.push(newDetail);
-  }
-  ngOnInit() {
 
   }
 
@@ -94,7 +140,7 @@ export class LineCommentComponent implements OnInit, OnChanges {
       comments.push(lineComment);
     });
     // console.log(comments);
-    this.update.emit({lineComments: comments, budgetLine: line});
+    this.update.emit({ lineComments: comments, budgetLine: line });
 
   }
   removeDetail(i: number) {
@@ -103,4 +149,9 @@ export class LineCommentComponent implements OnInit, OnChanges {
     this.form.markAsDirty();
   }
   get formArray() { return <FormArray>this.form.get('formArray'); }
+
+  changeDisplay(type: string) {
+    this.displayMode = type;
+
+  }
 }

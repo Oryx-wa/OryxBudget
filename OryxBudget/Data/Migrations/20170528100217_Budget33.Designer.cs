@@ -9,9 +9,10 @@ using Entities.Budgets;
 namespace Data.Migrations
 {
     [DbContext(typeof(OryxBudgetContext))]
-    partial class OryxBudgetContextModelSnapshot : ModelSnapshot
+    [Migration("20170528100217_Budget33")]
+    partial class Budget33
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
             modelBuilder
                 .HasAnnotation("ProductVersion", "1.1.2")
@@ -811,10 +812,6 @@ namespace Data.Migrations
                         .ValueGeneratedOnAdd()
                         .HasDefaultValueSql("getDate()");
 
-                    b.Property<string>("UserEmail");
-
-                    b.Property<string>("UserName");
-
                     b.Property<string>("UserSign")
                         .IsRequired()
                         .HasMaxLength(50);
@@ -856,10 +853,6 @@ namespace Data.Migrations
                         .HasMaxLength(1);
 
                     b.Property<DateTime>("UpdateDate");
-
-                    b.Property<string>("UserEmail");
-
-                    b.Property<string>("UserName");
 
                     b.Property<string>("UserSign")
                         .IsRequired()

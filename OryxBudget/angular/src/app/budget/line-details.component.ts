@@ -22,10 +22,20 @@ import { SecurityService } from './../login/security.service';
 export class LineDetailsComponent implements OnInit, OnChanges {
   @Input() lines: BudgetLines[] = [];
   @Input() lineComments: LineComments[] = [];
-  @Output() comments = new EventEmitter();
-  @Output() saveComments = new EventEmitter();
+
   @Input() commentSaved: Observable<boolean>;
   @Input() roles: any[] = [];
+  @Input() showSubCom: boolean;
+  @Input() showTecCom: boolean;
+  @Input() showMalCom: boolean;
+  @Input() showFinal: boolean;
+  @Input() showOp: boolean;
+  @Input() operator = false;
+  @Input() napims = false;
+
+  @Output() comments = new EventEmitter();
+  @Output() saveComments = new EventEmitter();
+  
 
 
   modalActions = new EventEmitter<string | MaterializeAction>();
@@ -37,25 +47,23 @@ export class LineDetailsComponent implements OnInit, OnChanges {
   line: BudgetLines;
   role: string;
   floatingRow = [];
-
-  @Input() showSubCom: boolean;
-  @Input() showTecCom: boolean;
-  @Input() showMalCom: boolean;
-  @Input() showFinal: boolean;
-  @Input() showOp: boolean;
   private colWidth = 150;
   public columnDefs: any[];
   private ready = false;
 
   public gridOptions: GridOptions;
   public rowData: any[] = [];
+  public userType: string;
 
-
+  private roleList = ['SubCom', 'TecCom', 'MalCom'];
+  private userTypeList = ['Operator', 'Napims'];
   history: string[] = ['home'];
   constructor() { }
 
   ngOnInit() {
     this.commentSaved.subscribe(saved => this.showComment = !saved);
+    
+
     this.structureData();
 
     this.createColumnDefs();
@@ -65,7 +73,7 @@ export class LineDetailsComponent implements OnInit, OnChanges {
       },
       getNodeChildDetails: getNodeChildDetails,
       rowData: this.rowData,
-      debug: true,
+      debug: false,
       getRowStyle: function (params) {
         if (params.node.floating) {
           return { 'font-weight': 'bold' };
@@ -78,40 +86,28 @@ export class LineDetailsComponent implements OnInit, OnChanges {
     console.log(this.floatingRow);
 
 
-    /*
-    this.roles.map(role => {
-      this.role = role;
-      switch (role) {
-        case 'SubCom':
-          this.showSubCom$.next(true);
-          this.role = role;
-          break;
-        case 'TecCom':
-          this.showTecCom$.next(true);
-          break;
-        case 'MalCom':
-          this.showMalCom$.next(true);
-          break;
-        case 'Final':
-          this.showFinal$.next(true);
-          break;
-        case 'Operator':
-          this.showOp$.next(true);
-          break;
-        default:
-          break;
-      }
-    });
-    */
-    // console.log(this.floatingRow);
 
   }
 
   ngOnChanges(changes: any) {
+    
+    this.setupUser();
     this.filtered = this.lines.filter(bd => bd.level === '1');
     this.level = 0;
     this.setColumns();
     // // console.log(this.filtered);
+  }
+
+  setupUser() {
+    // Role 
+    this.roles.map(role => {
+      if (this.roleList.indexOf(role) > -1) {
+        this.role = role;
+      }
+      if (this.userTypeList.indexOf(role) > -1) {
+        this.userType = role;
+      }
+    });
   }
 
   addHistory(code: string) {

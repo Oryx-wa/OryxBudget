@@ -13,6 +13,7 @@ using Data.Repositories.OperatorsRepositories;
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.AspNetCore.SignalR.Infrastructure;
 using OryxBudgetService.Utilities.SignalRHubs;
+using OryxSecurity.Services;
 
 namespace OryxBudgetService.BudgetsServices
 {
@@ -25,11 +26,12 @@ namespace OryxBudgetService.BudgetsServices
         private readonly OperatorRepository _operatorRepository;
         private readonly IConnectionManager _connectionManager;
         private readonly AttachmentRepository _attachmentRepository;
+        protected IUserResolverService _userResolverService;
 
         public BudgetService(BudgetRepository repository, BudgetCodeService budgetCodeService,
             BudgetLineRepository lineRepository, IBudgetUnitOfWork unitOfWork, LineCommentRepository lineCommentRepository,
             OperatorRepository operatorRepository, AttachmentRepository attachmentRepository,
-            IConnectionManager signalRConnectionManager) : base(repository, unitOfWork)
+            IConnectionManager signalRConnectionManager, IUserResolverService userResolverService) : base(repository, unitOfWork)
         {
             _repository = repository;
             _lineRepository = lineRepository;
@@ -37,7 +39,8 @@ namespace OryxBudgetService.BudgetsServices
             _lineCommentRepository = lineCommentRepository;
             _operatorRepository = operatorRepository;
             _attachmentRepository = attachmentRepository;
-            
+            _userResolverService = userResolverService;
+
         }
 
         public override void Update(Budget entity)
@@ -59,7 +62,7 @@ namespace OryxBudgetService.BudgetsServices
 
         public IEnumerable<OperatorBudget> GetOperatorBudget(string id)
         {
-            return _repository.GetOperatorBudget(id);         
+            return _repository.GetOperatorBudget(id);
 
 
         }
@@ -69,7 +72,7 @@ namespace OryxBudgetService.BudgetsServices
             var operators = _operatorRepository.GetAll()
                 .Where(o => o.Status.Equals("A")).ToList();
 
-            foreach(var op in operators)
+            foreach (var op in operators)
             {
                 var budget = new Budget
                 {
@@ -93,7 +96,7 @@ namespace OryxBudgetService.BudgetsServices
             }
         }
 
-        public void UploadBudget(string fileName, Guid id)
+        public void UploadBudget(string fileName, Guid id, string userId)
         {
             var file = System.IO.File.OpenRead(fileName);
             System.IO.TextReader dataFile = new System.IO.StreamReader(file);
@@ -117,7 +120,7 @@ namespace OryxBudgetService.BudgetsServices
                 }
                 item.Code = item.Code.Trim();
                 item.Description = (item.Description.Trim().Length > 99) ? item.Description.Trim().Substring(0, 99) : item.Description.Trim();
-                item.UserSign = "e317f2dc-deb1-4463-8b67-7f435211d652";
+                item.UserSign = userId;
                 item.UpdateDate = System.DateTime.Now;
                 item.CreateDate = System.DateTime.Now;
                 item.OpBudgetFC = item.OpBudgetLCInUSD + item.OpBudgetUSD;
@@ -132,7 +135,7 @@ namespace OryxBudgetService.BudgetsServices
             budget.OpBudgetUSD = totalUSD;
             budget.OpBudgetFC = total;
 
-            base.Update(budget);
+            base.Update(budget, userId);
             this.SaveChanges();
             dataFile.Dispose();
             file.Dispose();
@@ -213,9 +216,9 @@ namespace OryxBudgetService.BudgetsServices
 
         public IEnumerable<BudgetCodeView> GetBudgetDetails(string id)
         {
-            
-          return _repository.GetBudgetLines(id);
-            
+
+            return _repository.GetBudgetLines(id);
+
         }
 
         public IEnumerable<LineComment> GetLineComment(string id, string code)
@@ -223,19 +226,44 @@ namespace OryxBudgetService.BudgetsServices
             return _lineCommentRepository.GetAll().Where(c => c.BudgetId.ToString() == id && c.Code == code);
         }
 
-        public void AddLineComments (IEnumerable<LineComment> lineComments)
+        public void AddLineComments(IEnumerable<LineComment> lineComments)
         {
+            var roleList = _userResolverService.GetRoles();
+            string userType = "";
+            string userName = _userResolverService.GetUserName();
+            BudgetStatus bdStatus = BudgetStatus.SubCom;
+            foreach (var item in roleList)
+            {
+                if (item.ToLower() == "napims")
+                {
+                    userType = item.ToLower();
+                }
+
+                if (item.ToLower() == "operator")
+                {
+                    userType = item.ToLower();
+                }
+                if (item.EndsWith("Com"))
+                {
+                    Enum.TryParse(item, out BudgetStatus bdStatusOut );
+                    bdStatus = bdStatusOut;
+                }              
+                
+            }
             foreach (var item in lineComments)
             {
-                if (item.Id == Guid.Empty)
-                {
+                item.UserType = userType;
+                item.CommentType = bdStatus;
+                item.UserName = userName;
+                if (item.Id == Guid.Empty)                {
+                    
                     this._lineCommentRepository.Add(item);
                 }
                 else
-                {
+                {                    
                     this._lineCommentRepository.Update(item);
                 }
-               
+
             }
         }
 

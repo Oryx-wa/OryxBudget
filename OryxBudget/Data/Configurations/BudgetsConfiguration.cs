@@ -26,6 +26,8 @@ namespace Data.Configurations
             builder.Entity<BudgetLine>().HasIndex(m => new { m.Id }).IsUnique();
             builder.Entity<BudgetLine>().Property(m => m.CreateDate).HasDefaultValueSql("getDate()");
             builder.Entity<BudgetLine>().Property(m => m.UpdateDate).HasDefaultValueSql("getDate()");
+            builder.Entity<BudgetLine>().Property(m => m.ApprovalStatus).HasDefaultValueSql("0");
+            builder.Entity<BudgetLine>().Property(m => m.LineStatus).HasDefaultValueSql("1");
             builder.Entity<BudgetLineLog>().HasKey(c => new {
                 c.Id,
                 c.LogInstance

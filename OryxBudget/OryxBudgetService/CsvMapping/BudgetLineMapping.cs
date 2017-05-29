@@ -19,6 +19,7 @@ namespace OryxBudgetService.CsvMapping
             Map(m => m.OpBudgetLC).Index(2);
             Map(m => m.OpBudgetLCInUSD).Index(4);
             Map(m => m.OpBudgetUSD).Index(3);
+            Map(m => m.ApprovalStatus).Ignore();
         }
 
        

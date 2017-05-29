@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-
+import { SecurityService } from './../login/security.service';
 @Component({
   selector: 'app-unauthorised',
   templateUrl: './unauthorised.component.html',
@@ -7,9 +7,16 @@ import { Component, OnInit } from '@angular/core';
 })
 export class UnauthorisedComponent implements OnInit {
 
-  constructor() { }
+  constructor(
+    public securityService: SecurityService,
+  ) {
 
+  }
   ngOnInit() {
+  }
+
+  public login() {
+    this.securityService.Authorize('');
   }
 
 }

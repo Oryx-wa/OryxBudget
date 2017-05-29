@@ -9,9 +9,10 @@ using Entities.Budgets;
 namespace Data.Migrations
 {
     [DbContext(typeof(OryxBudgetContext))]
-    partial class OryxBudgetContextModelSnapshot : ModelSnapshot
+    [Migration("20170526172042_Budget32")]
+    partial class Budget32
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
             modelBuilder
                 .HasAnnotation("ProductVersion", "1.1.2")
@@ -793,7 +794,6 @@ namespace Data.Migrations
                     b.Property<string>("Code");
 
                     b.Property<string>("Comment")
-                        .IsRequired()
                         .HasMaxLength(355);
 
                     b.Property<int>("CommentStatus");
@@ -811,16 +811,11 @@ namespace Data.Migrations
                         .ValueGeneratedOnAdd()
                         .HasDefaultValueSql("getDate()");
 
-                    b.Property<string>("UserEmail");
-
-                    b.Property<string>("UserName");
-
                     b.Property<string>("UserSign")
                         .IsRequired()
                         .HasMaxLength(50);
 
                     b.Property<string>("UserType")
-                        .IsRequired()
                         .HasMaxLength(15);
 
                     b.HasKey("Id");
@@ -856,10 +851,6 @@ namespace Data.Migrations
                         .HasMaxLength(1);
 
                     b.Property<DateTime>("UpdateDate");
-
-                    b.Property<string>("UserEmail");
-
-                    b.Property<string>("UserName");
 
                     b.Property<string>("UserSign")
                         .IsRequired()

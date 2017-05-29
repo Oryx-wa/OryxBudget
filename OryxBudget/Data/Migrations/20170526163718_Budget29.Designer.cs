@@ -9,9 +9,10 @@ using Entities.Budgets;
 namespace Data.Migrations
 {
     [DbContext(typeof(OryxBudgetContext))]
-    partial class OryxBudgetContextModelSnapshot : ModelSnapshot
+    [Migration("20170526163718_Budget29")]
+    partial class Budget29
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
             modelBuilder
                 .HasAnnotation("ProductVersion", "1.1.2")
@@ -457,10 +458,6 @@ namespace Data.Migrations
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<int>("ApprovalStatus")
-                        .ValueGeneratedOnAdd()
-                        .HasDefaultValueSql("0");
-
                     b.Property<Guid>("BudgetId");
 
                     b.Property<Guid?>("BudgetLogId");
@@ -487,9 +484,7 @@ namespace Data.Migrations
 
                     b.Property<decimal>("FinalBudgetUSD");
 
-                    b.Property<int>("LineStatus")
-                        .ValueGeneratedOnAdd()
-                        .HasDefaultValueSql("1");
+                    b.Property<int>("LineStatus");
 
                     b.Property<decimal>("MalComBudgetFC");
 
@@ -547,8 +542,6 @@ namespace Data.Migrations
                     b.Property<Guid>("Id");
 
                     b.Property<int>("LogInstance");
-
-                    b.Property<int>("ApprovalStatus");
 
                     b.Property<Guid>("BudgetId");
 
@@ -788,12 +781,13 @@ namespace Data.Migrations
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<Guid?>("BudgetId");
+                    b.Property<string>("BudgetId");
+
+                    b.Property<Guid?>("BudgetId1");
 
                     b.Property<string>("Code");
 
                     b.Property<string>("Comment")
-                        .IsRequired()
                         .HasMaxLength(355);
 
                     b.Property<int>("CommentStatus");
@@ -811,21 +805,13 @@ namespace Data.Migrations
                         .ValueGeneratedOnAdd()
                         .HasDefaultValueSql("getDate()");
 
-                    b.Property<string>("UserEmail");
-
-                    b.Property<string>("UserName");
-
                     b.Property<string>("UserSign")
                         .IsRequired()
                         .HasMaxLength(50);
 
-                    b.Property<string>("UserType")
-                        .IsRequired()
-                        .HasMaxLength(15);
-
                     b.HasKey("Id");
 
-                    b.HasIndex("BudgetId");
+                    b.HasIndex("BudgetId1");
 
                     b.HasIndex("Id")
                         .IsUnique();
@@ -839,7 +825,7 @@ namespace Data.Migrations
 
                     b.Property<int>("LogInstance");
 
-                    b.Property<Guid?>("BudgetId");
+                    b.Property<string>("BudgetId");
 
                     b.Property<string>("Code");
 
@@ -857,16 +843,9 @@ namespace Data.Migrations
 
                     b.Property<DateTime>("UpdateDate");
 
-                    b.Property<string>("UserEmail");
-
-                    b.Property<string>("UserName");
-
                     b.Property<string>("UserSign")
                         .IsRequired()
                         .HasMaxLength(50);
-
-                    b.Property<string>("UserType")
-                        .HasMaxLength(15);
 
                     b.HasKey("Id", "LogInstance");
 
@@ -1234,7 +1213,7 @@ namespace Data.Migrations
                 {
                     b.HasOne("Entities.Budgets.Budget")
                         .WithMany("LineComments")
-                        .HasForeignKey("BudgetId");
+                        .HasForeignKey("BudgetId1");
                 });
 
             modelBuilder.Entity("Entities.Operators.ContactPerson", b =>

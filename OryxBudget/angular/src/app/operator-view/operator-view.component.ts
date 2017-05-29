@@ -1,5 +1,6 @@
 import { Component, OnInit, Input, OnChanges } from '@angular/core';
 import { GridOptions } from 'ag-grid/main';
+import { NotificationsService } from 'angular2-notifications';
 
 import { Budgets, Operators, BudgetLines, LineComments } from './../models';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
@@ -41,13 +42,16 @@ export class OperatorViewComponent implements OnInit, OnChanges {
   public columnDefs: any[];
   private colWidth = 110;
   public gridOptions: GridOptions;
-  
+  public loading$: BehaviorSubject<boolean> = new BehaviorSubject(false);
+  public saving$: BehaviorSubject<boolean> = new BehaviorSubject(false);
+
   showDetail = false;
 
   constructor(private route: ActivatedRoute,
     private router: Router,
     private securityService: SecurityService,
-    private _http: Http) {
+    private _http: Http,
+    private _service: NotificationsService) {
     this.gridOptions = <GridOptions>{};
     this.createColumnDefs();
 
@@ -95,7 +99,7 @@ export class OperatorViewComponent implements OnInit, OnChanges {
 
   getOperator() {
 
-
+    this.loading$.next(true);
     let url = this.securityService.getUrl('Budget/GetByOperator');
     let params: URLSearchParams = new URLSearchParams();
     params.append('operatorId', this.operatorId);
@@ -121,10 +125,15 @@ export class OperatorViewComponent implements OnInit, OnChanges {
         this.budgetDesc = budgets[0].description;
         this.getLineDetails(budgets[0].id);
       }
+      this.loading$.next(false);
+      this._service.success('loaded Successfully', 'Budget loaded successfully');
     });
 
+
   }
-  getComments(line: BudgetLines) {
+  
+
+    getComments(line: BudgetLines) {
     const url = this.securityService.getUrl('Budget/GetLineComment');
     const params1: URLSearchParams = new URLSearchParams();
     params1.append('budgetId', line.budgetId);
@@ -140,6 +149,7 @@ export class OperatorViewComponent implements OnInit, OnChanges {
   }
 
   saveComments(data: any) {
+    this.saving$.next(true);
     const url = this.securityService.getUrl('Budget/AddLineComment');
     const params1: URLSearchParams = new URLSearchParams();
     params1.append('budgetId', data.budgetId);
@@ -151,8 +161,13 @@ export class OperatorViewComponent implements OnInit, OnChanges {
         search: params1
       })
       .map(res => res.json())
-      .subscribe();
-    this.commentSaved$.next(true);
+      .subscribe( saved => {
+        this.commentSaved$.next(true);
+        this.saving$.next(false);
+        this._service.success('Comments', 'Comments successfully');
+      });
+
+   // this.commentSaved$.next(true);
   }
   changeDisplayMode(mode: DisplayModeEnum) {
     // // console.log(mode); 
@@ -304,7 +319,7 @@ export class OperatorViewComponent implements OnInit, OnChanges {
   }
 
   getLineDetails(id: string) {
-
+    this.loading$.next(true);
     this.showDetail = true;
     const url = this.securityService.getUrl('Budget/GetBudgetDetails');
     const params1: URLSearchParams = new URLSearchParams();
@@ -317,6 +332,7 @@ export class OperatorViewComponent implements OnInit, OnChanges {
     }).map(res => res.json());
     this.commentSaved$.next(true);
     this.changeDisplayMode(DisplayModeEnum.Budget);
+    this.lines$.subscribe(lines => this.loading$.next(false));
 
   }
   public showColumn(columnType: string) {

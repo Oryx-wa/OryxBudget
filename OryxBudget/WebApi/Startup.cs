@@ -33,7 +33,8 @@ using IdentityServer4.AccessTokenValidation;
 using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
 using Microsoft.AspNetCore.Mvc.Authorization;
-using OryxBudgetService.Utilities.SignalRHubs;
+using OryxBudgetService.Utilities;
+using Newtonsoft.Json;
 
 namespace OryxWebApi
 {
@@ -100,13 +101,22 @@ namespace OryxWebApi
 
             services.AddMvcCore(config =>
             {
-              config.Filters.Add(new AuthorizeFilter(MCIPolicy));
-            })
-           .AddJsonFormatters(opt =>
-           {
-               opt.ContractResolver = new CamelCasePropertyNamesContractResolver();
-               opt.DateTimeZoneHandling = Newtonsoft.Json.DateTimeZoneHandling.Utc;
-           });
+                config.Filters.Add(new AuthorizeFilter(MCIPolicy));
+            });
+           //.AddJsonFormatters(opt =>
+           //{
+           //    opt.ContractResolver = new CamelCasePropertyNamesContractResolver();
+           //    opt.DateTimeZoneHandling = Newtonsoft.Json.DateTimeZoneHandling.Utc;
+           //});
+
+            var settings = new JsonSerializerSettings();
+            settings.ContractResolver = new SignalRContractResolver();
+
+            var serializer = JsonSerializer.Create(settings);
+
+            services.Add(new ServiceDescriptor(typeof(JsonSerializer),
+                                            provider => serializer,
+                                            ServiceLifetime.Transient));
 
             services.AddMvc()
                 .AddJsonOptions(jsonOptions =>

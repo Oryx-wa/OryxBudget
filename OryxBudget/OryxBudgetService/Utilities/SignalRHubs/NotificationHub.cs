@@ -48,6 +48,7 @@ namespace OryxBudgetService.Utilities.SignalRHubs
     {
         Task SetConnectionId(string connectionId);
         Task UploadCompleted(string budgetId);
+        
         //Task UpdateMatch(MatchViewModel match);
         //Task AddFeed(FeedViewModel feed);
         //Task AddChatMessage(ChatMessage message);
