@@ -20,10 +20,10 @@ namespace OryxBudgetWeb.Models
         private string _apiUrl, _idSrv;
         private readonly OpOptions _options;
         //DropDown
-        public OperatorsClient(OpOptions opOptions, ILogger<OperatorsClient> logger)
+        public OperatorsClient( ILogger<OperatorsClient> logger)
         {
-            _apiUrl = opOptions.ApiPath;
-            _idSrv = opOptions.IdPath;
+            _apiUrl = "";// opOptions.ApiPath;
+            _idSrv = ""; // opOptions.IdPath;
             _logger = logger;
 
             _logger.LogDebug(_apiUrl);

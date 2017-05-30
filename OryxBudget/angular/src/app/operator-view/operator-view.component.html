@@ -62,7 +62,11 @@
                     [showMalCom]="showMalCom$ | async" [showFinal]="showFinal$ | async" [roles]="roles" [operator]="true">
                   </app-line-details>
                 </div>
-                
+                <ng-template #noLines>
+                  <div class="row">
+                    <a class="waves-effect waves-light" (click)="upload(budgets[0])">Upload Budget</a>
+                  </div>
+                </ng-template>                
               </div>
               <ng-template #loading2>Loading Details ...
                 <div class="row">
