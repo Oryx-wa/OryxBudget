@@ -36,7 +36,7 @@ import { CommentsComponent } from './comment/comments.component';
     SimpleNotificationsModule, PushNotificationsModule,
 
   ],
-  declarations: [// MainNavComponent, 
+  declarations: [// MainNavComponent,
     OryxDashboardComponent,
     FileuploaderComponent,
     LineCommentComponent,
@@ -44,7 +44,7 @@ import { CommentsComponent } from './comment/comments.component';
     LineCommentDetailsComponent,
     DialogComponent, CurrencyComponent, AttachmentComponent, NotificationComponent, CommentsComponent],
   providers: [SecurityService, NotificationsService],
-  exports: [// MainNavComponent, 
+  exports: [// MainNavComponent,
     OryxDashboardComponent, NotificationComponent,
     FileuploaderComponent, CommentsComponent, AttachmentComponent,
     MaterializeModule, LineCommentComponent, CurrencyComponent,

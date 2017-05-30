@@ -228,6 +228,8 @@ namespace OryxWebApi.Controllers.BudgetControllers
             return Json("File(s) Uploaded!"); //null just to make error free
         }
 
+        [Route("DownloadAttachment")]
+        [HttpGet]
         public ActionResult DownloadAttachment(string id)
         {
             var fileEntity = _budgetService.GetAttachment(new Guid(id));
