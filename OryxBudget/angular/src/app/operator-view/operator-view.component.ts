@@ -2,7 +2,7 @@ import { Component, OnInit, Input, OnChanges } from '@angular/core';
 import { GridOptions } from 'ag-grid/main';
 import { NotificationsService } from 'angular2-notifications';
 
-import { Budgets, Operators, BudgetLines, LineComments } from './../models';
+import { Budgets, Operators, BudgetLines, LineComments, LineStatus } from './../models';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { Observable, } from 'rxjs/Observable';
 // import 'rxjs/observable/timer';
@@ -28,6 +28,7 @@ export class OperatorViewComponent implements OnInit, OnChanges {
   lines$: Observable<BudgetLines[]>;
   lineComments$: Observable<LineComments[]>;
   line$: Observable<BudgetLines>;
+  lineStatus$: Observable<LineStatus[]>;
   commentSaved$: BehaviorSubject<boolean> = new BehaviorSubject(true);
   public displayMode: DisplayModeEnum;
   public displayModeEnum = DisplayModeEnum;
@@ -131,10 +132,10 @@ export class OperatorViewComponent implements OnInit, OnChanges {
 
 
   }
-  
 
-    getComments(line: BudgetLines) {
-    const url = this.securityService.getUrl('Budget/GetLineComment');
+
+  getComments(line: BudgetLines) {
+    let url = this.securityService.getUrl('Budget/GetLineComment');
     const params1: URLSearchParams = new URLSearchParams();
     params1.append('budgetId', line.budgetId);
     params1.append('code', line.code);
@@ -146,6 +147,15 @@ export class OperatorViewComponent implements OnInit, OnChanges {
     }).map(res => res.json());
     this.commentSaved$.next(false);
 
+    url = this.securityService.getUrl('Budget/GetLineStatus');
+    this.lineStatus$ = this._http.get(url, {
+      headers: this.securityService.getHeaders(),
+      body: '',
+      params: params1
+    }).map(res => res.json());
+
+    this.lineStatus$.subscribe(s => console.log(s));
+    this.commentSaved$.next(false);
   }
 
   saveComments(data: any) {
@@ -161,13 +171,33 @@ export class OperatorViewComponent implements OnInit, OnChanges {
         search: params1
       })
       .map(res => res.json())
-      .subscribe( saved => {
+      .subscribe(saved => {
         this.commentSaved$.next(true);
         this.saving$.next(false);
         this._service.success('Comments', 'Comments successfully');
       });
 
-   // this.commentSaved$.next(true);
+    // this.commentSaved$.next(true);
+  }
+
+  newComment(data: any) {
+    const url = this.securityService.getUrl('Budget/AddComment');
+    const params1: URLSearchParams = new URLSearchParams();
+    // params1.append('budgetId', data.budgetId);
+    // params1.append('code', data.code);
+
+    const ret = this._http.post(url,
+      data, {
+        headers: this.securityService.getHeaders(),
+        // search: params1
+      })
+      .map(res => res.json())
+      .subscribe(saved => {
+        // this.commentSaved$.next(true);
+        // this.saving$.next(false);
+        // this._service.success('Comments', 'Comments successfully');
+      });
+
   }
   changeDisplayMode(mode: DisplayModeEnum) {
     // // console.log(mode); 

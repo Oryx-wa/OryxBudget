@@ -71,6 +71,8 @@ namespace Data.Configurations
             builder.Entity<StatusHistory>().Property(m => m.UpdateDate).HasDefaultValueSql("getDate()");
             builder.Entity<StatusHistoryLog>().HasKey(c => new { c.Id, c.LogInstance });
 
+           
+
         }
     }
 }

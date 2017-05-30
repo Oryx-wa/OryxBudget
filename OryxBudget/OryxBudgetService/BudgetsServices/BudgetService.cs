@@ -27,10 +27,11 @@ namespace OryxBudgetService.BudgetsServices
         private readonly IConnectionManager _connectionManager;
         private readonly AttachmentRepository _attachmentRepository;
         protected IUserResolverService _userResolverService;
+        private readonly BudgetLineStatusHistoryRepository _lineStatus;
 
         public BudgetService(BudgetRepository repository, BudgetCodeService budgetCodeService,
             BudgetLineRepository lineRepository, IBudgetUnitOfWork unitOfWork, LineCommentRepository lineCommentRepository,
-            OperatorRepository operatorRepository, AttachmentRepository attachmentRepository,
+            OperatorRepository operatorRepository, AttachmentRepository attachmentRepository, BudgetLineStatusHistoryRepository lineStatus,
             IConnectionManager signalRConnectionManager, IUserResolverService userResolverService) : base(repository, unitOfWork)
         {
             _repository = repository;
@@ -40,6 +41,7 @@ namespace OryxBudgetService.BudgetsServices
             _operatorRepository = operatorRepository;
             _attachmentRepository = attachmentRepository;
             _userResolverService = userResolverService;
+            _lineStatus = lineStatus;
 
         }
 
@@ -265,6 +267,47 @@ namespace OryxBudgetService.BudgetsServices
                 }
 
             }
+        }
+
+        public void updateStatus(string status, string Code, string BudgetId)
+        {
+            var roleList = _userResolverService.GetRoles();
+            string userType = "";
+            string userName = _userResolverService.GetUserName();
+            BudgetStatus bdStatus = BudgetStatus.SubCom;
+            foreach (var item in roleList)
+            {
+                if (item.ToLower() == "napims")
+                {
+                    userType = item.ToLower();
+                }
+
+                if (item.ToLower() == "operator")
+                {
+                    userType = item.ToLower();
+                }
+                if (item.EndsWith("Com"))
+                {
+                    Enum.TryParse(item, out BudgetStatus bdStatusOut);
+                    bdStatus = bdStatusOut;
+                }
+
+            }
+
+            Enum.TryParse(status, out CommentStatus cStatus);
+            BudgetLineStatusHistory statusHistory = new BudgetLineStatusHistory();
+            statusHistory.ItemCodeStatus = cStatus;
+            statusHistory.ItemStatus = bdStatus;
+            statusHistory.Code = Code;
+            statusHistory.BudgetId = BudgetId;
+            _lineStatus.Add(statusHistory);
+        }
+
+        public IEnumerable<BudgetLineStatusHistory> GetLineStatus(string BudgetId, string Code)
+        {
+            return _lineStatus.GetAll()
+                .Where(l => l.Code == Code && l.BudgetId.ToString() == BudgetId)
+                .OrderByDescending(l=> l.CreateDate);
         }
 
         public void UpdateAttachment(Attachment entity)

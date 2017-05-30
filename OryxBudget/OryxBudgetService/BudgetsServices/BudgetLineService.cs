@@ -15,12 +15,14 @@ namespace OryxBudgetService.BudgetsServices
     {
         private readonly IBaseLogBudgetRepository<BudgetLine, BudgetLineLog, Guid> _repository;
         private readonly LineCommentRepository _lineCommentRepository;
+        private readonly BudgetLineStatusHistoryRepository _lineStatus;
 
         public BudgetLineService(IBaseLogBudgetRepository<BudgetLine, BudgetLineLog, Guid> repository, IBudgetUnitOfWork unitOfWork,
-            LineCommentRepository lineCommentRepository) : base(repository, unitOfWork)
+            LineCommentRepository lineCommentRepository, BudgetLineStatusHistoryRepository lineStatus) : base(repository, unitOfWork)
         {
             _repository = repository;
             _lineCommentRepository = lineCommentRepository;
+            _lineStatus = lineStatus;
         }
 
         public override void Update(BudgetLine entity)
@@ -79,6 +81,8 @@ namespace OryxBudgetService.BudgetsServices
             base.Update(budgetLine);
            
         }
+
+        
 
         private BudgetLine CreateBudgetLineForMalCom(BudgetLine budgetEntity , BudgetLine bd)
         {

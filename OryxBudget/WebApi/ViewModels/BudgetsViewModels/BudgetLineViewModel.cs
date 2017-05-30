@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.ComponentModel.DataAnnotations;
+using Entities.Budgets;
 
 namespace OryxWebApi.ViewModels.BudgetsViewModels
 {
@@ -43,7 +44,38 @@ namespace OryxWebApi.ViewModels.BudgetsViewModels
     {
         public BudgetLineViewModel BudgetLine { get; set; }
         public IEnumerable<LineCommentViewModel> LineComments { get; set; }
-        
+        // public StatusHistoryViewModel StatusHistory { get; set; }
+    }
 
+    public class StatusHistoryViewModel
+    {
+        public StatusHistoryViewModel( BudgetLineStatusHistory statusHistory)
+        {
+            this.Code = statusHistory.Code;
+            this.BudgetId = statusHistory.BudgetId;
+            switch (statusHistory.ItemCodeStatus)
+            {
+                case CommentStatus.New:
+                    this.Status = "New";
+                    break;
+                case CommentStatus.Accepted:
+                    this.Status = "Accepted";
+                    break;
+                case CommentStatus.Parked:
+                    this.Status = "Parked";
+                    break;
+                case CommentStatus.UnderReview:
+                    this.Status = "UnderReview";
+                    break;
+                default:
+                    break;
+            }
+        }
+        [Required]
+        public string Code { get; set; }
+        [Required]
+        public string BudgetId { get; set; }
+        [Required]
+        public string Status { get; set; }
     }
 }

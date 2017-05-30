@@ -7,7 +7,7 @@ import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/catch';
 
 import { GridOptions } from 'ag-grid/main';
-import { Budgets, Operators, BudgetLines, LineComments } from './../models';
+import { Budgets, Operators, BudgetLines, LineComments, LineStatus } from './../models';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { Observable } from 'rxjs/Observable';
 import { SecurityService } from './../login/security.service';
@@ -27,6 +27,7 @@ export class OperatorDetailsComponent implements OnInit {
   lineComments$: Observable<LineComments[]>;
   line$: Observable<BudgetLines>;
   commentSaved$: BehaviorSubject<boolean> = new BehaviorSubject(true);
+  lineStatus$: Observable<LineStatus[]>;
   public columnDefs: any[];
   public gridOptions: GridOptions;
   public showSubCom$: BehaviorSubject<boolean> = new BehaviorSubject(false);
@@ -128,7 +129,7 @@ export class OperatorDetailsComponent implements OnInit {
   }
 
   getComments(line: BudgetLines) {
-    const url = this.securityService.getUrl('Budget/GetLineComment');
+    let url = this.securityService.getUrl('Budget/GetLineComment');
     const params1: URLSearchParams = new URLSearchParams();
     params1.append('budgetId', line.budgetId);
     params1.append('code', line.code);
@@ -138,6 +139,19 @@ export class OperatorDetailsComponent implements OnInit {
       body: '',
       params: params1
     }).map(res => res.json());
+
+    url = this.securityService.getUrl('Budget/GetLineStatus');
+
+    this.lineStatus$ = this._http.get(url, {
+      headers: this.securityService.getHeaders(),
+      body: '',
+      params: params1
+    }).map(res => res.json());
+
+   
+
+
+    this.lineStatus$.subscribe(s => console.log(s));
     this.commentSaved$.next(false);
 
   }
@@ -149,21 +163,43 @@ export class OperatorDetailsComponent implements OnInit {
     params1.append('budgetId', data.budgetId);
     params1.append('code', data.code);
     params1.append('type', data.type);
+    params1.append('status', data.status);
+
     const bd = { lineComments: data.lineComments, budgetLine: _.assign(data.budgetLine, { code: data.code }) };
-   
+
     const ret$ = this._http.post(url,
       JSON.stringify(bd), {
         headers: this.securityService.getHeaders(),
         search: params1
       })
-      .subscribe(res => res.json()
-        .map(saved => {
-          this.commentSaved$.next(true);
-          this._service.success('', 'Saved successfully');
-          this.saving$.next(false);
-        })
-        .catch(err => Observable.from([this._service.error('Error', err)])
-        ));
+      .map(res => res.json())
+      .subscribe(saved => {
+        this.commentSaved$.next(true);
+        this._service.success('', 'Saved successfully');
+        this.saving$.next(false);
+      });
+    //.catch(err => Observable.from([this._service.error('Error', err)])
+    // ));
+  }
+
+   newComment(data: any) {
+    const url = this.securityService.getUrl('Budget/AddComment');
+    const params1: URLSearchParams = new URLSearchParams();
+    // params1.append('budgetId', data.budgetId);
+    // params1.append('code', data.code);
+
+    const ret = this._http.post(url,
+      data, {
+        headers: this.securityService.getHeaders(),
+        // search: params1
+      })
+      .map(res => res.json())
+      .subscribe(saved => {
+        // this.commentSaved$.next(true);
+        // this.saving$.next(false);
+        // this._service.success('Comments', 'Comments successfully');
+      });
+
   }
 
   private createColumnDefs() {

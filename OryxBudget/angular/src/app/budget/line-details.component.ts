@@ -6,7 +6,7 @@ import * as _ from 'lodash';
 //import { Observable } from 'rxjs/Observable';
 import { MaterializeAction } from 'angular2-materialize';
 import { GridOptions } from 'ag-grid/main';
-import { Budgets, Operators, BudgetLines, LineComments } from './../models';
+import { Budgets, Operators, BudgetLines, LineComments, LineStatus } from './../models';
 import { CurrencyComponent } from './../shared/renderers/currency.component';
 import { WordWrapComponent } from './../shared/renderers/word-wrap.component';
 import { TextComponent } from './../shared/renderers/text.component';
@@ -23,6 +23,7 @@ import { SecurityService } from './../login/security.service';
 export class LineDetailsComponent implements OnInit, OnChanges {
   @Input() lines: BudgetLines[] = [];
   @Input() lineComments: LineComments[] = [];
+  @Input() lineStatus: LineStatus[] = [];
 
   @Input() commentSaved: Observable<boolean>;
   @Input() roles: any[] = [];
@@ -36,6 +37,8 @@ export class LineDetailsComponent implements OnInit, OnChanges {
 
   @Output() comments = new EventEmitter();
   @Output() saveComments = new EventEmitter();
+  @Output() addNewComment = new EventEmitter()
+  // @Output() getComments = new EventEmitter();
 
 
 
@@ -99,7 +102,8 @@ export class LineDetailsComponent implements OnInit, OnChanges {
         this.role = role;
       }
       if (this.userTypeList.indexOf(role) > -1) {
-        this.userType = role;
+        this.userType = <string>role;
+        this.userType = this.userType.toLowerCase()
       }
     });
   }
@@ -110,10 +114,10 @@ export class LineDetailsComponent implements OnInit, OnChanges {
 
   showDetails(code: string) { }
 
-  getComments(code: string) {
+  getDetails(code: string) {
     this.line = this.lines.filter(bd => bd.code === code)[0];
     // console.log(this.line);
-    this.showComment = true;
+
     // this.comments.emit({ code: this.selectedCode.code, budgetId: this.selectedCode.budgetId });
 
     this.comments.emit(this.line);
@@ -125,11 +129,25 @@ export class LineDetailsComponent implements OnInit, OnChanges {
     const forUpd = {
       lineComments: data.lineComments,
       code: this.line.code, budgetId: this.line.budgetId,
-      budgetLine: data.budgetLine, type: this.role
+      budgetLine: data.budgetLine, type: this.role,
+      status: data.status
     };
     // console.log(forUpd);
     this.saveComments.emit(forUpd);
   }
+
+  newComment(comment: string) {
+    const newData = _.assign({}, {
+      budgetId: this.line.budgetId, code: this.line.code, comment: comment
+    });
+    console.log(newData);
+    this.addNewComment.emit(newData);
+    
+
+
+  }
+
+
 
   structureData() {
     const data = _.assign(this.lines, { comment: '' });
@@ -328,20 +346,20 @@ export class LineDetailsComponent implements OnInit, OnChanges {
 
           {
             headerName: 'Comments', field: 'id',
-            width: 100,
+            width: 140,
             // cellTemplate: '<div><a href="#">Visible text</a></div>',
             editable: true,
             cellRendererFramework: ChildMessageComponent,
             mIcon: 'message', type: 'comment'
           },
-          {
+          /*{
             headerName: 'Attachments', field: 'id',
             width: 110,
             // cellTemplate: '<div><a href="#">Visible text</a></div>',
             editable: true,
             cellRendererFramework: ChildMessageComponent,
             mIcon: 'file_upload', type: 'upload'
-          }
+          }*/
         ]
       }
 
@@ -378,16 +396,23 @@ export class LineDetailsComponent implements OnInit, OnChanges {
   }
 
   public methodFromParent(id: string, type: string) {
+    this.dialogMode = type;
+    this.showComment = true;
+    this.getDetails(id);
+
+    /*
     switch (type) {
-      case 'comment':
-        this.getComments(id);
+      case 'details':        
         break;
-      case 'upload':
+      case 'comments':
+
+        break;
+      case 'attachments':
 
         break;
       default:
         break;
-    }
+    }*/
 
   }
 

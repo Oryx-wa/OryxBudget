@@ -135,11 +135,18 @@
             _unitOfWork.Commit();
         }
 
-      //  public virtual bool effectiveDateExists(TEntity entity, DateTime effectiveDate)
-      //  {
-      //      return _repository.Contains(entity.Id, effectiveDate);
-      //  }
+        //  public virtual bool effectiveDateExists(TEntity entity, DateTime effectiveDate)
+        //  {
+        //      return _repository.Contains(entity.Id, effectiveDate);
+        //  }
 
+        public Guid ConvertToGuid(string id)
+        {
+
+            Guid NewId;
+            NewId = (string.IsNullOrEmpty(id)) ? Guid.NewGuid() : Guid.Parse(id);
+            return NewId;
+        }
 
 
     }

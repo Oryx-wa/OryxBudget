@@ -6,7 +6,7 @@ using System.Text;
 
 namespace Entities.Budgets
 {
-    public class StatusHistory: IEntityBase<Guid>
+    public class StatusHistory : IEntityBase<Guid>
     {
         [Key]
         public Guid Id { get; set; }
@@ -18,6 +18,10 @@ namespace Entities.Budgets
         [MaxLength(50)]
         public string UserSign { get; set; }
         public BudgetStatus ItemStatus { get; set; }
+        public string Code { get; set; }
+        public string BudgetId { get; set; }
+        public CommentStatus ItemCodeStatus { get; set; }
+
 
     }
 
@@ -33,20 +37,26 @@ namespace Entities.Budgets
         [MaxLength(50)]
         public string UserSign { get; set; }
         public BudgetStatus ItemStatus { get; set; }
+        public string Code { get; set; }
+        public string BudgetId { get; set; }        
+        public CommentStatus ItemCodeStatus { get; set; }
 
     }
 
-    public class BudgetLineStatusHistory: StatusHistory
+    public class BudgetLineStatusHistory : StatusHistory
+    {
+    }
+
+    public class BudgetLineStatusHistoryLog : StatusHistoryLog
+    {
+    }
+
+    public class ActualStatusHistory : StatusHistory
     {
 
     }
 
-    public class ActualStatusHistory: StatusHistory
-    {
-
-    }
-
-    public class BudgetStatusHistory: StatusHistory
+    public class BudgetStatusHistory : StatusHistory
     {
 
     }

@@ -49,6 +49,12 @@ namespace Data
         public DbSet<ContactPerson> ContactPersons { get; set; }
         public DbSet<ContactPersonLog> ContactPersonLogs { get; set; }
 
+        public DbSet<StatusHistory> StatusHistory { get; set; }
+        public DbSet<StatusHistoryLog> StatusHistoryLogs { get; set; }
+        public DbSet<BudgetLineStatusHistory> BudgetLineStatusHistory { get; set; }
+
+
+
 
         #endregion
 
