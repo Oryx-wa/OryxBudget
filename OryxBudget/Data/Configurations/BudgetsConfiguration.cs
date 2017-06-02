@@ -71,7 +71,11 @@ namespace Data.Configurations
             builder.Entity<StatusHistory>().Property(m => m.UpdateDate).HasDefaultValueSql("getDate()");
             builder.Entity<StatusHistoryLog>().HasKey(c => new { c.Id, c.LogInstance });
 
-           
+            //WorkProgram
+            builder.Entity<WorkProgramCode>().HasIndex(m => new { m.Id }).IsUnique();
+            builder.Entity<WorkProgramCode>().Property(m => m.CreateDate).HasDefaultValueSql("getDate()");
+            builder.Entity<WorkProgramCode>().Property(m => m.UpdateDate).HasDefaultValueSql("getDate()");
+            builder.Entity<WorkProgramCodeLog>().HasKey(c => new { c.Id, c.LogInstance });
 
         }
     }

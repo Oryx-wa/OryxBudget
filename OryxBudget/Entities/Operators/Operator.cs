@@ -39,6 +39,7 @@ namespace Entities.Operators
         public string ImageSrc { get; set; }
 
         public ICollection<ContactPerson> ContactPersons { get; set; }
+        public ICollection<OilBlock> OilBlocks { get; set; }
 
        // public bool IsJV { get; set; }
        // public bool IsPSC { get; set; }

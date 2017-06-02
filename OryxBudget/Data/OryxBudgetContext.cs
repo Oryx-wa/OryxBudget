@@ -6,6 +6,7 @@ using Microsoft.EntityFrameworkCore;
 using Entities.Budgets;
 using Data.Configurations;
 using Entities.Operators;
+using Entities.Napims;
 
 namespace Data
 {
@@ -53,7 +54,14 @@ namespace Data
         public DbSet<StatusHistoryLog> StatusHistoryLogs { get; set; }
         public DbSet<BudgetLineStatusHistory> BudgetLineStatusHistory { get; set; }
 
+        public DbSet<NapimsContact> NapimsContacts { get; set; }
+        public DbSet<NapimsContactLog> NapimsContactLogs { get; set; }
 
+        public DbSet<OilBlock> OilBlocks { get; set; }
+        public DbSet<OilBlockLog> OilBlockLogs { get; set; }
+
+        public DbSet<WorkProgramCode> WorkProgramCodes { get; set; }
+        public DbSet<WorkProgramCodeLog> WorkProgramCodeLogs { get; set; }
 
 
         #endregion

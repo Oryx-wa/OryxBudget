@@ -45,6 +45,11 @@ namespace Entities.Budgets
         public string Level1 { get; set; }       
         [MaxLength(30)]
         public string Level2 { get; set; }
+
+        [MaxLength(100)]
+        public string CodeCategory { get; set; }
+
+        public virtual ICollection<WorkProgramCode> WorkProgramCodes { get; set; }
       
     }
 
@@ -91,5 +96,8 @@ namespace Entities.Budgets
         public string Level1 { get; set; }
         [MaxLength(30)]
         public string Level2 { get; set; }
+
+        [MaxLength(100)]
+        public string CodeCategory { get; set; }
     }
 }
