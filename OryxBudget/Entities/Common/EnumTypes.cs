@@ -10,4 +10,12 @@ namespace Entities.Common
         TecCom = 2,
         MalCom = 3
     }
+
+    public enum WorkProgramTypeEnum
+    {
+        Exploration = 1,
+        MMD = 2,
+        Facility = 3,
+        Product = 4,
+    }
 }

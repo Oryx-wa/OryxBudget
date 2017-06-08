@@ -1,4 +1,5 @@
-﻿using OryxDomainServices;
+﻿using Entities.Common;
+using OryxDomainServices;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -48,6 +49,8 @@ namespace Entities.Budgets
 
         [MaxLength(100)]
         public string CodeCategory { get; set; }
+
+        public WorkProgramTypeEnum Type { get; set; }
 
         public virtual ICollection<WorkProgramCode> WorkProgramCodes { get; set; }
       
@@ -99,5 +102,7 @@ namespace Entities.Budgets
 
         [MaxLength(100)]
         public string CodeCategory { get; set; }
+
+        public WorkProgramTypeEnum Type { get; set; }
     }
 }
