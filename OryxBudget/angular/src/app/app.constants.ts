@@ -23,13 +23,13 @@ export class Configuration {
 
             this.apiServer = 'http://192.168.1.19/budgetapi/api/';
             this.idServer = 'http://192.168.1.19/budgetidsrv/';
-            this.returnUrl = 'http://192.168.1.19/napims';
-            this.apiUploadFolder = this.apiServer + '/uploads';
+            this.returnUrl = 'http://192.168.1.19/napims/';
+            this.apiUploadFolder = this.apiServer + 'uploads';
         } else {
             this.apiServer = 'http://localhost:5502/api/';
             this.idServer = 'http://localhost:5000/';
             this.returnUrl = 'http://localhost:4200/';
-            this.apiUploadFolder = this.apiServer + '/uploads';
+            this.apiUploadFolder = this.apiServer + 'uploads';
         }
         console.log(environment.production);
         console.log(this.apiServer)

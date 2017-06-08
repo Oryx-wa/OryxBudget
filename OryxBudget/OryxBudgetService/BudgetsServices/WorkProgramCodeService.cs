@@ -26,7 +26,7 @@ namespace OryxBudgetService.BudgetsServices
 
         public IEnumerable<WorkProgramCode> GetByBudgetCode(string code)
         {
-            return this.GetAll().Where(info => info.BudgetCodeId == code);
+            return this.GetAll().Where(info => info.BudgetCode == code);
         }
 
         public IEnumerable<WorkProgramCode> GetAllProgramCodes() {

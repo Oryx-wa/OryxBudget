@@ -43,7 +43,7 @@ export class CommentsComponent implements OnInit, OnChanges {
 
   send(data: any) {
     const comment: LineComments = _.assign({}, {
-      id: '', budgetId: '', userType: this.userType,
+      id: '', budgetId: '', userType: (this.napims === true) ? 'napims' : 'operator',
       code: '', comment: data.message, commentStatus: '', userName: '',
       commentType: '', createDate: new Date()
     });
@@ -52,7 +52,7 @@ export class CommentsComponent implements OnInit, OnChanges {
     newComments.push(comment);
     this.form.reset();
     this.update.emit(data.message);
-    // console.log(comment);
+    console.log(comment);
 
   }
 

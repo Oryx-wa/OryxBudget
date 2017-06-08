@@ -135,7 +135,7 @@ namespace OryxBudgetWeb
                         "http://localhost:3000/",
                         "http://localhost:4200/",
                         "http://10.211.55.2:4200/",
-                        "http://192.168.1.19/napims"
+                        "http://192.168.1.19/napims/"
 
 
                     },
