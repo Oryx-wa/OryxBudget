@@ -1,0 +1,59 @@
+<div class="row">
+  <div class="card oryx-card-radius col l8">
+    <div class="card-content oryx-card-header ">
+        <span class="title-span">{{titled}}</span>
+      </div>
+    <form materialize materialize="updateTextFields" [formGroup]="form" (ngSubmit)="save(form.value)">
+      <div class="card-content">
+        <div class="row">
+          <div class="input-field col l4">
+            <input placeholder="" type="text" class="validate" formControlName="code" name="code">
+            <label for="code" data-error="Please enter a numeric value">Code</label>
+          </div>
+          <div class="input-field col l4">
+            <input placeholder="" type="text" class="validate" formControlName="description" name="description">
+            <label for="description" data-error="Please enter a numeric value">Description</label>
+          </div>
+          <div class="input-field col l4">
+            <input placeholder="" type="text" class="validate" formControlName="consessionId" name="consessionId">
+            <label for="consessionId" data-error="Please enter a numeric value">Consession</label>
+          </div>
+        </div>
+        <div class="row">
+          <div class="input-field col l4">
+            <input placeholder="" type="text" class="validate" formControlName="dimension" name="dimension">
+            <label for="dimension" data-error="Please enter a numeric value">Dimension</label>
+          </div>
+          <div class="input-field col l4">
+            <input placeholder="" type="text" class="validate" formControlName="area" name="area">
+            <label for="area" data-error="Please enter a numeric value">Area</label>
+          </div>
+          <div class="input-field col l4">
+            <input placeholder="" type="text" class="validate" formControlName="plannedVolume" name="plannedVolume">
+            <label for="plannedVolume" data-error="Please enter a numeric value">Planned Volume</label>
+          </div>
+        </div>
+        <div class="row">
+          <div class="input-field col l4">
+            <input placeholder="" type="text" class="validate" formControlName="ratePerVolume" name="ratePerVolume">
+            <label for="ratePerVolume" data-error="Please enter a numeric value">Rate Per Volume</label>
+          </div>
+          <div class="input-field col l4">
+            <input placeholder="" type="text" class="validate" formControlName="totalCost" name="totalCost">
+            <label for="totalCost" data-error="Please enter a numeric value">Total Cost</label>
+          </div>
+          <div class="input-field col l4">
+            <input placeholder="" type="text" class="validate" formControlName="remark" name="remark">
+            <label for="remark" data-error="Please enter a numeric value">Remark</label>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col s4">
+            <button [disabled]="form.invalid || form.pristine" class="wave-effect wave-light btn" type="submit" name="action">Save</button>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>

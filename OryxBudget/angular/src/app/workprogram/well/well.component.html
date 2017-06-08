@@ -1,0 +1,71 @@
+<div class="row">
+  <div class="card oryx-card-radius col l8">
+    <div class="card-content oryx-card-header ">
+        <span class="title-span">{{titled}}</span>
+      </div>
+    <form materialize materialize="updateTextFields" [formGroup]="form" (ngSubmit)="save(form.value)">
+      <div class="card-content">
+        <div class="row">
+          <div class="input-field col l4">
+            <input placeholder="" type="text" class="validate" formControlName="code" name="code">
+            <label for="code" data-error="Please enter a numeric value">Code</label>
+          </div>
+          <div class="input-field col l4">
+            <input placeholder="" type="text" class="validate" formControlName="description" name="description">
+            <label for="description" data-error="Please enter a numeric value">Description</label>
+          </div>
+          <div class="input-field col l4">
+            <input placeholder="" type="text" class="validate" formControlName="fieldId" name="fieldId">
+            <label for="fieldId" data-error="Please enter a numeric value">Field</label>
+          </div>
+        </div>
+        <div class="row">
+          <div class="input-field col l4">
+            <input placeholder="" type="text" class="validate" formControlName="location" name="location">
+            <label for="location" data-error="Please enter a numeric value">Location</label>
+          </div>
+          <div class="input-field col l4">
+            <input placeholder="" type="text" class="validate" formControlName="terrain" name="terrain">
+            <label for="terrain" data-error="Please enter a numeric value">Terrain</label>
+          </div>
+          <div class="input-field col l4">
+            <input placeholder="" type="text" class="validate" formControlName="rigRate" name="rigRate">
+            <label for="rigRate" data-error="Please enter a numeric value">Rig Rate</label>
+          </div>
+          
+        </div>
+        <div class="row">
+             <div class="input-field col l4">
+            <input placeholder="" type="text" class="validate" formControlName="totalCost" name="totalCost">
+            <label for="totalCost" data-error="Please enter a numeric value">Total Cost</label>
+          </div>
+          <div class="input-field col l4">
+           <input placeholder="" id="m_efDate" materialize="pickadate" 
+        [materializeParams]="[{selectMonths: true, selectYears: 45, format:'dd/mm/yyyy'} ]"
+          type="text" class="datepicker" formControlName="spudDate" name="spudDate">
+          <label for="spudDate" data-error="Please enter a valid date" class="active">Spud data-error</label>
+          </div>
+          <div class="input-field col l4">
+           <input placeholder="" id="m_efDate" materialize="pickadate" 
+        [materializeParams]="[{selectMonths: true, selectYears: 45, format:'dd/mm/yyyy'} ]"
+          type="text" class="datepicker" formControlName="endDate" name="endDate">
+          <label for="endDate" data-error="Please enter a valid date" class="active">End Date</label>
+          </div>       
+       
+        </div>
+        <div class="row">
+            <div class="input-field col l6">
+            <input placeholder="" type="text" class="validate" formControlName="supportService" name="supportService">
+            <label for="supportService" data-error="Please enter a numeric value">Support Service</label>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col s4">
+            <button [disabled]="form.invalid || form.pristine" class="wave-effect wave-light btn" type="submit" name="action">Save</button>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>

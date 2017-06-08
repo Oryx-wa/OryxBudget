@@ -17,6 +17,7 @@ import { Configuration } from './app.constants';
 // import { Routes, RouterModule, PreloadAllModules } from '@angular/router';
 import { AppRoutingModule } from './app.routing.module';
 import { OperatorsModule } from './operators/operators.module';
+import { WorkprogramModule } from './workprogram/workprogram.module';
 
 
 @NgModule({
@@ -36,7 +37,8 @@ import { OperatorsModule } from './operators/operators.module';
     BudgetModule,
     AppRoutingModule,
     AgGridModule,
-    OperatorsModule
+    OperatorsModule,
+WorkprogramModule
 
 
   ],
