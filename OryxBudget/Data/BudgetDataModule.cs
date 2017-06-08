@@ -5,6 +5,7 @@ using Data.Infrastructure;
 using Data.Repositories.BudgetsRepositories;
 
 using Data.Repositories.OperatorsRepositories;
+using Data.Repositories.BudgetsRepositories.WorkPrograms;
 
 namespace Data
 {
@@ -43,8 +44,14 @@ namespace Data
             builder.RegisterType<LineCommentRepository>();
             builder.RegisterType<AttachmentRepository>();
             builder.RegisterType<BudgetLineStatusHistoryRepository>();
-
-
+            builder.RegisterType<WellRepository>();
+            builder.RegisterType<OilBlockRepository>();
+            builder.RegisterType<FieldRepository>();
+            builder.RegisterType<DrillingCostRepository>();
+            builder.RegisterType<DrillingCostTypeRepository>();
+            builder.RegisterType<ExplorationWorkProgramRepository>();
+            builder.RegisterType<WorkProgramTypeRepository>();
+            builder.RegisterType<WorkProgramCodeRepository>();
         }
     }
 }

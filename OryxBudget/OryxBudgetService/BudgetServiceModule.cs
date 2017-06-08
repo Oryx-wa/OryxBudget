@@ -4,6 +4,7 @@ using Data.Repositories;
 using Data.Infrastructure;
 using OryxBudgetService.BudgetsServices;
 using OryxBudgetService.Utilities.SignalRHubs;
+using OryxBudgetService.OperatorsServices;
 
 namespace OryxBudgetService
 {
@@ -42,8 +43,9 @@ namespace OryxBudgetService
             builder.RegisterType<CategoryService>();
             builder.RegisterType<BudgetCodeService>();
             //builder.RegisterType<AttachmentService>();
-
-
+            builder.RegisterType<FieldService>();
+            builder.RegisterType<WellService>();
+            builder.RegisterType<WorkProgramService>();
         }
     }
 }
