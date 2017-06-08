@@ -30,15 +30,15 @@ namespace Entities.Budgets.WorkPrograms
         public string Remarks { get; set; }
 
         [Key]
-        public Guid Id { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-        public DateTime CreateDate { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-        public DateTime UpdateDate { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        public Guid Id { get; set; }
+        public DateTime CreateDate { get; set; }
+        public DateTime UpdateDate { get; set; }
 
         [MaxLength(1)]
-        public string Status { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        public string Status { get; set; }
 
         [MaxLength(50)]
-        public string UserSign { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        public string UserSign { get; set; }
     }
 
     public class ExplorationWorkProgramLog : IEntityBase<Guid>, ILogEntityBase<Guid>
