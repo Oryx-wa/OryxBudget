@@ -26,9 +26,9 @@ namespace Entities.Budgets
 
         public string Description { get; set; }
 
-        public string BudgetCodeId { get; set; }
+        public string BudgetCode { get; set; }
 
-        public virtual BudgetCode BudgetCode { get; set; } 
+       
     }
 
     public class WorkProgramCodeLog : IEntityBase<Guid>, ILogEntityBase<Guid>
@@ -53,8 +53,8 @@ namespace Entities.Budgets
 
         public string Description { get; set; }
 
-        public string BudgetCodeId { get; set; }
+        public string BudgetCode { get; set; }
 
-        public virtual BudgetCode BudgetCode { get; set; }
+       
     }
 }
