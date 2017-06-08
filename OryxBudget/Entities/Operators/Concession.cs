@@ -6,7 +6,7 @@ using System.Text;
 
 namespace Entities.Operators
 {
-    public class OilBlock : IEntityBase<Guid>
+    public class Concession : IEntityBase<Guid>
     {
         [Key]
         public Guid Id { get; set; }
@@ -25,9 +25,11 @@ namespace Entities.Operators
         public string Description { get; set; }
 
         public Guid OperatorId { get; set; }
+
+        public ICollection<Field> Fields { get; set; }
     }
 
-    public class OilBlockLog : IEntityBase<Guid>, ILogEntityBase<Guid>
+    public class ConcessionLog : IEntityBase<Guid>, ILogEntityBase<Guid>
     {
         public int LogInstance { get; set; }
         [Key]

@@ -1,4 +1,5 @@
-﻿using Entities.Common;
+﻿using Entities.Budgets;
+using Entities.Common;
 using OryxDomainServices;
 using System;
 using System.Collections.Generic;
@@ -30,7 +31,7 @@ namespace Entities.Operators
         [MaxLength(50), Required]
         public Guid OperatorId { get; set; }
 
-        public Commitee Commitee { get; set; }
+        public BudgetStatus Commitee { get; set; }
     }
 
     public class ContactPersonLog : IMasterDataBase<Guid>, ILogMasterDataBase<Guid>
@@ -56,6 +57,6 @@ namespace Entities.Operators
         [MaxLength(50), Required]
         public string OperatorId { get; set; }
 
-        public Commitee Commitee { get; set; }
+        public BudgetStatus Commitee { get; set; }
     }
 }

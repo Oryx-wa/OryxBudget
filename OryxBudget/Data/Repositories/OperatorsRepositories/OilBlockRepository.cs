@@ -8,7 +8,7 @@ using System.Text;
 
 namespace Data.Repositories.OperatorsRepositories
 {
-    public class OilBlockRepository : BaseLogBudgetRepository<OilBlock, OilBlockLog, Guid>, ILogRepository<OilBlock, Guid>
+    public class OilBlockRepository : BaseLogBudgetRepository<Concession, ConcessionLog, Guid>, ILogRepository<Concession, Guid>
     {
         public OilBlockRepository(IDbFactory dbFactory, IUserResolverService UserResolverService) : base(dbFactory, UserResolverService)
         {

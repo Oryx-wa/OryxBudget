@@ -7,6 +7,7 @@ using Entities.Budgets;
 using Data.Configurations;
 using Entities.Operators;
 using Entities.Napims;
+using Entities.Budgets.WorkPrograms;
 
 namespace Data
 {
@@ -57,12 +58,29 @@ namespace Data
         public DbSet<NapimsContact> NapimsContacts { get; set; }
         public DbSet<NapimsContactLog> NapimsContactLogs { get; set; }
 
-        public DbSet<OilBlock> OilBlocks { get; set; }
-        public DbSet<OilBlockLog> OilBlockLogs { get; set; }
+        public DbSet<Concession> OilBlocks { get; set; }
+        public DbSet<ConcessionLog> OilBlockLogs { get; set; }
 
         public DbSet<WorkProgramCode> WorkProgramCodes { get; set; }
         public DbSet<WorkProgramCodeLog> WorkProgramCodeLogs { get; set; }
 
+        public DbSet<DrillingCostType> DrillingCostTypes { get; set; }
+        public DbSet<DrillingCostTypeLog> DrillingCostTypeLogs { get; set; }
+
+        public DbSet<DrillingCost> DrillingCosts { get; set; }
+        public DbSet<DrillingCostLog> DrillingCostLogs { get; set; }
+
+        public DbSet<ExplorationWorkProgram> ExplorationWorkPrograms { get; set; }
+        public DbSet<ExplorationWorkProgramLog> ExplorationWorkProgramLogs { get; set; }
+
+        public DbSet<WorkProgramType> WorkProgramTypes { get; set; }
+        public DbSet<WorkProgramTypeLog> WorkProgramTypeLogs { get; set; }
+        
+        public DbSet<Field> Fields { get; set; }
+        public DbSet<FieldLog> FieldLogs { get; set; }
+
+        public DbSet<Well> Wells { get; set; }
+        public DbSet<WellLog> WellLogs { get; set; }
 
         #endregion
 

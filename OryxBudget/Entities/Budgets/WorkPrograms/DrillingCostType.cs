@@ -8,8 +8,17 @@ using System.Text;
 
 namespace Entities.Budgets.WorkPrograms
 {
-    public class WorkProgramType : IEntityBase<Guid>
+    public class DrillingCostType : IEntityBase<Guid>
     {
+        [Key]
+        public Guid Id { get; set; }
+        public DateTime CreateDate { get; set; }
+        public DateTime UpdateDate { get; set; }
+        [MaxLength(1)]
+        public string Status { get; set; }
+        [MaxLength(50)]
+        public string UserSign { get; set; }
+
         [Required, MaxLength(50)]
         public string Code { get; set; }
 
@@ -17,26 +26,17 @@ namespace Entities.Budgets.WorkPrograms
         public string Description { get; set; }
 
         [NotMapped]
-        public WorkProgramTypeEnum Type { get; set; }
+        public DrillCostTypeEnum Type { get; set; }
 
         [MaxLength(50), Column("Type")]
         public string TypeString
         {
             get { return Type.ToString(); }
-            private set { Type = value.ParseEnum<WorkProgramTypeEnum>(); }
+            private set { Type = value.ParseEnum<DrillCostTypeEnum>(); }
         }
-
-        [Key]
-        public Guid Id { get; set; }
-        public DateTime CreateDate { get; set; }
-        public DateTime UpdateDate { get; set; }
-        [MaxLength(1)]
-        public string Status { get; set; }
-        [MaxLength(100)]
-        public string UserSign { get; set; }
     }
 
-    public class WorkProgramTypeLog : IEntityBase<Guid>, ILogEntityBase<Guid>
+    public class DrillingCostTypeLog : IEntityBase<Guid>, ILogEntityBase<Guid>
     {
         public int LogInstance { get; set; }
         [Key]
@@ -45,7 +45,7 @@ namespace Entities.Budgets.WorkPrograms
         public DateTime UpdateDate { get; set; }
         [MaxLength(1)]
         public string Status { get; set; }
-        [MaxLength(100)]
+        [MaxLength(50)]
         public string UserSign { get; set; }
 
         [Required, MaxLength(50)]
@@ -55,21 +55,19 @@ namespace Entities.Budgets.WorkPrograms
         public string Description { get; set; }
 
         [NotMapped]
-        public WorkProgramTypeEnum Type { get; set; }
+        public DrillCostTypeEnum Type { get; set; }
 
         [MaxLength(50), Column("Type")]
         public string TypeString
         {
             get { return Type.ToString(); }
-            private set { Type = value.ParseEnum<WorkProgramTypeEnum>(); }
+            private set { Type = value.ParseEnum<DrillCostTypeEnum>(); }
         }
     }
 
-    public enum WorkProgramTypeEnum
+    public enum DrillCostTypeEnum
     {
-        Exploration = 1,
-        MMD = 2,
-        Facility = 3,
-        Product = 4
+        Tangible = 1,
+        Intangible = 2
     }
 }

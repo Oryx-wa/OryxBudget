@@ -53,10 +53,10 @@ namespace Data.Configurations
                 c.LogInstance
             });
 
-            builder.Entity<OilBlock>().HasIndex(m => new { m.Id }).IsUnique();
-            builder.Entity<OilBlock>().Property(m => m.CreateDate).HasDefaultValueSql("getDate()");
-            builder.Entity<OilBlock>().Property(m => m.UpdateDate).HasDefaultValueSql("getDate()");
-            builder.Entity<OilBlockLog>().HasKey(c => new
+            builder.Entity<Concession>().HasIndex(m => new { m.Id }).IsUnique();
+            builder.Entity<Concession>().Property(m => m.CreateDate).HasDefaultValueSql("getDate()");
+            builder.Entity<Concession>().Property(m => m.UpdateDate).HasDefaultValueSql("getDate()");
+            builder.Entity<ConcessionLog>().HasKey(c => new
             {
                 c.Id,
                 c.LogInstance

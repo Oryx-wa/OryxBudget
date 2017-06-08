@@ -6,24 +6,28 @@ using System.Text;
 
 namespace Entities.Budgets.WorkPrograms
 {
-    public class ExplorationWorkProgram : IEntityBase<Guid>
+    public class DrillingCost : IEntityBase<Guid>
     {
         [Key]
         public Guid Id { get; set; }
         public DateTime CreateDate { get; set; }
         public DateTime UpdateDate { get; set; }
-
         [MaxLength(1)]
         public string Status { get; set; }
-
         [MaxLength(50)]
         public string UserSign { get; set; }
 
+        [MaxLength(50)]
+        public string TypeId { get; set; }
+
+        [MaxLength(50)]
+        public string WellId { get; set; }
+
+        [MaxLength(50)]
         public string BudgetCode { get; set; }
 
-        public Guid WorkProgramTypeId { get; set; }
-
-        public Guid BudgetLineId { get; set; }
+        [MaxLength(50)]
+        public string BudgetLineId { get; set; }
 
         public decimal BudgetAmountLC { get; set; }
 
@@ -35,7 +39,7 @@ namespace Entities.Budgets.WorkPrograms
         public string Remarks { get; set; }
     }
 
-    public class ExplorationWorkProgramLog : IEntityBase<Guid>, ILogEntityBase<Guid>
+    public class DrillingCostLog : IEntityBase<Guid>, ILogEntityBase<Guid>
     {
         public int LogInstance { get; set; }
         [Key]
@@ -44,15 +48,20 @@ namespace Entities.Budgets.WorkPrograms
         public DateTime UpdateDate { get; set; }
         [MaxLength(1)]
         public string Status { get; set; }
-        [Required]
         [MaxLength(50)]
         public string UserSign { get; set; }
 
+        [MaxLength(50)]
+        public string TypeId { get; set; }
+
+        [MaxLength(50)]
+        public string WellId { get; set; }
+
+        [MaxLength(50)]
         public string BudgetCode { get; set; }
 
-        public Guid WorkProgramTypeId { get; set; }
-
-        public Guid BudgetLineId { get; set; }
+        [MaxLength(50)]
+        public string BudgetLineId { get; set; }
 
         public decimal BudgetAmountLC { get; set; }
 
