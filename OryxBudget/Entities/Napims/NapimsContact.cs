@@ -1,4 +1,5 @@
-﻿using Entities.Common;
+﻿using Entities.Budgets;
+using Entities.Common;
 using OryxDomainServices;
 using System;
 using System.Collections.Generic;
@@ -29,7 +30,7 @@ namespace Entities.Napims
         public Guid UserId { get; set; }
 
         [Required]
-        public Commitee Committee { get; set; }
+        public BudgetStatus Committee { get; set; }
 
     }
 
@@ -57,6 +58,6 @@ namespace Entities.Napims
         public Guid UserId { get; set; }
 
         [Required]
-        public Commitee Committee { get; set; }
+        public BudgetStatus Committee { get; set; }
     }
 }
