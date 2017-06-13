@@ -82,6 +82,23 @@ namespace OryxBudgetWeb
                 if (user.SubCom)
                 {
                     claims.Add(new System.Security.Claims.Claim(JwtClaimTypes.Role, "SubCom"));
+                    switch (user.Department)
+                    {
+                        case "Exploration":
+                            claims.Add(new System.Security.Claims.Claim(JwtClaimTypes.Role, "Exploration"));
+                            break;
+                        case "Production":
+                            claims.Add(new System.Security.Claims.Claim(JwtClaimTypes.Role, "Production"));
+                            break;
+                        case "G&A":
+                            claims.Add(new System.Security.Claims.Claim(JwtClaimTypes.Role, "G&A"));
+                            break;
+                        case "Facilities":
+                            claims.Add(new System.Security.Claims.Claim(JwtClaimTypes.Role, "Facilities"));
+                            break;
+                        default:
+                            break;
+                    }
                 }
 
                 if (user.Final)

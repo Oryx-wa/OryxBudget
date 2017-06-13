@@ -36,6 +36,7 @@ export class OperatorViewComponent implements OnInit, OnChanges {
   public showTecCom$: BehaviorSubject<boolean> = new BehaviorSubject(false);
   public showMalCom$: BehaviorSubject<boolean> = new BehaviorSubject(false);
   public showFinal$: BehaviorSubject<boolean> = new BehaviorSubject(false);
+  public showLevel: number;
   public data: any;
   public uploadUrl = 'Budget/UploadBudget';
   public uploadTitle = '';
@@ -45,6 +46,7 @@ export class OperatorViewComponent implements OnInit, OnChanges {
   public gridOptions: GridOptions;
   public loading$: BehaviorSubject<boolean> = new BehaviorSubject(false);
   public saving$: BehaviorSubject<boolean> = new BehaviorSubject(false);
+  public dept = 'All';
 
   showDetail = false;
 
@@ -55,7 +57,7 @@ export class OperatorViewComponent implements OnInit, OnChanges {
     private _service: NotificationsService) {
     this.gridOptions = <GridOptions>{};
     this.createColumnDefs();
-
+    this.displayMode = this.displayModeEnum.Card;
   }
 
   ngOnInit() {
@@ -63,6 +65,7 @@ export class OperatorViewComponent implements OnInit, OnChanges {
       this.name = this.securityService.name;
       this.operatorId = this.securityService.operatorId;
       this.roles = this.securityService.roles;
+      this.displayMode = this.displayModeEnum.Card;
       this.getOperator();
       // console.log(this.roles)
       /* const obj = Rx.Observable.timer(1000, 10000);
@@ -74,15 +77,28 @@ export class OperatorViewComponent implements OnInit, OnChanges {
         switch (role) {
           case 'SubCom':
             this.showSubCom$.next(true);
+            this.showLevel = 1;
             break;
           case 'TecCom':
             this.showTecCom$.next(true);
+            this.showLevel = 2;
             break;
           case 'MalCom':
             this.showMalCom$.next(true);
+            this.showLevel = 3;
             break;
           case 'Final':
             this.showFinal$.next(true);
+            this.showLevel = 3;
+            break;
+          case 'Production':
+            this.dept = 'Production';
+            break;
+          case 'Exploration':
+            this.dept = 'Exploration';
+            break;
+          case 'Facilities':
+            this.dept = 'Facilities';
             break;
           default:
             break;
@@ -354,6 +370,8 @@ export class OperatorViewComponent implements OnInit, OnChanges {
     const url = this.securityService.getUrl('Budget/GetBudgetDetails');
     const params1: URLSearchParams = new URLSearchParams();
     params1.append('id', id);
+    params1.append('department', this.dept);
+
 
     this.lines$ = this._http.get(url, {
       headers: this.securityService.getHeaders(),
@@ -415,6 +433,18 @@ export class OperatorViewComponent implements OnInit, OnChanges {
     // this.gridOptions.api.sizeColumnsToFit();
 
 
+  }
+
+  public showExploration(type: string) {
+    switch (type) {
+      case 'AFE':
+        break;
+      case 'Exploration Details':
+        this.changeDisplayMode(this.displayModeEnum.Option3);
+        break;
+      default:
+        break;
+    }
   }
 
 }

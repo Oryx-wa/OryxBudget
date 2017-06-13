@@ -230,7 +230,7 @@ export class SecurityService {
             this.name = dataIdToken.name;
             this.roles = dataIdToken.role;
             this.operatorId = dataIdToken.id;
-            // console.log(dataIdToken);
+            console.log(dataIdToken);
             //// console.log(accessIdToken);
 
             this.SetAuthorizationData(token, id_token);

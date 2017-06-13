@@ -67,44 +67,44 @@ Group by f.OperatorId, f.Description, f.id";
 	SUM(a.TecComBudgetFC) TecComBudgetFC, SUM(a.TecComBudgetLC) TecComBudgetLC, SUM(a.TecComBudgetUSD) TecComBudgetUSD,
 	SUM(a.MalComBudgetFC) MalComBudgetFC, SUM(a.MalComBudgetLC) MalComBudgetLC, SUM(a.MalComBudgetUSD) MalComBudgetUSD,
 	SUM(a.FinalBudgetFC) FinalBudgetFC, SUM(a.FinalBudgetLC) FinalBudgetLC, SUM(a.FinalBudgetUSD) FinalBudgetUSD, 
-	f.OperatorId,  f.Id BudgetId, g.Name OperatorName, h.Code, h.Description, h.FatherNum, h.Level
+	f.OperatorId,  f.Id BudgetId, g.Name OperatorName, h.Code, h.Description, h.FatherNum, h.Level, h.Type
 from Budgets f join BudgetLines a 
 	on f.id = a.BudgetId
 	join Operators g on f.OperatorId = g.id
 	join BudgetCodes h on a.Code = h.Code
 where f.id = '{id}'
-Group by f.OperatorId,  f.id,h.Code, h.Description, h.FatherNum, h.Level, g.Name
+Group by f.OperatorId,  f.id,h.Code, h.Description, h.FatherNum, h.Level, g.Name, h.Type
 union all
 Select SUM(a.OpBudgetFC) OpBudgetFC, SUM(a.OpBudgetUSD) OpBudgetUSD , SUM(a.OpBudgetLC) OpBudgetLC,
 	SUM(a.SubComBudgetFC) SubComBudgetFC, SUM(a.SubComBudgetLC) SubComBudgetLC, SUM(a.SubComBudgetUSD) SubComBudgetUSD, 
 	SUM(a.TecComBudgetFC) TecComBudgetFC, SUM(a.TecComBudgetLC) TecComBudgetLC, SUM(a.TecComBudgetUSD) TecComBudgetUSD,
 	SUM(a.MalComBudgetFC) MalComBudgetFC, SUM(a.MalComBudgetLC) MalComBudgetLC, SUM(a.MalComBudgetUSD) MalComBudgetUSD,
 	SUM(a.FinalBudgetFC) FinalBudgetFC, SUM(a.FinalBudgetLC) FinalBudgetLC, SUM(a.FinalBudgetUSD) FinalBudgetUSD, 
-	f.OperatorId,  f.Id, g.Name OperatorName, h.level2, h.Description, h.FatherNum, h.Level
+	f.OperatorId,  f.Id, g.Name OperatorName, h.level2, h.Description, h.FatherNum, h.Level, h.Type
 from Budgets f join BudgetLines a 
 	on f.id = a.BudgetId
 	join Operators g on f.OperatorId = g.id
-	join (Select a.Code,  b.Description, b.Level, b.code level2, b.FatherNum 
+	join (Select a.Code,  b.Description, b.Level, b.code level2, b.FatherNum, b.Type
 from BudgetCodes a join BudgetCodes b
 	on a.FatherNum = b.Code
 where a.Level = '3') h on a.Code = h.Code
 where f.id = '{id}'
-Group by f.OperatorId,  f.id,h.level2, h.Description, h.FatherNum, h.Level, g.Name
+Group by f.OperatorId,  f.id,h.level2, h.Description, h.FatherNum, h.Level, g.Name, h.Type
 union all
 Select SUM(a.OpBudgetFC) OpBudgetFC, SUM(a.OpBudgetUSD) OpBudgetUSD , SUM(a.OpBudgetLC) OpBudgetLC,
 	SUM(a.SubComBudgetFC) SubComBudgetFC, SUM(a.SubComBudgetLC) SubComBudgetLC, SUM(a.SubComBudgetUSD) SubComBudgetUSD, 
 	SUM(a.TecComBudgetFC) TecComBudgetFC, SUM(a.TecComBudgetLC) TecComBudgetLC, SUM(a.TecComBudgetUSD) TecComBudgetUSD,
 	SUM(a.MalComBudgetFC) MalComBudgetFC, SUM(a.MalComBudgetLC) MalComBudgetLC, SUM(a.MalComBudgetUSD) MalComBudgetUSD,
 	SUM(a.FinalBudgetFC) FinalBudgetFC, SUM(a.FinalBudgetLC) FinalBudgetLC, SUM(a.FinalBudgetUSD) FinalBudgetUSD, 
-	f.OperatorId,  f.Id, g.Name OperatorName, h.level2, h.Description, h.FatherNum, h.Level
+	f.OperatorId,  f.Id, g.Name OperatorName, h.level2, h.Description, h.FatherNum, h.Level, -1
 from Budgets f join BudgetLines a 
 	on f.id = a.BudgetId
 	join Operators g on f.OperatorId = g.id
-	join (Select a.Code,  b.Description, b.Level, b.code level2, b.FatherNum 
+	join (Select a.Code,  b.Description, b.Level, b.code level2, b.FatherNum, b.Type
 from BudgetCodes a join BudgetCodes b
 	on a.level1 = b.Code) h on a.Code = h.Code
 where f.id = '{id}'
-Group by f.OperatorId,  f.id,h.level2, h.Description, h.FatherNum, h.Level, g.Name
+Group by f.OperatorId,  f.id,h.level2, h.Description, h.FatherNum, h.Level, g.Name, h.Type
 Order by 19";
 
             return RDFacadeExtensions.GetModelFromQuery<BudgetCodeView>(this.dataContext.Database, sql);

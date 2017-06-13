@@ -67,9 +67,13 @@ namespace Entities.Budgets.WorkPrograms
 
     public enum WorkProgramTypeEnum
     {
+        Header = -1,
         Exploration = 1,
-        MMD = 2,
-        Facility = 3,
-        Product = 4
+        Production = 2,
+        GA = 3,
+        MMD = 4,
+        Facilities = 5,
+        HSSE = 6,
+        Community = 7
     }
 }

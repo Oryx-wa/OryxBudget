@@ -20,7 +20,10 @@ namespace OryxBudgetWeb.Models
         public bool TecCom { get; set; }
         public bool MalCom { get; set; }
         public bool Final { get; set; }
+        public string Department { get; set; }
 
 
     }
+
+    
 }

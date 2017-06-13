@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Entities.Budgets.WorkPrograms;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Text;
@@ -32,6 +33,7 @@ namespace Entities.Budgets
         
         public Guid BudgetId { get; set; }
         public BudgetStatus BudgetStatus { get; set; }
+        public WorkProgramTypeEnum Type { get; set; }
 
 
 

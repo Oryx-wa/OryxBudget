@@ -14,6 +14,7 @@ using Microsoft.AspNetCore.SignalR;
 using Microsoft.AspNetCore.SignalR.Infrastructure;
 using OryxBudgetService.Utilities.SignalRHubs;
 using OryxSecurity.Services;
+using Entities.Budgets.WorkPrograms;
 
 namespace OryxBudgetService.BudgetsServices
 {
@@ -216,10 +217,20 @@ namespace OryxBudgetService.BudgetsServices
 
         }
 
-        public IEnumerable<BudgetCodeView> GetBudgetDetails(string id)
+        public IEnumerable<BudgetCodeView> GetBudgetDetails(string id, string department)
         {
 
-            return _repository.GetBudgetLines(id);
+
+            if (department == "All")
+            {
+                return _repository.GetBudgetLines(id); 
+            }
+            else
+            {
+                Enum.TryParse(department, out WorkProgramTypeEnum  type);
+
+                return _repository.GetBudgetLines(id).Where(b => b.Type == type || b.Type == WorkProgramTypeEnum.Header);
+            }
 
         }
 

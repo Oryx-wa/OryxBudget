@@ -6,13 +6,15 @@ import { SecurityService } from './../login/security.service';
 import { OperatorViewComponent } from './operator-view.component';
 import { UploadComponent } from './upload.component';
 import { CurrencyComponent } from './../shared/renderers/currency.component';
-import { BudgetModule } from './../budget/budget.module'
+import { BudgetModule } from './../budget/budget.module';
+import {WorkprogramModule} from './../workprogram/workprogram.module'
 @NgModule({
   imports: [
     CommonModule,
     SharedModule,
     BudgetModule,
-    AgGridModule.withComponents(CurrencyComponent)
+    AgGridModule.withComponents(CurrencyComponent),
+    WorkprogramModule
   ],
   declarations: [OperatorViewComponent, UploadComponent, ],
   exports: [

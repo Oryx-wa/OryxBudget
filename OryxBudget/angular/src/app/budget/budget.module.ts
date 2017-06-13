@@ -14,6 +14,7 @@ import { TextComponent } from './../shared/renderers/text.component';
 import { ChildMessageComponent } from './../shared/renderers/child-message.component';
 import { StyledComponent } from './../shared/renderers/styled-component';
 import { DialogComponent } from './../shared/dialog/dialog.component';
+import {WorkprogramModule} from './../workprogram/workprogram.module'
 @NgModule({
   imports: [
     CommonModule,
@@ -26,7 +27,8 @@ import { DialogComponent } from './../shared/dialog/dialog.component';
       TextComponent,
       ChildMessageComponent,
       StyledComponent
-    ])
+    ]),
+    WorkprogramModule
   ],
 
   declarations: [OperatorDetailsComponent, BudgetInitialisationComponent, LineDetailsComponent,

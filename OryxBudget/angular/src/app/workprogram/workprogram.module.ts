@@ -19,6 +19,10 @@ import { FieldComponent } from './field/field.component';
 
   ],
   declarations: [WorkprogramComponent, WorkprogramTypeComponent, DrillingcostTypeComponent,
-    WellComponent, FieldComponent]
+    WellComponent, FieldComponent],
+  exports: [WorkprogramComponent, WorkprogramTypeComponent, DrillingcostTypeComponent,
+    WellComponent, FieldComponent
+  ]
+  
 })
 export class WorkprogramModule { }

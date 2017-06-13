@@ -5,7 +5,7 @@ import { NotificationsService } from 'angular2-notifications';
 import 'rxjs/add/operator/mergeMap';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/catch';
-
+import { DisplayModeEnum } from './../shared/shared-enum.enum';
 import { GridOptions } from 'ag-grid/main';
 import { Budgets, Operators, BudgetLines, LineComments, LineStatus } from './../models';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
@@ -34,12 +34,16 @@ export class OperatorDetailsComponent implements OnInit {
   public showTecCom$: BehaviorSubject<boolean> = new BehaviorSubject(false);
   public showMalCom$: BehaviorSubject<boolean> = new BehaviorSubject(false);
   public showFinal$: BehaviorSubject<boolean> = new BehaviorSubject(false);
+  public showLevel: number;
   private colWidth = 110;
   public budgetDesc = '';
   public roles: any[] = [];
   public loading$: BehaviorSubject<boolean> = new BehaviorSubject(false);
   public saving$: BehaviorSubject<boolean> = new BehaviorSubject(false);
   showDetail = false;
+  public dept = 'All';
+  public displayMode: DisplayModeEnum;
+  public displayModeEnum = DisplayModeEnum;
   constructor(
     private route: ActivatedRoute,
     private router: Router,
@@ -60,15 +64,28 @@ export class OperatorDetailsComponent implements OnInit {
       switch (role) {
         case 'SubCom':
           this.showSubCom$.next(true);
+          this.showLevel = 1;
           break;
         case 'TecCom':
           this.showTecCom$.next(true);
+          this.showLevel = 2;
           break;
         case 'MalCom':
           this.showMalCom$.next(true);
+          this.showLevel = 3;
           break;
         case 'Final':
           this.showFinal$.next(true);
+          this.showLevel = 3;
+          break;
+        case 'Production':
+          this.dept = 'Production';
+          break;
+        case 'Exploration':
+          this.dept = 'Exploration';
+          break;
+        case 'Facilities':
+          this.dept = 'Facilities';
           break;
         default:
           break;
@@ -118,14 +135,20 @@ export class OperatorDetailsComponent implements OnInit {
     const url = this.securityService.getUrl('Budget/GetBudgetDetails');
     const params1: URLSearchParams = new URLSearchParams();
     params1.append('id', id);
-
+    params1.append('department', this.dept);
     this.lines$ = this._http.get(url, {
       headers: this.securityService.getHeaders(),
       body: '',
       params: params1
     }).map(res => res.json());
     this.commentSaved$.next(true);
+    this.changeDisplayMode(DisplayModeEnum.Budget);
     this.lines$.subscribe(lines => this.loading$.next(false));
+  }
+
+  changeDisplayMode(mode: DisplayModeEnum) {
+    // // console.log(mode); 
+    this.displayMode = mode;
   }
 
   getComments(line: BudgetLines) {
@@ -148,7 +171,7 @@ export class OperatorDetailsComponent implements OnInit {
       params: params1
     }).map(res => res.json());
 
-   
+
 
 
     this.lineStatus$.subscribe(s => console.log(s));
@@ -182,7 +205,7 @@ export class OperatorDetailsComponent implements OnInit {
     // ));
   }
 
-   newComment(data: any) {
+  newComment(data: any) {
     const url = this.securityService.getUrl('Budget/AddComment');
     const params1: URLSearchParams = new URLSearchParams();
     // params1.append('budgetId', data.budgetId);
@@ -376,4 +399,15 @@ export class OperatorDetailsComponent implements OnInit {
 
   }
 
+  public showExploration(type: string) {
+    switch (type) {
+      case 'AFE':
+        break;
+      case 'Exploration Details':
+        this.changeDisplayMode(this.displayModeEnum.Option3);
+        break;
+      default:
+        break;
+    }
+  }
 }
