@@ -14,7 +14,10 @@ import { TextComponent } from './../shared/renderers/text.component';
 import { ChildMessageComponent } from './../shared/renderers/child-message.component';
 import { StyledComponent } from './../shared/renderers/styled-component';
 import { DialogComponent } from './../shared/dialog/dialog.component';
-import {WorkprogramModule} from './../workprogram/workprogram.module'
+import {WorkprogramModule} from './../workprogram/workprogram.module';
+import {ActualsModule} from './../actuals/actuals.module';
+
+
 @NgModule({
   imports: [
     CommonModule,
@@ -28,7 +31,8 @@ import {WorkprogramModule} from './../workprogram/workprogram.module'
       ChildMessageComponent,
       StyledComponent
     ]),
-    WorkprogramModule
+    WorkprogramModule,
+    ActualsModule
   ],
 
   declarations: [OperatorDetailsComponent, BudgetInitialisationComponent, LineDetailsComponent,

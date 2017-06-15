@@ -6,18 +6,13 @@
   </div>
 </nav>-->
 <div materialize class="container">
-  <div class="">   
-     <div class="row">
-                <ag-grid-angular style="width: 100%; height: 500px;" class="ag-material" 
-                  [gridOptions]="gridOptions" 
-                  [columnDefs]="columnDefs"
-                   groupHeaders 
-                  rowHeight="48" rowSelection="single" 
-                  (gridReady)="onReady($event)"
-                  >
-                </ag-grid-angular>
+  <div class="">
+    <div class="row">
+      <ag-grid-angular style="width: 100%; height: 500px;" class="ag-material" [gridOptions]="gridOptions" [columnDefs]="columnDefs"
+        groupHeaders rowHeight="48" rowSelection="single" (gridReady)="onReady($event)">
+      </ag-grid-angular>
     </div>
-    
+
 
 
   </div>
@@ -29,16 +24,18 @@
     <div class="col s10">
       <div class="row">
         <ul materialize="tabs" [materializeParams]="tabSelectionParams" class="tabs  z-depth-1  teal accent-4 ">
-          <li class="tab col s4">
+          <li class="tab col s3 l3">
+            <a (click)="changeDialog('actual')" class="white-text waves-effect waves-light"> Actuals </a>
+          </li>
+          <li class="tab col s3 l3">
             <a (click)="changeDialog('details')" class="white-text waves-effect waves-light"> Details </a>
           </li>
-            <li class="tab col s4">
+          <li class="tab col s3 l3">
             <a (click)="changeDialog('comments')" class="white-text waves-effect waves-light"> Comments </a>
           </li>
-          <li class="tab col s4">
+          <li class="tab col s3 l3">
             <a (click)="changeDialog('attachments')" class="white-text waves-effect waves-light"> Attachments </a>
           </li>
-        
         </ul>
       </div>
       <div class="row">
@@ -55,24 +52,30 @@
           <h6>{{line.description}}</h6>
         </div>
       </div>
+
       <div *ngIf="dialogMode === 'details'">
-        <app-line-comment [line]="line" [lineComments]="lineComments" [lineStatus] = "lineStatus"
-        [userType]="userType" (update)="updateComments($event)" (close)="showComment = !showComment"
-        [showSubCom]="showSubCom" [showTecCom]="showTecCom" [showMalCom]="showMalCom" [napims]="napims" [operator]="operator">
+        <app-line-comment [line]="line" [lineComments]="lineComments" [lineStatus]="lineStatus" [userType]="userType" (update)="updateComments($event)"
+          (close)="showComment = !showComment" [showSubCom]="showSubCom" [showTecCom]="showTecCom" [showMalCom]="showMalCom"
+          [napims]="napims" [operator]="operator">
         </app-line-comment>
       </div>
       <div *ngIf="dialogMode ==='comments'">
-        <app-comments [lineComments]="lineComments"  (update)="newComment($event)" (close)="showComment = !showComment"
-        [userType]="userType" [napims]="napims" [operator]="operator"> </app-comments>
+        <app-comments [lineComments]="lineComments" (update)="newComment($event)" (close)="showComment = !showComment" [userType]="userType"
+          [napims]="napims" [operator]="operator"> </app-comments>
       </div>
       <div *ngIf="dialogMode ==='attachments'">
-         <app-attachment> </app-attachment>       
+        <app-attachment> </app-attachment>
+      </div>
+      <div *ngIf="dialogMode === 'actual'">
+        <app-actuals [line]="actual" (update)="updateComment($event)" (close)="showComment = !showComment" [showSubCom]="showSubCom"
+          [showTecCom]="showTecCom" [showMalCom]="showMalCom" [lineStatus]="lineStatus">
+        </app-actuals>
       </div>
     </div>
     <div class="col s1"></div>
-    
-    
-    
+
+
+
 
     <!--<button (click)="showComment = !showComment" class="wave-effect wave-light btn ">Close</button>-->
   </app-dialog>
