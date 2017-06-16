@@ -6,11 +6,12 @@ import * as _ from 'lodash';
 //import { Observable } from 'rxjs/Observable';
 import { MaterializeAction } from 'angular2-materialize';
 import { GridOptions } from 'ag-grid/main';
-import { Budgets, Operators, BudgetLines, LineComments, LineStatus } from './../models';
+import { Budgets, Operators, BudgetLines, LineComments, LineStatus, Actual } from './../models';
 import { CurrencyComponent } from './../shared/renderers/currency.component';
 import { WordWrapComponent } from './../shared/renderers/word-wrap.component';
 import { TextComponent } from './../shared/renderers/text.component';
 import { ChildMessageComponent } from './../shared/renderers/child-message.component';
+
 import { StyledComponent } from './../shared/renderers/styled-component';
 import { SecurityService } from './../login/security.service';
 
@@ -22,6 +23,7 @@ import { SecurityService } from './../login/security.service';
 })
 export class LineDetailsComponent implements OnInit, OnChanges {
   @Input() lines: BudgetLines[] = [];
+  @Input() actuals: Actual[] = [];
   @Input() lineComments: LineComments[] = [];
   @Input() lineStatus: LineStatus[] = [];
 
@@ -49,12 +51,12 @@ export class LineDetailsComponent implements OnInit, OnChanges {
   level: number;
   showComment = false;
   line: BudgetLines;
+  actual: BudgetLines;
   role: string;
   floatingRow = [];
   private colWidth = 150;
   public columnDefs: any[];
   private ready = false;
-
   public gridOptions: GridOptions;
   public rowData: any[] = [];
   public userType: string;
@@ -135,14 +137,22 @@ export class LineDetailsComponent implements OnInit, OnChanges {
     // console.log(forUpd);
     this.saveComments.emit(forUpd);
   }
+  updateComment(data: any) {
+    const forUpd = {
+      code: this.actual.code, actualId: this.actual.budgetId,
+      actual: data.actual, type: this.role,
+      status: data.status
+    };
 
+    this.saveComments.emit(forUpd);
+  }
   newComment(comment: string) {
     const newData = _.assign({}, {
       budgetId: this.line.budgetId, code: this.line.code, comment: comment
     });
     console.log(newData);
     this.addNewComment.emit(newData);
-    
+
 
 
   }

@@ -21,6 +21,6 @@ export interface Actual {
     finalActualLC: number;
     finalActualUSD: number;
     lineStatus: string;
-    budgetId: string;
+    actualId: string;
 
 }

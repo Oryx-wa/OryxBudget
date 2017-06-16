@@ -20,10 +20,12 @@ import { OperatorsModule } from './operators/operators.module';
 import { WorkprogramModule } from './workprogram/workprogram.module';
 
 
+
 @NgModule({
   declarations: [
     AppComponent,
     MainNavComponent,
+   
    
     
     //OryxDashboardComponent
