@@ -346,6 +346,26 @@ namespace OryxBudgetService.BudgetsServices
         {
             return _attachmentRepository.GetAll().Where(a => a.BudgetLineId.ToString() == lineId);
         }
+
+        public void UpdateOperatorActuals(BudgetLine lineEntity, Attachment attachment)
+        {
+            // Update Actuals
+            var budgetLine = _repository.Get(lineEntity.Id);
+
+            if (budgetLine != null)
+            {
+                budgetLine.OpActualLC = lineEntity.OpActualLC;
+                budgetLine.OpActualUSD = lineEntity.OpActualUSD;
+                budgetLine.OpActualFC = lineEntity.OpActualFC;
+            }
+
+            //Insert Attachments here
+
+            AddAttachment(attachment);
+
+            base.Update(budgetLine);
+            base.SaveChanges();
+        }
     }
 
 

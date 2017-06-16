@@ -47,6 +47,24 @@ namespace Entities.Budgets
         public decimal FinalBudgetLC { get; set; }
         public decimal FinalBudgetUSD { get; set; }
 
+        public decimal OpActualFC { get; set; }
+        public decimal OpActualLC { get; set; }
+        public decimal OpActualLCInUSD { get; set; }
+        public decimal OpActualUSD { get; set; }
+
+        public decimal SubComActualFC { get; set; }
+        public decimal SubComActualLC { get; set; }
+        public decimal SubComActualUSD { get; set; }
+        public decimal TecComActualFC { get; set; }
+        public decimal TecComActualLC { get; set; }
+        public decimal TecComActualUSD { get; set; }
+        public decimal MalComActualFC { get; set; }
+        public decimal MalComActualLC { get; set; }
+        public decimal MalComActualUSD { get; set; }
+        public decimal FinalActualFC { get; set; }
+        public decimal FinalActualLC { get; set; }
+        public decimal FinalActualUSD { get; set; }
+
         [Required]
         public BudgetStatus LineStatus { get; set; }
 
@@ -101,6 +119,24 @@ namespace Entities.Budgets
         public decimal FinalBudgetFC { get; set; }
         public decimal FinalBudgetLC { get; set; }
         public decimal FinalBudgetUSD { get; set; }
+
+        public decimal OpActualFC { get; set; }
+        public decimal OpActualLC { get; set; }
+        public decimal OpActualLCInUSD { get; set; }
+        public decimal OpActualUSD { get; set; }
+
+        public decimal SubComActualFC { get; set; }
+        public decimal SubComActualLC { get; set; }
+        public decimal SubComActualUSD { get; set; }
+        public decimal TecComActualFC { get; set; }
+        public decimal TecComActualLC { get; set; }
+        public decimal TecComActualUSD { get; set; }
+        public decimal MalComActualFC { get; set; }
+        public decimal MalComActualLC { get; set; }
+        public decimal MalComActualUSD { get; set; }
+        public decimal FinalActualFC { get; set; }
+        public decimal FinalActualLC { get; set; }
+        public decimal FinalActualUSD { get; set; }
 
         [Required]
         public BudgetStatus LineStatus { get; set; }

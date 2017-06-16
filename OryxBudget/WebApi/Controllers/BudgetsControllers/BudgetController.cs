@@ -271,6 +271,40 @@ namespace OryxWebApi.Controllers.BudgetControllers
 
             return Json("File Downloaded!");
         }
+
+        [HttpPost]
+        [ValidateModelState]
+        [Route("UpdateOperatorActuals")]
+        public JsonResult UpdateOperatorActuals(IFormFile file, [FromBody] BudgetLineViewModel lineVw)
+        {
+            var budgetLine = Mapper.Map<BudgetLine>(lineVw);
+
+            byte[] fileBytes = null;
+            var filename = ContentDispositionHeaderValue
+                        .Parse(file.ContentDisposition)
+                        .FileName
+                        .Trim('"');
+
+            using (var reader = new StreamReader(file.OpenReadStream()))
+            {
+                string contentAsString = reader.ReadToEnd();
+                fileBytes = new byte[contentAsString.Length * sizeof(char)];
+                System.Buffer.BlockCopy(contentAsString.ToCharArray(), 0, fileBytes, 0, fileBytes.Length);
+            }
+
+            var attachment = new Attachment
+            {
+                FileData = fileBytes,
+                FileName = filename,
+                FileType = file.ContentType,
+                BudgetId = budgetLine.BudgetId,
+                BudgetLineId = budgetLine.Id
+            };
+
+            _budgetService.UpdateOperatorActuals(budgetLine, attachment);
+
+            return Json("Operator BudgetLine Performance updated");
+        }
     }
 }
 
