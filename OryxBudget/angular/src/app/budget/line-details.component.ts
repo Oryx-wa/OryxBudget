@@ -1,6 +1,7 @@
 import { Component, OnInit, Input, OnChanges, Output, EventEmitter } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { Router, ActivatedRoute, Params } from '@angular/router';
+import { RouterModule } from '@angular/router';
 import { Http, URLSearchParams } from '@angular/http';
 import * as _ from 'lodash';
 //import { Observable } from 'rxjs/Observable';
@@ -41,6 +42,7 @@ export class LineDetailsComponent implements OnInit, OnChanges {
   @Output() saveComments = new EventEmitter();
   @Output() addNewComment = new EventEmitter()
   // @Output() getComments = new EventEmitter();
+  @Output() showActual = new EventEmitter();
 
 
 
@@ -65,7 +67,8 @@ export class LineDetailsComponent implements OnInit, OnChanges {
   private userTypeList = ['Operator', 'Napims'];
   history: string[] = ['home'];
   dialogMode = 'details';
-  constructor() { }
+
+  constructor(private router: Router) { }
 
   ngOnInit() {
     this.commentSaved.subscribe(saved => this.showComment = !saved);
@@ -98,7 +101,7 @@ export class LineDetailsComponent implements OnInit, OnChanges {
   }
 
   setupUser() {
-    // Role 
+    // Role
     this.roles.map(role => {
       if (this.roleList.indexOf(role) > -1) {
         this.role = role;
@@ -109,6 +112,8 @@ export class LineDetailsComponent implements OnInit, OnChanges {
       }
     });
   }
+
+
 
   addHistory(code: string) {
     this.history.push(code);
@@ -214,6 +219,16 @@ export class LineDetailsComponent implements OnInit, OnChanges {
 
   private createColumnDefs() {
     this.columnDefs = [
+      // {
+      //   headerName: '',
+      //   field: 'id',
+      //   width: 50,
+      //   cellRendererFramework: {
+      //     template: `<div><a [routerLink]="['/home']" routerLinkActive="active" title="line details">
+      //       <i class="material-icons">open_in_new</i></a></div>`,
+      //     moduleImports: [RouterModule]
+      //   }
+      //},
       {
         headerName: 'Budget Codes',
         children: [
@@ -351,7 +366,7 @@ export class LineDetailsComponent implements OnInit, OnChanges {
         ]
       },
       {
-        headerName: 'Comments and Attachments',
+        headerName: 'Details | Comments | Attachments',
         children: [
 
           {
@@ -370,6 +385,8 @@ export class LineDetailsComponent implements OnInit, OnChanges {
             cellRendererFramework: ChildMessageComponent,
             mIcon: 'file_upload', type: 'upload'
           }*/
+
+
         ]
       }
 
@@ -406,13 +423,23 @@ export class LineDetailsComponent implements OnInit, OnChanges {
   }
 
   public methodFromParent(id: string, type: string) {
-    this.dialogMode = type;
-    this.showComment = true;
-    this.getDetails(id);
+
+    switch (type) {
+      case 'actual':
+        //this.showActual.emit(id);
+        this.router.navigateByUrl('/linedetail')
+        break;
+      default:
+        this.dialogMode = type;
+        this.showComment = true;
+        this.getDetails(id);
+        break;
+    }
+
 
     /*
     switch (type) {
-      case 'details':        
+      case 'details':
         break;
       case 'comments':
 

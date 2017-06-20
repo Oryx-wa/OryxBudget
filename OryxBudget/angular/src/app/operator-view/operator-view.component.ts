@@ -70,7 +70,7 @@ export class OperatorViewComponent implements OnInit, OnChanges {
       // console.log(this.roles)
       /* const obj = Rx.Observable.timer(1000, 10000);
       const subsription = obj.subscribe(s => {
-        
+
       }); */
 
       this.roles.map(role => {
@@ -216,8 +216,13 @@ export class OperatorViewComponent implements OnInit, OnChanges {
 
   }
   changeDisplayMode(mode: DisplayModeEnum) {
-    // // console.log(mode); 
+    // // console.log(mode);
     this.displayMode = mode;
+  }
+
+  showActual(id: string){
+    console.log(id);
+    // this.rou
   }
 
   upload(budget: Budgets) {

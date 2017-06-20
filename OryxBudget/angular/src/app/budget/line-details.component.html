@@ -66,11 +66,7 @@
       <div *ngIf="dialogMode ==='attachments'">
         <app-attachment> </app-attachment>
       </div>
-      <div *ngIf="dialogMode === 'actual'">
-        <app-actuals [line]="actual" (update)="updateComment($event)" (close)="showComment = !showComment" [showSubCom]="showSubCom"
-          [showTecCom]="showTecCom" [showMalCom]="showMalCom" [lineStatus]="lineStatus">
-        </app-actuals>
-      </div>
+
     </div>
     <div class="col s1"></div>
 
@@ -89,8 +85,8 @@
 </div>
 -->
 <!-- Modal Structure -->
-<!--<div class="container" *ngIf="showComment === true">  
+<!--<div class="container" *ngIf="showComment === true">
     <app-line-comment [line]="line" [lineComments]="lineComments" (update)="updateComments($event)">
-    </app-line-comment> 
+    </app-line-comment>
   <ng-template #loading2>Loading Comments ...</ng-template>
 </div>-->

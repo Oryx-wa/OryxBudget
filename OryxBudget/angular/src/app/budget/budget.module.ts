@@ -16,6 +16,7 @@ import { StyledComponent } from './../shared/renderers/styled-component';
 import { DialogComponent } from './../shared/dialog/dialog.component';
 import {WorkprogramModule} from './../workprogram/workprogram.module';
 import {ActualsModule} from './../actuals/actuals.module';
+import { LineDetailComponent } from './line-detail/line-detail.component';
 
 
 @NgModule({
@@ -36,9 +37,9 @@ import {ActualsModule} from './../actuals/actuals.module';
   ],
 
   declarations: [OperatorDetailsComponent, BudgetInitialisationComponent, LineDetailsComponent,
-    WordWrapComponent, TextComponent, LineDetailsComponent, ChildMessageComponent, StyledComponent
+    WordWrapComponent, TextComponent, LineDetailsComponent, ChildMessageComponent, StyledComponent, LineDetailComponent
   ],
-  exports: [LineDetailsComponent]
+  exports: [LineDetailsComponent, LineDetailComponent]
 
 })
 export class BudgetModule { }
