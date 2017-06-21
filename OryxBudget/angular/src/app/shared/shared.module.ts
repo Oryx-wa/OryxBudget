@@ -16,7 +16,6 @@ import { SelectModule } from 'ng-select';
 import { Ng2PaginationModule } from 'ng2-pagination';
 import { SimpleNotificationsModule, PushNotificationsModule } from 'angular2-notifications';
 import { NotificationsService } from 'angular2-notifications';
-
 import { MaterializeModule } from 'angular2-materialize';
 import { DialogComponent } from './dialog/dialog.component';
 import { AttachmentComponent } from './attachment/attachment.component';
