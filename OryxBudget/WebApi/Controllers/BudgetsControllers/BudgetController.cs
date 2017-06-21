@@ -275,7 +275,8 @@ namespace OryxWebApi.Controllers.BudgetControllers
         [HttpPost]
         [ValidateModelState]
         [Route("UpdateOperatorActuals")]
-        public JsonResult UpdateOperatorActuals(IFormFile file, [FromBody] BudgetLineViewModel lineVw)
+        public JsonResult UpdateOperatorActuals(IFormFile file, [FromBody] BudgetLineViewModel lineVw,
+            DateTime periodStart, DateTime periodEnd)
         {
             var budgetLine = Mapper.Map<BudgetLine>(lineVw);
 
@@ -301,7 +302,7 @@ namespace OryxWebApi.Controllers.BudgetControllers
                 BudgetLineId = budgetLine.Id
             };
 
-            _budgetService.UpdateOperatorActuals(budgetLine, attachment);
+            _budgetService.UpdateOperatorActuals(periodStart, periodEnd, budgetLine, attachment);
 
             return Json("Operator BudgetLine Performance updated");
         }

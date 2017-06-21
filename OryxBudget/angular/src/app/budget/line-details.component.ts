@@ -426,8 +426,8 @@ export class LineDetailsComponent implements OnInit, OnChanges {
 
     switch (type) {
       case 'actual':
-        //this.showActual.emit(id);
-        this.router.navigateByUrl('/linedetail')
+        // this.showActual.emit('This is the id: ' + id);
+        this.router.navigateByUrl('/linedetail/' + id);
         break;
       default:
         this.dialogMode = type;

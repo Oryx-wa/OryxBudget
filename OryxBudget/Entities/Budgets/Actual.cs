@@ -46,6 +46,8 @@ namespace Entities.Budgets
 
         public Guid BudgetId { get; set; }
 
+        public Guid BudgetLineId { get; set; }
+
         [Required]
         public BudgetStatus LineStatus { get; set; }
 
@@ -89,7 +91,9 @@ namespace Entities.Budgets
         public DateTime PeriodEnd { get; set; }
         public Guid BudgetId { get; set; }
 
+        public Guid BudgetLineId { get; set; }
+
         //[MaxLength(50), Required]
-       public string PeriodId { get; set; }
+        public string PeriodId { get; set; }
     }
 }

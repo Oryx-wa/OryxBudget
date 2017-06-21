@@ -29,11 +29,13 @@ namespace OryxBudgetService.BudgetsServices
         private readonly AttachmentRepository _attachmentRepository;
         protected IUserResolverService _userResolverService;
         private readonly BudgetLineStatusHistoryRepository _lineStatus;
+        private readonly ActualsRepository _actualRepository;
 
         public BudgetService(BudgetRepository repository, BudgetCodeService budgetCodeService,
             BudgetLineRepository lineRepository, IBudgetUnitOfWork unitOfWork, LineCommentRepository lineCommentRepository,
             OperatorRepository operatorRepository, AttachmentRepository attachmentRepository, BudgetLineStatusHistoryRepository lineStatus,
-            IConnectionManager signalRConnectionManager, IUserResolverService userResolverService) : base(repository, unitOfWork)
+            IConnectionManager signalRConnectionManager, IUserResolverService userResolverService, 
+            ActualsRepository actualRepository) : base(repository, unitOfWork)
         {
             _repository = repository;
             _lineRepository = lineRepository;
@@ -43,7 +45,7 @@ namespace OryxBudgetService.BudgetsServices
             _attachmentRepository = attachmentRepository;
             _userResolverService = userResolverService;
             _lineStatus = lineStatus;
-
+            _actualRepository = actualRepository;
         }
 
         public override void Update(Budget entity)
@@ -347,23 +349,35 @@ namespace OryxBudgetService.BudgetsServices
             return _attachmentRepository.GetAll().Where(a => a.BudgetLineId.ToString() == lineId);
         }
 
-        public void UpdateOperatorActuals(BudgetLine lineEntity, Attachment attachment)
+        public void UpdateOperatorActuals(DateTime startDate, DateTime endDate, BudgetLine lineEntity, Attachment attachment)
         {
             // Update Actuals
             var budgetLine = _repository.Get(lineEntity.Id);
 
-            if (budgetLine != null)
+            //if (budgetLine != null)
+            //{
+            //    budgetLine.OpActualLC = lineEntity.OpActualLC;
+            //    budgetLine.OpActualUSD = lineEntity.OpActualUSD;
+            //    budgetLine.OpActualFC = lineEntity.OpActualFC;
+            //}
+
+            var actual = new Actual
             {
-                budgetLine.OpActualLC = lineEntity.OpActualLC;
-                budgetLine.OpActualUSD = lineEntity.OpActualUSD;
-                budgetLine.OpActualFC = lineEntity.OpActualFC;
-            }
+                PeriodStart = startDate,
+                PeriodEnd = endDate,
+                Code = lineEntity.Code,
+                Description = lineEntity.Description,
+                OpActualLC = lineEntity.OpActualFC,
+                OpActualUSD = lineEntity.OpActualUSD,
+                OpActualLCInUSD = lineEntity.OpActualFC,
+                BudgetId = lineEntity.BudgetId,
+                BudgetLineId = lineEntity.Id
+            };
 
+            _actualRepository.Add(actual);
             //Insert Attachments here
-
             AddAttachment(attachment);
-
-            base.Update(budgetLine);
+            
             base.SaveChanges();
         }
     }
