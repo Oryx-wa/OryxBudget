@@ -1,10 +1,12 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, EventEmitter, OnChanges } from '@angular/core';
 import { Router, ActivatedRoute, Params } from '@angular/router';
 import { Http, URLSearchParams } from '@angular/http';
 import { NotificationsService } from 'angular2-notifications';
+import { FormGroup, FormControl, FormBuilder, FormArray, Validators } from '@angular/forms';
 import 'rxjs/add/operator/mergeMap';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/catch';
+import { MaterializeDirective, MaterializeAction } from 'angular2-materialize';
 import { DisplayModeEnum } from './../shared/shared-enum.enum';
 import { GridOptions } from 'ag-grid/main';
 import { Budgets, Operators, BudgetLines, LineComments, LineStatus } from './../models';
@@ -19,7 +21,7 @@ import * as _ from 'lodash';
   templateUrl: './operator-details.component.html',
   styleUrls: ['./operator-details.component.scss']
 })
-export class OperatorDetailsComponent implements OnInit {
+export class OperatorDetailsComponent implements OnInit, OnChanges {
   budgets$: Observable<Budgets[]>;
   operator$: Observable<Operators>;
   operator: Operators;
@@ -37,6 +39,19 @@ export class OperatorDetailsComponent implements OnInit {
   public showLevel: number;
   private colWidth = 110;
   public budgetDesc = '';
+  actions1 = new EventEmitter<string | MaterializeAction>();
+
+
+
+  params = [
+    {
+      onOpen: (el) => {
+        console.log('Collapsible open', el);
+      },
+    }
+  ];
+
+  values = ['First'];
   public roles: any[] = [];
   public loading$: BehaviorSubject<boolean> = new BehaviorSubject(false);
   public saving$: BehaviorSubject<boolean> = new BehaviorSubject(false);
@@ -44,12 +59,18 @@ export class OperatorDetailsComponent implements OnInit {
   public dept = 'All';
   public displayMode: DisplayModeEnum;
   public displayModeEnum = DisplayModeEnum;
+
+  form: FormGroup;
+
+
+
   constructor(
     private route: ActivatedRoute,
     private router: Router,
     private securityService: SecurityService,
     private _http: Http,
-    private _service: NotificationsService
+    private _service: NotificationsService,
+    private fb: FormBuilder
   ) {
     this.gridOptions = <GridOptions>{};
     this.createColumnDefs();
@@ -93,7 +114,16 @@ export class OperatorDetailsComponent implements OnInit {
     });
 
   }
+  ngOnChanges(changes: any): void {
 
+    this.form = this.fb.group({
+            status: new FormControl({}),
+    });
+
+  }
+  openFirst() {
+    this.actions1.emit({ action: 'collapsible', params: ['open', 0] });
+  }
   getOperator(id: string) {
     this.loading$.next(true);
     let url = this.securityService.getUrl('Budget/GetByOperator');

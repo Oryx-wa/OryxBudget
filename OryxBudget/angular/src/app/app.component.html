@@ -1,4 +1,6 @@
+<div>
 <app-main-nav></app-main-nav>
+<main>
 <div class="row" *ngIf="securityService.IsAuthorized()">
     <div class= "col s6 l6">
         <div class="col s12 l12">
@@ -10,4 +12,8 @@
     </div>
 
 </div>
+<div class="row">
 <router-outlet></router-outlet>
+</div>
+</main>
+</div>
