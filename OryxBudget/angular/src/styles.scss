@@ -1,5 +1,5 @@
  
-$roboto-font-path: "~materialize-css/fonts/roboto/"; /* This is needed so the materialize.scss file can load the font */
+$roboto-font-path: "~materialize-css/dist/fonts/roboto/"; /* This is needed so the materialize.scss file can load the font */
 @import "~materialize-css/sass/materialize";
  .brand-logo{
     font-size: 1.5rem !important;
@@ -22,9 +22,9 @@ $roboto-font-path: "~materialize-css/fonts/roboto/"; /* This is needed so the ma
     padding: 20px;
     overflow: hidden;
 }
-.container{
-    width:1500px !important;
-}
+
+
+
 .dropdown-content {
   background-color: #FFFFFF;
   margin: 0;
@@ -127,4 +127,73 @@ $roboto-font-path: "~materialize-css/fonts/roboto/"; /* This is needed so the ma
 
   /* Support for IE. */
   font-feature-settings: 'liga';
+}
+
+.saugroboter-h1 {
+    font-size: 1.64rem;
+    line-height: 1.64rem;
+    font-weight: 200;
+    margin: 10px 0 35px;
+    padding: 0;
+}
+
+.filter-elements {
+    margin-top: 10px;
+    display: block;
+}
+.filter-elements .btn {
+    font-size: .9rem;
+    text-transform: none;
+    display: block
+}
+
+.filter-elements .small-btn {
+    padding: 0 10px
+}
+
+.filter-elements .collapsible-header {
+    background: #eee
+}
+
+.filter-elements .collapsible-body {
+    padding: 20px;
+    background: #fff
+}
+
+*,*:before,*:after {
+    box-sizing: inherit
+}
+
+@media only screen and (min-width: 601px) {
+    .filter-elements .collapsible-body {
+        display:block
+    }
+}
+
+@media only screen and (max-width: 600px) {
+    .filter-elements {
+        display:none
+    }
+}
+
+.section {
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+}
+
+.container {
+   margin: 0 auto;
+    max-width: 1500px;
+    width: 100%
+  
+}
+@media only screen and (min-width: 601px)   {
+  .container {
+    width: 95%;
+}
+}
+@media only screen and (min-width: 993px){
+  .container {
+    width: 95%;
+}
 }
