@@ -40,6 +40,7 @@ export class OperatorDetailsComponent implements OnInit, OnChanges {
   private colWidth = 110;
   public budgetDesc = '';
   actions1 = new EventEmitter<string | MaterializeAction>();
+  public showApproval = false;
 
 
 
@@ -112,17 +113,17 @@ export class OperatorDetailsComponent implements OnInit, OnChanges {
           break;
       }
     });
-
-  }
-  ngOnChanges(changes: any): void {
-
     this.form = this.fb.group({
             status: new FormControl({}),
     });
+  }
+  ngOnChanges(changes: any): void {
+
+    
 
   }
   openFirst() {
-    this.actions1.emit({ action: 'collapsible', params: ['open', 0] });
+    this.showApproval = true;
   }
   getOperator(id: string) {
     this.loading$.next(true);
