@@ -225,6 +225,21 @@ namespace OryxWebApi.Controllers.BudgetControllers
             return Json("File Uploaded"); //null just to make error free
         }
 
+        public JsonResult AddActualViaTemplate(IFormFile file, string lineId)
+        {
+            var fileName = string.Concat("Uploads", "\\", Helpers.RandomString(10), ".csv");
+
+            using (FileStream fs = System.IO.File.Create(fileName))
+            {
+                file.CopyTo(fs);
+                fs.Flush();
+                fs.Dispose();
+            }
+            BackgroundJob.Enqueue(() => _budgetService.AddActualViaTemplate(fileName, ConvertToGuid(lineId)));
+
+            return Json("Actuals Uploaded");
+        }
+
         [Route("UploadAttachment")]
         [HttpPost]
         public JsonResult UploadAttachment(IFormFile file, string budgetId, string budgetlineId)

@@ -15,6 +15,7 @@ using Microsoft.AspNetCore.SignalR.Infrastructure;
 using OryxBudgetService.Utilities.SignalRHubs;
 using OryxSecurity.Services;
 using Entities.Budgets.WorkPrograms;
+using System.IO;
 
 namespace OryxBudgetService.BudgetsServices
 {
@@ -199,6 +200,39 @@ namespace OryxBudgetService.BudgetsServices
 
             System.IO.File.Delete(fileName);
 
+        }
+
+        public void AddActualViaTemplate(string fileName, Guid budgetLineId)
+        {
+            var file = System.IO.File.OpenRead(fileName);
+            TextReader dataFile = new StreamReader(file);
+
+            var csv = new CsvReader(dataFile);
+            csv.Configuration.RegisterClassMap<BudgetActualMapping>();
+
+            var lines = csv.GetRecords<Actual>().ToList();
+
+            foreach (var line in lines)
+            {
+                var code = _budgetCodeService.GetByBudgetCodeByCode(line.Code);
+                if (!code.Postable.Trim().Equals("Y"))
+                {
+                    continue;
+                }
+                line.Code = line.Code.Trim();
+                line.Description = (line.Description.Trim().Length > 99) ? line.Description.Trim().Substring(0, 99) : line.Description.Trim();
+                line.UserSign = "e317f2dc-deb1-4463-8b67-7f435211d652";
+                line.UpdateDate = System.DateTime.Now;
+                line.CreateDate = System.DateTime.Now;
+
+                _actualRepository.Add(line);
+            }
+            
+            dataFile.Dispose();
+            file.Dispose();
+            GC.Collect();
+
+            System.IO.File.Delete(fileName);
         }
 
         public IEnumerable<Budget> GetAllIncluding()
