@@ -4,4 +4,8 @@ export interface LineComments {
     commentStatus: string;
     budgetId: string;
     code: string;
+    userName: string;
+    createDate: Date;
+    userType: string;
+    commentType: string;
 }

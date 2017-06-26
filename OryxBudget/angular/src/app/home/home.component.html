@@ -1,6 +1,6 @@
 
+<div class="row" *ngIf="securityService.IsAuthorized()">
 
-<div class="row">
   <app-oryx-dashboard *ngIf="showNapims;else operator" [name]="name" [operatorId]="opearatorId" [role]="role"
     [operators]="operators$ | async" ></app-oryx-dashboard>
     <ng-template #operator>
@@ -8,4 +8,5 @@
     </app-operator-view>
 </ng-template>
 </div>
+
 

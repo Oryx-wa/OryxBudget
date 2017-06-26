@@ -7,33 +7,33 @@ using System.Threading.Tasks;
 
 namespace OryxBudgetWeb
 {
-  public class Config
-  {
-    // scopes define the resources in your system
-    public static IEnumerable<IdentityResource> GetIdentityResources()
+    public class Config
     {
-      return new List<IdentityResource>
+        // scopes define the resources in your system
+        public static IEnumerable<IdentityResource> GetIdentityResources()
+        {
+            return new List<IdentityResource>
             {
                 new IdentityResources.OpenId(),
                 new IdentityResources.Profile(),
             };
-    }
+        }
 
-    public static IEnumerable<ApiResource> GetApiResources()
-    {
-      return new List<ApiResource>
+        public static IEnumerable<ApiResource> GetApiResources()
+        {
+            return new List<ApiResource>
             {
                 new ApiResource("api1", "My API"),
                 new ApiResource("payslipEmailApi", "Payslip Email Api"),
                  new ApiResource("OryxBudget", "Oryx Budget"),
             };
-    }
+        }
 
-    // clients want to access resources (aka scopes)
-    public static IEnumerable<Client> GetClients()
-    {
-      // client credentials client
-      return new List<Client>
+        // clients want to access resources (aka scopes)
+        public static IEnumerable<Client> GetClients()
+        {
+            // client credentials client
+            return new List<Client>
             {
                 new Client
                 {
@@ -135,6 +135,7 @@ namespace OryxBudgetWeb
                         "http://localhost:3000/",
                         "http://localhost:4200/",
                         "http://10.211.55.2:4200/",
+                        "http://192.168.1.19/napims"
 
 
                     },
@@ -145,7 +146,7 @@ namespace OryxBudgetWeb
                    //     "http://10.211.55.2:4200/unauthorized.html",
                    // },
                     //RedirectUris = { "http://localhost:4200/signin-oidc" },
-                    PostLogoutRedirectUris = { "http://localhost:4200/unauthorised" },
+                    PostLogoutRedirectUris = { "http://localhost:4200/unauthorised", "http://192.168.1.19/napims/unauthorised" },
                      AllowedScopes = new List<string>
                     {
                        IdentityServerConstants.StandardScopes.OpenId,
@@ -161,6 +162,6 @@ namespace OryxBudgetWeb
                     }
                 },
             };
+        }
     }
-  }
 }

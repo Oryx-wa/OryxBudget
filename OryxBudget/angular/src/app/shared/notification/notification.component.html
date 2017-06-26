@@ -1,0 +1,10 @@
+
+	<div *ngIf="loading" class="progress">
+		<div class="indeterminate" style="width: 70%"></div>
+	</div>
+
+	<div *ngIf="saving" class="progress">
+		<div class="indeterminate"></div>
+	</div>
+	
+<simple-notifications [options]="options"></simple-notifications>

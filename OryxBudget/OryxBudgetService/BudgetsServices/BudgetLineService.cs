@@ -1,6 +1,7 @@
 ﻿using CsvHelper;
 using Data.Infrastructure;
 using Data.Repositories;
+using Data.Repositories.BudgetsRepositories;
 using Entities.Budgets;
 using OryxBudgetService.CsvMapping;
 using System;
@@ -13,18 +14,20 @@ namespace OryxBudgetService.BudgetsServices
     public class BudgetLineService : BaseBudgetService<BudgetLine>
     {
         private readonly IBaseLogBudgetRepository<BudgetLine, BudgetLineLog, Guid> _repository;
+        private readonly LineCommentRepository _lineCommentRepository;
+        private readonly BudgetLineStatusHistoryRepository _lineStatus;
 
-        public BudgetLineService(IBaseLogBudgetRepository<BudgetLine, BudgetLineLog, Guid> repository, IBudgetUnitOfWork unitOfWork) : base(repository, unitOfWork)
+        public BudgetLineService(IBaseLogBudgetRepository<BudgetLine, BudgetLineLog, Guid> repository, IBudgetUnitOfWork unitOfWork,
+            LineCommentRepository lineCommentRepository, BudgetLineStatusHistoryRepository lineStatus) : base(repository, unitOfWork)
         {
             _repository = repository;
+            _lineCommentRepository = lineCommentRepository;
+            _lineStatus = lineStatus;
         }
 
         public override void Update(BudgetLine entity)
         {
             BudgetLine dbBudgetLine = this.Get(entity.Id);
-           
-
-
             base.Update(dbBudgetLine);
 
         }
@@ -60,6 +63,7 @@ namespace OryxBudgetService.BudgetsServices
             System.IO.File.Delete(fileName);
 
         }
+
 
     }
 }

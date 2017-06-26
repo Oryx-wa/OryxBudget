@@ -1,15 +1,18 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute, Params } from '@angular/router';
 import { Http, URLSearchParams } from '@angular/http';
-import 'rxjs/add/operator/switchMap';
+import { NotificationsService } from 'angular2-notifications';
+import 'rxjs/add/operator/mergeMap';
 import 'rxjs/add/operator/map';
+import 'rxjs/add/operator/catch';
+
 import { GridOptions } from 'ag-grid/main';
-import { Budgets, Operators, BudgetLines, LineComments } from './../models';
+import { Budgets, Operators, BudgetLines, LineComments, LineStatus } from './../models';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { Observable } from 'rxjs/Observable';
 import { SecurityService } from './../login/security.service';
 import { CurrencyComponent } from './../shared/renderers/currency.component';
-
+import * as _ from 'lodash';
 
 @Component({
   selector: 'app-operator-details',
@@ -24,31 +27,34 @@ export class OperatorDetailsComponent implements OnInit {
   lineComments$: Observable<LineComments[]>;
   line$: Observable<BudgetLines>;
   commentSaved$: BehaviorSubject<boolean> = new BehaviorSubject(true);
+  lineStatus$: Observable<LineStatus[]>;
   public columnDefs: any[];
   public gridOptions: GridOptions;
   public showSubCom$: BehaviorSubject<boolean> = new BehaviorSubject(false);
   public showTecCom$: BehaviorSubject<boolean> = new BehaviorSubject(false);
   public showMalCom$: BehaviorSubject<boolean> = new BehaviorSubject(false);
   public showFinal$: BehaviorSubject<boolean> = new BehaviorSubject(false);
-  private colWidth = 90;
+  private colWidth = 110;
   public budgetDesc = '';
   public roles: any[] = [];
-
+  public loading$: BehaviorSubject<boolean> = new BehaviorSubject(false);
+  public saving$: BehaviorSubject<boolean> = new BehaviorSubject(false);
   showDetail = false;
   constructor(
     private route: ActivatedRoute,
     private router: Router,
     private securityService: SecurityService,
-    private _http: Http
+    private _http: Http,
+    private _service: NotificationsService
   ) {
     this.gridOptions = <GridOptions>{};
     this.createColumnDefs();
   }
 
   ngOnInit() {
-    console.log(this.route.snapshot.paramMap.get('id'));
+    // console.log(this.route.snapshot.paramMap.get('id'));
     this.getOperator(this.route.snapshot.paramMap.get('id'));
-    // console.log(this.route);
+    // // console.log(this.route);
     this.roles = this.securityService.roles;
     this.roles.map(role => {
       switch (role) {
@@ -72,6 +78,7 @@ export class OperatorDetailsComponent implements OnInit {
   }
 
   getOperator(id: string) {
+    this.loading$.next(true);
     let url = this.securityService.getUrl('Budget/GetByOperator');
     const params: URLSearchParams = new URLSearchParams();
     params.append('operatorId', id);
@@ -98,13 +105,15 @@ export class OperatorDetailsComponent implements OnInit {
       if (budgets) {
         this.budgetDesc = budgets[0].description;
         this.getLineDetails(budgets[0].id);
+        this.loading$.next(false);
+        this._service.success('loaded Successfully', 'Budget loaded successfully');
       }
     });
 
   }
 
   getLineDetails(id: string) {
-    
+    this.loading$.next(true);
     this.showDetail = true;
     const url = this.securityService.getUrl('Budget/GetBudgetDetails');
     const params1: URLSearchParams = new URLSearchParams();
@@ -116,11 +125,11 @@ export class OperatorDetailsComponent implements OnInit {
       params: params1
     }).map(res => res.json());
     this.commentSaved$.next(true);
-
+    this.lines$.subscribe(lines => this.loading$.next(false));
   }
 
   getComments(line: BudgetLines) {
-    const url = this.securityService.getUrl('Budget/GetLineComment');
+    let url = this.securityService.getUrl('Budget/GetLineComment');
     const params1: URLSearchParams = new URLSearchParams();
     params1.append('budgetId', line.budgetId);
     params1.append('code', line.code);
@@ -130,24 +139,66 @@ export class OperatorDetailsComponent implements OnInit {
       body: '',
       params: params1
     }).map(res => res.json());
+
+    url = this.securityService.getUrl('Budget/GetLineStatus');
+
+    this.lineStatus$ = this._http.get(url, {
+      headers: this.securityService.getHeaders(),
+      body: '',
+      params: params1
+    }).map(res => res.json());
+
+   
+
+
+    this.lineStatus$.subscribe(s => console.log(s));
     this.commentSaved$.next(false);
 
   }
 
-  saveComments(comments: any) {
+  saveComments(data: any) {
+    this.saving$.next(true);
     const url = this.securityService.getUrl('Budget/AddLineComment');
     const params1: URLSearchParams = new URLSearchParams();
-    params1.append('budgetId', comments.budgetId);
-    params1.append('code', comments.code);
-    console.log(JSON.stringify(comments.data));
-    const ret = this._http.post(url,
-      JSON.stringify(comments.data), {
+    params1.append('budgetId', data.budgetId);
+    params1.append('code', data.code);
+    params1.append('type', data.type);
+    params1.append('status', data.status);
+
+    const bd = { lineComments: data.lineComments, budgetLine: _.assign(data.budgetLine, { code: data.code }) };
+
+    const ret$ = this._http.post(url,
+      JSON.stringify(bd), {
         headers: this.securityService.getHeaders(),
         search: params1
       })
       .map(res => res.json())
-      .subscribe();
-    this.commentSaved$.next(true);
+      .subscribe(saved => {
+        this.commentSaved$.next(true);
+        this._service.success('', 'Saved successfully');
+        this.saving$.next(false);
+      });
+    //.catch(err => Observable.from([this._service.error('Error', err)])
+    // ));
+  }
+
+   newComment(data: any) {
+    const url = this.securityService.getUrl('Budget/AddComment');
+    const params1: URLSearchParams = new URLSearchParams();
+    // params1.append('budgetId', data.budgetId);
+    // params1.append('code', data.code);
+
+    const ret = this._http.post(url,
+      data, {
+        headers: this.securityService.getHeaders(),
+        // search: params1
+      })
+      .map(res => res.json())
+      .subscribe(saved => {
+        // this.commentSaved$.next(true);
+        // this.saving$.next(false);
+        // this._service.success('Comments', 'Comments successfully');
+      });
 
   }
 
@@ -289,7 +340,7 @@ export class OperatorDetailsComponent implements OnInit {
   }
 
   private onReady() {
-    // console.log('onReady');
+    // // console.log('onReady');
     this.showSubCom$.subscribe(checked => {
       this.gridOptions.columnApi.setColumnsVisible(
         ['subComBudgetLC', 'subComBudgetUSD', 'subComBudgetFC'],
@@ -318,7 +369,7 @@ export class OperatorDetailsComponent implements OnInit {
       // this.gridOptions.api.sizeColumnsToFit();
     });
 
-    
+
 
     // this.gridOptions.api.sizeColumnsToFit();
 

@@ -1,0 +1,88 @@
+Code,Description,AmountLC,AmountUSD,AmountLCInUSD
+101.01,Goodwill represents the amount of money a venture would pay over book value to acquire another venture,17067249,50000,42775.06015
+101.02,These are intellectual property that generate legal property rights,2733618269,184173,6851173.607
+110.01,Concession rentals on blocks from which hydrocarbon is not being produced,1715568342,770469,4299670.03
+110.02,Concession rentals on blocks from which hydrocarbon is being produced          ,3025700657,333100,7583209.667
+110.03,Expenditure incurred in converting from one concession type to another e.g OPL to OML,3091913136,433053,7749155.729
+110.04,Signature/ lease bonus payable for award of block other pre-licensing fees and license renewal,696356258,221166,1745253.779
+110.05,Cost incurred  when land and/or  mineral rights are purchased in fee or farmed in,2101399122,272091,5266664.466
+110.5,Indirect Common cost identifiable to acquisition  ,3350024595,961400,8396051.617
+110.6,Direct Common cost identifiable to acquisition  ,3492776243,772288,8753825.17
+120,Cost incurred to prospect for hydrocarbons excluding exploration drilling cost,3394532606,687585,8507600.516
+120.01,Actual Cost of acquisition damage compensation & community related activities,1190879498,834594,2984660.396
+120.02,All expenses associated with Manual  and Computer aided Topographic survey of exploration areas,1921916840,167422,4816834.185
+120.03,Expenditure incurred in the acquisition and processing of aeromagnetic data,283372164,749964,710205.9248
+120.04, G & G Studies carried out specially for exploration,1198251288,359183,3003136.06
+120.05, Cost associated with geological laboratory studies in relation to exploration ,725973071,153875,1819481.381
+120.06,Costs associated with petroleum engineering in relation to exploration activities,2047240205,341940,5130927.832
+120.5,Indirect Common cost identifiable to exploration (non-drilling) ,4840417990,385112,12131373.41
+120.6,Direct Common cost identifiable to exploration (non-drilling) ,2163540924,195884,5422408.331
+121.01,Cost incurred to obtain access to and peparing location for drilling depth measurement and under-water survey,1084069708,426455,2716966.687
+121.02,Cost incurred to drill and equip exploratory and appraisal wells ,1867108729,630027,4679470.499
+121.03,Cost incurred in  mobilising  modifying and demobilising  drilling rigs,2637761633,783645,6610931.411
+121.5,Indirect Common cost identifiable to exploration and appraisal - drilling ,2989756550,239700,7493124.185
+121.6,Direct Common cost identifiable to exploration and appraisal - drilling ,3945881024,357166,9889426.125
+124.01,Cost incurred on pollution control equipment and facilities for environmental protection,1500635269,91172,3760990.649
+124.02,Cost incurred on Environmental Impact ,4762395967,349008,11935829.49
+124.03,Cost incurred in managing waste and effluents for environmental protection,4772656138,139685,11961544.21
+124.04,Cost of weather monitoring equipment,1709941124,889386,4285566.727
+124.05,Cost incurred in acquisition and installation of firefighting equipment,531816327,339939,1332873
+124.06,Cost incurred in acquisition and installation of safety equipment,587124824,487051,1471490.787
+124.07,Cost of acquisition and installing security apparatus on facilities.,2904532827,872471,7279530.895
+124.5,Indirect Common cost identifiable to exploration safety loss prevention and environmental protection,3520755836,191651,8823949.464
+124.6,Direct Common cost identifiable to exploration safety loss prevention and environmental protection,1029341552,596181,2579803.388
+130.01,Cost incurred to obtain access to and peparing location for drilling dept measurement and underwater survey,2279633204,106251,5713366.426
+130.02,Cost incurred to drill and equip production wells ,3394721363,264860,8508073.591
+130.03,Cost incurred in  mobilising  modifying and demobilisng  drilling rigs,4298643376,634375,10773542.3
+130.04,Cost incurred in completing a well to make it ready for production.,2404033148,436249,6025145.734
+130.05,Cost of enhancing production capacity quality and flowrates of hydrocarbon,1162083200,397178,2912489.223
+130.5,Indirect Common cost identifiable to production wells (oil) ,3943055330,617091,9882344.185
+130.6,Direct Common cost identifiable to production wells (oil) ,314352263,130636,787850.2832
+131,Costs incurred in drilling production wells (Gas) ,1668716872,559255,4182247.799
+131.01,Cost incurred to obtain access to and preparing location for drilling dept measurement and underwater survey,338349900,118548,847994.7368
+131.02,Cost incurred to drill and equip production wells,1078971803,445673,2704189.982
+131.03,Cost incurred in  mobilizing  modifying and demobilizing  drilling rigs,1499938502,57818,3759244.366
+131.04,Cost incurred in completing a well to make it ready for production.,844330855,274655,2116117.431
+131.05,Cost of enhancing production capacity quality and flowrates of gas.,4448288445,453007,11148592.59
+131.5,Indirect Common cost identifiable to production wells (gas) ,4865691036,941759,12194714.38
+131.6,Direct Common cost identifiable to production wells (gas) ,221696898,950714,555631.3233
+132.01,Cost incurred on studies carried out during the development phase of a well field or producing area.,1096126520,492272,2747184.261
+132.02,Cost incurred on Construction surveys ,3068921416,133176,7691532.371
+132.03,Cost of constructing production platforms that receive oil from various well heads before passing to production separators ,2863482042,900782,7176646.722
+132.04,Cost incurred in constructing separators and other treating plants and equipment,2300972395,140820,5766848.108
+132.05,Capital expenditure incurred to enhance oil recovery through secondary or tertiary operations,4336437474,466084,10868264.35
+132.06,Capital expenditure incurred on Utilities including electricity plants turbines transmission lines etc. ,225241994,905227,564516.2757
+132.07,Cost incurred for land transportation infrastructure e.g. roads bridges and drains etc.,1285749865,421209,3222430.739
+132.08,Cost incurred for water transportation infrastructure  e.g. jetty and harbour etc.,3638007408,976473,9117813.053
+132.09,Cost incurred for air transportation infrastructure  e.g. helipads hangers etc.,1672554331,618719,4191865.491
+132.1,Cost of flow line that move oil from well heads to production  facilities  ?  for  onshore  land  swamp  and shallow waters production. ,2377268383,788884,5958066.123
+132.11,Cost incurred in constructing  a lined wall around oil tanks designed to catch all oil that leaks from it ,4507199149,114485,11296238.47
+132.5,Indirect Common cost identifiable to capital construction  ?  oil  (onshore  and  shallow  waters)  ,4371205538,936745,10955402.35
+132.6,Direct Common cost identifiable to capital construction  ?  oil  (onshore  and  shallow  waters)  ,1954060370,136919,4897394.411
+133.01,Cost incurred on studies carried out during the development phase of a well field or producing area.,4529675280,658692,11352569.62
+133.02,Cost incurred on Construction surveys ,2084989119,238947,5225536.639
+133.03,Cost of constructing production platforms that receive oil from various well heads before passing to production separators ,3710761717,861585,9300154.679
+133.04,Cost incurred in constructing separators and other treating plants and equipment,4377512272,130331,10971208.7
+133.05,Capital expenditure incurred to enhance oil recovery through secondary or tertiary operations,4174355538,491713,10462043.95
+133.06,Capital expenditure incurred on Utilities including electricity plants turbines transmission lines etc. ,4137340566,173610,10369274.6
+133.07,Cost incurred for land transportation infrastructure e.g. roads bridges and drains etc.,4796495914,258147,12021293.02
+133.08,Cost incurred for water transportation infrastructure  e.g. jetty and harbour etc.,4855365572,964274,12168836.02
+133.09,Cost incurred for air transportation infrastructure  e.g. helipads hangers etc.,2812270506,154356,7048297.008
+133.1,Cost of flow line that move Gas from well heads ,796626110,581333,1996556.667
+133.11,Cost incurred in constructing  a lined wall around gas tanks designed to catch all gas that leaks from it ,2939569634,282265,7367342.441
+133.5,Indirect Common cost identifiable to capital construction - Gas ,3996741085,393578,10016894.95
+133.6,Direct Common cost identifiable to capital construction - Gas ,3823686611,433467,9583174.464
+134.01,Cost incurred on pollution control equipment and facilities for environmental protection,243756796,949426,610919.2882
+134.02,Cost incurred on Environmental Impact ,1513583476,340223,3793442.296
+134.03,Cost incurred in managing waste and effluents for environmental protection,2708678821,111777,6788668.724
+134.04,Cost of weather monitoring equipment,550267837,521906,1379117.386
+134.05,Cost incurred in acquisition and installation of firefighting equipment,4136333522,817800,10366750.68
+134.06,Cost incurred in acquisition and installation of safety equipment,382388686,425152,958367.6341
+134.07,Cost of acquisition and installing security apparatus on facilities.,3606927774,591216,9039919.233
+134.5,Indirect Common cost identifiable to development safety loss prevention and environmental protection,401393700,694234,1005999.248
+134.6,Direct Common cost identifiable to development safety loss prevention and environmental protection,2818447031,791783,7063777.02
+136.01,Cost incurred on studies carried out during the development phase of a well field or producing area.,850729302,795489,2132153.639
+136.02,Cost incurred on Construction surveys ,3022084325,896611,7574146.178
+136.03,The cost of  facilities installed on the offshore and Deep offshore platform excluding Flotels,3967620978,50026,9943912.226
+136.04,Cost incurred in constructing separators and other treating plants and equipment,4672080389,693534,11709474.66
+136.05,Capital expenditure incurred to enhance oil recovery through secondary or tertiary operations,122817697,169101,307813.7769

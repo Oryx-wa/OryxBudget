@@ -2,39 +2,29 @@
   <div class="col s12 m12 l8">
     <div class="card oryx-card-radius">
       <div class="col s12">
-        <form materialize materialize="updateTextFields" [formGroup]="form" (ngSubmit)="save(form)">
+        <form materialize materialize="updateTextFields" [formGroup]="form" (ngSubmit)="save(form.value)">
           <div class="card oryx-card-radius">
             <div class="card-content">
               <div class="row">
-
                 <div class="input-field col l4 m6 s12">
-                  <select materialize="material_select" id="year" name="year" [formControl]="form.controls['year']">										
-              							<option  value="" disabled selected >Choose your option </option>	
-								<option  [value]="1" >2016</option>
-                <option  [value]="2" >2015</option>
-                <option  [value]="3" >2014</option>
-                <option  [value]="4" >2013</option>
-                <option  [value]="5" >2012</option>
-                <option  [value]="6" >2011</option>
-                <option  [value]="7" >2010</option>
-                <option  [value]="8" >2009</option>
-                <option  [value]="9" >2008</option>
-                <option  [value]="10" >2007</option>
-                <option  [value]="11" >2006</option>
-                <option  [value]="12" >2005</option>
-							</select>
-                  <label for="year" data-error="Please select an item frmm the list">Year</label>
+                    <select materialize="material_select" id="year" name="year" formControlName="year">										
+                              <option  value="" disabled selected >Select year to initialise </option>	
+                  <option  [value]="2017" >2017</option>          
+                  <option  [value]="2016" >2016</option>
+                  <option  [value]="2015" >2015</option>                  
+                    </select>
+                    <label for="year" data-error="Please select an item frmm the list">Year</label>
                 </div>
                 <div class="input-field col l4 s12">
-                  <textarea id="address" class="materialize-textarea" [formControl]="form.controls['description']" name="description">
+                  <textarea id="description" class="materialize-textarea gud" formControlName="description" name="description">
 													</textarea>
-                  <label for="description" data-error="Please enter a valid company address">Description</label>
+                  <label for="description" data-error="Please enter a valid valid description">Description</label>
                 </div>
 
 
               </div>
               <div class="row">
-                <button class="wave-effect wave-light btn" type="submit" name="action">&nbsp; Initialise</button>
+                <button [disabled]="form.invalid || form.pristine" class="wave-effect wave-light btn" type="submit" name="action">Initialise</button>
               </div>
             </div>
 

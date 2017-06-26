@@ -8,7 +8,7 @@ namespace Entities.Budgets
 {
     public class BudgetLine : IEntityBase<Guid>
     {
-       
+
         [Key]
         public Guid Id { get; set; }
         public DateTime CreateDate { get; set; }
@@ -18,11 +18,11 @@ namespace Entities.Budgets
         [Required]
         [MaxLength(50)]
         public string UserSign { get; set; }
-        
+
         public int? RowNumber { get; set; }
-      
+
         [Required, MaxLength(20)]
-        public string Code { get; set; }        
+        public string Code { get; set; }
 
         [Required, MaxLength(100)]
         public string Description { get; set; } //ItemName
@@ -50,12 +50,14 @@ namespace Entities.Budgets
         [Required]
         public BudgetStatus LineStatus { get; set; }
 
+        [Required]
+        public CommentStatus ApprovalStatus { get; set; }
 
         public Guid BudgetId { get; set; }
 
         public string CategoryId { get; set; }
 
-       
+
 
     }
 
@@ -70,7 +72,7 @@ namespace Entities.Budgets
         [Required]
         [MaxLength(50)]
         public string UserSign { get; set; }
-      
+
 
         public int? RowNumber { get; set; }
 
@@ -102,6 +104,8 @@ namespace Entities.Budgets
 
         [Required]
         public BudgetStatus LineStatus { get; set; }
+        [Required]
+        public CommentStatus ApprovalStatus { get; set; }
 
         public Guid BudgetId { get; set; }
 

@@ -1,0 +1,89 @@
+<div class="col l3 m3 s12">
+  <app-list>
+  </app-list>
+</div>
+<div class="col l9 m9 s12">
+  <div layout="column" class="router-height">
+    <div class="row">
+      <div class="cards-stacked text-dark">
+        <div class="row">
+          <div class="col s12">
+            <div materialize class="col s12">
+              <div class="col s12 ">
+                <div class="card oryx-card-radius">
+                  <div class="col s12">
+                    <form materialize materialize="updateTextFields" [formGroup]="form" (ngSubmit)="save(form.value)">
+                      <div class="card oryx-card-radius">
+                        <div class="row">
+                          <div class="card-content oryx-card-header ">
+                            <span class="title-span">{{title}}</span>
+                          </div>
+                        </div>
+                        <div class="card-content">
+                          <div class="row">
+                            <div class="input-field col l6 m6 s12">
+                              <input type="text" class=" validate" [formControl]="form.controls['name']" name="name">
+                              <label for="name" data-error="Please enter a valid name">formControlName</label>
+                            </div>
+                            <div class="input-field col l6 m6 s12">
+                              <input type="text" class=" validate" [formControl]="form.controls['code']" name="code">
+                              <label for="code" data-error="Please enter a valid name">Code</label>
+                            </div>
+                          </div>
+                          <div class="row">
+                            <div class="input-field col l6 m6 s12">
+                              <input type="text" class=" validate" [formControl]="form.controls['operatorTypeId']" name="operatorTypeId">
+                              <label for="operatorTypeId" data-error="Please select an item frmm the list">Operator Type</label>
+                            </div>
+                            <div class="input-field col l6 m6 s12">
+                              <div class="file-field input-field">
+                                <div class="btn">
+                                  <i class="material-icons" style="margin-top:5px;">file_upload</i><span>File</span>
+                                  <input type="file">
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="row">
+                        <div class="col l6 m6 s12">
+                          <app-list>
+                          </app-list>
+                        </div>
+                        <div class="col s12 l6" formArrayName="formArray">
+                          <div *ngFor="let control of formArray.controls; let i = index">
+                            <span *ngIf="formArray.controls.length > 1" (click)="removeDetail(i)"><i class="material-icons right" >delete</i></span>
+                            <app-contact-details [lineCommentForm]=formArray.controls[i]>
+                            </app-contact-details>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col s12">
+                        <div class="row">
+                          <a class="wave-effect wave-light" (click)="addDetail(null)">
+					                  Add Contact details
+						            	</a>
+                        </div>
+                      </div>
+                      <div class="col s12">
+                        <div class="row">
+                          <button [disabled]="form.invalid || form.pristine" class="wave-effect wave-light btn" type="submit" name="action">&nbsp; Add</button>
+                        </div>
+                      </div>
+                    </form>
+                  </div>
+
+                </div>
+              </div>
+
+
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>

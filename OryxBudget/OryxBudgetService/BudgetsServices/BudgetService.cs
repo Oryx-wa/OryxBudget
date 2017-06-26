@@ -10,6 +10,10 @@ using OryxBudgetService.CsvMapping;
 using Data.Repositories.BudgetsRepositories;
 using OryxBudgetService.Utilties;
 using Data.Repositories.OperatorsRepositories;
+using Microsoft.AspNetCore.SignalR;
+using Microsoft.AspNetCore.SignalR.Infrastructure;
+using OryxBudgetService.Utilities.SignalRHubs;
+using OryxSecurity.Services;
 
 namespace OryxBudgetService.BudgetsServices
 {
@@ -20,16 +24,25 @@ namespace OryxBudgetService.BudgetsServices
         private readonly BudgetCodeService _budgetCodeService;
         private readonly LineCommentRepository _lineCommentRepository;
         private readonly OperatorRepository _operatorRepository;
+        private readonly IConnectionManager _connectionManager;
+        private readonly AttachmentRepository _attachmentRepository;
+        protected IUserResolverService _userResolverService;
+        private readonly BudgetLineStatusHistoryRepository _lineStatus;
 
         public BudgetService(BudgetRepository repository, BudgetCodeService budgetCodeService,
             BudgetLineRepository lineRepository, IBudgetUnitOfWork unitOfWork, LineCommentRepository lineCommentRepository,
-            OperatorRepository operatorRepository) : base(repository, unitOfWork)
+            OperatorRepository operatorRepository, AttachmentRepository attachmentRepository, BudgetLineStatusHistoryRepository lineStatus,
+            IConnectionManager signalRConnectionManager, IUserResolverService userResolverService) : base(repository, unitOfWork)
         {
             _repository = repository;
             _lineRepository = lineRepository;
             _budgetCodeService = budgetCodeService;
             _lineCommentRepository = lineCommentRepository;
             _operatorRepository = operatorRepository;
+            _attachmentRepository = attachmentRepository;
+            _userResolverService = userResolverService;
+            _lineStatus = lineStatus;
+
         }
 
         public override void Update(Budget entity)
@@ -51,7 +64,7 @@ namespace OryxBudgetService.BudgetsServices
 
         public IEnumerable<OperatorBudget> GetOperatorBudget(string id)
         {
-            return _repository.GetOperatorBudget(id);         
+            return _repository.GetOperatorBudget(id);
 
 
         }
@@ -61,7 +74,7 @@ namespace OryxBudgetService.BudgetsServices
             var operators = _operatorRepository.GetAll()
                 .Where(o => o.Status.Equals("A")).ToList();
 
-            foreach(var op in operators)
+            foreach (var op in operators)
             {
                 var budget = new Budget
                 {
@@ -85,7 +98,7 @@ namespace OryxBudgetService.BudgetsServices
             }
         }
 
-        public void UploadBudget(string fileName, Guid id)
+        public void UploadBudget(string fileName, Guid id, string userId)
         {
             var file = System.IO.File.OpenRead(fileName);
             System.IO.TextReader dataFile = new System.IO.StreamReader(file);
@@ -109,13 +122,14 @@ namespace OryxBudgetService.BudgetsServices
                 }
                 item.Code = item.Code.Trim();
                 item.Description = (item.Description.Trim().Length > 99) ? item.Description.Trim().Substring(0, 99) : item.Description.Trim();
-                item.UserSign = "e317f2dc-deb1-4463-8b67-7f435211d652";
+                item.UserSign = userId;
                 item.UpdateDate = System.DateTime.Now;
                 item.CreateDate = System.DateTime.Now;
+                item.OpBudgetFC = item.OpBudgetLCInUSD + item.OpBudgetUSD;
                 budget.BudgetLines.Add(item);
                 totalLC += item.OpBudgetLC;
                 totalUSD += item.OpBudgetUSD;
-                total += item.OpBudgetLCInUSD + item.OpBudgetUSD;
+                total += item.OpBudgetFC;
 
             };
 
@@ -123,13 +137,15 @@ namespace OryxBudgetService.BudgetsServices
             budget.OpBudgetUSD = totalUSD;
             budget.OpBudgetFC = total;
 
-            base.Update(budget);
+            base.Update(budget, userId);
             this.SaveChanges();
             dataFile.Dispose();
             file.Dispose();
             GC.Collect();
 
             System.IO.File.Delete(fileName);
+            //var hubContext = _connectionManager.GetHubContext<NotificationHub>();
+            //hubContext.Clients.All.
 
         }
 
@@ -202,9 +218,9 @@ namespace OryxBudgetService.BudgetsServices
 
         public IEnumerable<BudgetCodeView> GetBudgetDetails(string id)
         {
-            
-          return _repository.GetBudgetLines(id);
-            
+
+            return _repository.GetBudgetLines(id);
+
         }
 
         public IEnumerable<LineComment> GetLineComment(string id, string code)
@@ -212,20 +228,112 @@ namespace OryxBudgetService.BudgetsServices
             return _lineCommentRepository.GetAll().Where(c => c.BudgetId.ToString() == id && c.Code == code);
         }
 
-        public void AddLineComments (IEnumerable<LineComment> lineComments)
+        public void AddLineComments(IEnumerable<LineComment> lineComments)
         {
+            var roleList = _userResolverService.GetRoles();
+            string userType = "";
+            string userName = _userResolverService.GetUserName();
+            BudgetStatus bdStatus = BudgetStatus.SubCom;
+            foreach (var item in roleList)
+            {
+                if (item.ToLower() == "napims")
+                {
+                    userType = item.ToLower();
+                }
+
+                if (item.ToLower() == "operator")
+                {
+                    userType = item.ToLower();
+                }
+                if (item.EndsWith("Com"))
+                {
+                    Enum.TryParse(item, out BudgetStatus bdStatusOut );
+                    bdStatus = bdStatusOut;
+                }              
+                
+            }
             foreach (var item in lineComments)
             {
-                if (item.Id == Guid.Empty)
-                {
+                item.UserType = userType;
+                item.CommentType = bdStatus;
+                item.UserName = userName;
+                if (item.Id == Guid.Empty)                {
+                    
                     this._lineCommentRepository.Add(item);
                 }
                 else
-                {
+                {                    
                     this._lineCommentRepository.Update(item);
                 }
-               
+
             }
+        }
+
+        public void updateStatus(string status, string Code, string BudgetId)
+        {
+            var roleList = _userResolverService.GetRoles();
+            string userType = "";
+            string userName = _userResolverService.GetUserName();
+            BudgetStatus bdStatus = BudgetStatus.SubCom;
+            foreach (var item in roleList)
+            {
+                if (item.ToLower() == "napims")
+                {
+                    userType = item.ToLower();
+                }
+
+                if (item.ToLower() == "operator")
+                {
+                    userType = item.ToLower();
+                }
+                if (item.EndsWith("Com"))
+                {
+                    Enum.TryParse(item, out BudgetStatus bdStatusOut);
+                    bdStatus = bdStatusOut;
+                }
+
+            }
+
+            Enum.TryParse(status, out CommentStatus cStatus);
+            BudgetLineStatusHistory statusHistory = new BudgetLineStatusHistory();
+            statusHistory.ItemCodeStatus = cStatus;
+            statusHistory.ItemStatus = bdStatus;
+            statusHistory.Code = Code;
+            statusHistory.BudgetId = BudgetId;
+            _lineStatus.Add(statusHistory);
+        }
+
+        public IEnumerable<BudgetLineStatusHistory> GetLineStatus(string BudgetId, string Code)
+        {
+            return _lineStatus.GetAll()
+                .Where(l => l.Code == Code && l.BudgetId.ToString() == BudgetId)
+                .OrderByDescending(l=> l.CreateDate);
+        }
+
+        public void UpdateAttachment(Attachment entity)
+        {
+            var attachment = this.Get(entity.Id);
+            _attachmentRepository.Update(entity);
+        }
+
+        public void AddAttachment(Attachment entity)
+        {
+            _attachmentRepository.Add(entity);
+        }
+
+        public Attachment GetAttachment(Guid id)
+        {
+            return _attachmentRepository.Get(id);
+        }
+
+        public IEnumerable<Attachment> GetAttachments()
+        {
+            return _attachmentRepository.GetAll();
+        }
+
+        public IEnumerable<Attachment> GetAttachmentsByBudgetLine(string lineId)
+        {
+            return _attachmentRepository.GetAll().Where(a => a.BudgetLineId.ToString() == lineId);
         }
     }
 

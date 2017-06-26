@@ -67,7 +67,7 @@ Group by f.OperatorId, f.Description, f.id";
 	SUM(a.TecComBudgetFC) TecComBudgetFC, SUM(a.TecComBudgetLC) TecComBudgetLC, SUM(a.TecComBudgetUSD) TecComBudgetUSD,
 	SUM(a.MalComBudgetFC) MalComBudgetFC, SUM(a.MalComBudgetLC) MalComBudgetLC, SUM(a.MalComBudgetUSD) MalComBudgetUSD,
 	SUM(a.FinalBudgetFC) FinalBudgetFC, SUM(a.FinalBudgetLC) FinalBudgetLC, SUM(a.FinalBudgetUSD) FinalBudgetUSD, 
-	f.OperatorId,  f.Id, g.Name OperatorName, h.Code, h.Description, h.FatherNum, h.Level
+	f.OperatorId,  f.Id BudgetId, g.Name OperatorName, h.Code, h.Description, h.FatherNum, h.Level
 from Budgets f join BudgetLines a 
 	on f.id = a.BudgetId
 	join Operators g on f.OperatorId = g.id
@@ -104,7 +104,8 @@ from Budgets f join BudgetLines a
 from BudgetCodes a join BudgetCodes b
 	on a.level1 = b.Code) h on a.Code = h.Code
 where f.id = '{id}'
-Group by f.OperatorId,  f.id,h.level2, h.Description, h.FatherNum, h.Level, g.Name";
+Group by f.OperatorId,  f.id,h.level2, h.Description, h.FatherNum, h.Level, g.Name
+Order by 19";
 
             return RDFacadeExtensions.GetModelFromQuery<BudgetCodeView>(this.dataContext.Database, sql);
         }

@@ -147,6 +147,84 @@ namespace Data.Migrations
                     b.ToTable("ActualLogs");
                 });
 
+            modelBuilder.Entity("Entities.Budgets.Attachment", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<Guid>("BudgetId");
+
+                    b.Property<Guid?>("BudgetLineId");
+
+                    b.Property<string>("Code")
+                        .HasMaxLength(50);
+
+                    b.Property<DateTime>("CreateDate");
+
+                    b.Property<byte[]>("FileData");
+
+                    b.Property<string>("FileName")
+                        .IsRequired()
+                        .HasMaxLength(50);
+
+                    b.Property<string>("FileType")
+                        .IsRequired()
+                        .HasMaxLength(50);
+
+                    b.Property<string>("Status")
+                        .HasMaxLength(1);
+
+                    b.Property<DateTime>("UpdateDate");
+
+                    b.Property<string>("UserSign")
+                        .IsRequired()
+                        .HasMaxLength(50);
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Attachments");
+                });
+
+            modelBuilder.Entity("Entities.Budgets.AttachmentLog", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<Guid>("BudgetId");
+
+                    b.Property<Guid?>("BudgetLineId");
+
+                    b.Property<string>("Code")
+                        .HasMaxLength(50);
+
+                    b.Property<DateTime>("CreateDate");
+
+                    b.Property<byte[]>("FileData");
+
+                    b.Property<string>("FileName")
+                        .IsRequired()
+                        .HasMaxLength(50);
+
+                    b.Property<string>("FileType")
+                        .IsRequired()
+                        .HasMaxLength(50);
+
+                    b.Property<int>("LogInstance");
+
+                    b.Property<string>("Status")
+                        .HasMaxLength(1);
+
+                    b.Property<DateTime>("UpdateDate");
+
+                    b.Property<string>("UserSign")
+                        .IsRequired()
+                        .HasMaxLength(50);
+
+                    b.HasKey("Id");
+
+                    b.ToTable("AttachmentLogs");
+                });
+
             modelBuilder.Entity("Entities.Budgets.Budget", b =>
                 {
                     b.Property<Guid>("Id")
@@ -379,6 +457,10 @@ namespace Data.Migrations
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd();
 
+                    b.Property<int>("ApprovalStatus")
+                        .ValueGeneratedOnAdd()
+                        .HasDefaultValueSql("0");
+
                     b.Property<Guid>("BudgetId");
 
                     b.Property<Guid?>("BudgetLogId");
@@ -405,7 +487,9 @@ namespace Data.Migrations
 
                     b.Property<decimal>("FinalBudgetUSD");
 
-                    b.Property<int>("LineStatus");
+                    b.Property<int>("LineStatus")
+                        .ValueGeneratedOnAdd()
+                        .HasDefaultValueSql("1");
 
                     b.Property<decimal>("MalComBudgetFC");
 
@@ -463,6 +547,8 @@ namespace Data.Migrations
                     b.Property<Guid>("Id");
 
                     b.Property<int>("LogInstance");
+
+                    b.Property<int>("ApprovalStatus");
 
                     b.Property<Guid>("BudgetId");
 
@@ -702,13 +788,12 @@ namespace Data.Migrations
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<string>("BudgetId");
-
-                    b.Property<Guid?>("BudgetId1");
+                    b.Property<Guid?>("BudgetId");
 
                     b.Property<string>("Code");
 
                     b.Property<string>("Comment")
+                        .IsRequired()
                         .HasMaxLength(355);
 
                     b.Property<int>("CommentStatus");
@@ -726,13 +811,21 @@ namespace Data.Migrations
                         .ValueGeneratedOnAdd()
                         .HasDefaultValueSql("getDate()");
 
+                    b.Property<string>("UserEmail");
+
+                    b.Property<string>("UserName");
+
                     b.Property<string>("UserSign")
                         .IsRequired()
                         .HasMaxLength(50);
 
+                    b.Property<string>("UserType")
+                        .IsRequired()
+                        .HasMaxLength(15);
+
                     b.HasKey("Id");
 
-                    b.HasIndex("BudgetId1");
+                    b.HasIndex("BudgetId");
 
                     b.HasIndex("Id")
                         .IsUnique();
@@ -746,7 +839,7 @@ namespace Data.Migrations
 
                     b.Property<int>("LogInstance");
 
-                    b.Property<string>("BudgetId");
+                    b.Property<Guid?>("BudgetId");
 
                     b.Property<string>("Code");
 
@@ -764,9 +857,16 @@ namespace Data.Migrations
 
                     b.Property<DateTime>("UpdateDate");
 
+                    b.Property<string>("UserEmail");
+
+                    b.Property<string>("UserName");
+
                     b.Property<string>("UserSign")
                         .IsRequired()
                         .HasMaxLength(50);
+
+                    b.Property<string>("UserType")
+                        .HasMaxLength(15);
 
                     b.HasKey("Id", "LogInstance");
 
@@ -844,9 +944,18 @@ namespace Data.Migrations
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd();
 
+                    b.Property<string>("BudgetId");
+
+                    b.Property<string>("Code");
+
                     b.Property<DateTime>("CreateDate")
                         .ValueGeneratedOnAdd()
                         .HasDefaultValueSql("getDate()");
+
+                    b.Property<string>("Discriminator")
+                        .IsRequired();
+
+                    b.Property<int>("ItemCodeStatus");
 
                     b.Property<int>("ItemStatus");
 
@@ -867,6 +976,8 @@ namespace Data.Migrations
                         .IsUnique();
 
                     b.ToTable("StatusHistory");
+
+                    b.HasDiscriminator<string>("Discriminator").HasValue("StatusHistory");
                 });
 
             modelBuilder.Entity("Entities.Budgets.StatusHistoryLog", b =>
@@ -875,7 +986,13 @@ namespace Data.Migrations
 
                     b.Property<int>("LogInstance");
 
+                    b.Property<string>("BudgetId");
+
+                    b.Property<string>("Code");
+
                     b.Property<DateTime>("CreateDate");
+
+                    b.Property<int>("ItemCodeStatus");
 
                     b.Property<int>("ItemStatus");
 
@@ -890,7 +1007,7 @@ namespace Data.Migrations
 
                     b.HasKey("Id", "LogInstance");
 
-                    b.ToTable("StatusHistoryLog");
+                    b.ToTable("StatusHistoryLogs");
                 });
 
             modelBuilder.Entity("Entities.Operators.ContactPerson", b =>
@@ -1110,6 +1227,16 @@ namespace Data.Migrations
                     b.ToTable("OperatorTypeLogs");
                 });
 
+            modelBuilder.Entity("Entities.Budgets.BudgetLineStatusHistory", b =>
+                {
+                    b.HasBaseType("Entities.Budgets.StatusHistory");
+
+
+                    b.ToTable("BudgetLineStatusHistory");
+
+                    b.HasDiscriminator().HasValue("BudgetLineStatusHistory");
+                });
+
             modelBuilder.Entity("Entities.Budgets.Actual", b =>
                 {
                     b.HasOne("Entities.Budgets.Budget")
@@ -1134,7 +1261,7 @@ namespace Data.Migrations
                 {
                     b.HasOne("Entities.Budgets.Budget")
                         .WithMany("LineComments")
-                        .HasForeignKey("BudgetId1");
+                        .HasForeignKey("BudgetId");
                 });
 
             modelBuilder.Entity("Entities.Operators.ContactPerson", b =>

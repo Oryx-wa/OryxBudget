@@ -69,17 +69,17 @@
                 throw new ArgumentException(string.Format("{0} with id {1} already exists", typeof(TEntity), entity.Id));
             }
         }
-      //  public virtual void Add(TEntity entity, string userId)
-       // {
-       //     if (!_repository.Contains(entity.Id))
-       //     {
-       //         _repository.Add(entity, userId);
-       //     }
-        //    else
-        //    {
-         //       throw new ArgumentException(string.Format("{0} with id {1} already exists", typeof(TEntity), entity.Id));
-          //  }
-      //  }
+        public virtual void Add(TEntity entity, string userId)
+        {
+            if (!_repository.Contains(entity.Id))
+            {
+                _repository.Add(entity, userId);
+            }
+            else
+            {
+                throw new ArgumentException(string.Format("{0} with id {1} already exists", typeof(TEntity), entity.Id));
+            }
+        }
 
         public virtual void Add(IEnumerable<TEntity> entities)
         {
@@ -96,6 +96,8 @@
                 this.Add(item, effectiveDate);
             }
         }
+
+
 
         /// <summary>
         /// Updates the specified entity.
@@ -115,16 +117,36 @@
             }
         }
 
+        public virtual void Update(TEntity entity, string userId)
+        {
+            if (_repository.Contains(entity.Id))
+            {
+                _repository.Update(entity, userId);
+
+            }
+            else
+            {
+                throw new KeyNotFoundException(string.Format("{0} with id {1} was not found", typeof(TEntity), entity.Id));
+            }
+        }
+
         public virtual void SaveChanges()
         {
             _unitOfWork.Commit();
         }
 
-      //  public virtual bool effectiveDateExists(TEntity entity, DateTime effectiveDate)
-      //  {
-      //      return _repository.Contains(entity.Id, effectiveDate);
-      //  }
+        //  public virtual bool effectiveDateExists(TEntity entity, DateTime effectiveDate)
+        //  {
+        //      return _repository.Contains(entity.Id, effectiveDate);
+        //  }
 
+        public Guid ConvertToGuid(string id)
+        {
+
+            Guid NewId;
+            NewId = (string.IsNullOrEmpty(id)) ? Guid.NewGuid() : Guid.Parse(id);
+            return NewId;
+        }
 
 
     }

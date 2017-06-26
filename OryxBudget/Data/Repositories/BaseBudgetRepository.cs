@@ -51,15 +51,22 @@ namespace Data.Repositories
             dataContext.Add(entity);
         }
 
+       
+
+        public virtual void Update(TEntity entity)
+        {
+            updateEntityForUpdate(entity);
+            dbSet.Update(entity);
+        }
         public virtual void Add(TEntity entity, string userId)
         {
             this.updateEntityForAdd(entity, userId);
             dataContext.Add(entity);
         }
 
-        public virtual void Update(TEntity entity)
+        public virtual void Update(TEntity entity, string userId)
         {
-            updateEntityForUpdate(entity);
+            updateEntityForUpdate(entity, userId);
             dbSet.Update(entity);
         }
 
@@ -177,6 +184,14 @@ namespace Data.Repositories
         {
             string userName = _userResolverService.GetUser();
             entity.UserSign = userName;
+            entity.UpdateDate = System.DateTime.Now;
+
+        }
+
+        protected void updateEntityForUpdate(IEntityBase<TId> entity, string userId)
+        {
+            //string userName = _userResolverService.GetUser();
+            entity.UserSign = userId;
             entity.UpdateDate = System.DateTime.Now;
 
         }

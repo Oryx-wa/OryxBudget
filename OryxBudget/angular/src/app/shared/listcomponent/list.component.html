@@ -1,0 +1,56 @@
+<div class="row" *ngIf="useSelect">
+  <div class="input-field s12">
+    <ng-select [options]="selectData" [allowClear]="true" [placeholder]="selectPlaceHolder" [label]="selectLabel" (selected)="filterSelected($event)">
+    </ng-select>
+  </div>
+</div>
+<div class="row" *ngIf="showAdd">
+  <div class="input-field s12">
+    <a (click)="addNew.emit()" class="waves-effect waves-light btn"><i class="material-icons left">add</i>{{newCaption}}</a>
+  </div>
+</div>
+<div>
+  <div *ngIf="paginate; else nopaginate;">
+    <ul class="collection">
+      <li (click)="itemSelected(data.id, i)" [class]="listClass" 
+      *ngFor="let data of data | paginate: {id: 'pg1', itemsPerPage: itemsPerPage, currentPage: page }; 
+        let i=index; " 
+      [class.active]="i == selectedIndex ">
+        <i *ngIf="showAvatar" class="material-icons circle">folder</i>
+        <div *ngIf="data.field1 else showid">
+          <span class="title">{{data.field1}}</span>
+        </div>
+        <ng-template #showid>
+          <span class="title">{{data.id}}</span>
+        </ng-template>
+        <div *ngIf="data.field2 && showAvatar">
+          <p>{{data.field2}}
+          </p>
+        </div>
+
+        <a *ngIf="showAvatar" class="secondary-content fake-link"><i class="material-icons">send</i></a>
+      </li>
+    </ul>
+    <div *ngIf="data.length > itemsPerPage" class="row">
+      <div class="is-text-centered">
+        <pagination-controls id="pg1" (pageChange)="page = $event"></pagination-controls>
+      </div>
+    </div>
+  </div>
+  <ng-template #nopaginate>
+    <ul class="collection">
+      <li (click)="itemSelected(data.id, i)" class="collection-item hoverable avatar fake-link" 
+        *ngFor="let data of data | async"
+        [class.active]="i == selectedIndex ">
+
+        <i class="material-icons circle">folder</i>
+        <span class="title">{{data.field1}}</span>
+        <div *ngIf="data.field2">
+          <p>{{data.field2}}
+          </p>
+        </div>
+        <a class="secondary-content fake-link"><i class="material-icons">send</i></a>
+      </li>
+    </ul>
+  </ng-template>
+</div>

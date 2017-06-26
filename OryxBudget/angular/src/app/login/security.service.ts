@@ -42,7 +42,7 @@ export class SecurityService {
 
     ) {
 
-        this.actionUrl = _configuration.apiServer ;
+        this.actionUrl = _configuration.apiServer;
         this.returnUrl = _configuration.returnUrl;
         this.idServerUrl = _configuration.idServer;
         this._useBackEnd = _configuration.useBackend;
@@ -64,12 +64,10 @@ export class SecurityService {
             this._isAuthorized = this.retrieve('_isAuthorized');
         }
     }
- public IsAuthorized(): boolean {
-        if (this._isAuthorized) {          
-
+    public IsAuthorized(): boolean {
+        if (this._isAuthorized) {
             return true;
         }
-
         return false;
     }
 
@@ -91,7 +89,7 @@ export class SecurityService {
         this.store('_isAuthorized', false);
 
     }
-    
+
     public SetAuthorizationData(token: any, id_token: any) {
         if (this.retrieve('authorizationData') !== '') {
             this.store('authorizationData', '');
@@ -113,7 +111,7 @@ export class SecurityService {
 
         //this.ngrxStore.dispatch( new TokenActions.SetUrl(requestedUrl));
         this.store('RetUrl', requestedUrl);
-        // console.log('BEGIN Authorize, no auth data');
+        // // console.log('BEGIN Authorize, no auth data');
 
         let authorizationUrl = this.idServerUrl + 'connect/authorize';
         let client_id = this.clientId;
@@ -126,7 +124,7 @@ export class SecurityService {
 
         this.store('authStateControl', state);
         this.store('authNonce', nonce);
-        // console.log('AuthorizedController created. adding myautostate: ' + this.retrieve('authStateControl'));
+        // // console.log('AuthorizedController created. adding myautostate: ' + this.retrieve('authStateControl'));
 
         let url =
             authorizationUrl + '?' +
@@ -138,7 +136,7 @@ export class SecurityService {
             'state=' + encodeURI(state);
 
         window.location.href = url;
-        //console.log(url.toString());
+        //// console.log(url.toString());
 
     }
     private setHeaders() {
@@ -148,7 +146,7 @@ export class SecurityService {
         this.headers.append('Access-Control-Allow-Origin', '*');
 
         let token = this.GetToken();
-        // console.log(token);
+        // // console.log(token);
 
         if (token !== '') {
             this.headers.append('Authorization', 'Bearer ' + token);
@@ -156,7 +154,7 @@ export class SecurityService {
     }
 
 
-     public getHeaders = (): Headers => {
+    public getHeaders = (): Headers => {
         let headers = new Headers();
         headers.append('Content-Type', 'application/json');
         headers.append('Accept', 'application/json');
@@ -169,12 +167,12 @@ export class SecurityService {
         return headers;
     }
 
-     public getUrl = (urlPart: string): string => {
-        return this.actionUrl  + urlPart + '/';
+    public getUrl = (urlPart: string): string => {
+        return this.actionUrl + urlPart + '/';
     }
 
     public AuthorizedCallback() {
-        // console.log('BEGIN AuthorizedCallback, no auth data');
+        // // console.log('BEGIN AuthorizedCallback, no auth data');
         this.ResetAuthorizationData();
 
         let hash = window.location.hash.substr(1);
@@ -185,8 +183,8 @@ export class SecurityService {
             return result;
         }, {});
 
-        // console.log(result);
-        // console.log('AuthorizedCallback created, begin token validation');
+        // // console.log(result);
+        // // console.log('AuthorizedCallback created, begin token validation');
 
         let token = '';
         let id_token = '';
@@ -194,18 +192,18 @@ export class SecurityService {
         if (!result.error) {
 
             if (result.state !== this.retrieve('authStateControl')) {
-                console.log('AuthorizedCallback incorrect state');
+                // console.log('AuthorizedCallback incorrect state');
             } else {
 
                 token = result.access_token;
                 id_token = result.id_token;
 
                 let dataIdToken: any = this.getDataFromToken(id_token);
-                // console.log(dataIdToken);
+                // // console.log(dataIdToken);
 
                 // validate nonce
                 if (dataIdToken.nonce !== this.retrieve('authNonce')) {
-                    console.log('AuthorizedCallback incorrect nonce');
+                    // console.log('AuthorizedCallback incorrect nonce');
 
                 } else {
                     this.store('authNonce', '');
@@ -213,7 +211,7 @@ export class SecurityService {
                     this.authenticated = true;
 
                     authResponseIsValid = true;
-                    // console.log('AuthorizedCallback state and nonce validated, returning access token');
+                    // // console.log('AuthorizedCallback state and nonce validated, returning access token');
                 }
             }
         }
@@ -232,20 +230,20 @@ export class SecurityService {
             this.name = dataIdToken.name;
             this.roles = dataIdToken.role;
             this.operatorId = dataIdToken.id;
-            console.log(dataIdToken);
-            //console.log(accessIdToken);
-           
+            // console.log(dataIdToken);
+            //// console.log(accessIdToken);
+
             this.SetAuthorizationData(token, id_token);
         } else {
             this.ResetAuthorizationData();
-            this._router.navigate(['/home']);
+            this._router.navigate(['/unauthorised']);
         }
     }
 
 
     public Logoff() {
         // /connect/endsession?id_token_hint=...&post_logout_redirect_uri=https://myapp.com
-        console.log('BEGIN Authorize, no auth data');
+        // console.log('BEGIN Authorize, no auth data');
 
         let authorizationUrl = this.idServerUrl + 'connect/endsession';
 
@@ -296,7 +294,7 @@ export class SecurityService {
             let encoded = token.split('.')[1];
             data = JSON.parse(this.urlBase64Decode(encoded));
         }
-        // console.log(data);
+        // // console.log(data);
         return data;
     }
 

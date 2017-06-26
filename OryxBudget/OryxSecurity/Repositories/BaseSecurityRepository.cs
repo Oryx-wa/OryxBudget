@@ -66,6 +66,14 @@ namespace OryxSecurity.Repositories
             dataContext.Entry(entity).State = EntityState.Modified;
         }
 
+       
+
+        public virtual void Update(TEntity entity, string userId)
+        {
+            //updateEntityForUpdate(entity, userId);
+            dbSet.Update(entity);
+        }
+
         public bool Contains(TId id)
         {
             return GetAll().Any(x => x.Id.Equals(id));

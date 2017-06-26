@@ -18,7 +18,7 @@ namespace OryxDomainServices
         /// </summary>
         /// <param name="entity">The entity.</param>
         void Add(IEntityBase entity);
-       // void Add(IEntityBase entity, string userId);
+        void Add(IEntityBase entity, string userId);
 
         /// <summary>
         /// Removes the entity with the specified id.
@@ -31,5 +31,6 @@ namespace OryxDomainServices
         /// </summary>
         /// <param name="entity">The entity.</param>
         void Update(IEntityBase entity);
+        void Update(IEntityBase entity, string userId);
     }
 }

@@ -53,6 +53,9 @@ namespace OryxWebapi.ViewModels.Mappings
             CreateMap<BudgetLineViewModel, BudgetLine>().ReverseMap();
             CreateMap<BudgetLine, BudgetLineViewModel>().ReverseMap();
 
+            CreateMap<BudgetLineStatusHistory, StatusHistoryViewModel>()
+                .ReverseMap();
+
             CreateMap<PeriodViewModel, Period>().ReverseMap();
             CreateMap<Period, PeriodViewModel>().ReverseMap();
 

@@ -1,68 +1,31 @@
-<!--
-<div class="col l2">
-  <div class="card horizontal def-dashboard-image">
-    <div class="card-image">
-      <div *ngIf="operator$ | async; let op; else loading1">
-        <img src="{{op.imageSrc}}" alt="" />
-        <span class="{{op.name}}"></span>
-      </div>
-    </div>
-    <ng-template #loading1>Loading Operator Data...</ng-template>
-  </div>
-</div>
--->
-
 <div class="row">
-  <div class=" ">
+  <div class="col s12 ">    
     <div class=" card  horizontal">
       <div class="card-image  def-dashboard-image">
         <div *ngIf="operator$ | async; let op; else loading1">
           <img src="{{op.imageSrc}}" alt="" />
           <span class="{{op.name}}"></span>
         </div>
+        <ng-template #loading1>Loading Operator Data...
+           <div class="row">
+            <app-notification [loading]="loading$ | async"> </app-notification>
+          </div>
+        </ng-template>
         <div *ngIf="budgets$ | async; let budgets;">
           <h6>
             <a class="waves-effect waves-light" (click)="getLineDetails(budgets[0].id)">{{budgets[0].description}}</a>
           </h6>
         </div>
       </div>
-      <ng-template #loading1>Loading Operator Data...</ng-template>
+      <div class="row">
+        <div class="col s12">
+          <app-notification  [saving]="saving$ | async"> </app-notification>
+        </div>
+      </div>
       <div class="row">
         <div class="container">
           <div class="card-content">
-            <!--
-            <table class=" responsive-table">
-              <thead>
-                <tr>
-                  <th>Description</th>
-                  <th>Budget </th>
-                  <th>Budget USD</th>
-                  <th>Budget LC</th>
-                  <th>Actual </th>
-                  <th>Actual USD</th>
-                  <th>Actual LC</th>
-                  <th>Notes</th>
-                </tr>
-              </thead>
-
-              <tbody *ngIf="budgets$ | async; let budgets; else loading">
-                <tr *ngFor="let item of budgets">
-                  <td> <a class="waves-effect waves-light" (click)="getLineDetails(item.id)">{{item.description}}</a></td>
-                  <td>{{item.totalBudgetAmount | currency:'USD':true:'4.0-0'}}</td>
-                  <td>{{item.totalAmountUSD | currency:'USD':true:'4.0-0'}}</td>
-                  <td>{{item.totalAmountLC | currency:'NGN':true:'4.0-0'}}</td>
-                  <td>{{item.actualBudgetAmount | currency:'USD':true:'4.0-0'}}</td>
-                  <td>{{item.actualAmountLC | currency:'NGN':true:'4.0-0'}}</td>
-                  <td>{{item.actualAmountUSD | currency:'USD':true:'4.0-0'}}</td>
-                  <td> <a class="waves-effect waves-light"><i class="material-icons right">message</i></a></td>
-                  <td> <a class="waves-effect waves-light" (click)="getOperator(op.id)"><i class="material-icons right">refresh</i></a></td>
-                </tr>
-
-              </tbody>
-              <ng-template #loading>Loading Operator Data...</ng-template>
-            </table>
-            -->
-            <div *ngIf="budgets$ | async; let budgets; else loading">
+            <div *ngIf="budgets$ | async; let budgets; ">
               <div class="row">
                 <form materialize class="col s12">
                   <div class="input-field col s2">
@@ -88,26 +51,21 @@
                   </div>
                 </form>
               </div>
-              <div class="row">
-                <ag-grid-angular style="width: 100%; height: 120px;" class="ag-material" [gridOptions]="gridOptions" [columnDefs]="columnDefs"
-                  [rowData]="budgets" groupHeaders toolPanelSuppressGroups toolPanelSuppressValues rowHeight="48" rowSelection="single"
-                  (gridReady)="onReady($event)">
-                </ag-grid-angular>
-              </div>
-
-
-              
-                <div class="container">
-                  <div *ngIf="lines$ | async;let lines; else loading2">
-                    <app-line-details [lines]="lines" (comments)="getComments($event)" [commentSaved]="commentSaved$" [lineComments]="lineComments$ | async"
-                      (saveComments)="saveComments($event)" [roles]="roles">
-                    </app-line-details>
-                  </div>
-                </div>
-              
-
-              <ng-template #loading2>Loading Details ...</ng-template>
+            </div>            
+            <div *ngIf="lines$ | async;let lines; else loading2">
+              <app-line-details [lines]="lines" (comments)="getComments($event)" [commentSaved]="commentSaved$"
+              [lineComments]="lineComments$ | async" [lineStatus] = "lineStatus$ | async" (addNewComment)="newComment($event)"
+                [showSubCom]="showSubCom$ | async" [showTecCom]="showTecCom$ | async" [showMalCom]="showMalCom$ | async" [showFinal]="showFinal$ | async"
+                (saveComments)="saveComments($event)" [roles]="roles" [napims]="true">
+              </app-line-details>
             </div>
+            <ng-template #loading2>Loading Details ...
+              <div class="row">
+                  <div class="col s6">
+                    <app-notification [loading]="loading$ | async" [saving]="saving$ | async"> </app-notification>
+                  </div>
+              </div>
+            </ng-template>
           </div>
         </div>
       </div>

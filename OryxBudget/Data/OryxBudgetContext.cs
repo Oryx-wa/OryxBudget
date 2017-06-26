@@ -36,6 +36,9 @@ namespace Data
         public DbSet<BudgetCode> BudgetCodes { get; set; }
         public DbSet<BudgetCodeLog> BudgetCodeLogs { get; set; }
 
+        public DbSet<Attachment> Attachments { get; set; }
+        public DbSet<AttachmentLog> AttachmentLogs { get; set; }
+
         //Operator
         public DbSet<Operator> Operators { get; set; }
         public DbSet<OperatorLog> OperatorLogs { get; set; }
@@ -45,6 +48,12 @@ namespace Data
 
         public DbSet<ContactPerson> ContactPersons { get; set; }
         public DbSet<ContactPersonLog> ContactPersonLogs { get; set; }
+
+        public DbSet<StatusHistory> StatusHistory { get; set; }
+        public DbSet<StatusHistoryLog> StatusHistoryLogs { get; set; }
+        public DbSet<BudgetLineStatusHistory> BudgetLineStatusHistory { get; set; }
+
+
 
 
         #endregion

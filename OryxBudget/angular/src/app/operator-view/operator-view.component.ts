@@ -1,10 +1,13 @@
 import { Component, OnInit, Input, OnChanges } from '@angular/core';
 import { GridOptions } from 'ag-grid/main';
+import { NotificationsService } from 'angular2-notifications';
 
-import { Budgets, Operators, BudgetLines, LineComments } from './../models';
+import { Budgets, Operators, BudgetLines, LineComments, LineStatus } from './../models';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
-import { Observable } from 'rxjs/Observable';
+import { Observable, } from 'rxjs/Observable';
+// import 'rxjs/observable/timer';
 import { SecurityService } from './../login/security.service';
+// import * as Rx from 'rxjs/Rx';
 
 import { Router, ActivatedRoute, Params } from '@angular/router';
 import { Http, URLSearchParams } from '@angular/http';
@@ -25,21 +28,31 @@ export class OperatorViewComponent implements OnInit, OnChanges {
   lines$: Observable<BudgetLines[]>;
   lineComments$: Observable<LineComments[]>;
   line$: Observable<BudgetLines>;
+  lineStatus$: Observable<LineStatus[]>;
   commentSaved$: BehaviorSubject<boolean> = new BehaviorSubject(true);
   public displayMode: DisplayModeEnum;
   public displayModeEnum = DisplayModeEnum;
+  public showSubCom$: BehaviorSubject<boolean> = new BehaviorSubject(false);
+  public showTecCom$: BehaviorSubject<boolean> = new BehaviorSubject(false);
+  public showMalCom$: BehaviorSubject<boolean> = new BehaviorSubject(false);
+  public showFinal$: BehaviorSubject<boolean> = new BehaviorSubject(false);
   public data: any;
   public uploadUrl = 'Budget/UploadBudget';
   public uploadTitle = '';
   private budgetDesc = '';
   public columnDefs: any[];
+  private colWidth = 110;
   public gridOptions: GridOptions;
+  public loading$: BehaviorSubject<boolean> = new BehaviorSubject(false);
+  public saving$: BehaviorSubject<boolean> = new BehaviorSubject(false);
+
   showDetail = false;
 
   constructor(private route: ActivatedRoute,
     private router: Router,
     private securityService: SecurityService,
-    private _http: Http) {
+    private _http: Http,
+    private _service: NotificationsService) {
     this.gridOptions = <GridOptions>{};
     this.createColumnDefs();
 
@@ -50,9 +63,35 @@ export class OperatorViewComponent implements OnInit, OnChanges {
       this.name = this.securityService.name;
       this.operatorId = this.securityService.operatorId;
       this.roles = this.securityService.roles;
-      console.log(this.roles)
       this.getOperator();
+      // console.log(this.roles)
+      /* const obj = Rx.Observable.timer(1000, 10000);
+      const subsription = obj.subscribe(s => {
+        
+      }); */
+
+      this.roles.map(role => {
+        switch (role) {
+          case 'SubCom':
+            this.showSubCom$.next(true);
+            break;
+          case 'TecCom':
+            this.showTecCom$.next(true);
+            break;
+          case 'MalCom':
+            this.showMalCom$.next(true);
+            break;
+          case 'Final':
+            this.showFinal$.next(true);
+            break;
+          default:
+            break;
+        }
+      });
     }
+
+
+
   }
 
   ngOnChanges(changes: any) {
@@ -61,7 +100,7 @@ export class OperatorViewComponent implements OnInit, OnChanges {
 
   getOperator() {
 
-
+    this.loading$.next(true);
     let url = this.securityService.getUrl('Budget/GetByOperator');
     let params: URLSearchParams = new URLSearchParams();
     params.append('operatorId', this.operatorId);
@@ -81,26 +120,94 @@ export class OperatorViewComponent implements OnInit, OnChanges {
       body: '',
       params: params1
     }).map(res => res.json());
-    //this.budgets$.subscribe(b => console.log(b));
+    //this.budgets$.subscribe(b => // console.log(b));
     this.budgets$.subscribe(budgets => {
       if (budgets) {
         this.budgetDesc = budgets[0].description;
         this.getLineDetails(budgets[0].id);
       }
+      this.loading$.next(false);
+      this._service.success('loaded Successfully', 'Budget loaded successfully');
     });
+
 
   }
 
+
+  getComments(line: BudgetLines) {
+    let url = this.securityService.getUrl('Budget/GetLineComment');
+    const params1: URLSearchParams = new URLSearchParams();
+    params1.append('budgetId', line.budgetId);
+    params1.append('code', line.code);
+
+    this.lineComments$ = this._http.get(url, {
+      headers: this.securityService.getHeaders(),
+      body: '',
+      params: params1
+    }).map(res => res.json());
+    this.commentSaved$.next(false);
+
+    url = this.securityService.getUrl('Budget/GetLineStatus');
+    this.lineStatus$ = this._http.get(url, {
+      headers: this.securityService.getHeaders(),
+      body: '',
+      params: params1
+    }).map(res => res.json());
+
+    this.lineStatus$.subscribe(s => console.log(s));
+    this.commentSaved$.next(false);
+  }
+
+  saveComments(data: any) {
+    this.saving$.next(true);
+    const url = this.securityService.getUrl('Budget/AddLineComment');
+    const params1: URLSearchParams = new URLSearchParams();
+    params1.append('budgetId', data.budgetId);
+    params1.append('code', data.code);
+    // console.log(JSON.stringify(data.data));
+    const ret = this._http.post(url,
+      { comments: JSON.stringify(data.data), budgetline: JSON.stringify(data.line) }, {
+        headers: this.securityService.getHeaders(),
+        search: params1
+      })
+      .map(res => res.json())
+      .subscribe(saved => {
+        this.commentSaved$.next(true);
+        this.saving$.next(false);
+        this._service.success('Comments', 'Comments successfully');
+      });
+
+    // this.commentSaved$.next(true);
+  }
+
+  newComment(data: any) {
+    const url = this.securityService.getUrl('Budget/AddComment');
+    const params1: URLSearchParams = new URLSearchParams();
+    // params1.append('budgetId', data.budgetId);
+    // params1.append('code', data.code);
+
+    const ret = this._http.post(url,
+      data, {
+        headers: this.securityService.getHeaders(),
+        // search: params1
+      })
+      .map(res => res.json())
+      .subscribe(saved => {
+        // this.commentSaved$.next(true);
+        // this.saving$.next(false);
+        // this._service.success('Comments', 'Comments successfully');
+      });
+
+  }
   changeDisplayMode(mode: DisplayModeEnum) {
-    // console.log(mode); 
+    // // console.log(mode); 
     this.displayMode = mode;
   }
 
-  upload(id: string, description: string) {
-    this.data = { id: id };
+  upload(budget: Budgets) {
+    this.data = { id: budget.id };
     this.changeDisplayMode(this.displayModeEnum.Upload);
-    this.budgetDesc = description;
-    this.uploadTitle = 'Upload Budget for ' + this.budgetDesc;
+    this.uploadTitle = 'Upload Budget for ' + budget.description;
   }
 
   setUploadType(type: string) {
@@ -127,29 +234,122 @@ export class OperatorViewComponent implements OnInit, OnChanges {
         children: [
           {
             headerName: 'Budget LC', field: 'opBudgetLC',
-            width: 200, pinned: true,
+            width: this.colWidth, pinned: true,
             cellRendererFramework: CurrencyComponent,
             currency: 'NGN'
           },
           {
             headerName: 'Budget USD', field: 'opBudgetUSD',
-            width: 140, pinned: true,
+            width: this.colWidth, pinned: true,
             cellRendererFramework: CurrencyComponent,
             currency: 'USD'
           },
           {
             headerName: 'Budget FC', field: 'opBudgetFC',
-            width: 140, pinned: true,
+            width: this.colWidth, pinned: true,
+            cellRendererFramework: CurrencyComponent,
+            currency: 'USD'
+          },
+        ]
+      },
+      {
+        headerName: 'Sub Commitee',
+        children: [
+          {
+            headerName: 'Budget LC', field: 'subComBudgetLC',
+            width: this.colWidth, pinned: true,
+            cellRendererFramework: CurrencyComponent,
+            currency: 'NGN'
+          },
+          {
+            headerName: 'Budget USD', field: 'subComBudgetUSD',
+            width: this.colWidth, pinned: true,
+            cellRendererFramework: CurrencyComponent,
+            currency: 'USD'
+          },
+          {
+            headerName: 'Budget FC', field: 'subComBudgetFC',
+            width: this.colWidth, pinned: true,
+            cellRendererFramework: CurrencyComponent,
+            currency: 'USD'
+          },
+        ]
+      },
+      {
+        headerName: 'Technical Commitee',
+        children: [
+          {
+            headerName: 'Budget LC', field: 'tecComBudgetLC',
+            width: this.colWidth, pinned: true,
+            cellRendererFramework: CurrencyComponent,
+            currency: 'NGN'
+          },
+          {
+            headerName: 'Budget USD', field: 'tecComBudgetUSD',
+            width: this.colWidth, pinned: true,
+            cellRendererFramework: CurrencyComponent,
+            currency: 'USD'
+          },
+          {
+            headerName: 'Budget FC', field: 'tecComBudgetFC',
+            width: this.colWidth, pinned: true,
+            cellRendererFramework: CurrencyComponent,
+            currency: 'USD'
+          },
+        ]
+      },
+      {
+        headerName: 'Management Commitee',
+        children: [
+          {
+            headerName: 'Budget LC', field: 'malComBudgetLC',
+            width: this.colWidth, pinned: true,
+            cellRendererFramework: CurrencyComponent,
+            currency: 'NGN'
+          },
+          {
+            headerName: 'Budget USD', field: 'malComBudgetUSD',
+            width: this.colWidth, pinned: true,
+            cellRendererFramework: CurrencyComponent,
+            currency: 'USD'
+          },
+          {
+            headerName: 'Budget FC', field: 'malComBudgetFC',
+            width: this.colWidth, pinned: true,
+            cellRendererFramework: CurrencyComponent,
+            currency: 'USD'
+          },
+        ]
+      },
+      {
+        headerName: 'Final Budget',
+        children: [
+          {
+            headerName: 'Budget LC', field: 'finalBudgetLC',
+            width: this.colWidth, pinned: true,
+            cellRendererFramework: CurrencyComponent,
+            currency: 'NGN'
+          },
+          {
+            headerName: 'Budget USD', field: 'finalBudgetUSD',
+            width: this.colWidth, pinned: true,
+            cellRendererFramework: CurrencyComponent,
+            currency: 'USD'
+          },
+          {
+            headerName: 'Budget FC', field: 'finalBudgetFC',
+            width: this.colWidth, pinned: true,
             cellRendererFramework: CurrencyComponent,
             currency: 'USD'
           },
         ]
       }
+
     ];
   }
 
   getLineDetails(id: string) {
-
+    this.loading$.next(true);
     this.showDetail = true;
     const url = this.securityService.getUrl('Budget/GetBudgetDetails');
     const params1: URLSearchParams = new URLSearchParams();
@@ -161,9 +361,61 @@ export class OperatorViewComponent implements OnInit, OnChanges {
       params: params1
     }).map(res => res.json());
     this.commentSaved$.next(true);
+    this.changeDisplayMode(DisplayModeEnum.Budget);
+    this.lines$.subscribe(lines => this.loading$.next(false));
 
   }
+  public showColumn(columnType: string) {
+    let columns: any[] = [];
+    switch (columnType) {
 
+      case 'subCom':
+        columns = ['subComBudgetLC', 'subComBudgetUSD', 'subComBudgetFC'];
+        // this.gridOptions.columnApi.setColumnsVisible(columns, !this.showSubCom);
+        // this.showSubCom = !this.showSubCom;
+        break;
+      default:
+        break;
+
+    }
+  }
+
+  private onReady() {
+    // // console.log('onReady');
+    this.showSubCom$.subscribe(checked => {
+      this.gridOptions.columnApi.setColumnsVisible(
+        ['subComBudgetLC', 'subComBudgetUSD', 'subComBudgetFC'],
+        checked);
+      // this.gridOptions.api.sizeColumnsToFit();
+    });
+
+    this.showTecCom$.subscribe(checked => {
+      this.gridOptions.columnApi.setColumnsVisible(
+        ['tecComBudgetLC', 'tecComBudgetUSD', 'tecComBudgetFC'],
+        checked);
+      // this.gridOptions.api.sizeColumnsToFit();
+    });
+
+    this.showMalCom$.subscribe(checked => {
+      this.gridOptions.columnApi.setColumnsVisible(
+        ['malComBudgetLC', 'malComBudgetUSD', 'malComBudgetFC'],
+        checked);
+      //this.gridOptions.api.sizeColumnsToFit();
+    });
+
+    this.showFinal$.subscribe(checked => {
+      this.gridOptions.columnApi.setColumnsVisible(
+        ['finalBudgetLC', 'finalBudgetUSD', 'finalBudgetFC'],
+        checked);
+      // this.gridOptions.api.sizeColumnsToFit();
+    });
+
+
+
+    // this.gridOptions.api.sizeColumnsToFit();
+
+
+  }
 
 }
 

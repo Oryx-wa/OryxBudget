@@ -30,7 +30,7 @@ namespace Entities.Budgets
         public decimal FinalBudgetLC { get; set; }
         public decimal FinalBudgetUSD { get; set; }
         
-        public string BudgetId { get; set; }
+        public Guid BudgetId { get; set; }
         public BudgetStatus BudgetStatus { get; set; }
 
 

@@ -19,6 +19,6 @@ export interface BudgetLines {
     finalBudgetFC: number;
     finalBudgetLC: number;
     finalBudgetUSD: number;
-    lineStatus: string;
+    lineStatus: number;
     budgetId: string;
 }
