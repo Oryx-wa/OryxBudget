@@ -96,6 +96,69 @@ namespace OryxWebApi.Controllers.BudgetLineControllers
             return Json("File Uploaded"); //null just to make error free
         }
 
+        [Route("UpdateNapimsBudgetFigures")]
+        [HttpPost]
+        public JsonResult UpdateNapimsBudgetFigures(string napimsUserType, [FromBody]NapimsBudgetViewModel napimsBudgetVm)
+        {
+            var budgetLine = new BudgetLine();
+            if (napimsUserType.Equals("TecCom"))
+            {
+                budgetLine = CreateBudgetLineForTecCom(napimsBudgetVm);
+            }
+            else if (napimsUserType.Equals("SubCom"))
+                budgetLine = CreateBudgetLineForSubCom(napimsBudgetVm);
+            else if (napimsUserType.Equals("MalCom"))
+                budgetLine = CreateBudgetLineForMalCom(napimsBudgetVm);
+
+            _budgetLineService.Update(budgetLine);
+            _budgetLineService.SaveChanges();
+            return Json(_budgetLineService.Get(budgetLine.Id));
+        }
+
+        private BudgetLine CreateBudgetLineForMalCom(NapimsBudgetViewModel napimsBudgetVm)
+        {
+            var budgetLine = _budgetLineService.Get(napimsBudgetVm.Id);
+            if (budgetLine != null)
+            {
+                budgetLine.BudgetId = new Guid(napimsBudgetVm.BudgetId);
+                budgetLine.RowNumber = napimsBudgetVm.RowNumber;
+                budgetLine.MalComBudgetFC = napimsBudgetVm.MalComBudgetFC;
+                budgetLine.MalComBudgetLC = napimsBudgetVm.MalComBudgetLC;
+                budgetLine.MalComBudgetUSD = napimsBudgetVm.MalComBudgetUSD;
+            }
+
+            return budgetLine;
+        }
+
+        private BudgetLine CreateBudgetLineForSubCom(NapimsBudgetViewModel napimsBudgetVm)
+        {
+            var budgetLine = _budgetLineService.Get(napimsBudgetVm.Id);
+            if (budgetLine != null)
+            {
+                budgetLine.BudgetId = new Guid(napimsBudgetVm.BudgetId);
+                budgetLine.RowNumber = napimsBudgetVm.RowNumber;
+                budgetLine.SubComBudgetFC = napimsBudgetVm.SubComBudgetFC;
+                budgetLine.SubComBudgetLC = napimsBudgetVm.SubComBudgetLC;
+                budgetLine.SubComBudgetUSD = napimsBudgetVm.SubComBudgetUSD;
+            }
+
+            return budgetLine;
+        }
+
+        private BudgetLine CreateBudgetLineForTecCom(NapimsBudgetViewModel napimsBudgetVm)
+        {
+            var budgetLine = _budgetLineService.Get(napimsBudgetVm.Id);
+            if (budgetLine != null)
+            {
+                budgetLine.BudgetId = new Guid(napimsBudgetVm.BudgetId);
+                budgetLine.RowNumber = napimsBudgetVm.RowNumber;
+                budgetLine.TecComBudgetFC = napimsBudgetVm.TecComBudgetFC;
+                budgetLine.TecComBudgetLC = napimsBudgetVm.TecComBudgetLC;
+                budgetLine.TecComBudgetUSD = napimsBudgetVm.TecComBudgetUSD;
+            }
+
+            return budgetLine;
+        }
     };
 }
         
