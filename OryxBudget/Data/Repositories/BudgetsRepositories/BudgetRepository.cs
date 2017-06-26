@@ -17,28 +17,46 @@ namespace Data.Repositories.BudgetsRepositories
 
         }
 
-        public IEnumerable<BudgetActuals> GetBudgetActuals (string budgetId)
+        public IEnumerable<BudgetActuals> GetBudgetActuals (string id)
         {
-            var sql = $@" Select a.Code, SUM(a.AmountUSD + a.AmountLCInUSD) Budget, SUM(a.AmountUSD) BudgetUSD , SUM(a.AmountLC) BudgetLC, SUM(a.AmountLCInUSD) BudgetLCInUSD,
-SUM(b.AmountLC) ActualLC,  SUM(b.AmountUSD) ActualUSD, SUM(b.AmountLCInUSD + b.AmountUSD) Actual from BudgetLines a left outer join Actuals b 
-on a.BudgetId = b.BudgetId and a.Code = b.Code where a.BudgetId = '{budgetId}' Group by a.Code
+            var sql = $@"Select SUM(a.FinalBudgetFC) FinalBudgetFC, SUM(i.OpActualFC) OpActualFC, 
+	SUM(i.OpActualLC) OpActualLC, SUM(i.OpActualLCInUSD) OpActualLCInUSD, SUM(i.OpActualUSD) OpActualUSD,
+	f.OperatorId,  f.Id BudgetId, g.Name OperatorName, h.Code, h.Description, h.FatherNum, h.Level, h.Type
+from Budgets f join BudgetLines a 
+	on f.id = a.BudgetId
+	join Operators g on f.OperatorId = g.id
+	join BudgetCodes h on a.Code = h.Code
+	left outer join Actuals i on f.id = i.BudgetId
+where f.id = '{id}'
+Group by f.OperatorId,  f.id,h.Code, h.Description, h.FatherNum, h.Level, g.Name, h.Type
 union all
-Select c.level1 , SUM(a.AmountUSD + a.AmountLCInUSD) Budget, SUM(a.AmountUSD) BudgetUSD , SUM(a.AmountLC) BudgetLC, SUM(a.AmountLCInUSD) BudgetLCInUSD,
-	SUM(b.AmountLC) ActualLC,  SUM(b.AmountUSD) ActualUSD, SUM(b.AmountLCInUSD + b.AmountUSD) Actual
-from BudgetLines a left outer join Actuals b 
-	on a.BudgetId = b.BudgetId and a.Code = b.Code
-	join BudgetCodes c on a.Code = c.Code	
-where a.BudgetId = '{budgetId}'
-Group by c.level1
+Select 	SUM(a.FinalBudgetFC) FinalBudgetFC, SUM(i.OpActualFC) OpActualFC, 
+	SUM(i.OpActualLC) OpActualLC, SUM(i.OpActualLCInUSD) OpActualLCInUSD, SUM(i.OpActualUSD) OpActualUSD,
+	f.OperatorId,  f.Id, g.Name OperatorName, h.level2, h.Description, h.FatherNum, h.Level, h.Type
+from Budgets f join BudgetLines a 
+	on f.id = a.BudgetId
+	join Operators g on f.OperatorId = g.id
+	left outer join Actuals i on f.id = i.BudgetId
+	join (Select a.Code,  b.Description, b.Level, b.code level2, b.FatherNum, b.Type
+from BudgetCodes a join BudgetCodes b
+	on a.FatherNum = b.Code
+where a.Level = '3') h on a.Code = h.Code
+where f.id = '{id}'
+Group by f.OperatorId,  f.id,h.level2, h.Description, h.FatherNum, h.Level, g.Name, h.Type
 union all
-Select c.level2 , SUM(a.AmountUSD + a.AmountLCInUSD) Budget, SUM(a.AmountUSD) BudgetUSD , SUM(a.AmountLC) BudgetLC, SUM(a.AmountLCInUSD) BudgetLCInUSD,
-	SUM(b.AmountLC) ActualLC,  SUM(b.AmountUSD) ActualUSD, SUM(b.AmountLCInUSD + b.AmountUSD) Actual
-from BudgetLines a left outer join Actuals b 
-	on a.BudgetId = b.BudgetId and a.Code = b.Code
-	join BudgetCodes c on a.Code = c.Code	
-where a.BudgetId = '{budgetId}'
-Group by c.level2
-Order By 1";
+Select 	SUM(a.FinalBudgetFC) FinalBudgetFC, SUM(i.OpActualFC) OpActualFC, 
+	SUM(i.OpActualLC) OpActualLC, SUM(i.OpActualLCInUSD) OpActualLCInUSD, SUM(i.OpActualUSD) OpActualUSD,
+	f.OperatorId,  f.Id, g.Name OperatorName, h.level2, h.Description, h.FatherNum, h.Level, -1
+from Budgets f join BudgetLines a 
+	on f.id = a.BudgetId
+	join Operators g on f.OperatorId = g.id
+	left outer join Actuals i on f.id = i.BudgetId
+	join (Select a.Code,  b.Description, b.Level, b.code level2, b.FatherNum, b.Type
+from BudgetCodes a join BudgetCodes b
+	on a.level1 = b.Code) h on a.Code = h.Code
+where f.id = '{id}'
+Group by f.OperatorId,  f.id,h.level2, h.Description, h.FatherNum, h.Level, g.Name, h.Type
+Order by 9";
 
             return RDFacadeExtensions.GetModelFromQuery<BudgetActuals>(this.dataContext.Database, sql);
         }

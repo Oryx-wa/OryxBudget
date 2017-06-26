@@ -44,6 +44,10 @@ namespace Entities.Budgets
     public class BudgetActuals
     {
         public string Code { get; set; }
+        public string Description { get; set; }
+        //public string SecondDescription { get; set; }       
+        public string FatherNum { get; set; }
+        public string Level { get; set; }
         public Decimal FinalBudgetFC { get; set; }
         public Decimal FinalBudgetLC { get; set; }
         public Decimal FinalBudgetUSD { get; set; }
@@ -51,18 +55,11 @@ namespace Entities.Budgets
         public Decimal OpActualFC { get; set; }
         public Decimal OpActualLC { get; set; }
         public Decimal OpActualUSD { get; set; }
-        public decimal SubComActualFC { get; set; }
-        public decimal SubComActualLC { get; set; }
-        public decimal SubComActualUSD { get; set; }
-        public decimal TecComActualFC { get; set; }
-        public decimal TecComActualLC { get; set; }
-        public decimal TecComActualUSD { get; set; }
-        public decimal MalComActualFC { get; set; }
-        public decimal MalComActualLC { get; set; }
-        public decimal MalComActualUSD { get; set; }
-        public decimal FinalActualFC { get; set; }
-        public decimal FinalActualLC { get; set; }
-        public decimal FinalActualUSD { get; set; }
+        public decimal OpActualLCInUSD { get; set; }
+
+        public Guid BudgetId { get; set; }
+        public BudgetStatus BudgetStatus { get; set; }
+        public WorkProgramTypeEnum Type { get; set; }
 
     }
 

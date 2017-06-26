@@ -270,6 +270,21 @@ namespace OryxBudgetService.BudgetsServices
 
         }
 
+        public IEnumerable<BudgetActuals> GetActualDetails(string id, string department)
+        {
+
+            if (department == "All")
+            {
+                return _repository.GetBudgetActuals(id);
+            }
+            else
+            {
+                Enum.TryParse(department, out WorkProgramTypeEnum type);
+
+                return _repository.GetBudgetActuals(id).Where(b => b.Type == type || b.Type == WorkProgramTypeEnum.Header);
+            }
+        }
+
         public IEnumerable<LineComment> GetLineComment(string id, string code)
         {
             return _lineCommentRepository.GetAll().Where(c => c.BudgetId.ToString() == id && c.Code == code);

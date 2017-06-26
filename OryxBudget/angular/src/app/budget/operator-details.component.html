@@ -25,7 +25,7 @@
               <div class="container">
                 <div class="card-image  def-dashboard-image">
                   <div *ngIf="operator$ | async; let op; else loading1">
-                    <img src="{{op.imageSrc}}" alt="" />
+                    <!--<img src="{{op.imageSrc}}" alt="" />-->
                     <span class="{{op.name}}"></span>
                   </div>
                   <ng-template #loading1>Loading Operator Data...
@@ -64,7 +64,7 @@
                               </div>
                             </div>
                             <div class="row">
-                              <button [disabled]="form.invalid || form.pristine" class="wave-effect wave-light btn" type="submit" name="action">Initialise</button>
+                              <button [disabled]="form.invalid || form.pristine" class="wave-effect wave-light btn" type="submit" name="action">Save & Print</button>
                             </div>
                           </form>
                    

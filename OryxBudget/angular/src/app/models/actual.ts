@@ -1,13 +1,13 @@
 export interface Actual {
-   
     id: string;
     code: string;
     description: string;
-    level: number;
+    level: string;
     fatherNum: string;
     opActualFC: number;
     opActualLC: number;
-    opActualUSD: number;   
+    opActualUSD: number;
+    opActualCInUSD: number;
     subComActualFC: number;
     subComActualLC: number;
     subComActualUSD: number;
@@ -21,6 +21,6 @@ export interface Actual {
     finalActualLC: number;
     finalActualUSD: number;
     lineStatus: string;
-    actualId: string;
-
+    budgetId: string;
+    finalBudgetFC: number;
 }

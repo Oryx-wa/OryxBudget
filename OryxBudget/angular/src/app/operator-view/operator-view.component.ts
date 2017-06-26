@@ -2,7 +2,7 @@ import { Component, OnInit, Input, OnChanges } from '@angular/core';
 import { GridOptions } from 'ag-grid/main';
 import { NotificationsService } from 'angular2-notifications';
 
-import { Budgets, Operators, BudgetLines, LineComments, LineStatus } from './../models';
+import { Budgets, Operators, BudgetLines, LineComments, LineStatus, Actual } from './../models';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { Observable, } from 'rxjs/Observable';
 // import 'rxjs/observable/timer';
@@ -26,6 +26,8 @@ export class OperatorViewComponent implements OnInit, OnChanges {
   budgets$: Observable<Budgets[]>;
   operator$: Observable<Operators>;
   lines$: Observable<BudgetLines[]>;
+  actuals$: Observable<Actual[]>;
+
   lineComments$: Observable<LineComments[]>;
   line$: Observable<BudgetLines>;
   lineStatus$: Observable<LineStatus[]>;
@@ -47,8 +49,10 @@ export class OperatorViewComponent implements OnInit, OnChanges {
   public loading$: BehaviorSubject<boolean> = new BehaviorSubject(false);
   public saving$: BehaviorSubject<boolean> = new BehaviorSubject(false);
   public dept = 'All';
+  public budgetId = '';
 
   showDetail = false;
+  actual = false;
 
   constructor(private route: ActivatedRoute,
     private router: Router,
@@ -140,7 +144,14 @@ export class OperatorViewComponent implements OnInit, OnChanges {
     this.budgets$.subscribe(budgets => {
       if (budgets) {
         this.budgetDesc = budgets[0].description;
-        this.getLineDetails(budgets[0].id);
+        this.budgetId = budgets[0].id;
+        if (this.displayMode === this.displayModeEnum.Budget) {
+          this.getLineDetails(budgets[0].id);
+        } else {
+          this.getActuals(budgets[0].id);
+        }
+
+
       }
       this.loading$.next(false);
       this._service.success('loaded Successfully', 'Budget loaded successfully');
@@ -220,9 +231,13 @@ export class OperatorViewComponent implements OnInit, OnChanges {
     this.displayMode = mode;
   }
 
-  showActual(id: string){
-    console.log(id);
-    // this.rou
+  showActual() {
+    this.changeDisplayMode(DisplayModeEnum.Actual);
+    this.getActuals(this.budgetId);
+  }
+
+  showBudget() {
+    this.changeDisplayMode(DisplayModeEnum.Budget);
   }
 
   upload(budget: Budgets) {
@@ -370,6 +385,7 @@ export class OperatorViewComponent implements OnInit, OnChanges {
   }
 
   getLineDetails(id: string) {
+    this.changeDisplayMode(DisplayModeEnum.Budget);
     this.loading$.next(true);
     this.showDetail = true;
     const url = this.securityService.getUrl('Budget/GetBudgetDetails');
@@ -384,9 +400,28 @@ export class OperatorViewComponent implements OnInit, OnChanges {
       params: params1
     }).map(res => res.json());
     this.commentSaved$.next(true);
-    this.changeDisplayMode(DisplayModeEnum.Budget);
+
     this.lines$.subscribe(lines => this.loading$.next(false));
 
+  }
+
+  getActuals(id: string) {
+    this.loading$.next(true);
+    //this.showDetail = true;
+    const url = this.securityService.getUrl('Budget/GetActualDetails');
+    const params1: URLSearchParams = new URLSearchParams();
+    params1.append('id', id);
+    params1.append('department', this.dept);
+
+
+    this.actuals$ = this._http.get(url, {
+      headers: this.securityService.getHeaders(),
+      body: '',
+      params: params1
+    }).map(res => res.json());
+    this.commentSaved$.next(true);
+    //this.changeDisplayMode(DisplayModeEnum.Budget);
+    this.actuals$.subscribe(lines => this.loading$.next(false));
   }
   public showColumn(columnType: string) {
     let columns: any[] = [];

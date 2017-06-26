@@ -1,19 +1,14 @@
 <div>
-<app-main-nav></app-main-nav>
-<main>
-<div class="row" *ngIf="securityService.IsAuthorized()">
-    <div class= "col s6 l6">
-        <div class="col s12 l12">
-            <h5> Welcome {{securityService.name}} </h5>
+    <app-main-nav></app-main-nav>
+    <main>
+        <div class="row" *ngIf="securityService.IsAuthorized()">
+            <div class="container">
+            <div style="clear: both">               
+                <h5 style="float: left"> Welcome {{securityService.name}} </h5>
+                <h6 style="float: right"> Roles:{{securityService.roles}} </h6>   
+            </div>    
+            </div>
         </div>
-        <div class="col s12 l12 adjust">
-            <h6> Roles:{{securityService.roles}} </h6>
-        </div>
-    </div>
-
-</div>
-<div class="row">
-<router-outlet></router-outlet>
-</div>
-</main>
+        <router-outlet></router-outlet>
+    </main>
 </div>
