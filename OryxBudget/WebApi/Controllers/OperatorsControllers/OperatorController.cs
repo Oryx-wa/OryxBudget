@@ -12,6 +12,7 @@ using System.Threading.Tasks;
 using OryxBudgetService.OperatorsServices;
 using OryxWebApi.ViewModels.OperatorsViewModels;
 using Entities.Operators;
+using OryxSecurity.Services;
 
 namespace OryxWebApi.Controllers.OperatorsControllers
 {
@@ -19,11 +20,13 @@ namespace OryxWebApi.Controllers.OperatorsControllers
     {
         private readonly OperatorService _operatorService;
         private BudgetService _budgetService;
+        protected IUserResolverService _userResolverService;
 
-        public OperatorController(OperatorService operatorService, BudgetService budgetService)
+        public OperatorController(OperatorService operatorService, BudgetService budgetService, IUserResolverService userResolverService)
         {
             _operatorService = operatorService;
             _budgetService = budgetService;
+            _userResolverService = userResolverService;
         }
 
         // POST api/values
@@ -66,8 +69,10 @@ namespace OryxWebApi.Controllers.OperatorsControllers
         [HttpGet]
         public override JsonResult Get()
         {
-            var ops = _operatorService.GetAll();
+            var operatorId = _userResolverService.GetId();
+            var ops = (operatorId == "Napims") ? _operatorService.GetAll() : _operatorService.GetAll().Where(c => c.Id.ToString() == operatorId);
             IList<dynamic> ret = new List<dynamic>();
+            
             foreach (var op in ops)
             {
                 var budget = _budgetService.GetByOperatorId(op.Id.ToString()).FirstOrDefault();

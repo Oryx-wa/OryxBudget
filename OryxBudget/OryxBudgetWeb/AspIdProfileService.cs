@@ -66,7 +66,11 @@ namespace OryxBudgetWeb
                 if (!string.IsNullOrEmpty(user.OperatorId))
                 {
                     claims.Add(new System.Security.Claims.Claim(JwtClaimTypes.Id, user.OperatorId));
-                    // claims.Add(new System.Security.Claims.Claim(JwtClaimTypes.Role, user.UserName));
+                    // claims.Add(new System.Security.Claims.Claim(JwtClaimTypes.Role, user.OperatorId));
+                }
+                else
+                {
+                    claims.Add(new System.Security.Claims.Claim(JwtClaimTypes.Id, "Napims"));
                 }
 
                 if (user.TecCom)

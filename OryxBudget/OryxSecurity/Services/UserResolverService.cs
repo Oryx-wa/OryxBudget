@@ -32,6 +32,13 @@ namespace OryxSecurity.Services
         {            
             return _context.HttpContext.User?.Claims.Where(c => c.Type == "name").FirstOrDefault().Value;
         }
+
+        public string GetId()
+        {
+            return _context.HttpContext.User?.Claims
+                 .Where(c => c.Type == "id").FirstOrDefault().Value;
+
+        }
     }
 
     public interface IUserResolverService
@@ -39,6 +46,7 @@ namespace OryxSecurity.Services
         string GetUser();
         IEnumerable<string> GetRoles();
         string GetUserName();
+        string GetId();
 
     }
 }

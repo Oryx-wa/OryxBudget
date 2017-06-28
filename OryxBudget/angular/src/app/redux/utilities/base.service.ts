@@ -2,12 +2,9 @@ import { Injectable } from '@angular/core';
 import { Http, Response, Headers, URLSearchParams } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/do';
-// import { LoginActions, TokenActions } from '../actions';
-import { AppState, } from '../../redux';
-// import { LoginSTATE } from './../login';
 import { Store } from '@ngrx/store';
 // import { Token } from './../login/models/';
-
+import { AppState, LoginSTATE, UserSelector, TokenSelector, BudgetActions, Token} from '../../redux';
 import { Configuration } from '../../app.constants';
 import { SecurityService } from '../../login/security.service';
 //import * as loginSelectors from  './../../selectors/login.selector';
@@ -16,13 +13,14 @@ import { SecurityService } from '../../login/security.service';
 export class BaseService {
     protected _useBackEnd: boolean;
     private _actionUrl: string;
-    private token: any;
+    private token: string;
     private idServerUrl: string;
     public b1Url: string;
     public actionUrl: string;
     public api: string;
     public headers: Headers;
     private dataFolder: string;
+    private token$: Observable<string>;
 
     constructor(protected _http: Http, protected _configuration: Configuration,
         protected store: Store<AppState>
@@ -37,6 +35,8 @@ export class BaseService {
         }
         this.dataFolder = _configuration.data;
 
+        this.token$ = this.store.select(TokenSelector.accessToken);
+        this.token$.subscribe(token => this.token = token);
         
         // this.token = this.securityService.GetToken();
     }
@@ -45,7 +45,7 @@ export class BaseService {
         this.headers = new Headers();
         this.headers.append('Content-Type', 'application/json');
         this.headers.append('Accept', 'application/json');
-        let token = this.token.access;
+        let token = this.token;
         console.log(token);
         if (token !== '') {
             this.headers.append('Authorization', 'Bearer ' + token);
@@ -64,14 +64,14 @@ export class BaseService {
     }
 
     protected getUrl = (urlPart: string): string => {
-        return this._actionUrl + '/' + urlPart + '/';
+        return this._actionUrl  + urlPart + '/';
     }
 
     protected getHeaders = (): Headers => {
         let headers = new Headers();
         headers.append('Content-Type', 'application/json');
         headers.append('Accept', 'application/json');
-        let token = this.token.access;
+        let token = this.token;
 
         if (token !== '') {
             headers.append('Authorization', 'Bearer ' + token);

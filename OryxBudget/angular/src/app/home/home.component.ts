@@ -5,7 +5,7 @@ import { SecurityService } from './../login/security.service';
 import { Observable } from 'rxjs/Observable';
 import { Operators } from './../models/operators';
 import { LoginActions, TokenActions } from '../redux/login/actions';
-import { AppState, LoginSTATE, UserSelector, TokenSelector } from '../redux';
+import { AppState, LoginSTATE, UserSelector, TokenSelector, BudgetActions } from '../redux';
 import { Store } from '@ngrx/store';
 import { UserModel } from '../redux/login/models';
 
@@ -49,6 +49,12 @@ export class HomeComponent implements OnInit, OnChanges {
     this.malCom$ = this.store.select(UserSelector.malCom);
     this.napims$ = this.store.select(UserSelector.napims);
     this.operator$ = this.store.select(UserSelector.operator);
+
+    this.authenticated$.subscribe(authenticated => {
+      if (authenticated) {
+        this.store.dispatch(new BudgetActions.LoadItemsAction(''));
+      }
+    });
 
     this.subCom$.subscribe(subCom => {
       if (subCom) {

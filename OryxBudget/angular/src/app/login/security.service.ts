@@ -114,13 +114,13 @@ export class SecurityService {
         this.store('RetUrl', requestedUrl);
         // // console.log('BEGIN Authorize, no auth data');
 
-        let authorizationUrl = this.idServerUrl + 'connect/authorize';
-        let client_id = this.clientId;
-        let redirect_uri = this.returnUrl;
-        let response_type = 'id_token token';
-        let scope = this.scope;
-        let nonce = 'N' + Math.random() + '' + Date.now();
-        let state = Date.now() + '' + Math.random();
+        const authorizationUrl = this.idServerUrl + 'connect/authorize';
+        const client_id = this.clientId;
+        const redirect_uri = this.returnUrl;
+        const response_type = 'id_token token';
+        const scope = this.scope;
+        const nonce = 'N' + Math.random() + '' + Date.now();
+        const state = Date.now() + '' + Math.random();
 
 
         this.store('authStateControl', state);
@@ -223,7 +223,7 @@ export class SecurityService {
 
             this.ngrxStore.dispatch(new TokenActions.SetTokenAction({
                 id: id_token, access: token, authenticated: true,
-                retUrl: this.returnUrl = this.retrieve('RetUrl')
+                retUrl: this.retrieve('RetUrl')
             }));
 
             //let dataIdToken: any = this.getDataFromToken(id_token);
@@ -266,6 +266,8 @@ export class SecurityService {
             authorizationUrl + '?' +
             'id_token_hint=' + encodeURI(id_token_hint) + '&' +
             'post_logout_redirect_uri=' + encodeURI(post_logout_redirect_uri);
+
+        console.log(url);
 
         this.ResetAuthorizationData();
 

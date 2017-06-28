@@ -11,7 +11,7 @@ import { Configuration } from './../../../app.constants';
 
 @Injectable()
 export class BudgetService extends BaseService {
-    api: string = 'Budget';
+    api:  'Budget';
 
     constructor(
         protected _http: Http, protected _configuration: Configuration, protected store: Store<AppState>
@@ -19,7 +19,13 @@ export class BudgetService extends BaseService {
         super(_http, _configuration, store);
     }
 
-    public getBudgets = (type: string): Observable<Budget[]> => {
+    public getBudgets = (): Observable<Budget[]> => {
+        this.store.dispatch(new NotificationActions.SetLoading('Budget'));
+        const url = 'Operator';
+        return this.Get(url);
+    }
+
+    public getBudget = (type: any): Observable<Budget[]> => {
         this.store.dispatch(new NotificationActions.SetLoading('Budget'));
         return this.Get(this.api);
     }

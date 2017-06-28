@@ -10,6 +10,8 @@ import { AppState } from './../../';
 import { NotificationActions, ErrorActions } from './../../general/actions/';
 import { Observable } from 'rxjs/Observable';
 
+import { User } from './../../login/models/user.model'
+
 import 'rxjs/add/operator/catch';
 import 'rxjs/add/observable/of';
 import 'rxjs/add/operator/switchMap';
@@ -18,9 +20,9 @@ import 'rxjs/add/operator/map';
 
 @Injectable()
 export class BudgetEffects implements OnDestroy {
-    @Effect() LoadBudgets$: Observable<Action> = this.actions$
+     @Effect() LoadBudgets$: Observable<Action> = this.actions$
         .ofType(BudgetActions.LOAD_ITEMS)
-        .mergeMap(action => this.budgetService.getBudgets(action.payload)
+        .mergeMap(action => this.budgetService.getBudgets()
             .mergeMap(budgets => {
                 return Observable.from([new BudgetActions.LoadItemsSuccessAction(budgets)]);
             })
@@ -28,6 +30,25 @@ export class BudgetEffects implements OnDestroy {
                 return Observable.from([new ErrorActions.ErrorAddAction(err),
                 new NotificationActions.SetLoaded('Budget Items Loaded Sucessfully')]);
             }));
+
+
+    @Effect() LoadBudget$: Observable<Action> = this.actions$
+        .ofType(BudgetActions.LOAD_ITEM)
+        .withLatestFrom(this.store$.select(state => state.security.user))
+        .map(([action, user]) => {
+            const ret = { operatorId: user.operatorId, dept: user.dept };
+            return ret;
+        })
+        .mergeMap(ret => this.budgetService.getBudget(ret)
+            .mergeMap(budgets => {
+                return Observable.from([new BudgetActions.LoadItemsSuccessAction(budgets)]);
+            })
+            .catch(err => {
+                return Observable.from([new ErrorActions.ErrorAddAction(err),
+                new NotificationActions.SetLoaded('Budget Items Loaded Sucessfully')]);
+            }));
+
+
     @Effect() AddUpdateItemSuces$: Observable<Action> = this.actions$
         .ofType(BudgetActions.ADD_UPDATE_ITEM_SUCCESS)
         .map(() => new NotificationActions.SetSaved('Budget saved Sucessfully'));
@@ -53,7 +74,7 @@ export class BudgetEffects implements OnDestroy {
 
     constructor(
         private actions$: Actions,
-        private store: Store<AppState>,
+        private store$: Store<AppState>,
         private budgetService: BudgetService
     ) { }
 

@@ -10,6 +10,7 @@ import { HomeModule } from './home/home.module';
 import { BudgetModule } from './budget/budget.module';
 import { StoreModule, Store } from '@ngrx/store';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
+import { EffectsModule } from '@ngrx/effects';
 import { reducer, initLoginState, initBdState, AppState } from './redux';
 import { CoreModule } from './core/core.module';
 
@@ -21,6 +22,7 @@ import { Configuration } from './app.constants';
 import { AppRoutingModule } from './app.routing.module';
 import { OperatorsModule } from './operators/operators.module';
 import { WorkprogramModule } from './workprogram/workprogram.module';
+import { BudgetEffects, BudgetService } from './redux/budgets/budget/';
 
 
 
@@ -43,6 +45,7 @@ import { WorkprogramModule } from './workprogram/workprogram.module';
     CoreModule.forRoot(),
     // StoreModule.provideStore(reducer),
     StoreDevtoolsModule.instrumentOnlyWithExtension(),
+    EffectsModule.run(BudgetEffects),
     HomeModule,
     BudgetModule,
     AppRoutingModule,
@@ -53,7 +56,7 @@ import { WorkprogramModule } from './workprogram/workprogram.module';
 
   ],
 
-  providers: [SecurityService, Configuration],
+  providers: [SecurityService, Configuration, BudgetService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
