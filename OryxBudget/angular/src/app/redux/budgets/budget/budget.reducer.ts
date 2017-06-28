@@ -73,6 +73,8 @@ export const BudgetReducer: ActionReducer<BudgetState> = (state: BudgetState = i
         case AllActions.SELECT:
             return updateObject({}, updateObject(state, { selectedId: action.payload }));
 
+        default:
+            return state;
     }
 };
 

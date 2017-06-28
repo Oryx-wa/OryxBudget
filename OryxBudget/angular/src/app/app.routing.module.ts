@@ -16,7 +16,8 @@ const appRoutes: Routes = [
   { path: 'linedetail/:id', component: LineDetailComponent, canLoad: [AuthGuard] },
   { path: 'unauthorised', component: UnauthorisedComponent, canLoad: [AuthGuard] },
   { path: 'budgetInitialisation', component: BudgetInitialisationComponent, canLoad: [AuthGuard] },
-   { path: 'operators', component: OperatorsComponent, canLoad: [AuthGuard] }
+  { path: 'operators', component: OperatorsComponent, canLoad: [AuthGuard] },
+  
 
 ];
 

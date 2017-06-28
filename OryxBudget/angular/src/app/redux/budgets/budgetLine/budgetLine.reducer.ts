@@ -50,7 +50,8 @@ export const BudgetLineReducer: ActionReducer<BudgetLineState> = (state: BudgetL
             }));
         case AllActions.SELECT:
             return updateObject({}, updateObject(state, { selectedId: action.payload }));
-
+            default:
+            return state;
     }
 };
 export const getBudgetLineEntities = (state: BudgetLineState) => state.entities;

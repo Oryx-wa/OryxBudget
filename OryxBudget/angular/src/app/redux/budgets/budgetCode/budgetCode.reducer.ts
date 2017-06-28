@@ -48,7 +48,8 @@ export const BudgetCodeReducer: ActionReducer<BudgetCodeState> = (state: BudgetC
                 lastUpdate: new Date(),
                 selectedId: state.selectedId
             }));
-
+        default:
+            return state;
     }
 };
 export const getBudgetCodeEntities = (state: BudgetCodeState) => state.entities;

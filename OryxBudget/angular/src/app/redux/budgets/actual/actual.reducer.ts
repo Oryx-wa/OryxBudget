@@ -50,7 +50,8 @@ export const ActualReducer: ActionReducer<ActualState> = (state: ActualState = i
             }));
         case AllActions.SELECT:
             return updateObject({}, updateObject(state, { selectedId: action.payload }));
-
+        default:
+            return state;
 
     }
 };

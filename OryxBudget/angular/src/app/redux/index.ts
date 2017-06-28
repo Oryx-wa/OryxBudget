@@ -30,7 +30,7 @@ export * from './login';
 
 
 export interface AppState {
-  budgets: fromBudget.BudgetsState;
+  budgets: fromBudget.BdState;
   security: fromLogin.LoginSTATE;
   // operators: fromOperator.OperatorsState;
   // errors: General.ErrorState;
@@ -39,7 +39,7 @@ export interface AppState {
 }
 
 const reducers = {
-  budgets: fromBudget.BudgetsReducer,
+  budgets: fromBudget.bdReducer,
   security: fromLogin.SecurityReducer,
   // operators: fromOperator.OperatorsReducer,
   // errors: General.errorsReducer,

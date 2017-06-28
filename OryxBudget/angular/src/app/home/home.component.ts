@@ -40,12 +40,7 @@ export class HomeComponent implements OnInit, OnChanges {
   }
 
   ngOnInit() {
-    // console.log(this.securityService.roles);
-    this.store.select<LoginSTATE>('security').subscribe(s => {
-      // this.updateUser(s.user);
-      console.log(s.user);
-      // this.updateTitle(s.token);
-    });
+
 
     this.authenticated$ = this.store.select(TokenSelector.authenticated);
     this.dept$ = this.store.select(UserSelector.dept);
@@ -55,7 +50,13 @@ export class HomeComponent implements OnInit, OnChanges {
     this.napims$ = this.store.select(UserSelector.napims);
     this.operator$ = this.store.select(UserSelector.operator);
 
+    this.subCom$.subscribe(subCom => {
+      if (subCom) {
+        this._router.navigateByUrl('/workprogram');
+      }
+    });
 
+    /*
     if (this.securityService.IsAuthorized()) {
       this.name = this.securityService.name;
       this.operatorId = this.securityService.operatorId;
@@ -75,7 +76,8 @@ export class HomeComponent implements OnInit, OnChanges {
       }
     } else {
       this._router.navigate(['/unauthorised']);
-    }
+    }*/
+
   }
 
   updateTitle(token: UserModel.Token) {

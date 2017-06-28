@@ -17,7 +17,7 @@ import { combineReducers } from '@ngrx/store';
 
 import { ActualReducer, ActualState, initActualState } from './actual/actual.reducer';
 // import { AttachmentReducer, AttachmentState } from './attachment/attachment.reducer';
-import { BudgetReducer,BudgetState,  initBudgetState } from './budget/budget.reducer';
+import { BudgetReducer, BudgetState, initBudgetState } from './budget/budget.reducer';
 import { BudgetCodeReducer, BudgetCodeState, initBudgetCodeState } from './budgetCode/budgetCode.reducer';
 // import { BudgetCodeViewReducer, BudgetCodeViewState } from './budgetCodeView/budgetCodeView.reducer';
 import { BudgetLineReducer, BudgetLineState, initBudgetLineState } from './budgetLine/budgetLine.reducer';
@@ -42,9 +42,9 @@ const reducer = {
     // statusHistory: StatusHistoryReducer
 };
 
-export const BudgetsReducer = combineReducers(reducer);
+export const bdReducer = combineReducers(reducer);
 
-export interface BudgetsState {
+export interface BdState {
 
     actual: ActualState;
     // attachment: AttachmentState;
@@ -59,7 +59,7 @@ export interface BudgetsState {
     // statusHistory: StatusHistoryState;
 }
 
-export const initBdState: BudgetsState = {
+export const initBdState: BdState = {
     actual: initActualState,
     budget: initBudgetState,
     budgetCode: initBudgetCodeState,

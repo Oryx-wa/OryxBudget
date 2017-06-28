@@ -16,12 +16,12 @@
                 </div>
                 <div class="card-content def-dashboard">
                   <span class="card-title activator grey-text text-darken-4">Welcome<i class="material-icons right">more_vert</i></span>
-                 
+
                 </div>
-                
+
               </div>
             </div>
-            <div class="col s12 l4 m4">
+            <div *ngIf="dept === 'Exploration'" class="col s12 l4 m4">
               <div class="card" style="border-radius: 15px;">
                 <div class="card-image waves-effect waves-block waves-light">
                   <!--<div class="card-content" style="background-color: grey;">
@@ -29,125 +29,117 @@
                   </div>-->
                   <img class="activator def-dashboard-image" src="assets/images/employeeinfo.jpg">
                 </div>
-                <div class="card-content def-dashboard">
-                <span class="card-title activator grey-text text-darken-4 " [routerLink]="['/employee/basicinfo']" routerLinkActive="active">Exploration Sub Committee<i class="material-icons right">more_vert</i></span>
-                  <p><a [routerLink]="['/employee/basicinfo']" routerLinkActive="active"></a> Exploration</p>
-                </div>
-                <div class="card-reveal">
-                  <span class="card-title grey-text text-darken-4"><i class="material-icons right">close</i></span>
-                  <p><a [routerLink]="['/employee/basicinfo']" routerLinkActive="active">Basic Info</a></p>
-                  <p><a [routerLink]="['/employee/personalinformation']" routerLinkActive="active">Personal Info</a></p>
-                  <p><a [routerLink]="['/employee/jobinformation']" routerLinkActive="active">Job Info</a></p>
-                  <p><a [routerLink]="['/employee/profile']" routerLinkActive="active">Profile</a></p>
-                  <p><a [routerLink]="['/employee/academicinformation']" routerLinkActive="active">Academic Info</a></p>
+                <div class="card-action">
+                  <a [routerLink]="['/exploration']" routerLinkActive="active">Exploration</a>
                 </div>
               </div>
             </div>
-            <div class="col s12 l4 m4">
-              <div class="card" style="border-radius: 15px;">
-                <!--<div class="card-content" style="background-color: grey;border-top:1px;">
+            <div *ngIf="dept === 'Facilities'" class="col s12 l4 m4">
+              <div class="col s12 l4 m4">
+                <div class="card" style="border-radius: 15px;">
+                  <!--<div class="card-content" style="background-color: grey;border-top:1px;">
                   <span style="color:white; font-size: 11px; font-style: bold;">Tasks and Target</span>
                 </div>-->
-                <div class="card-image waves-effect waves-block waves-light">
-                  <img class="activator def-dashboard-image" src="assets/images/taskandtarget.jpg">
-                </div>
-                <div class="card-content def-dashboard">
-                  <span class="card-title activator grey-text text-darken-4"> Facilities  Sub Committee<i class="material-icons right">more_vert</i></span>
-                  <p><a [routerLink]="['/hr/targetandactivity']" routerLinkActive="active">Facilities</a></p>
-                </div>
-                <div class="card-reveal">
+                  <div class="card-image waves-effect waves-block waves-light">
+                    <img class="activator def-dashboard-image" src="assets/images/taskandtarget.jpg">
+                  </div>
+                  <div class="card-content def-dashboard">
+                    <span class="card-title activator grey-text text-darken-4"> Facilities  Sub Committee<i class="material-icons right">more_vert</i></span>
+                    <p><a [routerLink]="['/hr/targetandactivity']" routerLinkActive="active">Facilities</a></p>
+                  </div>
+                  <div class="card-reveal">
 
-                  <span class="card-title grey-text text-darken-4"><i class="material-icons right">close</i></span>
-                  <p></p>
-                  <p><a [routerLink]="['/hr/targetandactivity']" routerLinkActive="active"> Target and Activities</a></p>
+                    <span class="card-title grey-text text-darken-4"><i class="material-icons right">close</i></span>
+                    <p></p>
+                    <p><a [routerLink]="['/hr/targetandactivity']" routerLinkActive="active"> Target and Activities</a></p>
 
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
-          <div class="row">
+            <div class="row">
 
-           
-             <div class="col s12 l4 m4">
-              <div class="card" style="border-radius: 15px;">
-                <!--<div class="card-content" style="background-color: grey;">
+
+              <div class="col s12 l4 m4">
+                <div class="card" style="border-radius: 15px;">
+                  <!--<div class="card-content" style="background-color: grey;">
                   <span style="color:white; font-size: 11px; font-style: bold;">My Requests</span>
                 </div>-->
-                <div class="card-image waves-effect waves-block waves-light">
+                  <div class="card-image waves-effect waves-block waves-light">
 
-                  <img class="activator def-dashboard-image" src="assets/images/request.jpg">
-                </div>
-                <div class="card-content def-dashboard">
-                  <span class="card-title activator grey-text text-darken-4">MMD Sub Committee<i class="material-icons right">more_vert</i></span>
-                  <p><a [routerLink]="['/request/dashboard']" routerLinkActive="active">MMD</a></p>
-                </div>
-                <div class="card-reveal">
-                  <span class="card-title grey-text text-darken-4"><i class="material-icons right">close</i></span>
-                  <p><a [routerLink]="['/request/general-request']" routerLinkActive="active">General Request</a></p>
-                  <p><a [routerLink]="['/request/medical-request']" routerLinkActive="active">Medical Request</a></p>
-                  <p><a [routerLink]="['/request/leave-request']" routerLinkActive="active">Leave Request</a></p>
-                  <p><a [routerLink]="['/request/expense-request']" routerLinkActive="active">Expense Request</a></p>
+                    <img class="activator def-dashboard-image" src="assets/images/request.jpg">
+                  </div>
+                  <div class="card-content def-dashboard">
+                    <span class="card-title activator grey-text text-darken-4">MMD Sub Committee<i class="material-icons right">more_vert</i></span>
+                    <p><a [routerLink]="['/request/dashboard']" routerLinkActive="active">MMD</a></p>
+                  </div>
+                  <div class="card-reveal">
+                    <span class="card-title grey-text text-darken-4"><i class="material-icons right">close</i></span>
+                    <p><a [routerLink]="['/request/general-request']" routerLinkActive="active">General Request</a></p>
+                    <p><a [routerLink]="['/request/medical-request']" routerLinkActive="active">Medical Request</a></p>
+                    <p><a [routerLink]="['/request/leave-request']" routerLinkActive="active">Leave Request</a></p>
+                    <p><a [routerLink]="['/request/expense-request']" routerLinkActive="active">Expense Request</a></p>
+                  </div>
                 </div>
               </div>
-            </div>
-            <div class="col s12 l4 m4">
-              <div class="card" style="border-radius: 15px;">
-                <div class="card-image waves-effect waves-block waves-light">
-                  <!--<div class="card-content" style="background-color: grey;">
+              <div class="col s12 l4 m4">
+                <div class="card" style="border-radius: 15px;">
+                  <div class="card-image waves-effect waves-block waves-light">
+                    <!--<div class="card-content" style="background-color: grey;">
                     <span style="color:white; font-size: 11px; font-style: bold;">My Team</span>
                   </div>-->
-                  <img class="activator def-dashboard-image" src="assets/images/organisation.jpg">
-                </div>
-                <div class="card-content def-dashboard">
-                  <span class="card-title activator grey-text text-darken-4">HSSE Sub Committee<i class="material-icons right">more_vert</i></span>
-                  <p><a href="/admin/definitions/company">HSSE</a></p>
-                </div>
-                <div class="card-reveal">
-                  <span class="card-title grey-text text-darken-4">Card Title Sub Committee<i class="material-icons right">close</i></span>
-                  
-                  <p><a [routerLink]="['/admin/definitions/company']" routerLinkActive="active">Company</a></p>
-                
+                    <img class="activator def-dashboard-image" src="assets/images/organisation.jpg">
+                  </div>
+                  <div class="card-content def-dashboard">
+                    <span class="card-title activator grey-text text-darken-4">HSSE Sub Committee<i class="material-icons right">more_vert</i></span>
+                    <p><a href="/admin/definitions/company">HSSE</a></p>
+                  </div>
+                  <div class="card-reveal">
+                    <span class="card-title grey-text text-darken-4">Card Title Sub Committee<i class="material-icons right">close</i></span>
 
+                    <p><a [routerLink]="['/admin/definitions/company']" routerLinkActive="active">Company</a></p>
+
+
+                  </div>
                 </div>
               </div>
-            </div>
-            <div class="col s12 l4 m4">
-              <div class="card" style="border-radius: 15px;">
-                <!--<div class="card-content" style="background-color: grey;">
+              <div class="col s12 l4 m4">
+                <div class="card" style="border-radius: 15px;">
+                  <!--<div class="card-content" style="background-color: grey;">
                   <span style="color:white; font-size: 11px; font-style: bold;">Admin</span>
                 </div>-->
-                <div class="card-image waves-effect waves-block waves-light">
-                  <img class="activator def-dashboard-image" src="assets/images/admin.jpg">
-                </div>
-                <div class="card-content def-dashboard">
-                  <span class="card-title activator grey-text text-darken-4">Community Sub Committee<i class="material-icons right">more_vert</i></span>
-                  <p><a [routerLink]="['/admin']" routerLinkActive="active">Community</a></p>
-                </div>
-                <div class="card-reveal">
-                  <span class="card-title grey-text text-darken-4">Frequently used links<i class="material-icons right">close</i></span>
-                  <p></p>
-                  <p><a [routerLink]="['/workflow/module']" routerLinkActive="active">Workflow Settings</a></p>
-                  <p><a [routerLink]="['/hr/taskandrespo']" routerLinkActive="active">Task Settings</a></p>
-                  <p><a [routerLink]="['/admin/healthmanagement/hmo']" routerLinkActive="active">Health Care Settings</a></p>
-                  <p><a [routerLink]="['/definitions/defitem']" routerLinkActive="active">Definition Settings</a></p>
-                  <p><a [routerLink]="['/definitions/leaveprofile']" routerLinkActive="active">Leave Profile Definitions</a></p>
-                  <p><a [routerLink]="['/definitions/company']" routerLinkActive="active">Company Settings</a></p>
-                  <p><a [routerLink]="['/definitions/businessunit']" routerLinkActive="active">BusinessUnit Settings</a></p>
-                  <p><a [routerLink]="['/definitions/division']" routerLinkActive="active">Division Settings</a></p>
-                  <p><a [routerLink]="['/job/jobdef']" routerLinkActive="active">Job Setting</a></p>
-                  <p><a [routerLink]="['/timeoff/leaveprofile']" routerLinkActive="active">Leave Profile Setting</a></p>
-                  <p><a [routerLink]="['/definitions/department']" routerLinkActive="active">Department Setting</a></p>
-                  <p><a [routerLink]="['/definitions/publicholiday']" routerLinkActive="active">Public Holiday Setting</a></p>
-                  <p><a href="#">Expense Settings</a></p>
-                  <p><a href="#">Hospital Settings</a></p>
-                  <p><a href="#">Job Settings</a></p>
+                  <div class="card-image waves-effect waves-block waves-light">
+                    <img class="activator def-dashboard-image" src="assets/images/admin.jpg">
+                  </div>
+                  <div class="card-content def-dashboard">
+                    <span class="card-title activator grey-text text-darken-4">Community Sub Committee<i class="material-icons right">more_vert</i></span>
+                    <p><a [routerLink]="['/admin']" routerLinkActive="active">Community</a></p>
+                  </div>
+                  <div class="card-reveal">
+                    <span class="card-title grey-text text-darken-4">Frequently used links<i class="material-icons right">close</i></span>
+                    <p></p>
+                    <p><a [routerLink]="['/workflow/module']" routerLinkActive="active">Workflow Settings</a></p>
+                    <p><a [routerLink]="['/hr/taskandrespo']" routerLinkActive="active">Task Settings</a></p>
+                    <p><a [routerLink]="['/admin/healthmanagement/hmo']" routerLinkActive="active">Health Care Settings</a></p>
+                    <p><a [routerLink]="['/definitions/defitem']" routerLinkActive="active">Definition Settings</a></p>
+                    <p><a [routerLink]="['/definitions/leaveprofile']" routerLinkActive="active">Leave Profile Definitions</a></p>
+                    <p><a [routerLink]="['/definitions/company']" routerLinkActive="active">Company Settings</a></p>
+                    <p><a [routerLink]="['/definitions/businessunit']" routerLinkActive="active">BusinessUnit Settings</a></p>
+                    <p><a [routerLink]="['/definitions/division']" routerLinkActive="active">Division Settings</a></p>
+                    <p><a [routerLink]="['/job/jobdef']" routerLinkActive="active">Job Setting</a></p>
+                    <p><a [routerLink]="['/timeoff/leaveprofile']" routerLinkActive="active">Leave Profile Setting</a></p>
+                    <p><a [routerLink]="['/definitions/department']" routerLinkActive="active">Department Setting</a></p>
+                    <p><a [routerLink]="['/definitions/publicholiday']" routerLinkActive="active">Public Holiday Setting</a></p>
+                    <p><a href="#">Expense Settings</a></p>
+                    <p><a href="#">Hospital Settings</a></p>
+                    <p><a href="#">Job Settings</a></p>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
-        </div>
 
+        </div>
       </div>
     </div>
   </div>
-</div>

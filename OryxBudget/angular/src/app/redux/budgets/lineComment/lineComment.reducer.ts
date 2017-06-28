@@ -48,7 +48,8 @@ export const LineCommentReducer: ActionReducer<LineCommentState> = (state: LineC
                 lastUpdate: new Date(),
                 selectedId: state.selectedId
             }));
-
+        default:
+            return state;
     }
 };
 export const getLineCommentEntities = (state: LineCommentState) => state.entities;

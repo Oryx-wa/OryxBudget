@@ -4,8 +4,7 @@
       
     </div>
     <div class="row" *ngIf="authenticated$ | async"  >
-      <app-wp-dashboard>
-      </app-wp-dashboard>
+     
       <!--<app-oryx-dashboard *ngIf="showNapims;else operator" [name]="name" [operatorId]="opearatorId" [role]="role" [operators]="operators$ | async"></app-oryx-dashboard>
       <ng-template #operator>
         <app-operator-view *ngIf="showOperator">
