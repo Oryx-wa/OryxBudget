@@ -4,6 +4,10 @@ import { Router } from '@angular/router';
 import { SecurityService } from './../login/security.service';
 import { Observable } from 'rxjs/Observable';
 import { Operators } from './../models/operators';
+import { LoginActions, TokenActions } from '../redux/login/actions';
+import { AppState, LoginSTATE, UserSelector, TokenSelector } from '../redux';
+import { Store } from '@ngrx/store';
+import { UserModel } from '../redux/login/models';
 
 
 
@@ -19,15 +23,38 @@ export class HomeComponent implements OnInit, OnChanges {
   public operators$: Observable<Operators>;
   public showNapims = false;
   public showOperator = false;
-
+  token$: Observable<UserModel.Token>;
+  token: UserModel.Token;
+  public authenticated$: Observable<boolean>;
+  public napims$: Observable<boolean>;
+  public subCom$: Observable<boolean>;
+  public tecCom$: Observable<boolean>;
+  public malCom$: Observable<boolean>;
+  public dept$: Observable<string>;
+  public operator$: Observable<boolean>;
   constructor(private _router: Router,
     public securityService: SecurityService,
-    private _http: Http) {
+    private _http: Http,
+    private store: Store<AppState>) {
 
   }
 
   ngOnInit() {
     // console.log(this.securityService.roles);
+    this.store.select<LoginSTATE>('security').subscribe(s => {
+      // this.updateUser(s.user);
+      console.log(s.user);
+      // this.updateTitle(s.token);
+    });
+
+    this.authenticated$ = this.store.select(TokenSelector.authenticated);
+    this.dept$ = this.store.select(UserSelector.dept);
+    this.subCom$ = this.store.select(UserSelector.subCom);
+    this.tecCom$ = this.store.select(UserSelector.tecCom);
+    this.malCom$ = this.store.select(UserSelector.malCom);
+    this.napims$ = this.store.select(UserSelector.napims);
+    this.operator$ = this.store.select(UserSelector.operator);
+
 
     if (this.securityService.IsAuthorized()) {
       this.name = this.securityService.name;
@@ -51,7 +78,20 @@ export class HomeComponent implements OnInit, OnChanges {
     }
   }
 
+  updateTitle(token: UserModel.Token) {
+    if (token.authenticated) {
+      // this.pageTitle = 'Welcome authenticated user';
+      this.token = token;
+      if (token.retUrl) {
+        if (token.retUrl.length > 1) {
+          this._router.navigate([token.retUrl.replace('/', '')]);
+        }
+      }
 
+    } else {
+      this._router.navigate(['login']);
+    }
+  }
 
 
   ngOnChanges(changes: any) {

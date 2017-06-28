@@ -1,15 +1,16 @@
 import { Injectable } from '@angular/core';
 import { Http, Headers } from '@angular/http';
 import 'rxjs/add/operator/map';
+import * as _ from 'lodash';
 
 import { Observable } from 'rxjs/Observable';
 import { Configuration } from '../app.constants';
 import { Router } from '@angular/router';
 
-//import { TokenActions, LoginActions, MenuActions } from '../redux/login/actions';
-//import { Token, User, Menu, UserModel } from './../redux/login';
-//import { AppState, } from '../redux';
-//import { Store } from '@ngrx/store';
+import { TokenActions, LoginActions, MenuActions } from '../redux/login/actions';
+import { Token, User, Menu, UserModel, initUser } from './../redux/login';
+import { AppState, LoginSTATE } from '../redux';
+import { Store } from '@ngrx/store';
 
 
 @Injectable()
@@ -38,7 +39,7 @@ export class SecurityService {
 
 
     constructor(private _http: Http, private _configuration: Configuration,
-        private _router: Router
+        private _router: Router, private ngrxStore: Store<AppState>
 
     ) {
 
@@ -217,20 +218,31 @@ export class SecurityService {
         }
 
         if (authResponseIsValid) {
-            //this.ngrxStore.dispatch(new TokenActions.GetUrl());
-            // this.ngrxStore.select<LoginSTATE>('security').map( s => s.token.retUrl).map(s => this.returnUrl = s);
-            /*
-                        this.ngrxStore.dispatch(new TokenActions.SetToken({
-                            id: id_token, access: token, authenticated: true,
-                            retUrl: this.returnUrl = this.retrieve('RetUrl')
-                        }));
-                        */
+            this.ngrxStore.dispatch(new TokenActions.GetUrlAction());
+            this.ngrxStore.select<LoginSTATE>('security').map(s => s.token.retUrl).map(s => this.returnUrl = s);
+
+            this.ngrxStore.dispatch(new TokenActions.SetTokenAction({
+                id: id_token, access: token, authenticated: true,
+                retUrl: this.returnUrl = this.retrieve('RetUrl')
+            }));
+
             //let dataIdToken: any = this.getDataFromToken(id_token);
-            let dataIdToken: any = this.getDataFromToken(token);
+            const dataIdToken: any = this.getDataFromToken(token);
+
+            const user: UserModel.User = _.assign({}, initUser, {
+                authenticated: true, full_name: dataIdToken.full_name,
+                given_name: dataIdToken.given_name, email: dataIdToken.email, name: dataIdToken.name,
+                family_name: dataIdToken.family_name, branch: dataIdToken.branch,
+                sub: dataIdToken.sub, role: dataIdToken.role, token: id_token, groups: [],
+                operatorId: dataIdToken.id, napims: (dataIdToken.napims) ? true : false,
+                operator: (dataIdToken.operator) ? true : false
+            });
+
+            this.ngrxStore.dispatch(new LoginActions.LoginSuccessAction(user));
             this.name = dataIdToken.name;
             this.roles = dataIdToken.role;
             this.operatorId = dataIdToken.id;
-            console.log(dataIdToken);
+            // console.log(dataIdToken);
             //// console.log(accessIdToken);
 
             this.SetAuthorizationData(token, id_token);

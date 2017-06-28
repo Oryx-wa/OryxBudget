@@ -9,7 +9,7 @@ import {LicenseManager} from 'ag-grid-enterprise/main';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent implements OnInit {
-  title: string = 'Budget';
+  title = 'Budget';
 
 
   constructor(public securityService: SecurityService) {
