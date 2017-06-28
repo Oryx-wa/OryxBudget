@@ -1,8 +1,44 @@
 <nav>
   <div class="nav-wrapper grey lighten-3">
-    <a class="btn waves-effect waves-light green" (click)="showBudget()">Actual</a>
-    <a class="btn waves-effect waves-light green" (click)="showBudget()">Budget</a>
-    <a class="btn waves-effect waves-light orange" (click)="showActual()">Cash Call</a>
-    <a class="btn waves-effect waves-light orange" (click)="showActual()">Performance</a>    
+    
+    <a class="dropdown-button waves-effect" style="margin-left:10px;color:black;" data-activates="dropdown" data-beloworigin="true">Actions</a>
+    <ul id="nav-mobile" class="right hide-on-med-and-down">
+      <li>
+        <a class="btn waves-effect waves-light green" (click)="showBudget()">Budget</a></li>
+      <li>
+        <a class=" btn waves-effect waves-light orange" (click)="showActual()">Cash Call</a></li>
+      <li>
+        <a class=" btn waves-effect waves-light orange" (click)="showActual()">Performance</a></li>
+    </ul>
+    <ul id="dropdown" class="dropdown-content collection">
+
+      <li>
+        <a routerLinkActive="active" class="waves-effect waves-purple special">
+          <i class="material-icons left">persons</i>Users &nbsp;
+        </a>
+      </li>
+      <li>
+        <a [routerLink]="['/operators']" routerLinkActive="active" class="waves-effect waves-purple special">
+          <i class="material-icons left">persons</i>Operators &nbsp;
+        </a>
+      </li>
+      <li>
+        <a [routerLink]="['/budgetInitialisation']" routerLinkActive="active" class="waves-effect waves-purple special">
+          <i class="material-icons left">next_week</i>Budgets &nbsp;
+        </a>
+      </li>
+      <li>
+        <a routerLinkActive="active" class="waves-effect waves-purple special">
+          <i class="material-icons left">persons</i>Budget Codes &nbsp;
+        </a>
+      </li>
+      <li>
+        <a routerLinkActive="active" class="waves-effect waves-purple special">
+          <i class="material-icons left">info_outline</i>About &nbsp;
+        </a>
+      </li>
+
+
+    </ul>
   </div>
 </nav>
