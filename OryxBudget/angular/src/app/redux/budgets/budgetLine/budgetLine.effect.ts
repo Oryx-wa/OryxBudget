@@ -20,7 +20,13 @@ import 'rxjs/add/operator/map';
 export class BudgetLineEffects implements OnDestroy {
     @Effect() LoadBudgetLines$: Observable<Action> = this.actions$
         .ofType(BudgetLineActions.LOAD_ITEMS)
-        .mergeMap(action => this.budgetLineService.getBudgetLines(action.payload)
+        .withLatestFrom(this.store$.select(state => state.security.user))
+        .map(([action, user]) => {
+            console.log(user);
+            const ret = {dept: user.dept, budgetId: action.payload};
+            return ret;
+        })
+        .mergeMap(payload => this.budgetLineService.getBudgetLines(payload.budgetId, payload.dept )
             .mergeMap(budgetLines => {
                 return Observable.from([new BudgetLineActions.LoadItemsSuccessAction(budgetLines)]);
             })
@@ -53,7 +59,7 @@ export class BudgetLineEffects implements OnDestroy {
 
     constructor(
         private actions$: Actions,
-        private store: Store<AppState>,
+        private store$: Store<AppState>,
         private budgetLineService: BudgetLineService
     ) { }
 

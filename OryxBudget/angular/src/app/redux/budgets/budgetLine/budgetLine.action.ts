@@ -58,7 +58,7 @@ export class DeleteItemSuccessAction implements Action {
 
 export class LoadItemsAction implements Action {
     readonly type = LOAD_ITEMS;
-    constructor(public payload: any) { }
+    constructor(public payload: string) { }
 }
 
 export class LoadItemsSuccessAction implements Action {

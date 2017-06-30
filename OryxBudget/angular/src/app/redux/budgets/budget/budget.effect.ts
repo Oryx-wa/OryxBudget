@@ -20,9 +20,15 @@ import 'rxjs/add/operator/map';
 
 @Injectable()
 export class BudgetEffects implements OnDestroy {
-     @Effect() LoadBudgets$: Observable<Action> = this.actions$
+    @Effect() LoadBudgets$: Observable<Action> = this.actions$
         .ofType(BudgetActions.LOAD_ITEMS)
-        .mergeMap(action => this.budgetService.getBudgets()
+        .withLatestFrom(this.store$.select(state => state.security.user))
+        .map(([action, user]) => {
+            console.log(user);
+            const ret = user.operatorId;
+            return ret;
+        })
+        .mergeMap(operatorId => this.budgetService.getBudgets(operatorId)
             .mergeMap(budgets => {
                 return Observable.from([new BudgetActions.LoadItemsSuccessAction(budgets)]);
             })

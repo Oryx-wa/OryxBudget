@@ -1,46 +1,54 @@
 <div class="row">
-    <div class="col l3">
-        <app-logo></app-logo>
-    </div>
-     <div class="col l9">
-       <app-sub-navbar></app-sub-navbar>
-    </div>
+  <div class="col l3">
+    <app-logo></app-logo>
+  </div>
+  <div class="col l9">
+    <app-sub-navbar (budgetSelected)="selectBudget($event)"></app-sub-navbar>
+  </div>
 </div>
 <div class="row">
-<div class="col l3">
-    <div class="row"> 
-  <div class="filter-elements">
+  <div class="col l3">
     <div class="row">
-      <a class="btn waves-effect waves-light orange" (click)="showExploration('AFE')">Exploration Details</a>
-    </div>
-    <div class="row">
-      <a class="btn waves-effect waves-light green" (click)="showExploration('Exploration Details')">Well AFE</a>
-    </div>
-    <div class="row">
-      <a class="btn waves-effect waves-light blue" (click)="openFirst()">Sign Off</a>
-    </div>
+      <div class="filter-elements">
+        <div class="row">
+          <a class="btn waves-effect waves-light orange" (click)="showExploration('AFE')">Exploration Details</a>
+        </div>
+        <div class="row">
+          <a class="btn waves-effect waves-light green" (click)="showExploration('Exploration Details')">Well AFE</a>
+        </div>
+        <div class="row">
+          <a class="btn waves-effect waves-light blue" (click)="openFirst()">Sign Off</a>
+        </div>
 
-    <form *ngIf="showApproval" materialize materialize="updateTextFields" [formGroup]="form" (ngSubmit)="save(form.value)">
-      <div class="row">
-        <div class="input-field col l12 m12 s12">
-          <select materialize="material_select" id="status" name="status" formControlName="status">										
+        <form *ngIf="showApproval" materialize materialize="updateTextFields" [formGroup]="form" (ngSubmit)="save(form.value)">
+          <div class="row">
+            <div class="input-field col l12 m12 s12">
+              <select materialize="material_select" id="status" name="status" formControlName="status">										
                                 <option  value="" disabled selected ></option>	
                     <option  [value]="accepted" >Accepted</option>          
                     <option  [value]="rejected" >Rejected</option>                                
                       </select>
-          <label for="status" data-error="Please select an item frmm the list">Status</label>
-        </div>
+              <label for="status" data-error="Please select an item frmm the list">Status</label>
+            </div>
+          </div>
+          <div class="row">
+            <button [disabled]="form.invalid || form.pristine" class="wave-effect wave-light btn" type="submit" name="action">Save & Print</button>
+          </div>
+        </form>
+
+
+
       </div>
-      <div class="row">
-        <button [disabled]="form.invalid || form.pristine" class="wave-effect wave-light btn" type="submit" name="action">Save & Print</button>
-      </div>
-    </form>
-
-
-
+    </div>
   </div>
-</div>
-</div>
-<div class="col l9">
-</div>
+  <div class="col l9">
+    <div *ngIf="displayMode === displayModeEnum.Budget">
+      <div *ngIf="lines$ | async;let lines; else loading2">
+        <app-line-details2   [lines]="lines" 
+          [showSubCom]="showSubCom$ | async" [showTecCom]="showTecCom$ | async"          
+         >
+        </app-line-details2>
+      </div>
+    </div>
+  </div>
 </div>

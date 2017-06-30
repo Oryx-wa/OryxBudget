@@ -1,6 +1,6 @@
 import { Schema, arrayOf } from 'normalizr/lib';
 import { BudgetLines } from './budgetLine.interface';
-export const budgetLineSchema = new Schema('budgetLine');
+export const budgetLineSchema = new Schema('BudgetLine', { idAttribute: 'code' });
 export const arrayOfBudgetLine = arrayOf(budgetLineSchema);
 
 export const initBudgetLines: BudgetLines = {

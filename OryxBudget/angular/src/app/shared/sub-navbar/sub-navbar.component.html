@@ -1,43 +1,34 @@
 <nav>
-  <div class="nav-wrapper grey lighten-3">
+  <div materialize class="nav-wrapper grey lighten-3">
+    <form [formGroup]="form" *ngIf="budgets$ | async; let budgets;">
+      <div class="col s12 m3">
+        <select materialize="material_select" [materializeSelectOptions]=" budgets" (change)="itemSelected($event.target.value)"
+          id="budget" name="budget" formControlName="budget">
+              							<option  value="" disabled selected > </option>	
+                             <option *ngFor="let t of budgets " [value]="t.id">{{t.description}}</option>											
+									</select>
+        <label for="budget" data-error="Please enter a valid task">Budget</label>
+      </div>
+      <div class="col s12 m9">
+      <ul id="nav-mobile" class="right hide-on-med-and-down">
+        <li>
+          <a class="btn waves-effect waves-light green" (click)="showBudget()">Budget</a></li>
+        <li>
+          <a class=" btn waves-effect waves-light orange" (click)="showActual()">Cash Call</a></li>
+        <li>
+          <a class=" btn waves-effect waves-light blue" (click)="showActual()">Performance</a></li>
+      </ul>
+    </div>
+    </form>
     
-    <a class="dropdown-button waves-effect" style="margin-left:10px;color:black;" data-activates="dropdown" data-beloworigin="true">Actions</a>
-    <ul id="nav-mobile" class="right hide-on-med-and-down">
-      <li>
-        <a class="btn waves-effect waves-light green" (click)="showBudget()">Budget</a></li>
-      <li>
-        <a class=" btn waves-effect waves-light orange" (click)="showActual()">Cash Call</a></li>
-      <li>
-        <a class=" btn waves-effect waves-light blue" (click)="showActual()">Performance</a></li>
-    </ul>
     <ul id="dropdown" class="dropdown-content collection">
-
-      <li>
-        <a routerLinkActive="active" class="waves-effect waves-purple special">
-          <i class="material-icons left">persons</i>Users &nbsp;
-        </a>
-      </li>
-      <li>
-        <a [routerLink]="['/operators']" routerLinkActive="active" class="waves-effect waves-purple special">
-          <i class="material-icons left">persons</i>Operators &nbsp;
-        </a>
-      </li>
-      <li>
-        <a [routerLink]="['/budgetInitialisation']" routerLinkActive="active" class="waves-effect waves-purple special">
-          <i class="material-icons left">next_week</i>Budgets &nbsp;
-        </a>
-      </li>
-      <li>
-        <a routerLinkActive="active" class="waves-effect waves-purple special">
-          <i class="material-icons left">persons</i>Budget Codes &nbsp;
-        </a>
-      </li>
-      <li>
-        <a routerLinkActive="active" class="waves-effect waves-purple special">
-          <i class="material-icons left">info_outline</i>About &nbsp;
-        </a>
-      </li>
-
+      <div *ngIf="budgets$ | async; let budgets;">
+        <li *ngFor="let item of budgets">
+          <a (click)="budgetSelected.emit(item.id)" routerLinkActive="active" class="waves-effect waves-purple special">
+          {{item.description}}
+         </a>
+        </li>
+      </div>
 
     </ul>
   </div>

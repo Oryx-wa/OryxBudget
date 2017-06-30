@@ -1,7 +1,7 @@
 import { BaseService } from './../../utilities';
 import { BudgetLines } from './budgetLine.interface';
 
-import { Http } from '@angular/http';
+import { Http, URLSearchParams } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
 import { Injectable } from '@angular/core';
 import { Store } from '@ngrx/store';
@@ -14,17 +14,20 @@ export class BudgetLineService extends BaseService {
     api: string = 'BudgetLine';
 
     constructor(
-        protected _http: Http, 
-        protected _configuration: Configuration, 
+        protected _http: Http,
+        protected _configuration: Configuration,
         protected store: Store<AppState>
-        
+
     ) {
         super(_http, _configuration, store);
     }
 
-    public getBudgetLines = (type: string): Observable<BudgetLines[]> => {
-        this.store.dispatch(new NotificationActions.SetLoading('BudgetLine'));
-        return this.Get(this.api);
+    public getBudgetLines = (budgetId: string, dept: string): Observable<BudgetLines[]> => {
+        const params: URLSearchParams = new URLSearchParams();
+        params.append('id', budgetId);
+        params.append('department', dept);
+        this.store.dispatch(new NotificationActions.SetLoading('Budget/GetBudgetDetails'));
+        return this.GetByParam2('Budget/GetBudgetDetails', params);
     }
 
     public addBudgetLine = (budgetLine: BudgetLines): Observable<BudgetLines> => {

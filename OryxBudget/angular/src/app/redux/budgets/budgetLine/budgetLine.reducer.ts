@@ -42,6 +42,7 @@ export const BudgetLineReducer: ActionReducer<BudgetLineState> = (state: BudgetL
                 return state;
             }
             const BudgetLine: any = normalize(action.payload, arrayOfBudgetLine);
+           
             return updateObject({}, updateObject(state, {
                 ids: BudgetLine.result,
                 entities: BudgetLine.entities.BudgetLine,
@@ -50,7 +51,7 @@ export const BudgetLineReducer: ActionReducer<BudgetLineState> = (state: BudgetL
             }));
         case AllActions.SELECT:
             return updateObject({}, updateObject(state, { selectedId: action.payload }));
-            default:
+        default:
             return state;
     }
 };

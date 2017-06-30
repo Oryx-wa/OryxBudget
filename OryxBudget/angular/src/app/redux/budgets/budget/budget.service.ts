@@ -1,7 +1,7 @@
 import { BaseService } from './../../utilities';
 import { Budget } from './budget.interface';
 
-import { Http } from '@angular/http';
+import { Http, URLSearchParams } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
 import { Injectable } from '@angular/core';
 import { Store } from '@ngrx/store';
@@ -11,7 +11,7 @@ import { Configuration } from './../../../app.constants';
 
 @Injectable()
 export class BudgetService extends BaseService {
-    api:  'Budget';
+    api: 'Budget';
 
     constructor(
         protected _http: Http, protected _configuration: Configuration, protected store: Store<AppState>
@@ -19,10 +19,12 @@ export class BudgetService extends BaseService {
         super(_http, _configuration, store);
     }
 
-    public getBudgets = (): Observable<Budget[]> => {
+    public getBudgets = (operatorId: string): Observable<Budget[]> => {
+        const params: URLSearchParams = new URLSearchParams();
+        params.append('operatorId', operatorId);
         this.store.dispatch(new NotificationActions.SetLoading('Budget'));
-        const url = 'Operator';
-        return this.Get(url);
+        const url = 'Budget/GetByOperator';
+        return this.GetByParam2(url, params);
     }
 
     public getBudget = (type: any): Observable<Budget[]> => {

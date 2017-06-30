@@ -7,11 +7,16 @@ import { MainNavComponent } from './main-nav/main-nav.component';
 import { OryxDashboardComponent } from './oryx-dashboard/oryx-dashboard.component';
 import { SecurityService } from './../login/security.service';
 import { FileuploaderComponent } from './fileuploader/fileuploader.component';
+import { AgGridModule } from 'ag-grid-angular/main';
 import { NgUploaderModule } from 'ngx-uploader';
 import { ListComponent } from './listcomponent/list.component';
 import { LineCommentComponent } from './line-comment/line-comment.component';
 import { LineCommentDetailsComponent } from './line-comment/line-comment-details.component';
-import { CurrencyComponent } from './../shared/renderers/currency.component';
+import { CurrencyComponent } from './renderers/currency.component';
+import { WordWrapComponent } from './renderers/word-wrap.component';
+import { TextComponent } from './renderers/text.component';
+import { ChildMessageComponent } from './renderers/child-message.component';
+import { StyledComponent } from './renderers/styled-component';
 import { SelectModule } from 'ng-select';
 import { Ng2PaginationModule } from 'ng2-pagination';
 import { SimpleNotificationsModule, PushNotificationsModule } from 'angular2-notifications';
@@ -26,6 +31,7 @@ import { CommentsComponent } from './comment/comments.component';
 import { FileuploadAttachmentComponent } from './fileupload-attachment/fileupload-attachment.component';
 import { LogoComponent } from './logo/logo.component';
 import { SubNavbarComponent } from './sub-navbar/sub-navbar.component';
+import { LineDetails2Component } from './line-details2/line-details2.component';
 @NgModule({
   imports: [
     CommonModule,
@@ -38,13 +44,20 @@ import { SubNavbarComponent } from './sub-navbar/sub-navbar.component';
     MaterializeModule,
     BrowserAnimationsModule,
     SimpleNotificationsModule, PushNotificationsModule,
+     AgGridModule.withComponents([
+      CurrencyComponent,
+      WordWrapComponent,
+      TextComponent,
+      ChildMessageComponent,
+      StyledComponent
+    ]),
 
   ],
   declarations: [// MainNavComponent,
     OryxDashboardComponent,
     FileuploaderComponent,
     LineCommentComponent,
-    ListComponent,
+    ListComponent,LineDetails2Component,
     LineCommentDetailsComponent,
     DialogComponent, CurrencyComponent, AttachmentComponent, NotificationComponent,
      CommentsComponent,  FileuploadAttachmentComponent, LogoComponent, SubNavbarComponent],
@@ -52,7 +65,7 @@ import { SubNavbarComponent } from './sub-navbar/sub-navbar.component';
   exports: [// MainNavComponent,
     OryxDashboardComponent, NotificationComponent,
     FileuploaderComponent, CommentsComponent, AttachmentComponent, FileuploadAttachmentComponent,
-    MaterializeModule, LineCommentComponent, CurrencyComponent,
+    MaterializeModule, LineCommentComponent, CurrencyComponent,LineDetails2Component,
     DialogComponent, ListComponent, Ng2PaginationModule, SelectModule, LogoComponent, SubNavbarComponent]
 })
 export class SharedModule { }
