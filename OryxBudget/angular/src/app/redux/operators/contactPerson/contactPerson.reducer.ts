@@ -48,7 +48,8 @@ export const ContactPersonReducer: ActionReducer<ContactPersonState> = (state: C
                 lastUpdate: new Date(),
                 selectedId: state.selectedId
             }));
-
+        default:
+            return state;
     }
 };
 export const getContactPersonEntities = (state: ContactPersonState) => state.entities;

@@ -32,6 +32,7 @@ import { FileuploadAttachmentComponent } from './fileupload-attachment/fileuploa
 import { LogoComponent } from './logo/logo.component';
 import { SubNavbarComponent } from './sub-navbar/sub-navbar.component';
 import { LineDetails2Component } from './line-details2/line-details2.component';
+import { DialogService } from './dialog.service';
 @NgModule({
   imports: [
     CommonModule,
@@ -61,7 +62,7 @@ import { LineDetails2Component } from './line-details2/line-details2.component';
     LineCommentDetailsComponent,
     DialogComponent, CurrencyComponent, AttachmentComponent, NotificationComponent,
      CommentsComponent,  FileuploadAttachmentComponent, LogoComponent, SubNavbarComponent],
-  providers: [SecurityService, NotificationsService],
+  providers: [SecurityService, NotificationsService, DialogService],
   exports: [// MainNavComponent,
     OryxDashboardComponent, NotificationComponent,
     FileuploaderComponent, CommentsComponent, AttachmentComponent, FileuploadAttachmentComponent,

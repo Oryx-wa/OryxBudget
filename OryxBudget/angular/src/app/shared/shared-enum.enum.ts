@@ -10,9 +10,13 @@ export enum DisplayModeEnum {
   Budget = 7,
   Actual = 8,
   Option3 = 9,
-  Option4 = 10
+  Option4 = 10,
+  Napims = 11,
+  Operator = 12
 }
 
 export function trackByFn(index, item) {
   return item.id;
 }
+
+

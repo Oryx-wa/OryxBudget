@@ -17,6 +17,7 @@ export class MainNavComponent implements OnInit {
   }
 
   public Logout() {
+    
     this.securityService.Logoff();
   }
 }

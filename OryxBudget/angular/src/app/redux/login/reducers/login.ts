@@ -21,6 +21,9 @@ export const LoginReducer: ActionReducer<UserModel.User> =
 
       case LoginActions.LOGOUT:
         return UserModel.initUser;
+      
+      case LoginActions.SELECT_OPERATOR:
+        return _.assign({}, state, {operatorId: action.payload})
       default:
         return state;
     }
@@ -32,17 +35,17 @@ function setUser(roles: string[]) {
   roles.map(role => {
     switch (role) {
       case 'SubCom':
-        ret = _.assign({}, ret, { showSubCom: true });
+        ret = _.assign({}, ret, { showSubCom: true, showLevel: 1 });
 
         break;
       case 'TecCom':
-        ret = _.assign({}, ret, { showTecCom: true });
+        ret = _.assign({}, ret, { showTecCom: true, showLevel: 2 });
         break;
       case 'MalCom':
-        ret = _.assign({}, ret, { showMalCom: true });
+        ret = _.assign({}, ret, { showMalCom: true,  showLevel: 3 });
         break;
       case 'Final':
-        ret = _.assign({}, ret, { showFinalCom: true });
+        ret = _.assign({}, ret, { showFinalCom: true, showLevel: 3 });
         break;
       case 'Production':
         ret = _.assign({}, ret, { dept: 'Production' });
@@ -58,7 +61,7 @@ function setUser(roles: string[]) {
       case 'Operator':
         ret = _.assign({}, ret, { operator: true });
         break;
-      case 'Napims':
+      case 'NAPIMS':
         ret = _.assign({}, ret, { napims: true });
         break;
       default:
@@ -76,3 +79,4 @@ export const getMalCom = (state: UserModel.User) => state.showMalCom;
 export const getOperator = (state: UserModel.User) => state.operator;
 export const getNapims = (state: UserModel.User) => state.napims;
 export const getName = (state: UserModel.User) => state.full_name;
+export const getLevel = (state: UserModel.User) => state.showLevel;

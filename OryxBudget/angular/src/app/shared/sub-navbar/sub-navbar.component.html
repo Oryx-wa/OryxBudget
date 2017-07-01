@@ -1,7 +1,7 @@
-<nav>
+<nav class="nav-extended">
   <div materialize class="nav-wrapper grey lighten-3">
-    <form [formGroup]="form" *ngIf="budgets$ | async; let budgets;">
-      <div class="col s12 m3">
+    <form materialize="updateTextFields" [formGroup]="form" *ngIf="budgets$ | async; let budgets;">
+      <div class=" input-field col s12 m3 white black-text ">
         <select materialize="material_select" [materializeSelectOptions]=" budgets" (change)="itemSelected($event.target.value)"
           id="budget" name="budget" formControlName="budget">
               							<option  value="" disabled selected > </option>	
@@ -10,26 +10,50 @@
         <label for="budget" data-error="Please enter a valid task">Budget</label>
       </div>
       <div class="col s12 m9">
-      <ul id="nav-mobile" class="right hide-on-med-and-down">
-        <li>
-          <a class="btn waves-effect waves-light green" (click)="showBudget()">Budget</a></li>
-        <li>
-          <a class=" btn waves-effect waves-light orange" (click)="showActual()">Cash Call</a></li>
-        <li>
-          <a class=" btn waves-effect waves-light blue" (click)="showActual()">Performance</a></li>
-      </ul>
-    </div>
-    </form>
-    
-    <ul id="dropdown" class="dropdown-content collection">
-      <div *ngIf="budgets$ | async; let budgets;">
-        <li *ngFor="let item of budgets">
-          <a (click)="budgetSelected.emit(item.id)" routerLinkActive="active" class="waves-effect waves-purple special">
-          {{item.description}}
-         </a>
-        </li>
+        <ul id="nav-mobile" class="right hide-on-med-and-down">
+          <li>
+            <a class="btn waves-effect waves-light green" (click)="showBudget()">Budget</a></li>
+          <li>
+            <a class=" btn waves-effect waves-light orange" (click)="showActual()">Cash Call</a></li>
+          <li>
+            <a class=" btn waves-effect waves-light blue" (click)="showActual()">Performance</a></li>
+        </ul>
       </div>
-
-    </ul>
+    </form>
   </div>
+
+
+  <div materialize class="nav-content  white ">
+    <div class="row">
+      <form class="col s12">
+        <div *ngIf="showLevel >= 1">
+          <div class="input-field col s2">
+            <input type="checkbox" name="subCom" id="subCom" [checked]="showSubCom$ | async " (change)="showSubCom$.next($event.target.checked)"
+            />
+            <label for="subCom">Sub Committee</label>
+          </div>
+        </div>
+        <div *ngIf="showLevel >= 2">
+          <div class="input-field col s2">
+            <input type="checkbox" name="tecCom" id="tecCom" [checked]="showTecCom$ | async " (change)="showTecCom$.next($event.target.checked)"
+            />
+            <label for="tecCom">Technical Committee</label>
+          </div>
+        </div>
+        <div *ngIf=" showLevel >= 3">
+          <div class="input-field col s3">
+            <input type="checkbox" name="malCom" id="malCom" [checked]="showMalCom$ | async " (change)="showMalCom$.next($event.target.checked)"
+            />
+            <label for="malCom">Management Committee</label>
+          </div>
+          <div class=" col s2">
+            <input type="checkbox" name="final" id="final" [checked]="showFinal$ | async " (change)="showFinal$.next($event.target.checked)"
+            />
+            <label for="final">Final Budget</label>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+
 </nav>

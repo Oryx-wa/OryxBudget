@@ -1,8 +1,12 @@
 <div materialize class="">
   <div class="">
-    <div class="row">
+    <div *ngIf="!noLines;else upload" class="row">
       <ag-grid-angular style="width: 100%; height: 500px;" class="ag-material" [gridOptions]="gridOptions" [columnDefs]="columnDefs"
         groupHeaders rowHeight="48" rowSelection="single" (gridReady)="onReady($event)" [rowData]="rowData">
       </ag-grid-angular>
     </div>
+    <ng-template #upload>
+      <app-fileuploader [data]="data" [url]="uploadUrl" [title]="uploadTitle">
+      </app-fileuploader>
+    </ng-template>
   </div>

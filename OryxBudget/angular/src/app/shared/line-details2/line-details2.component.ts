@@ -1,4 +1,7 @@
-import { Component, OnInit, Input, OnChanges, Output, EventEmitter, ChangeDetectionStrategy } from '@angular/core';
+import {
+  Component, OnInit, Input, OnChanges, Output,
+  EventEmitter, ChangeDetectionStrategy, OnDestroy, SimpleChanges
+} from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { Router, ActivatedRoute, Params } from '@angular/router';
 import { RouterModule } from '@angular/router';
@@ -7,14 +10,17 @@ import * as _ from 'lodash';
 import { Store } from '@ngrx/store';
 import { MaterializeAction } from 'angular2-materialize';
 import { GridOptions } from 'ag-grid/main';
-import { Budget, BudgetLines, LineComment, Actual, AppState } from '../../redux';
+import { Budget, BudgetLines, LineComment, Actual, AppState, UserSelector } from '../../redux';
 import { CurrencyComponent } from '../../shared/renderers/currency.component';
 import { WordWrapComponent } from '../../shared/renderers/word-wrap.component';
 import { TextComponent } from '../../shared/renderers/text.component';
 import { ChildMessageComponent } from '../../shared/renderers/child-message.component';
-
+import { SecurityService } from './../../login/security.service';
 import { StyledComponent } from '../../shared/renderers/styled-component';
+import { DialogService, alertTypeEnum } from './../dialog.service';
 
+import swal from 'sweetalert2';
+import { UploadOutput, UploadInput, UploadFile, humanizeBytes, NgUploaderService, UploadStatus } from 'ngx-uploader';
 
 
 @Component({
@@ -23,12 +29,13 @@ import { StyledComponent } from '../../shared/renderers/styled-component';
   styleUrls: ['./line-details2.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class LineDetails2Component implements OnInit, OnChanges {
+export class LineDetails2Component implements OnInit, OnChanges, OnDestroy {
   @Input() lines: BudgetLines[] = [];
-  @Input() showSubCom = false;
-  @Input() showTecCom = false;
-  @Input() showMalCom =  false;
-  @Input() showFinal = false;
+  showSubCom = false;
+  showTecCom = false;
+
+  @Input() budgetId = '';
+
 
 
   filtered: BudgetLines[] = [];
@@ -45,35 +52,79 @@ export class LineDetails2Component implements OnInit, OnChanges {
   private ready = false;
   public gridOptions: GridOptions;
   public rowData: any[] = [];
-  constructor(private store: Store<AppState>) { }
+  public nolines = false;
+  private alive = true;
+
+  uploadInput: EventEmitter<UploadInput>;
+  humanizeBytes: Function;
+  upload: NgUploaderService;
+  public operator = false;
+
+  public data: any;
+  constructor(private store: Store<AppState>, private dialog: DialogService, private securityService: SecurityService) {
+    this.gridOptions = <GridOptions>{
+      context: {
+        componentParent: this
+      },
+      getNodeChildDetails: getNodeChildDetails,
+      debug: false,
+      getRowStyle: function (params) {
+        if (params.node.floating) {
+          return { 'font-weight': 'bold' };
+        }
+      },
+      floatingTopRowData: this.floatingRow,
+      floatingBottomRowData: this.floatingRow,
+    };
+  }
 
   ngOnInit() {
     // this.structureData();
     this.createColumnDefs();
-    this.gridOptions = <GridOptions>{
-        context: {
-          componentParent: this
-        },
-        getNodeChildDetails: getNodeChildDetails,        
-        debug: false,
-        getRowStyle: function (params) {
-          if (params.node.floating) {
-            return { 'font-weight': 'bold' };
-          }
-        },
-        floatingTopRowData: this.floatingRow,
-        floatingBottomRowData: this.floatingRow,
-      };
 
+    this.store
+      .takeWhile(() => this.alive)
+      .subscribe(s => {
+        this.operator = s.security.user.operator;
+        this.showTecCom = s.security.user.showTecCom;
+        this.showSubCom = s.security.user.showSubCom;
+
+      })
+    this.data = { id: this.budgetId };
+    console.log(this.showTecCom);
   }
 
-  ngOnChanges(changes: any) {
+  ngOnChanges(changes: SimpleChanges) {
+    console.log(changes);
+    if (changes['lines']) {
+      if (changes['lines'].currentValue.length > 0) {
+        this.structureData();
+        if (this.rowData.length > 0) {
 
-   
-    this.structureData();
-    if (this.rowData.length > 0) {
-      this.gridOptions.api.setRowData(this.rowData);
+          this.gridOptions.api.setRowData(this.rowData);
+          this.setColumns();
+        }
+      } else {
+        const nolines = this.nolines;
+
+        if (this.operator) {
+          const event: UploadInput = {
+            type: 'uploadFile',
+            url: this.securityService.getUrl('Budget/UploadBudget'),
+            method: 'POST',
+            data: { id: this.budgetId },
+            concurrency: 1, // set sequential uploading of files with concurrency 1,
+            headers: { ['Authorization']: 'Bearer ' + this.securityService.GetToken() }
+
+          };
+          uploadBudget(event);
+          this.nolines = nolines;
+
+        }
+      }
     }
+
+
   }
 
   private createColumnDefs() {
@@ -154,18 +205,23 @@ export class LineDetails2Component implements OnInit, OnChanges {
       {
         headerName: 'Technical Commitee',
         children: [
-
+          {
+            headerName: 'Budget LC', field: 'tecComBudgetLC',
+            width: this.colWidth,
+            cellRendererFramework: CurrencyComponent,
+            currency: 'NGN', hidden: true,
+          },
           {
             headerName: 'Budget USD', field: 'tecComBudgetUSD',
             width: this.colWidth,
             cellRendererFramework: CurrencyComponent,
-            currency: 'USD', hidden: true, editable: true
+            currency: 'USD', hidden: true,
           },
           {
             headerName: 'Budget FC', field: 'tecComBudgetFC',
             width: this.colWidth,
             cellRendererFramework: CurrencyComponent,
-            currency: 'USD', editable: true, hidden: false,
+            currency: 'USD', hidden: true,
           }
         ]
       },
@@ -195,13 +251,13 @@ export class LineDetails2Component implements OnInit, OnChanges {
     // this.gridOptions.api.setColumnDefs(this.createColumnDefs());
     // this.gridOptions.api.setRowData(this.rowData);
     this.ready = true;
-    this.setColumns();
+    // this.setColumns();
 
 
   }
 
   private setColumns() {
-    if (this.ready && this.rowData.length > 1) {
+    if (this.ready) {
       this.gridOptions.columnApi.setColumnsVisible(
         ['subComBudgetLC', 'subComBudgetUSD', 'subComBudgetFC'],
         this.showSubCom);
@@ -209,19 +265,19 @@ export class LineDetails2Component implements OnInit, OnChanges {
       this.gridOptions.columnApi.setColumnsVisible(
         ['tecComBudgetLC', 'tecComBudgetUSD', 'tecComBudgetFC'],
         this.showTecCom);
+      /*
+    this.gridOptions.columnApi.setColumnsVisible(
+      ['malComBudgetLC', 'malComBudgetUSD', 'malComBudgetFC'],
+     false);
 
-      this.gridOptions.columnApi.setColumnsVisible(
-        ['malComBudgetLC', 'malComBudgetUSD', 'malComBudgetFC'],
-        this.showMalCom);
-
-      this.gridOptions.columnApi.setColumnsVisible(
-        ['finalBudgetLC', 'finalBudgetUSD', 'finalBudgetFC'],
-        this.showFinal);
+    this.gridOptions.columnApi.setColumnsVisible(
+      ['finalBudgetLC', 'finalBudgetUSD', 'finalBudgetFC'],
+      false);*/
     }
   }
 
   structureData() {
-     this.rowData = [];
+    this.rowData = [];
     const data = _.assign(this.lines, { comment: '' });
     const level1: BudgetLines[] = this.lines.filter(line => line.level === '1');
     const level2: BudgetLines[] = this.lines.filter(line => line.level === '2');
@@ -265,6 +321,10 @@ export class LineDetails2Component implements OnInit, OnChanges {
       float: true,
     });
   }
+
+  ngOnDestroy() {
+    this.alive = false;
+  }
 }
 
 function getNodeChildDetails(rowItem) {
@@ -303,4 +363,120 @@ function getNodeChildDetails(rowItem) {
       return null;
     }
   }
+}
+
+function uploadBudget(uploadInput: UploadInput) {
+
+  return swal({
+    title: 'No Budget Details',
+    type: 'question',
+    text: 'Do you want to upload budget?',
+    showCloseButton: true,
+    showCancelButton: true,
+    confirmButtonText:
+    ' Upload ',
+    confirmButtonClass: 'waves-effect waves-light btn',
+    cancelButtonText:
+    'Cancel',
+    cancelButtonClass: 'waves-effect waves-light btn',
+    buttonsStyling: false
+
+  }).then(function () {
+    swal({
+      title: 'Select File',
+      input: 'file',
+      inputAttributes: {
+        accept: '*/*'
+      }
+    }).then(function (file) {
+
+      // console.log(uploadInput);
+      const ngx = new NgUploaderService();
+      uploadFile(file, uploadInput).subscribe(data => console.log(data));
+    });
+  });
+}
+
+function uploadFile(file: any, event: UploadInput) {
+  return new Observable(observer => {
+    const url = event.url;
+    const method = event.method || 'POST';
+    const data = event.data || {};
+    const headers = event.headers || {};
+
+    const reader = new FileReader();
+    const xhr = new XMLHttpRequest();
+    let time: number = new Date().getTime();
+    let load = 0;
+
+    xhr.upload.addEventListener('progress', (e: ProgressEvent) => {
+      if (e.lengthComputable) {
+        const percentage = Math.round((e.loaded * 100) / e.total);
+        const diff = new Date().getTime() - time;
+        time += diff;
+        load = e.loaded - load;
+        const speed = parseInt((load / diff * 1000) as any, 10);
+
+        file.progress = {
+          status: UploadStatus.Uploading,
+          data: {
+            percentage: percentage,
+            speed: speed,
+            speedHuman: `${humanizeBytes(speed)}/s`
+          }
+        };
+
+        observer.next({ type: 'uploading', file: file });
+      }
+    }, false);
+
+    xhr.upload.addEventListener('error', (e: Event) => {
+      observer.error(e);
+      observer.complete();
+    });
+
+    xhr.onreadystatechange = () => {
+      if (xhr.readyState === XMLHttpRequest.DONE) {
+        file.progress = {
+          status: UploadStatus.Done,
+          data: {
+            percentage: 100,
+            speed: null,
+            speedHuman: null
+          }
+        };
+
+        try {
+          file.response = JSON.parse(xhr.response);
+        } catch (e) {
+          file.response = xhr.response;
+        }
+
+        observer.next({ type: 'done', file: file });
+        observer.complete();
+      }
+    };
+
+    xhr.open(method, url, true);
+
+    const form = new FormData();
+
+    try {
+      form.append('file', file, file.name);
+
+      Object.keys(data).forEach(key => form.append(key, data[key]));
+      Object.keys(headers).forEach(key => xhr.setRequestHeader(key, headers[key]));
+
+      // this.serviceEvents.emit({ type: 'start', file: file });
+      xhr.send(form);
+
+    } catch (e) {
+      observer.complete();
+    }
+
+    return () => {
+      xhr.abort();
+      reader.abort();
+    };
+  });
 }

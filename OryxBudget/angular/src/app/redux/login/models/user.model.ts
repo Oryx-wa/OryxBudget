@@ -18,6 +18,7 @@ export interface User {
     napims: boolean,
     operatorId: string;
     dept: string;
+    showLevel: number;
     
 }
 
@@ -54,6 +55,7 @@ export const initUser: User = {
     napims: false,
     operatorId: '',
     dept: '',
+    showLevel: 1
    
 };
 

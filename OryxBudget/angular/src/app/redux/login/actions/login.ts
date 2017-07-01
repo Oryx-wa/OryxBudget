@@ -18,6 +18,7 @@ import { type } from '../../utilities';
 export const  LOGIN = '[login] Start';
 export const  LOGIN_SUCCESS = '[login] Complete';
 export const  LOGOUT = '[logout] Complet';
+export const  SELECT_OPERATOR = '[login] Napims select operator';
 
 
 export class LoginAction implements Action {
@@ -36,5 +37,10 @@ export class LoginSuccessAction implements Action {
   constructor( public payload: User) { }
 }
 
+export class SelectOperatorAction implements Action {
+  readonly type = SELECT_OPERATOR;
+  constructor( public payload: string){ }
+}
+
 export type Actions = 
-  LoginAction | LogOutAction | LoginSuccessAction;
+  LoginAction | LogOutAction | LoginSuccessAction | SelectOperatorAction;
