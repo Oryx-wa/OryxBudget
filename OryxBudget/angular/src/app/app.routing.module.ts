@@ -5,6 +5,7 @@ import { BudgetInitialisationComponent } from './budget/budget-initialisation.co
 import { OperatorsComponent } from './operators/operators.component';
 import { LineDetailComponent } from './budget/line-detail/line-detail.component';
 // import { LoginComponent } from './login/login.component';
+import { LogoutComponent } from './shared/logout/logout.component';
 import { AuthGuard } from './login/auth.guard';
 import { NgModule } from '@angular/core';
 
@@ -17,7 +18,7 @@ const appRoutes: Routes = [
   { path: 'unauthorised', component: UnauthorisedComponent, canLoad: [AuthGuard] },
   { path: 'budgetInitialisation', component: BudgetInitialisationComponent, canLoad: [AuthGuard] },
   { path: 'operators', component: OperatorsComponent, canLoad: [AuthGuard] },
-  
+  { path: 'signout', component: LogoutComponent, canLoad: [AuthGuard] }
 
 ];
 

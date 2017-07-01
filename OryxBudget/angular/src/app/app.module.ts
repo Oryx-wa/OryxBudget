@@ -23,6 +23,7 @@ import { AppRoutingModule } from './app.routing.module';
 import { OperatorsModule } from './operators/operators.module';
 import { WorkprogramModule } from './workprogram/workprogram.module';
 import { BudgetEffects, BudgetService } from './redux/budgets/budget/';
+import { LogoutComponent } from './shared/logout/logout.component';
 
 
 
@@ -32,7 +33,7 @@ import { BudgetEffects, BudgetService } from './redux/budgets/budget/';
   declarations: [
     AppComponent,
     MainNavComponent,
-
+    LogoutComponent
 
 
     //OryxDashboardComponent
