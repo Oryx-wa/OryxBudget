@@ -18,10 +18,8 @@ import { ChildMessageComponent } from '../../shared/renderers/child-message.comp
 import { SecurityService } from './../../login/security.service';
 import { StyledComponent } from '../../shared/renderers/styled-component';
 import { DialogService, alertTypeEnum } from './../dialog.service';
-
 import swal from 'sweetalert2';
 import { UploadOutput, UploadInput, UploadFile, humanizeBytes, NgUploaderService, UploadStatus } from 'ngx-uploader';
-
 
 @Component({
   selector: 'app-line-details2',
@@ -31,13 +29,11 @@ import { UploadOutput, UploadInput, UploadFile, humanizeBytes, NgUploaderService
 })
 export class LineDetails2Component implements OnInit, OnChanges, OnDestroy {
   @Input() lines: BudgetLines[] = [];
+  @Input() actuals: Actual[] = [];
+  @Input() type = 'budget';
   showSubCom = false;
   showTecCom = false;
-
   @Input() budgetId = '';
-
-
-
   filtered: BudgetLines[] = [];
   selectedCode: BudgetLines;
   parentCode: BudgetLines;
@@ -54,13 +50,13 @@ export class LineDetails2Component implements OnInit, OnChanges, OnDestroy {
   public rowData: any[] = [];
   public nolines = false;
   private alive = true;
-
   uploadInput: EventEmitter<UploadInput>;
   humanizeBytes: Function;
   upload: NgUploaderService;
   public operator = false;
-
   public data: any;
+  private event: UploadInput;
+
   constructor(private store: Store<AppState>, private dialog: DialogService, private securityService: SecurityService) {
     this.gridOptions = <GridOptions>{
       context: {
@@ -79,9 +75,6 @@ export class LineDetails2Component implements OnInit, OnChanges, OnDestroy {
   }
 
   ngOnInit() {
-    // this.structureData();
-    this.createColumnDefs();
-
     this.store
       .takeWhile(() => this.alive)
       .subscribe(s => {
@@ -91,40 +84,61 @@ export class LineDetails2Component implements OnInit, OnChanges, OnDestroy {
 
       })
     this.data = { id: this.budgetId };
-    console.log(this.showTecCom);
-  }
-
-  ngOnChanges(changes: SimpleChanges) {
-    console.log(changes);
-    if (changes['lines']) {
-      if (changes['lines'].currentValue.length > 0) {
-        this.structureData();
-        if (this.rowData.length > 0) {
-
-          this.gridOptions.api.setRowData(this.rowData);
-          this.setColumns();
-        }
-      } else {
-        const nolines = this.nolines;
-
-        if (this.operator) {
-          const event: UploadInput = {
-            type: 'uploadFile',
-            url: this.securityService.getUrl('Budget/UploadBudget'),
-            method: 'POST',
-            data: { id: this.budgetId },
-            concurrency: 1, // set sequential uploading of files with concurrency 1,
-            headers: { ['Authorization']: 'Bearer ' + this.securityService.GetToken() }
-
-          };
-          uploadBudget(event);
-          this.nolines = nolines;
-
-        }
-      }
+    const url = 'Budget/' + (this.type === 'budget') ? 'UploadBudget' : 'UploadActual';
+    this.event = {
+      type: 'uploadFile',
+      url: this.securityService.getUrl(url),
+      method: 'POST',
+      data: { id: this.budgetId },
+      concurrency: 1, // set sequential uploading of files with concurrency 1,
+      headers: { ['Authorization']: 'Bearer ' + this.securityService.GetToken() }
+    };
+    switch (this.type) {
+      case 'budget':
+        this.initBudget();
+        break;
+      case 'actual':
+        this.initActual();
+        break;
+      default:
+        break;
     }
-
-
+  }
+  initActual() {
+    this.createActualColumnDefs();
+  }
+  initBudget() {
+    this.createColumnDefs();
+  }
+  ngOnChanges(changes: SimpleChanges) {
+    // console.log(changes);
+    switch (this.type) {
+      case 'budget':
+        if (changes['lines']) {
+          if (changes['lines'].currentValue.length > 0) {
+            this.structureData();
+          } else {
+            const nolines = this.nolines;
+            if (this.operator) {
+              uploadBudget(this.event, this.type);
+              this.nolines = nolines;
+            }
+          }
+        }
+        break;
+      case 'actual':
+        if (changes['actuals']) {
+          if (changes['actuals'].currentValue.length > 0) {
+            this.structureActualData();
+          } else {
+            const nolines = this.nolines;
+            if (this.operator) {
+              uploadBudget(this.event, this.type);
+              this.nolines = nolines;
+            }
+          }
+        }
+    }
   }
 
   private createColumnDefs() {
@@ -244,8 +258,6 @@ export class LineDetails2Component implements OnInit, OnChanges, OnDestroy {
 
     ];
   }
-
-
   public onReady(data: any) {
     // // console.log('onReady');
     // this.gridOptions.api.setColumnDefs(this.createColumnDefs());
@@ -255,7 +267,6 @@ export class LineDetails2Component implements OnInit, OnChanges, OnDestroy {
 
 
   }
-
   private setColumns() {
     if (this.ready) {
       this.gridOptions.columnApi.setColumnsVisible(
@@ -275,7 +286,6 @@ export class LineDetails2Component implements OnInit, OnChanges, OnDestroy {
       false);*/
     }
   }
-
   structureData() {
     this.rowData = [];
     const data = _.assign(this.lines, { comment: '' });
@@ -320,10 +330,130 @@ export class LineDetails2Component implements OnInit, OnChanges, OnDestroy {
       comment: '',
       float: true,
     });
+    if (this.rowData.length > 0) {
+      this.setColumns();
+    }
   }
+  structureActualData() {
+    this.rowData = [];
+    const data = _.assign(this.actuals, { comment: '' });   
+    const level1: Actual[] = this.actuals.filter(line => line.level === '1');
+    const level2: Actual[] = this.actuals.filter(line => line.level === '2');
+    const level3: Actual[] = this.actuals.filter(line => line.level === '3');
+    let leve2Data: any[] = [];    
+    level2.map(line => {
+      const children = level3.filter(l2 => l2.fatherNum === line.code);
+      const bd = _.assign({}, line, { level2: line.code, level3: children });
+      leve2Data.push(bd);
+    });
 
+    level1.map(line => {
+      const children = leve2Data.filter(l2 => l2.fatherNum === line.code);
+      const bd = _.assign({}, line, { level1: line.code, level2: children });
+      this.rowData.push(bd);
+    });
+    const output = this.floatingRow.push({
+      id: '',
+      code: 'Total',
+      description: '',
+      level: '3',
+      fatherNum: '',
+      opActualFC: _.sumBy(level3, 'opBudgetFC'),
+      opActualLC: _.sumBy(level3, 'opBudgetLC'),
+      opActualUSD: _.sumBy(level3, 'opBudgetUSD'),
+      finalBudgetFC: _.sumBy(level3, 'finalBudgetFC'),
+      lineStatus: '',
+      budgetId: '',
+      comment: '',
+      float: true,
+    });
+    console.log(this.rowData);
+  }
   ngOnDestroy() {
     this.alive = false;
+  }
+  private createActualColumnDefs() {
+    this.columnDefs = [
+
+      {
+        headerName: 'Budget Codes',
+        children: [
+          {
+            headerName: 'Code', field: 'code',
+            width: 90,
+            cellRenderer: 'group',
+            floatingCellRendererParams: {
+              style: { 'font-weight': 'bold' }
+            },
+            floatingCellRendererFramework: StyledComponent,
+
+          },
+          {
+            headerName: 'Description', field: 'description',
+            width: 200,
+            // cellRendererFramework: WordWrapComponent
+            cellStyle: { 'word-wrap': 'break-word' },
+            floatingCellRendererParams: {
+              style: { 'font-weight': 'bold' }
+            },
+            floatingCellRendererFramework: StyledComponent,
+          }
+        ]
+      },
+
+      {
+        headerName: 'Operator Budget',
+        children: [
+
+          {
+            headerName: 'Budget FC', field: 'opBudgetFC',
+            width: this.colWidth,
+            cellRendererFramework: CurrencyComponent,
+            currency: 'USD'
+          },
+        ]
+      },
+      {
+        headerName: 'Performance',
+        children: [
+          {
+            headerName: 'NGN', field: 'opActualLC',
+            width: this.colWidth,
+            cellRendererFramework: CurrencyComponent,
+            currency: 'NGN', hidden: true, editable: true
+          },
+          {
+            headerName: 'USD', field: 'opActualUSD',
+            width: this.colWidth,
+            cellRendererFramework: CurrencyComponent,
+            currency: 'USD', hidden: true, editable: true
+          },
+          {
+            headerName: 'FC', field: 'opActualFC',
+            width: this.colWidth,
+            cellRendererFramework: CurrencyComponent,
+            currency: 'USD', editable: true
+          }
+        ]
+      },
+
+      {
+        headerName: 'Details | Attachments',
+        children: [
+
+          {
+            headerName: 'Comments', field: 'id',
+            width: 140,
+            // cellTemplate: '<div><a href="#">Visible text</a></div>',
+            editable: true,
+            cellRendererFramework: ChildMessageComponent,
+            mIcon: 'message', type: 'comment'
+          },
+
+        ]
+      }
+
+    ];
   }
 }
 
@@ -365,12 +495,14 @@ function getNodeChildDetails(rowItem) {
   }
 }
 
-function uploadBudget(uploadInput: UploadInput) {
+function uploadBudget(uploadInput: UploadInput, type: string) {
 
   return swal({
-    title: 'No Budget Details',
+    title: (type === 'budget') ? 'No Budget Details' : 'Performance Data',
     type: 'question',
-    text: 'Do you want to upload budget?',
+    text: 'Do you want to upload '
+      + (type === 'budget') ? 'budget' : 'performance'
+      + '?',
     showCloseButton: true,
     showCancelButton: true,
     confirmButtonText:
@@ -389,8 +521,6 @@ function uploadBudget(uploadInput: UploadInput) {
         accept: '*/*'
       }
     }).then(function (file) {
-
-      // console.log(uploadInput);
       const ngx = new NgUploaderService();
       uploadFile(file, uploadInput).subscribe(data => console.log(data));
     });

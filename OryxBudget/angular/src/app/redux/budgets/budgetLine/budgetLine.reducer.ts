@@ -51,6 +51,8 @@ export const BudgetLineReducer: ActionReducer<BudgetLineState> = (state: BudgetL
             }));
         case AllActions.SELECT:
             return updateObject({}, updateObject(state, { selectedId: action.payload }));
+        case AllActions.RESET:
+            return initBudgetLineState;
         default:
             return state;
     }

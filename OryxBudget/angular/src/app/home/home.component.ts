@@ -53,7 +53,7 @@ export class HomeComponent implements OnInit, OnChanges, OnDestroy {
 
   ngOnInit() {
 
-
+    this.store.dispatch(new BudgetActions.SelectItemAction(null));
     this.authenticated$ = this.store.select(TokenSelector.authenticated);
     this.dept$ = this.store.select(UserSelector.dept);
     this.subCom$ = this.store.select(UserSelector.subCom);

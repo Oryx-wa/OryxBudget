@@ -15,15 +15,13 @@ export const LoginReducer: ActionReducer<UserModel.User> =
         return state;
       case LoginActions.LOGIN_SUCCESS:
         const newUser: UserModel.User = _.assign({}, action.payload, setUser(action.payload.role));
-
         return newUser;
-
-
       case LoginActions.LOGOUT:
         return UserModel.initUser;
-      
       case LoginActions.SELECT_OPERATOR:
-        return _.assign({}, state, {operatorId: action.payload})
+        return _.assign({}, state, { operatorId: action.payload });
+      case LoginActions.SELECT_DISPLAY:
+        return _.assign({}, state, { display: action.payload });
       default:
         return state;
     }
@@ -42,7 +40,7 @@ function setUser(roles: string[]) {
         ret = _.assign({}, ret, { showTecCom: true, showLevel: 2 });
         break;
       case 'MalCom':
-        ret = _.assign({}, ret, { showMalCom: true,  showLevel: 3 });
+        ret = _.assign({}, ret, { showMalCom: true, showLevel: 3 });
         break;
       case 'Final':
         ret = _.assign({}, ret, { showFinalCom: true, showLevel: 3 });
@@ -80,3 +78,4 @@ export const getOperator = (state: UserModel.User) => state.operator;
 export const getNapims = (state: UserModel.User) => state.napims;
 export const getName = (state: UserModel.User) => state.full_name;
 export const getLevel = (state: UserModel.User) => state.showLevel;
+export const getDisplay = (state: UserModel.User) => state.display;

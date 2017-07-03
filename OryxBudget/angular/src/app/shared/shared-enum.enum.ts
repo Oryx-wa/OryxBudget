@@ -12,7 +12,8 @@ export enum DisplayModeEnum {
   Option3 = 9,
   Option4 = 10,
   Napims = 11,
-  Operator = 12
+  Operator = 12,
+  CashCall = 13
 }
 
 export function trackByFn(index, item) {

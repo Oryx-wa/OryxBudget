@@ -114,7 +114,7 @@ export class ActualDetailComponent implements OnInit, OnChanges {
     const level1: Actual[] = this.actuals.filter(line => line.level === '1');
     const level2: Actual[] = this.actuals.filter(line => line.level === '2');
     const level3: Actual[] = this.actuals.filter(line => line.level === '3');
-    let leve2Data: any[] = [];
+    const leve2Data: any[] = [];
     level2.map(line => {
       const children = level3.filter(l2 => l2.fatherNum === line.code);
       const bd = _.assign(line, { level2: line.code, level3: children });
@@ -126,8 +126,6 @@ export class ActualDetailComponent implements OnInit, OnChanges {
       const bd = _.assign(line, { level1: line.code, level2: children });
       this.rowData.push(bd);
     });
-
-
     const output = this.floatingRow.push({
       id: '',
       code: 'Total',
@@ -143,7 +141,6 @@ export class ActualDetailComponent implements OnInit, OnChanges {
       comment: '',
       float: true,
     });
-
   }
 
   private createColumnDefs() {

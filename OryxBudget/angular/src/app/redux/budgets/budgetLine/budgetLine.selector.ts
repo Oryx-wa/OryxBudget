@@ -14,6 +14,9 @@ export const getBudgetLineState = (state: AppState) => state.budgets.budgetLine;
 export const BudgetLineEntities = createSelector(getBudgetLineState, getBudgetLineEntities);
 export const BudgetLineIds = createSelector(getBudgetLineState, getBudgetLineIds);
 export const getBudgetLineCollection = createSelector(BudgetLineEntities, BudgetLineIds, (entities, ids) => {
+    if(ids.length === 0) {
+        return [];
+    }
     return ids.map(id => entities[id]);
 });
 

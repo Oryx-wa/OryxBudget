@@ -12,11 +12,11 @@
       <div class="col s12 m9">
         <ul id="nav-mobile" class="right hide-on-med-and-down">
           <li>
-            <a class="btn waves-effect waves-light green" (click)="showBudget()">Budget</a></li>
+            <a [ngClass]= "budgetClass"  (click)="changeDisplay('budget')">Budget</a></li>
           <li>
-            <a class=" btn waves-effect waves-light orange" (click)="showActual()">Cash Call</a></li>
+            <a [ngClass]= "cashCallClass"  (click)="changeDisplay('cashCall')">Cash Call</a></li>
           <li>
-            <a class=" btn waves-effect waves-light blue" (click)="showActual()">Performance</a></li>
+            <a [ngClass]= "actualClass"  (click)="changeDisplay('actual')">Performance</a></li>
         </ul>
       </div>
     </form>

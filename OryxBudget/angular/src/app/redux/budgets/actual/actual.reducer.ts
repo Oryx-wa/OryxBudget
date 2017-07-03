@@ -42,6 +42,7 @@ export const ActualReducer: ActionReducer<ActualState> = (state: ActualState = i
                 return state;
             }
             const Actual: any = normalize(action.payload, arrayOfActual);
+            console.log(Actual.entities.Actual);
             return updateObject({}, updateObject(state, {
                 ids: Actual.result,
                 entities: Actual.entities.Actual,

@@ -1,10 +1,6 @@
 import { Action } from '@ngrx/store';
 import { User } from './../models';
 import { type } from '../../utilities';
-
-
-
-
 /**
  * Instead of passing around action string constants and manually recreating
  * action objects at the point of dispatch, we create services encapsulating
@@ -15,10 +11,11 @@ import { type } from '../../utilities';
  */
 
 
-export const  LOGIN = '[login] Start';
-export const  LOGIN_SUCCESS = '[login] Complete';
-export const  LOGOUT = '[logout] Complet';
-export const  SELECT_OPERATOR = '[login] Napims select operator';
+export const LOGIN = '[login] Start';
+export const LOGIN_SUCCESS = '[login] Complete';
+export const LOGOUT = '[logout] Complet';
+export const SELECT_OPERATOR = '[login] Napims select operator';
+export const SELECT_DISPLAY = '[login] Select display';
 
 
 export class LoginAction implements Action {
@@ -28,19 +25,26 @@ export class LoginAction implements Action {
 
 export class LogOutAction implements Action {
   readonly type = LOGOUT;
-  constructor( public payload: User) { }
+  constructor(public payload: User) { }
 }
 
 
 export class LoginSuccessAction implements Action {
- readonly type = LOGIN_SUCCESS;
-  constructor( public payload: User) { }
+  readonly type = LOGIN_SUCCESS;
+  constructor(public payload: User) { }
 }
 
 export class SelectOperatorAction implements Action {
   readonly type = SELECT_OPERATOR;
-  constructor( public payload: string){ }
+  constructor(public payload: string) { }
 }
 
-export type Actions = 
-  LoginAction | LogOutAction | LoginSuccessAction | SelectOperatorAction;
+export class SelectDisplay implements Action {
+  readonly type = SELECT_DISPLAY;
+  constructor(public payload: string) { }
+}
+
+export type Actions =
+  LoginAction | LogOutAction |
+  LoginSuccessAction | SelectOperatorAction |
+  SelectDisplay;

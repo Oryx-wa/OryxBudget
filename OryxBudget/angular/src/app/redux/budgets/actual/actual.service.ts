@@ -1,7 +1,7 @@
 import { BaseService } from './../../utilities';
 import { Actual } from './actual.interface';
 
-import { Http } from '@angular/http';
+import { Http, URLSearchParams } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
 import { Injectable } from '@angular/core';
 import { Store } from '@ngrx/store';
@@ -19,9 +19,12 @@ export class ActualService extends BaseService {
         super(_http, _configuration, store);
     }
 
-    public getActuals = (type: string): Observable<Actual[]> => {
-        this.store.dispatch(new NotificationActions.SetLoading('Actual'));
-        return this.Get(this.api);
+    public getActuals = (budgetId: string, dept: string): Observable<Actual[]> => {
+        const params: URLSearchParams = new URLSearchParams();
+        params.append('id', budgetId);
+        params.append('department', dept);
+        this.store.dispatch(new NotificationActions.SetLoading('Budget/GetActualDetails'));
+         return this.GetByParam2('Budget/GetActualDetails', params);
     }
 
     public addActual = (actual: Actual): Observable<Actual> => {

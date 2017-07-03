@@ -6,6 +6,7 @@ import { OnDestroy } from '@angular/core';
 
 import { BudgetService } from './budget.service';
 import * as BudgetActions from './budget.action';
+import * as BudgetLineActions from './../budgetLine/budgetLine.action'
 import { AppState } from './../../';
 import { NotificationActions, ErrorActions } from './../../general/actions/';
 import { Observable } from 'rxjs/Observable';
@@ -55,7 +56,7 @@ export class BudgetEffects implements OnDestroy {
             }));
 
 
-    @Effect() AddUpdateItemSuces$: Observable<Action> = this.actions$
+    @Effect() AddUpdateItemSucess$: Observable<Action> = this.actions$
         .ofType(BudgetActions.ADD_UPDATE_ITEM_SUCCESS)
         .map(() => new NotificationActions.SetSaved('Budget saved Sucessfully'));
 
@@ -77,6 +78,9 @@ export class BudgetEffects implements OnDestroy {
                 new NotificationActions.SetSavingError('Error saving Budget')]);
             }));
 
+    @Effect() selectBudget$: Observable<Action> = this.actions$
+        .ofType(BudgetActions.SELECT)
+        .map(() => new BudgetLineActions.ResetAction(''));
 
     constructor(
         private actions$: Actions,

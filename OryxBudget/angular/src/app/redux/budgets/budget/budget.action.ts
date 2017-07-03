@@ -65,13 +65,13 @@ export class LoadItemsAction implements Action {
 export class LoadItemsSuccessAction implements Action {
     readonly type = LOAD_ITEMS_SUCCESS;
 
-    constructor(public payload: Budget[]) { console.log(payload); }
+    constructor(public payload: Budget[]) { }
 }
 
 export class LoadItemSuccessAction implements Action {
     readonly type = LOAD_ITEM_SUCCESS;
 
-    constructor(public payload: string) { console.log(payload); }
+    constructor(public payload: string) {  }
 }
 
 export class SelectItemAction implements Action {

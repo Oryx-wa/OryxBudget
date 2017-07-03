@@ -19,7 +19,8 @@ export interface User {
     operatorId: string;
     dept: string;
     showLevel: number;
-    
+    display: string;
+
 }
 
 export interface Token {
@@ -55,8 +56,8 @@ export const initUser: User = {
     napims: false,
     operatorId: '',
     dept: '',
-    showLevel: 1
-   
+    showLevel: 1,
+    display: 'budget'
 };
 
 export const initToken: Token = {
