@@ -258,7 +258,7 @@ namespace OryxBudgetService.BudgetsServices
 
 
             if (department == "All")
-            {
+            { 
                 return _repository.GetBudgetLines(id); 
             }
             else

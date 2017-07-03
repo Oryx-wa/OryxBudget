@@ -66,10 +66,10 @@ namespace Entities.Budgets
         public decimal FinalActualUSD { get; set; }
 
         [Required]
-        public BudgetStatus LineStatus { get; set; }
+        public ApprovalStatus LineStatus { get; set; }
 
         [Required]
-        public CommentStatus ApprovalStatus { get; set; }
+        public ApprovalStatus ApprovalStatus { get; set; }
 
         public Guid BudgetId { get; set; }
 
