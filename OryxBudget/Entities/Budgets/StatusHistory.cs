@@ -22,6 +22,8 @@ namespace Entities.Budgets
         public string BudgetId { get; set; }
         public CommentStatus ItemCodeStatus { get; set; }
 
+        public ApprovalStatus ApprovalStatus { get; set; }
+
 
     }
 
@@ -41,6 +43,8 @@ namespace Entities.Budgets
         public string BudgetId { get; set; }        
         public CommentStatus ItemCodeStatus { get; set; }
 
+        public ApprovalStatus ApprovalStatus { get; set; }
+
     }
 
     public class BudgetLineStatusHistory : StatusHistory
@@ -59,5 +63,12 @@ namespace Entities.Budgets
     public class BudgetStatusHistory : StatusHistory
     {
 
+    }
+
+    public enum ApprovalStatus
+    {
+        AwaitingApproval = 1,
+        Unapproved = 2,
+        Approved = 3
     }
 }
