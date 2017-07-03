@@ -6,6 +6,8 @@ using Microsoft.AspNetCore.Mvc;
 using OryxBudgetService.BudgetsServices;
 using OryxWebApi.ViewModels.BudgetsViewModels;
 using OryxWebapi.Utilities.ActionFilters;
+using AutoMapper;
+using Entities.Budgets.WorkPrograms;
 
 namespace OryxWebApi.Controllers.BudgetsControllers
 {
@@ -16,6 +18,37 @@ namespace OryxWebApi.Controllers.BudgetsControllers
         public WorkProgramController(WorkProgramService workProgramService)
         {
             _workProgramService = workProgramService;
+        }
+
+        [HttpPost]
+        [ValidateModelState]
+        [Route("AddWorkProgramStatus")]
+        public JsonResult AddWorkProgramStatus([FromBody] WorkProgramStatusViewModel statusVm)
+        {
+            var status = Mapper.Map<WorkProgramStatus>(statusVm);
+            _workProgramService.AddWorkProgramStatus(status);
+            _workProgramService.SaveChanges();
+            return Json(_workProgramService.Get(status.Id));
+        }
+
+        [HttpGet]
+        public JsonResult GetWorkProgramStatuses()
+        {
+            return Json(_workProgramService.GetAllWorkProgramStatuses());
+        }
+
+        [HttpGet]
+        [Route("GetWorkProgramStatusesByBudget")]
+        public JsonResult GetWorkProgramStatusesByBudgetId(string budgetId)
+        {
+            return Json(_workProgramService.GetWorkProgramStatusesByBudget(budgetId));
+        }
+
+        [HttpGet]
+        [Route("GetProgramStatusesById")]
+        public JsonResult GetProgramStatusesById(string id)
+        {
+            return Json(_workProgramService.GetWorkProgramStatusesById(new Guid(id)));
         }
 
         [HttpPost]
