@@ -23,16 +23,20 @@
         <form *ngIf="showApproval" materialize materialize="updateTextFields" [formGroup]="form" (ngSubmit)="save(form.value)">
           <div class="row">
             <div class="input-field col l12 m12 s12">
-              <select materialize="material_select" id="status" name="status" formControlName="status">										
-                                <option  value="" disabled selected ></option>	
-                    <option  [value]="accepted" >Accepted</option>          
-                    <option  [value]="rejected" >Rejected</option>                                
-                      </select>
-              <label for="status" data-error="Please select an item frmm the list">Status</label>
+              <ul class="collection">
+                <li class="collection-item">Something 1</li>
+                <li class="collection-item">Something 2</li>
+                <li class="collection-item">Something 3</li>
+              </ul>
             </div>
           </div>
           <div class="row">
-            <button [disabled]="form.invalid || form.pristine" class="wave-effect wave-light btn" type="submit" name="action">Save & Print</button>
+            <div class="col l6">
+              <button [disabled]="form.invalid || form.pristine" class="wave-effect wave-light btn" type="submit" name="action">Print</button>
+            </div>
+            <div class="col l6">
+              <button [disabled]="form.invalid || form.pristine" class="right wave-effect wave-light btn" type="submit" name="action">Signoff</button>
+            </div>
           </div>
         </form>
 
