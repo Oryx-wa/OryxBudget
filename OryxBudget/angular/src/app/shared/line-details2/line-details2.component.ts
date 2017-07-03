@@ -71,6 +71,8 @@ export class LineDetails2Component implements OnInit, OnChanges, OnDestroy {
       },
       floatingTopRowData: this.floatingRow,
       floatingBottomRowData: this.floatingRow,
+      rowSelection: 'multiple',
+     
     };
   }
 
@@ -149,12 +151,13 @@ export class LineDetails2Component implements OnInit, OnChanges, OnDestroy {
         children: [
           {
             headerName: 'Code', field: 'code',
-            width: 90,
+            width: 130,
             cellRenderer: 'group',
             floatingCellRendererParams: {
               style: { 'font-weight': 'bold' }
             },
             floatingCellRendererFramework: StyledComponent,
+            checkboxSelection: true
 
           },
           {
@@ -336,11 +339,11 @@ export class LineDetails2Component implements OnInit, OnChanges, OnDestroy {
   }
   structureActualData() {
     this.rowData = [];
-    const data = _.assign(this.actuals, { comment: '' });   
+    const data = _.assign(this.actuals, { comment: '' });
     const level1: Actual[] = this.actuals.filter(line => line.level === '1');
     const level2: Actual[] = this.actuals.filter(line => line.level === '2');
     const level3: Actual[] = this.actuals.filter(line => line.level === '3');
-    let leve2Data: any[] = [];    
+    let leve2Data: any[] = [];
     level2.map(line => {
       const children = level3.filter(l2 => l2.fatherNum === line.code);
       const bd = _.assign({}, line, { level2: line.code, level3: children });
