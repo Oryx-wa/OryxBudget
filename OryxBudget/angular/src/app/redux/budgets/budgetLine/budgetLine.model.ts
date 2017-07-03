@@ -39,7 +39,7 @@ export const initBudgetLines: BudgetLines = {
     finalActualFC: 0,
     finalActualLC: 0,
     finalActualUSD: 0,
-    lineStatus: 0,
+    lineStatus: 1,
     budgetId: '',
 };
 

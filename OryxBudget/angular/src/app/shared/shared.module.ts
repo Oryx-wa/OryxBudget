@@ -14,6 +14,7 @@ import { LineCommentComponent } from './line-comment/line-comment.component';
 import { LineCommentDetailsComponent } from './line-comment/line-comment-details.component';
 import { CurrencyComponent } from './renderers/currency.component';
 import { WordWrapComponent } from './renderers/word-wrap.component';
+import { ApprovalComponent } from './renderers/approval.component';
 import { TextComponent } from './renderers/text.component';
 import { ChildMessageComponent } from './renderers/child-message.component';
 import { StyledComponent } from './renderers/styled-component';
@@ -33,7 +34,7 @@ import { LogoComponent } from './logo/logo.component';
 import { SubNavbarComponent } from './sub-navbar/sub-navbar.component';
 import { LineDetails2Component } from './line-details2/line-details2.component';
 import { LogoutComponent } from './app-security/logout/logout.component';
-import {DialogService } from './dialog.service';
+import { DialogService } from './dialog.service';
 import { LineActualsComponent } from './line-actuals/line-actuals.component';
 @NgModule({
   imports: [
@@ -47,12 +48,13 @@ import { LineActualsComponent } from './line-actuals/line-actuals.component';
     MaterializeModule,
     BrowserAnimationsModule,
     SimpleNotificationsModule, PushNotificationsModule,
-     AgGridModule.withComponents([
+    AgGridModule.withComponents([
       CurrencyComponent,
       WordWrapComponent,
       TextComponent,
       ChildMessageComponent,
-      StyledComponent
+      StyledComponent,
+      ApprovalComponent
     ]),
 
   ],
@@ -60,15 +62,15 @@ import { LineActualsComponent } from './line-actuals/line-actuals.component';
     OryxDashboardComponent,
     FileuploaderComponent,
     LineCommentComponent,
-    ListComponent,LineDetails2Component,
-    LineCommentDetailsComponent,
+    ListComponent, LineDetails2Component,
+    LineCommentDetailsComponent, ApprovalComponent,
     DialogComponent, CurrencyComponent, AttachmentComponent, NotificationComponent,
-     CommentsComponent,  FileuploadAttachmentComponent, LogoComponent, SubNavbarComponent, LogoutComponent, LineActualsComponent],
+    CommentsComponent, FileuploadAttachmentComponent, LogoComponent, SubNavbarComponent, LogoutComponent, LineActualsComponent],
   providers: [SecurityService, NotificationsService, DialogService],
   exports: [// MainNavComponent,
     OryxDashboardComponent, NotificationComponent,
     FileuploaderComponent, CommentsComponent, AttachmentComponent, FileuploadAttachmentComponent,
-    MaterializeModule, LineCommentComponent, CurrencyComponent,LineDetails2Component,
+    MaterializeModule, LineCommentComponent, CurrencyComponent, LineDetails2Component,
     DialogComponent, ListComponent, Ng2PaginationModule, SelectModule, LogoComponent, SubNavbarComponent]
 })
 export class SharedModule { }

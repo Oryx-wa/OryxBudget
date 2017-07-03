@@ -15,6 +15,7 @@ import { CurrencyComponent } from '../../shared/renderers/currency.component';
 import { WordWrapComponent } from '../../shared/renderers/word-wrap.component';
 import { TextComponent } from '../../shared/renderers/text.component';
 import { ChildMessageComponent } from '../../shared/renderers/child-message.component';
+import { ApprovalComponent } from './../renderers/approval.component'
 import { SecurityService } from './../../login/security.service';
 import { StyledComponent } from '../../shared/renderers/styled-component';
 import { DialogService, alertTypeEnum } from './../dialog.service';
@@ -72,7 +73,7 @@ export class LineDetails2Component implements OnInit, OnChanges, OnDestroy {
       floatingTopRowData: this.floatingRow,
       floatingBottomRowData: this.floatingRow,
       rowSelection: 'multiple',
-     
+
     };
   }
 
@@ -145,20 +146,40 @@ export class LineDetails2Component implements OnInit, OnChanges, OnDestroy {
 
   private createColumnDefs() {
     this.columnDefs = [
-
       {
+        headerName: 'Actions',
+        children: [
+          {
+            headerName: 'Approved', field: 'id',
+            width: 125,
+            // cellTemplate: '<div><a href="#">Visible text</a></div>',
+            editable: true,
+            cellRendererFramework: ApprovalComponent,
+
+          },
+          {
+            headerName: 'Details', field: 'id',
+            width: 50,
+            // cellTemplate: '<div><a href="#">Visible text</a></div>',
+            editable: true,
+            cellRendererFramework: ChildMessageComponent,
+            mIcon: 'message', type: 'comment'
+          },
+
+        ]
+      },
+      {
+
         headerName: 'Budget Codes',
         children: [
           {
             headerName: 'Code', field: 'code',
-            width: 130,
+            width: 100,
             cellRenderer: 'group',
             floatingCellRendererParams: {
               style: { 'font-weight': 'bold' }
             },
             floatingCellRendererFramework: StyledComponent,
-            checkboxSelection: true
-
           },
           {
             headerName: 'Description', field: 'description',
@@ -243,21 +264,7 @@ export class LineDetails2Component implements OnInit, OnChanges, OnDestroy {
         ]
       },
 
-      {
-        headerName: 'Details | Comments | Attachments',
-        children: [
 
-          {
-            headerName: 'Comments', field: 'id',
-            width: 140,
-            // cellTemplate: '<div><a href="#">Visible text</a></div>',
-            editable: true,
-            cellRendererFramework: ChildMessageComponent,
-            mIcon: 'message', type: 'comment'
-          },
-
-        ]
-      }
 
     ];
   }
@@ -457,6 +464,39 @@ export class LineDetails2Component implements OnInit, OnChanges, OnDestroy {
       }
 
     ];
+  }
+  public methodFromParent(id: string, type: boolean, level: string) {
+    console.log(level);
+    const children: any[] = this.rowData[0].level2;
+    switch (level) {
+      
+      case '1':
+        this.rowData[0].lineStatus = (type) ? 2 : 3;
+        children.map(line => {
+          line.lineStatus = (type) ? 2 : 3;
+          const gChildren: any[] = line.level3;
+          gChildren.map(gLine => {
+            gLine.lineStatus = (type) ? 2 : 3;
+          });
+        });
+        console.log(children);
+        break;
+      case '2':
+        const children2: any[] = children.filter(line => line.code === id);
+        children2[0].lineStatus = (type) ? 2 : 3;
+        children2[0].level3.map(line => {
+          line.approvalStatus = (type) ? 2 : 3;
+        });
+        console.log(children2);
+        break;
+      default:
+        const children3: any[] = children.filter(line => line.code === id);
+        const child = children3.filter(line => line.code === id);
+        child[0].approvalStatus = (type) ? 2 : 3;
+        console.log(child);
+        break;
+    }
+
   }
 }
 

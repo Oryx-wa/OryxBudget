@@ -30,10 +30,12 @@ namespace Entities.Budgets
         public decimal FinalBudgetFC { get; set; }
         public decimal FinalBudgetLC { get; set; }
         public decimal FinalBudgetUSD { get; set; }
+
         
         public Guid BudgetId { get; set; }
         public BudgetStatus BudgetStatus { get; set; }
         public WorkProgramTypeEnum Type { get; set; }
+        public ApprovalStatus LineStatus { get; set; }
 
 
 

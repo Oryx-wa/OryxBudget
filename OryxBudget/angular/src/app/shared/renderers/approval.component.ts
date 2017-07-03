@@ -1,30 +1,45 @@
-import {Component} from '@angular/core';
-import {ICellRendererAngularComp} from 'ag-grid-angular/main';
+import { Component, ViewChild, ElementRef, Renderer } from '@angular/core';
+import { ICellRendererAngularComp } from 'ag-grid-angular/main';
 
 @Component({
     selector: 'app-approval',
-    template: `<div class="row">
-                              <div class="">
-                                <select materialize="material_select" id="status" 
-                                name="status" (change)="operatorSelected($event.target.value)>										
-                                <option  value="" disabled selected ></option>	
-                    <option  [value]="accepted" >Accepted</option>          
-                    <option  [value]="rejected" >Rejected</option>                                
-                      </select>
-                               
-                              </div>
-                            </div>`
+    template: `<form action="#">
+                            <div class="col s12">  
+                              
+      
+       <input #checkbox type="checkbox"  (change)="invokeParentMethod($event.target.checked)" [id]="chkId" [name]="chkId"/>
+       <label [for]="chkId">{{val}}</label>
+       
+                              </div> 
+                           </form>   
+                            `
 })
 
-export class NameComponent implements ICellRendererAngularComp {
-    constructor() { }
+export class ApprovalComponent implements ICellRendererAngularComp {
+    public params: any;
+    public type: string;
+    public checkBoxValue = false;
+    public val = 'True';
+    public chkId = '';
 
-    agInit(params: any): void {
-       
+    @ViewChild('checkbox') checkbox: ElementRef;
+    constructor(private renderer: Renderer) {
+
     }
 
-     public invokeParentMethod(type: string) {
-        this.params.context.componentParent.methodFromParent(this.params.data.code, type );
+    agInit(params: any): void {
+
+        this.renderer.setElementProperty(this.checkbox.nativeElement, 'indeterminate', true);
+        this.val = 'No yet';
+        this.params = params;
+        this.chkId = this.params.data.code;
+        this.type = this.params.colDef.type;
+    }
+
+    public invokeParentMethod(type: boolean) {
+        this.val = (type) ? 'Yes' : 'No';
+        this.params.context.componentParent.methodFromParent(this.params.data.code, type, this.params.data.level);
+        
     }
 
 }
