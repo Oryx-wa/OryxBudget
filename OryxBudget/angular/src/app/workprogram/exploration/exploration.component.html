@@ -16,7 +16,7 @@
         <div class="row">
           <a class="btn waves-effect waves-light green" (click)="showExploration('Exploration Details')">Well AFE</a>
         </div>
-        <div class="row">
+        <div *ngIf="napims$ | async" class="row">
           <a class="btn waves-effect waves-light blue" (click)="openFirst()">Sign Off</a>
         </div>
 
@@ -44,9 +44,13 @@
   <div class="col l9">
     <div *ngIf="displayMode === displayModeEnum.Budget">
       <div *ngIf="lines$ | async;let lines; else loading2">
-        <app-line-details2   [lines]="lines" 
-          [showSubCom]="showSubCom$ | async" [showTecCom]="showTecCom$ | async"          
-         >
+        <app-line-details2   [lines]="lines" [budgetId]="budgetId" [type]="'budget'"  >
+        </app-line-details2>
+      </div>
+    </div>
+     <div *ngIf="displayMode === displayModeEnum.Actual">
+      <div *ngIf="actuals$ | async;let actuals; else loading2">
+        <app-line-details2   [actuals]="actuals" [budgetId]="budgetId" [type]="'actual'"  >
         </app-line-details2>
       </div>
     </div>

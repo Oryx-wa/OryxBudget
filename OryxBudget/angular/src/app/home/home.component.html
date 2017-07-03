@@ -1,15 +1,31 @@
 <div class="section white">
   <div class="container">
     <div class="row">
-      
+
     </div>
-    <div class="row" *ngIf="authenticated$ | async"  >
-     
+    <div class="row" *ngIf="authenticated$ | async">
+
       <!--<app-oryx-dashboard *ngIf="showNapims;else operator" [name]="name" [operatorId]="opearatorId" [role]="role" [operators]="operators$ | async"></app-oryx-dashboard>
       <ng-template #operator>
         <app-operator-view *ngIf="showOperator">
         </app-operator-view>
       </ng-template>-->
+      <div *ngIf="displayMode == displayModeEnum.Napims">
+        <app-dialog [(visible)]="displayMode == displayModeEnum.Napims">
+          <form materialize="updateTextFields" [formGroup]="form" *ngIf="operatorList$ | async; let operators;">
+            <div class="row">
+              <div class=" input-field col s12 m6 ">
+                <select materialize="material_select" [materializeSelectOptions]="operators" (change)="operatorSelected($event.target.value)"
+                  id="budget" name="budget" formControlName="operator">
+              							<option  value="" disabled selected > </option>	
+                             <option *ngFor="let t of operators " [value]="t.id">{{t.name}}</option>											
+									</select>
+                <label for="budget" data-error="Please enter a valid task">Select an Operator</label>
+              </div>
+            </div>
+          </form>
+        </app-dialog>
+      </div>
     </div>
   </div>
 </div>

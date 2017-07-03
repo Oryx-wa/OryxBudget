@@ -1,6 +1,6 @@
 import { Schema, arrayOf } from 'normalizr/lib';
 import { Actual } from './actual.interface';
-export const actualSchema = new Schema('Actual');
+export const actualSchema = new Schema('Actual', { idAttribute: 'code' });
 export const arrayOfActual = arrayOf(actualSchema);
 
 

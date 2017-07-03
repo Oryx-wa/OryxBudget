@@ -33,6 +33,8 @@ import { LogoComponent } from './logo/logo.component';
 import { SubNavbarComponent } from './sub-navbar/sub-navbar.component';
 import { LineDetails2Component } from './line-details2/line-details2.component';
 import { LogoutComponent } from './app-security/logout/logout.component';
+import {DialogService } from './dialog.service';
+import { LineActualsComponent } from './line-actuals/line-actuals.component';
 @NgModule({
   imports: [
     CommonModule,
@@ -61,8 +63,8 @@ import { LogoutComponent } from './app-security/logout/logout.component';
     ListComponent,LineDetails2Component,
     LineCommentDetailsComponent,
     DialogComponent, CurrencyComponent, AttachmentComponent, NotificationComponent,
-     CommentsComponent,  FileuploadAttachmentComponent, LogoComponent, SubNavbarComponent, LogoutComponent],
-  providers: [SecurityService, NotificationsService],
+     CommentsComponent,  FileuploadAttachmentComponent, LogoComponent, SubNavbarComponent, LogoutComponent, LineActualsComponent],
+  providers: [SecurityService, NotificationsService, DialogService],
   exports: [// MainNavComponent,
     OryxDashboardComponent, NotificationComponent,
     FileuploaderComponent, CommentsComponent, AttachmentComponent, FileuploadAttachmentComponent,

@@ -1,22 +1,26 @@
-import { Component, OnInit, OnChanges } from '@angular/core';
+import { Component, OnInit, OnChanges, OnDestroy } from '@angular/core';
 import { Http, URLSearchParams } from '@angular/http';
 import { Router } from '@angular/router';
+import { Form, FormGroup, FormControl, FormBuilder } from '@angular/forms';
 import { SecurityService } from './../login/security.service';
 import { Observable } from 'rxjs/Observable';
 import { Operators } from './../models/operators';
 import { LoginActions, TokenActions } from '../redux/login/actions';
-import { AppState, LoginSTATE, UserSelector, TokenSelector, BudgetActions } from '../redux';
+import {
+  AppState, Operator, OperatorSelector, OperatorActions,
+  LoginSTATE, UserSelector, TokenSelector, BudgetActions,
+} from '../redux';
 import { Store } from '@ngrx/store';
 import { UserModel } from '../redux/login/models';
 
-
+import { DisplayModeEnum } from '../shared/shared-enum.enum';
 
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.scss']
 })
-export class HomeComponent implements OnInit, OnChanges {
+export class HomeComponent implements OnInit, OnChanges, OnDestroy {
   public name = '';
   public operatorId = '';
   public role = [];
@@ -32,16 +36,24 @@ export class HomeComponent implements OnInit, OnChanges {
   public malCom$: Observable<boolean>;
   public dept$: Observable<string>;
   public operator$: Observable<boolean>;
-  constructor(private _router: Router,
-    public securityService: SecurityService,
-    private _http: Http,
-    private store: Store<AppState>) {
+  public operatorList$: Observable<Operator[]>;
+
+  public displayMode: DisplayModeEnum;
+  public displayModeEnum = DisplayModeEnum;
+  private alive = true;
+
+  form: FormGroup;
+  constructor(private _router: Router, public securityService: SecurityService,
+    private _http: Http, private store: Store<AppState>, private fb: FormBuilder) {
+    this.form = this.fb.group({
+      operator: new FormControl('')
+    });
 
   }
 
   ngOnInit() {
 
-
+    this.store.dispatch(new BudgetActions.SelectItemAction(null));
     this.authenticated$ = this.store.select(TokenSelector.authenticated);
     this.dept$ = this.store.select(UserSelector.dept);
     this.subCom$ = this.store.select(UserSelector.subCom);
@@ -49,6 +61,7 @@ export class HomeComponent implements OnInit, OnChanges {
     this.malCom$ = this.store.select(UserSelector.malCom);
     this.napims$ = this.store.select(UserSelector.napims);
     this.operator$ = this.store.select(UserSelector.operator);
+    this.operatorList$ = this.store.select(OperatorSelector.getOperatorCollection);
 
     this.authenticated$.subscribe(authenticated => {
       if (authenticated) {
@@ -56,34 +69,21 @@ export class HomeComponent implements OnInit, OnChanges {
       }
     });
 
-    this.subCom$.subscribe(subCom => {
-      if (subCom) {
-        this._router.navigateByUrl('/workprogram');
-      }
-    });
-
-    /*
-    if (this.securityService.IsAuthorized()) {
-      this.name = this.securityService.name;
-      this.operatorId = this.securityService.operatorId;
-      this.role = this.securityService.roles;
-
-      if (this.role.indexOf('NAPIMS') !== -1) {
-        this.showNapims = true;
-        const url = this.securityService.getUrl('Operator');
-
-        this.operators$ = this._http.get(url, {
-          headers: this.securityService.getHeaders(),
-          body: ''
-        }).map(res => res.json());
-      }
-      if (this.role.indexOf('Operator') !== -1) {
-        this.showOperator = true;
-      }
-    } else {
-      this._router.navigate(['/unauthorised']);
-    }*/
-
+    this.store
+      .takeWhile(() => this.alive)
+      .subscribe(s => {
+        if (s.security.user.showSubCom && s.security.user.operator) {
+          this._router.navigateByUrl('/workprogram');
+        }
+      });
+    this.napims$
+      .takeWhile(() => this.alive)
+      .subscribe(napims => {
+        if (napims) {
+          this.store.dispatch(new OperatorActions.LoadItemsAction(''));
+          this.changeDisplayMode(DisplayModeEnum.Napims);
+        }
+      });
   }
 
   updateTitle(token: UserModel.Token) {
@@ -101,10 +101,23 @@ export class HomeComponent implements OnInit, OnChanges {
     }
   }
 
-
+  operatorSelected(id: string) {
+    this.store.dispatch(new LoginActions.SelectOperatorAction(id));
+    this.store.dispatch(new BudgetActions.LoadItemsAction(''));
+    this._router.navigateByUrl('/workprogram');
+  }
   ngOnChanges(changes: any) {
 
 
+  }
+
+  changeDisplayMode(mode: DisplayModeEnum) {
+    // // console.log(mode); 
+    this.displayMode = mode;
+  }
+
+  ngOnDestroy() {
+    this.alive = false;
   }
 
 

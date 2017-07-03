@@ -16,7 +16,7 @@ import { WordWrapComponent } from './../shared/renderers/word-wrap.component';
 import { TextComponent } from './../shared/renderers/text.component';
 import { ChildMessageComponent } from './../shared/renderers/child-message.component';
 import { StyledComponent } from './../shared/renderers/styled-component';
-import { BudgetLineEffects, BudgetLineService } from './../redux';
+import { BudgetLineEffects, BudgetLineService, ActualEffects, ActualService } from './../redux';
 @NgModule({
   imports: [
     CommonModule,
@@ -35,13 +35,14 @@ import { BudgetLineEffects, BudgetLineService } from './../redux';
       ChildMessageComponent,
       StyledComponent
     ]),
-    EffectsModule.run(BudgetLineEffects)
+    EffectsModule.run(BudgetLineEffects),
+    EffectsModule.run(ActualEffects)
 
   ],
   declarations: [WorkprogramComponent, WpDashboardComponent, WellComponent,],
   exports: [WorkprogramComponent, WpDashboardComponent, WellComponent,
   ],
-  providers: [BudgetLineService]
+  providers: [BudgetLineService, ActualService]
 
 })
 export class WorkprogramModule { }

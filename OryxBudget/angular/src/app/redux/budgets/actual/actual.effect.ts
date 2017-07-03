@@ -18,19 +18,23 @@ import 'rxjs/add/operator/map';
 
 @Injectable()
 export class ActualEffects implements OnDestroy {
+
     @Effect() LoadActuals$: Observable<Action> = this.actions$
         .ofType(ActualActions.LOAD_ITEMS)
-        .mergeMap(action => this.actualService.getActuals(action.payload)
-            .mergeMap(actuals => {
-                return Observable.from([new ActualActions.LoadItemsSuccessAction(actuals)]);
+        .withLatestFrom(this.store$.select(state => state.security.user))
+        .map(([action, user]) => {
+            
+            const ret = { dept: user.dept, budgetId: action.payload };
+            return ret;
+        })
+        .mergeMap(payload => this.actualService.getActuals(payload.budgetId, payload.dept)
+            .mergeMap(budgetLines => {
+                return Observable.from([new ActualActions.LoadItemsSuccessAction(budgetLines)]);
             })
             .catch(err => {
                 return Observable.from([new ErrorActions.ErrorAddAction(err),
-                new NotificationActions.SetLoaded('Actual Items Loaded Sucessfully')]);
+                new NotificationActions.SetLoaded('Actuals Items Loaded Sucessfully')]);
             }));
-    @Effect() AddUpdateItemSuces$: Observable<Action> = this.actions$
-        .ofType(ActualActions.ADD_UPDATE_ITEM_SUCCESS)
-        .map(() => new NotificationActions.SetSaved('Actual saved Sucessfully'));
 
     @Effect() addActuals$: Observable<Action> = this.actions$
         .ofType(ActualActions.ADD_ITEM)
@@ -53,7 +57,7 @@ export class ActualEffects implements OnDestroy {
 
     constructor(
         private actions$: Actions,
-        private store: Store<AppState>,
+        private store$: Store<AppState>,
         private actualService: ActualService
     ) { }
 

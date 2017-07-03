@@ -22,11 +22,11 @@ export class BudgetLineEffects implements OnDestroy {
         .ofType(BudgetLineActions.LOAD_ITEMS)
         .withLatestFrom(this.store$.select(state => state.security.user))
         .map(([action, user]) => {
-            console.log(user);
-            const ret = {dept: user.dept, budgetId: action.payload};
+            const ret = { dept: user.dept, budgetId: action.payload };
             return ret;
         })
-        .mergeMap(payload => this.budgetLineService.getBudgetLines(payload.budgetId, payload.dept )
+        .takeWhile(payload => (payload.budgetId !== '' || payload.budgetId !== null))
+        .mergeMap(payload => this.budgetLineService.getBudgetLines(payload.budgetId, payload.dept)
             .mergeMap(budgetLines => {
                 return Observable.from([new BudgetLineActions.LoadItemsSuccessAction(budgetLines)]);
             })

@@ -48,7 +48,8 @@ export const OperatorReducer: ActionReducer<OperatorState> = (state: OperatorSta
                 lastUpdate: new Date(),
                 selectedId: state.selectedId
             }));
-
+        default:
+            return state;
     }
 };
 export const getOperatorEntities = (state: OperatorState) => state.entities;
