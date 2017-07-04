@@ -96,4 +96,16 @@ namespace OryxWebApi.ViewModels.BudgetsViewModels
         [Required]
         public string Status { get; set; }
     }
+
+    public class StatusHistoryViewModel2: BaseViewModel
+    {
+       
+        [Required]
+        public string Code { get; set; }
+        [Required]
+        public string BudgetId { get; set; }
+        [Required]
+        public ApprovalStatus Status { get; set; }
+    }
+
 }

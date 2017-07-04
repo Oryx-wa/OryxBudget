@@ -1,7 +1,19 @@
 <div materialize class="">
   <div class="">
-    <div *ngIf="!noLines;else upload" class="row">
-      <ag-grid-angular style="width: 100%; height: 500px;" class="ag-material" [gridOptions]="gridOptions" [columnDefs]="columnDefs"
+    <div *ngIf="!noLines;else upload" >
+      <div materialize class="col l4 left">
+      <nav *ngIf="linesTouched$ | async">        
+        <div materialize class="nav-wrapper white">
+          <ul id="nav-mobile" class="right hide-on-med-and-down">
+          <li>
+            <a class= "btn waves-effect waves-light"  (click)="UpdateStatus('update')">Save</a></li>
+          <li>
+            <a class= "btn waves-effect waves-light"  (click)="UpdateStatus('reset')">Reset</a></li>          
+        </ul>  
+        </div>     
+      </nav>
+       </div>
+      <ag-grid-angular style="width: 100%; height: 450px;" class="ag-material" [gridOptions]="gridOptions" [columnDefs]="columnDefs"
         groupHeaders rowHeight="48" rowSelection="single" (gridReady)="onReady($event)" [rowData]="rowData">
       </ag-grid-angular>
     </div>

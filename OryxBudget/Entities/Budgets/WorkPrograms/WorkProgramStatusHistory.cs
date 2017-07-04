@@ -6,12 +6,8 @@ using System.Text;
 
 namespace Entities.Budgets.WorkPrograms
 {
-    public class WorkProgramStatus : IEntityBase<Guid>
+    public class WorkProgramStatusHistory : IEntityBase<Guid>
     {
-        public WorkProgramStatus()
-        {
-            this.StatusHistory = new HashSet<WorkProgramStatusHistory>();
-        }
         [Key]
         public Guid Id { get; set; }
         public DateTime CreateDate { get; set; }
@@ -21,14 +17,11 @@ namespace Entities.Budgets.WorkPrograms
         [Required]
         [MaxLength(50)]
         public string UserSign { get; set; }
-
-        public Guid BudgetId { get; set; }
-        public WorkProgramTypeEnum WorkProgram { get; set; }
-        public BudgetStatus BudgetStatus { get; set; }
-        public ICollection<WorkProgramStatusHistory> StatusHistory {get; set;}
+        public WorkProgramStatus WorkProgramStatusId { get; set; }
+        public SignOffStatus ProgramStatus { get; set; }
     }
 
-    public class WorkProgramStatusLog : IEntityBase<Guid>, ILogEntityBase<Guid>
+    public class WorkProgramStatusHistoryLog : IEntityBase<Guid>, ILogEntityBase<Guid>
     {
         public int LogInstance { get; set; }
         public Guid Id { get; set; }
@@ -39,16 +32,10 @@ namespace Entities.Budgets.WorkPrograms
         [Required]
         [MaxLength(50)]
         public string UserSign { get; set; }
-
-        public Guid BudgetId { get; set; }
-        public WorkProgramTypeEnum WorkProgram { get; set; }
-        public BudgetStatus BudgetStatus { get; set; }
+        public WorkProgramStatus WorkProgramStatusId { get; set; }
         public SignOffStatus ProgramStatus { get; set; }
     }
-
-    public enum SignOffStatus
-    {
-        Approved = 1,
-        Rejected = 2
-    }
 }
+
+    
+

@@ -27,7 +27,7 @@ namespace OryxWebApi.Controllers.BudgetsControllers
         {
             var status = Mapper.Map<WorkProgramStatus>(statusVm);
 
-           var ret = _workProgramService.AddWorkProgramStatus(statusVm.Department, statusVm.Status, statusVm.BudgetId);
+           var ret = _workProgramService.AddWorkProgramStatus(statusVm.Department, statusVm.BudgetStatus, statusVm.BudgetId);
             _workProgramService.SaveChanges();
             return Json(ret);
         }
@@ -42,14 +42,16 @@ namespace OryxWebApi.Controllers.BudgetsControllers
         [Route("GetWorkProgramStatusesByBudget")]
         public JsonResult GetWorkProgramStatusesByBudgetId(string budgetId)
         {
-            return Json(_workProgramService.GetWorkProgramStatusesByBudget(budgetId));
+            var ret = _workProgramService.GetWorkProgramStatusesByBudget(budgetId);
+            return Json(new WorkProgramStatusViewModel(ret));
         }
 
         [HttpGet]
         [Route("GetProgramStatusesById")]
         public JsonResult GetProgramStatusesById(string id)
         {
-            return Json(_workProgramService.GetWorkProgramStatusesById(new Guid(id)));
+            var ret = _workProgramService.GetWorkProgramStatusesById(new Guid(id));
+            return Json(new WorkProgramStatusViewModel(ret));
         }
 
         [HttpPost]

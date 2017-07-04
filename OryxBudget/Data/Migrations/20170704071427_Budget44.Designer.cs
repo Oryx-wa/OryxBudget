@@ -10,9 +10,10 @@ using Entities.Budgets.WorkPrograms;
 namespace Data.Migrations
 {
     [DbContext(typeof(OryxBudgetContext))]
-    partial class OryxBudgetContextModelSnapshot : ModelSnapshot
+    [Migration("20170704071427_Budget44")]
+    partial class Budget44
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
             modelBuilder
                 .HasAnnotation("ProductVersion", "1.1.2")

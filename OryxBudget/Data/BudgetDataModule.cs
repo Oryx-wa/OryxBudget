@@ -52,6 +52,7 @@ namespace Data
             builder.RegisterType<ExplorationWorkProgramRepository>();
             builder.RegisterType<WorkProgramTypeRepository>();
             builder.RegisterType<WorkProgramCodeRepository>();
+            builder.RegisterType<WorkProgramStatusRepository>();
         }
     }
 }

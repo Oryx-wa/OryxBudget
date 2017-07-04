@@ -13,5 +13,8 @@ namespace Data.Repositories.BudgetsRepositories.WorkPrograms
         public WorkProgramTypeRepository(IDbFactory dbFactory, IUserResolverService UserResolverService) : base(dbFactory, UserResolverService)
         {
         }
+
+
+
     }
 }

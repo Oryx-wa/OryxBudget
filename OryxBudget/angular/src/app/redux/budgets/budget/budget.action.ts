@@ -15,6 +15,10 @@ export const LOAD_ITEMS = '[Budget] Load items';
 export const LOAD_ITEMS_SUCCESS = '[Budget] LOAD_ITEMS_SUCCESS';
 export const LOAD_ITEM_SUCCESS = '[Budget] LOAD_ITEM_SUCCESS';
 export const SELECT = '[Budget] Select Item';
+export const GET_WORKPROGRAM_STATUS = '[Budget] Get Work program status';
+export const GET_WORKPROGRAM_STATUS_SUCCESS = '[Budget] Get Work program status success';
+
+
 
 
 export class SearchAction implements Action {
@@ -79,6 +83,15 @@ export class SelectItemAction implements Action {
 
     constructor(public payload: string) { }
 }
+export class GetWorkProgramStatusAction implements Action {
+    readonly type = GET_WORKPROGRAM_STATUS;
+    constructor(public payload = ''){ }
+}
+export class GetWorkProgramStatusSuccessAction implements Action {
+    readonly type = GET_WORKPROGRAM_STATUS_SUCCESS;
+    constructor(public payload: any){ }
+}
+
 
 
 export type Actions
@@ -94,5 +107,7 @@ export type Actions
     | UpdateItemAction
     | LoadItemAction
     | LoadItemSuccessAction
-    | SelectItemAction;
+    | SelectItemAction
+    | GetWorkProgramStatusAction 
+    | GetWorkProgramStatusSuccessAction;
 

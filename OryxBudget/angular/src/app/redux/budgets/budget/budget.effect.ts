@@ -37,7 +37,21 @@ export class BudgetEffects implements OnDestroy {
                 return Observable.from([new ErrorActions.ErrorAddAction(err),
                 new NotificationActions.SetLoaded('Budget Items Loaded Sucessfully')]);
             }));
-
+    
+    @Effect() GetStatus$: Observable<Action> = this.actions$
+        .ofType(BudgetActions.GET_WORKPROGRAM_STATUS)
+        .withLatestFrom(this.store$.select(state => state.budgets.budget.selectedId))
+        .map(([action, id]) => {
+            return id;
+        })
+        .mergeMap(budgetId => this.budgetService.getWorkProgramStatus(budgetId)
+            .mergeMap(status => {
+                return Observable.from([new BudgetActions.GetWorkProgramStatusSuccessAction(status)]);
+            })
+            .catch(err => {
+                return Observable.from([new ErrorActions.ErrorAddAction(err),
+                new NotificationActions.SetLoaded('Status retrieved Sucessfully')]);
+            }));
 
     @Effect() LoadBudget$: Observable<Action> = this.actions$
         .ofType(BudgetActions.LOAD_ITEM)

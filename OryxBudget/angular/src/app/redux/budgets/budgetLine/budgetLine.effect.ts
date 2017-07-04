@@ -34,6 +34,29 @@ export class BudgetLineEffects implements OnDestroy {
                 return Observable.from([new ErrorActions.ErrorAddAction(err),
                 new NotificationActions.SetLoaded('BudgetLine Items Loaded Sucessfully')]);
             }));
+
+    @Effect() SaveApprovalUpdates$: Observable<Action> = this.actions$
+        .ofType(BudgetLineActions.SAVE_APPROVAL_UPDATES)
+        .withLatestFrom(this.store$.select(state => state.budgets.budgetLine))
+        .map(([action, budgetLine]) => {
+            const ret: { id:string, budgetId: string, status: number, code: string }[] = [];
+            budgetLine.ids.map(id => {
+                const line = budgetLine.entities[id];
+                ret.push({
+                    id:line.id, budgetId: line.budgetId,
+                    status: line.lineStatus, code: line.code
+                })
+            });
+            return ret;
+        })
+        .mergeMap(payload => this.budgetLineService.saveLineApprovals(payload)
+            .map(() => new BudgetLineActions.LoadItemAction(''))
+            .catch(err => {
+                return Observable.from([new ErrorActions.ErrorAddAction(err),
+                new NotificationActions.SetSavingError('Error saving BudgetLine')]);
+            }));
+
+
     @Effect() AddUpdateItemSuces$: Observable<Action> = this.actions$
         .ofType(BudgetLineActions.ADD_UPDATE_ITEM_SUCCESS)
         .map(() => new NotificationActions.SetSaved('BudgetLine saved Sucessfully'));

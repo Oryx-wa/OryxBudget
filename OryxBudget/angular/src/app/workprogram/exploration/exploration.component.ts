@@ -22,7 +22,8 @@ export class ExplorationComponent implements OnInit, OnDestroy {
   form: FormGroup;
   budget$: Observable<Budget>;
   lines$: Observable<BudgetLines[]>;
-  actuals$: Observable<Actual[]>
+  actuals$: Observable<Actual[]>;
+  workProgramStatus$: Observable<string>;
   budgetId = '';
 
   public napims$: Observable<boolean>;
@@ -54,6 +55,7 @@ export class ExplorationComponent implements OnInit, OnDestroy {
           case 'budget':
             this.changeDisplayMode(DisplayModeEnum.Budget);
             this.store.dispatch(new BudgetLineActions.LoadItemsAction(this.budgetId));
+            this.store.dispatch(new BudgetActions.GetWorkProgramStatusAction(''));
             break;
           case 'actual':
             this.changeDisplayMode(DisplayModeEnum.Actual);
@@ -71,6 +73,7 @@ export class ExplorationComponent implements OnInit, OnDestroy {
 
     });
     this.budget$ = this.store.select(BudgetSelector.selectedBudget);
+    this.workProgramStatus$ = this.store.select(BudgetSelector.workProgramStatus);
     this.budget$
       .takeWhile(() => this.alive)
       .subscribe(budget => {
@@ -80,6 +83,7 @@ export class ExplorationComponent implements OnInit, OnDestroy {
             switch (this.displayMode) {
               case DisplayModeEnum.Budget:
                 this.store.dispatch(new BudgetLineActions.LoadItemsAction(this.budgetId));
+                
                 break;
               case DisplayModeEnum.Actual:
                 this.store.dispatch(new ActualActions.LoadItemsAction(this.budgetId));

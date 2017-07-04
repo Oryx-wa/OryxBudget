@@ -9,26 +9,19 @@ namespace OryxWebApi.ViewModels.BudgetsViewModels
 {
     public class WorkProgramStatusViewModel
     {
-        //public WorkProgramStatusViewModel(WorkProgramStatus programStatus)
-        //{
-        //    this.BudgetId = programStatus.BudgetId;
-        //    switch(programStatus.ProgramStatus)
-        //    {
-        //        case SignOffStatus.Approved:
-        //            this.Status = "Approved";
-        //            break;
-        //        case SignOffStatus.Rejected:
-        //            this.Status = "Rejected";
-        //            break;
-        //        default:
-        //            break;
-        //    }
+        public WorkProgramStatusViewModel(WorkProgramStatus programStatus)
+        {
+            this.Id = programStatus.Id;
+            this.BudgetId = programStatus.BudgetId;
+            this.Department = programStatus.WorkProgram.ToString();
+            this.BudgetStatus = programStatus.BudgetStatus.ToString();           
 
-        //}
+        }
+        public Guid Id { get; set; }
         [Required]
         public Guid BudgetId { get; set; }
         [Required]
-        public string Status { get; set; }
+        public string BudgetStatus { get; set; }
         public string Department { get; set; }
     }
 }

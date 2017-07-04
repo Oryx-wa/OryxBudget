@@ -40,5 +40,12 @@ export class BudgetService extends BaseService {
         return this.update(budget, this.api + '/update');
     }
 
+    public getWorkProgramStatus = (budgetId: string): Observable<any> => {
+         const params: URLSearchParams = new URLSearchParams();
+        params.append('budgetId', budgetId);
+        const url = 'WorkProgram/GetWorkProgramStatusesByBudget';
+        return this.GetByParam2(url, params);
+    }
+
 }
 
