@@ -81,6 +81,10 @@
     <ProjectReference Include="..\Autofac.Signalr\Autofac.Signalr.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Signoff_Uploads\" />
+  </ItemGroup>
+
   
 
 </Project>
