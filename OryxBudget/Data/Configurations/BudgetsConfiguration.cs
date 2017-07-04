@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Entities.Budgets.WorkPrograms;
 
 namespace Data.Configurations
 {
@@ -76,6 +77,12 @@ namespace Data.Configurations
             builder.Entity<WorkProgramCode>().Property(m => m.CreateDate).HasDefaultValueSql("getDate()");
             builder.Entity<WorkProgramCode>().Property(m => m.UpdateDate).HasDefaultValueSql("getDate()");
             builder.Entity<WorkProgramCodeLog>().HasKey(c => new { c.Id, c.LogInstance });
+
+            //WorkProgramStatus
+            builder.Entity<WorkProgramStatus>().HasIndex(m => new { m.Id }).IsUnique();
+            builder.Entity<WorkProgramStatus>().Property(m => m.CreateDate).HasDefaultValueSql("getDate()");
+            builder.Entity<WorkProgramStatus>().Property(m => m.UpdateDate).HasDefaultValueSql("getDate()");
+            builder.Entity<WorkProgramStatusLog>().HasKey(c => new { c.Id, c.LogInstance });
 
         }
     }

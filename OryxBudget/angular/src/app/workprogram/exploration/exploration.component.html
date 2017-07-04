@@ -10,6 +10,9 @@
   <div class="col l3">
     <div class="row">
       <div class="filter-elements">
+        <div *ngIf="workProgramStatus$ | async; let status;" class="row">
+          <h6>Status: {{status}}</h6>
+        </div>
         <div class="row">
           <a class="btn waves-effect waves-light orange" (click)="showExploration('AFE')">Exploration Details</a>
         </div>
@@ -19,7 +22,7 @@
         <div *ngIf="napims$ | async" class="row">
           <a class="btn waves-effect waves-light blue" (click)="openFirst()">Sign Off</a>
         </div>
-
+        
         <form *ngIf="showApproval" materialize materialize="updateTextFields" [formGroup]="form" (ngSubmit)="save(form.value)">
           <div class="row">
             <div class="input-field col l12 m12 s12">

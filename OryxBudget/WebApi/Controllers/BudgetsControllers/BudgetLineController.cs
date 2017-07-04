@@ -52,6 +52,18 @@ namespace OryxWebApi.Controllers.BudgetLineControllers
             return Json(_budgetLineService.Get(budgetLine.Id));
         }
 
+        [HttpPost]
+        [ValidateModelState]
+        [Route("UpdateStatus")]
+        public JsonResult Update([FromBody]IEnumerable<StatusHistoryViewModel2> statusVM)
+        {
+            var statusList = Mapper.Map<IEnumerable<BudgetLineStatusHistory>>(statusVM);
+            _budgetLineService.UpdateStatus(statusList);
+            _budgetLineService.SaveChanges();
+            return Json("Ok");
+        }
+
+
         // PUT api/values/5
         [HttpPut("{id}")]
         public void Put(int id, [FromBody]string value)

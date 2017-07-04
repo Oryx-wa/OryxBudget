@@ -23,6 +23,7 @@ export interface BudgetState {
     entities: BudgetEntity;
     lastUpdate: Date;
     selectedId: string | null;
+    workProgramState: string | null;
 
 }
 
@@ -31,6 +32,7 @@ export const initBudgetState: BudgetState = {
     entities: {},
     lastUpdate: new Date(),
     selectedId: null,
+    workProgramState: null
 };
 
 export const BudgetReducer: ActionReducer<BudgetState> = (state: BudgetState = initBudgetState,
@@ -73,6 +75,13 @@ export const BudgetReducer: ActionReducer<BudgetState> = (state: BudgetState = i
         case AllActions.SELECT:
             return updateObject({}, updateObject(state, { selectedId: action.payload }));
 
+        case AllActions.GET_WORKPROGRAM_STATUS_SUCCESS:
+            if (action.payload === null) {
+                return state;
+            }
+            const status: string = action.payload.budgetStatus;
+            return _.assign({}, state, { workProgramState: status });
+
         default:
             return state;
     }
@@ -81,6 +90,7 @@ export const BudgetReducer: ActionReducer<BudgetState> = (state: BudgetState = i
 export const getBudgetEntities = (state: BudgetState) => state.entities;
 export const getBudgetIds = (state: BudgetState) => state.ids;
 export const getSelectedBudgetId = (state: BudgetState) => state.selectedId;
+export const getWorkProgramStatus = (state: BudgetState) => state.workProgramState;
 
 export const getSelectedBudget = createSelector(getBudgetEntities, getSelectedBudgetId, (entities, selectedId) => {
     if (selectedId === null) {

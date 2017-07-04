@@ -14,5 +14,12 @@ namespace Data.Repositories.BudgetsRepositories.WorkPrograms
         {
 
         }
+
+        public override void Add(WorkProgramStatus entity)
+        {
+
+            this.updateEntityForAdd(entity.StatusHistory);
+            base.Add(entity);
+        }
     }
 }

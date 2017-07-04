@@ -33,6 +33,7 @@ import { UploadOutput, UploadInput, UploadFile, humanizeBytes, NgUploaderService
 })
 export class LineDetails2Component implements OnInit, OnChanges, OnDestroy {
   lines$: Observable<BudgetLines[]>;
+  linesTouched$: Observable<boolean>;
   @Input() lines: BudgetLines[] = [];
   @Input() actuals: Actual[] = [];
   @Input() type = 'budget';
@@ -62,6 +63,7 @@ export class LineDetails2Component implements OnInit, OnChanges, OnDestroy {
   public operator = false;
   public data: any;
   private event: UploadInput;
+  public btnClass = 'btn waves-effect waves-light disabled';
 
   constructor(private store: Store<AppState>, private dialog: DialogService, private securityService: SecurityService) {
     this.gridOptions = <GridOptions>{
@@ -89,20 +91,7 @@ export class LineDetails2Component implements OnInit, OnChanges, OnDestroy {
         this.operator = s.security.user.operator;
         this.showTecCom = s.security.user.showTecCom;
         this.showSubCom = s.security.user.showSubCom;
-
       });
-      /*
-    this.lines$ = this.store.select(BudgetLineSelector.getBudgetLineCollection);
-    this.lines$.subscribe(lines => {
-      console.log(lines);
-      if (lines.length > 0) {
-        if (lines[0].code !== '') {
-          this.lines = lines;
-          this.structureData();
-        }
-      }
-
-    })*/
     this.data = { id: this.budgetId };
     const url = 'Budget/' + (this.type === 'budget') ? 'UploadBudget' : 'UploadActual';
     this.event = {
@@ -113,6 +102,11 @@ export class LineDetails2Component implements OnInit, OnChanges, OnDestroy {
       concurrency: 1, // set sequential uploading of files with concurrency 1,
       headers: { ['Authorization']: 'Bearer ' + this.securityService.GetToken() }
     };
+    this.linesTouched$ = this.store.select(BudgetLineSelector.touched);
+    this.linesTouched$.subscribe(touched => {
+      this.btnClass = 'btn waves-effect waves-light' + (touched) ? ' disabled ' : '';
+      console.log(this.btnClass);
+    });
     switch (this.type) {
       case 'budget':
         this.initBudget();
@@ -506,6 +500,19 @@ export class LineDetails2Component implements OnInit, OnChanges, OnDestroy {
         break;
     }
 
+  }
+
+  UpdateStatus(type: string) {
+    switch (type) {
+      case 'update':
+        this.store.dispatch(new BudgetLineActions.SaveApprovalUpdates(''));
+        break;
+      case 'reset':
+        this.store.dispatch(new BudgetLineActions.ResetApprovalUpdateAction(''));
+        break;
+      default:
+        break;
+    }
   }
 }
 

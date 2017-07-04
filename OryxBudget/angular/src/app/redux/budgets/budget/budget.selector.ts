@@ -5,7 +5,7 @@ import { AppState } from './../../';
 
 import {
     getBudgetIds, getBudgetEntities,
-    BudgetState, getSelectedBudget
+    BudgetState, getSelectedBudget, getWorkProgramStatus
 } from './budget.reducer';
 
 // Budget
@@ -17,3 +17,4 @@ export const getBudgetCollection = createSelector(BudgetEntities, BudgetIds, (en
     return ids.map(id => entities[id]);
 });
 export const selectedBudget = createSelector(getBudgetState, getSelectedBudget);
+export const workProgramStatus = createSelector(getBudgetState, getWorkProgramStatus);

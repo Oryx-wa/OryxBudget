@@ -85,6 +85,8 @@ namespace OryxWebapi.ViewModels.Mappings
 
             CreateMap<ContactPersonViewModel, ContactPerson>().ReverseMap();
             CreateMap<ContactPerson, ContactPersonViewModel>().ReverseMap();
+
+            CreateMap<StatusHistoryViewModel2, BudgetLineStatusHistory>().ReverseMap();
         }
     }
 }

@@ -17,6 +17,9 @@ export const LOAD_ITEM_SUCCESS = '[BudgetLine] LOAD_ITEM_SUCCESS';
 export const SELECT = '[BudgetLine] Select Item';
 export const RESET = '[BudgetLine] Reset';
 export const UPDATE_STATUS = '[BudgetLine] Update Status';
+export const RESET_APPROVAL_UPDATES = '[BudgetLine] Reset approval updates';
+export const SAVE_APPROVAL_UPDATES = '[BudgetLine] Save approval updates';
+
 
 export class SearchAction implements Action {
     readonly type = SEARCH;
@@ -87,9 +90,18 @@ export class ResetAction implements Action {
 
 export class UpdateStatusAction implements Action {
     readonly type = UPDATE_STATUS;
-    constructor(public payload: {code: string, status: number}) { }
+    constructor(public payload: { code: string, status: number }) { }
 }
 
+export class ResetApprovalUpdateAction implements Action {
+    readonly type = RESET_APPROVAL_UPDATES;
+    constructor(public payload = '') { }
+}
+
+export class SaveApprovalUpdates implements Action {
+    readonly type = SAVE_APPROVAL_UPDATES;
+    constructor(public payload = '') { }
+}
 
 
 
@@ -107,5 +119,7 @@ export type Actions
     | LoadItemSuccessAction
     | SelectItemAction
     | ResetAction
-    | UpdateStatusAction;
+    | UpdateStatusAction
+    | ResetApprovalUpdateAction
+    | SaveApprovalUpdates;
 

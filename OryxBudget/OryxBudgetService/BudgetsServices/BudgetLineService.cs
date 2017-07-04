@@ -32,6 +32,24 @@ namespace OryxBudgetService.BudgetsServices
 
         }
 
+        public void UpdateStatus(IEnumerable<BudgetLineStatusHistory> statuList)
+        {
+            foreach (var item in statuList)
+            {
+                _lineStatus.Add(item);
+                var dbLine = this.GetAll()
+                    .Where(c => c.BudgetId.ToString() == item.BudgetId && c.Code == item.Code)
+                    .FirstOrDefault();
+
+                if(dbLine != null)
+                {
+                    dbLine.ApprovalStatus = item.ApprovalStatus;
+                    this.Update(dbLine);
+                }
+
+            }
+        }
+
         public IEnumerable<BudgetLine> GetByBudgetId(string bgtId)
         {
             return this.GetAll().Where(info => info.BudgetId.ToString() == bgtId);

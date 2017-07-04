@@ -21,7 +21,7 @@ namespace OryxBudgetService.BudgetsServices
 
         public WorkProgramService(ExplorationWorkProgramRepository explorationWorkProgramRepo,
             WorkProgramTypeRepository workProgramTypeRepo,
-            DrillingCostTypeRepository drillingCostTypeRepo, DrillingCostRepository drillingCostRepo, 
+            DrillingCostTypeRepository drillingCostTypeRepo, DrillingCostRepository drillingCostRepo,
             WorkProgramStatusRepository workProgramStatusRepo, IUserResolverService userResolverService,
             IBudgetUnitOfWork unitOfWork) : base(explorationWorkProgramRepo, unitOfWork)
         {
@@ -32,7 +32,7 @@ namespace OryxBudgetService.BudgetsServices
             _workProgramStatusRepo = workProgramStatusRepo;
             _userResolverService = userResolverService;
         }
-
+        #region "old"
         public override void Update(ExplorationWorkProgram entity)
         {
             var explorationWorkProgram = this.Get(entity.Id);
@@ -96,15 +96,15 @@ namespace OryxBudgetService.BudgetsServices
         {
             return _drillingCostRepo.GetAll();
         }
-
+        #endregion
         public void AddWorkProgramStatus(WorkProgramStatus entity)
         {
-            
+
 
             _workProgramStatusRepo.Add(entity);
         }
 
-        public WorkProgramStatus AddWorkProgramStatus(string dept,  string status, Guid budgetId)
+        public WorkProgramStatus AddWorkProgramStatus(string dept, string status, Guid budgetId)
         {
             var roleList = _userResolverService.GetRoles();
             // string userType = "";
@@ -124,12 +124,11 @@ namespace OryxBudgetService.BudgetsServices
             Enum.TryParse(status, out SignOffStatus signOff);
             WorkProgramStatus entity = new WorkProgramStatus();
             entity.BudgetId = budgetId;
-            entity.ProgramStatus = signOff;
             entity.WorkProgram = workPrg;
-
+            entity.BudgetStatus = BudgetStatus.Operator;
             _workProgramStatusRepo.Add(entity);
             return entity;
-            
+
         }
         public void UpdateWorkProgramStatus(WorkProgramStatus entity)
         {
@@ -137,14 +136,35 @@ namespace OryxBudgetService.BudgetsServices
             _workProgramStatusRepo.Update(status);
         }
 
+        public void updateStatusHistory(Guid id, SignOffStatus status)
+        {
+            var wrkPrg = _workProgramStatusRepo.Get(id);
+            WorkProgramStatusHistory hist = new WorkProgramStatusHistory();
+            hist.ProgramStatus = status;
+            _workProgramStatusRepo.Update(wrkPrg);
+        }
+
         public IEnumerable<WorkProgramStatus> GetAllWorkProgramStatuses()
         {
             return _workProgramStatusRepo.GetAll();
         }
 
-        public IEnumerable<WorkProgramStatus> GetWorkProgramStatusesByBudget(string budgetId)
+        public WorkProgramStatus GetWorkProgramStatusesByBudget(string budgetId)
         {
-            return this.GetAllWorkProgramStatuses().Where(s => s.BudgetId == new Guid(budgetId));
+            var roleList = _userResolverService.GetRoles();
+            WorkProgramTypeEnum t = WorkProgramTypeEnum.Header;
+           
+            foreach (var item in roleList)
+            {
+                if (Enum.TryParse(item, out WorkProgramTypeEnum wkTypeOut))
+                {
+                    t = wkTypeOut;
+                }
+
+            }
+            return this.GetAllWorkProgramStatuses()
+                .Where(s => s.BudgetId == new Guid(budgetId) && s.WorkProgram == t )
+                .FirstOrDefault();
         }
 
         public WorkProgramStatus GetWorkProgramStatusesById(Guid id)
