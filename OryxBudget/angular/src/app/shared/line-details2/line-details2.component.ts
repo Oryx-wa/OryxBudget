@@ -10,7 +10,10 @@ import * as _ from 'lodash';
 import { Store } from '@ngrx/store';
 import { MaterializeAction } from 'angular2-materialize';
 import { GridOptions } from 'ag-grid/main';
-import { Budget, BudgetLines, LineComment, Actual, AppState, UserSelector } from '../../redux';
+import {
+  Budget, BudgetLines, BudgetLineActions,
+  LineComment, Actual, AppState, UserSelector, BudgetLineSelector
+} from '../../redux';
 import { CurrencyComponent } from '../../shared/renderers/currency.component';
 import { WordWrapComponent } from '../../shared/renderers/word-wrap.component';
 import { TextComponent } from '../../shared/renderers/text.component';
@@ -29,6 +32,7 @@ import { UploadOutput, UploadInput, UploadFile, humanizeBytes, NgUploaderService
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class LineDetails2Component implements OnInit, OnChanges, OnDestroy {
+  lines$: Observable<BudgetLines[]>;
   @Input() lines: BudgetLines[] = [];
   @Input() actuals: Actual[] = [];
   @Input() type = 'budget';
@@ -40,6 +44,7 @@ export class LineDetails2Component implements OnInit, OnChanges, OnDestroy {
   parentCode: BudgetLines;
   level: number;
   showComment = false;
+
   line: BudgetLines;
   actual: BudgetLines;
   role: string;
@@ -85,7 +90,19 @@ export class LineDetails2Component implements OnInit, OnChanges, OnDestroy {
         this.showTecCom = s.security.user.showTecCom;
         this.showSubCom = s.security.user.showSubCom;
 
-      })
+      });
+      /*
+    this.lines$ = this.store.select(BudgetLineSelector.getBudgetLineCollection);
+    this.lines$.subscribe(lines => {
+      console.log(lines);
+      if (lines.length > 0) {
+        if (lines[0].code !== '') {
+          this.lines = lines;
+          this.structureData();
+        }
+      }
+
+    })*/
     this.data = { id: this.budgetId };
     const url = 'Budget/' + (this.type === 'budget') ? 'UploadBudget' : 'UploadActual';
     this.event = {
@@ -465,35 +482,27 @@ export class LineDetails2Component implements OnInit, OnChanges, OnDestroy {
 
     ];
   }
-  public methodFromParent(id: string, type: boolean, level: string) {
+  public methodFromParent(id: string, type: boolean, level: string, fatherNum: string) {
     console.log(level);
     const children: any[] = this.rowData[0].level2;
     switch (level) {
-      
+
       case '1':
-        this.rowData[0].lineStatus = (type) ? 2 : 3;
+        this.store.dispatch(new BudgetLineActions.UpdateStatusAction({ code: id, status: (type) ? 3 : 2 }));
         children.map(line => {
-          line.lineStatus = (type) ? 2 : 3;
-          const gChildren: any[] = line.level3;
-          gChildren.map(gLine => {
-            gLine.lineStatus = (type) ? 2 : 3;
-          });
+          this.store.dispatch(new BudgetLineActions.UpdateStatusAction({ code: line.code, status: (type) ? 3 : 2 }));
         });
-        console.log(children);
+
         break;
       case '2':
         const children2: any[] = children.filter(line => line.code === id);
-        children2[0].lineStatus = (type) ? 2 : 3;
+        this.store.dispatch(new BudgetLineActions.UpdateStatusAction({ code: id, status: (type) ? 3 : 2 }));
         children2[0].level3.map(line => {
-          line.approvalStatus = (type) ? 2 : 3;
+          this.store.dispatch(new BudgetLineActions.UpdateStatusAction({ code: line.code, status: (type) ? 3 : 2 }));
         });
-        console.log(children2);
         break;
       default:
-        const children3: any[] = children.filter(line => line.code === id);
-        const child = children3.filter(line => line.code === id);
-        child[0].approvalStatus = (type) ? 2 : 3;
-        console.log(child);
+        this.store.dispatch(new BudgetLineActions.UpdateStatusAction({ code: id, status: (type) ? 3 : 2 }));
         break;
     }
 
@@ -528,7 +537,7 @@ function getNodeChildDetails(rowItem) {
         children: rowItem.level3,
 
         field: 'level2',
-        expanded: false,
+        expanded: true,
         // the key is used by the default group cellRenderer
         key: rowItem.level2
       };

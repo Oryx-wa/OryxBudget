@@ -16,6 +16,7 @@ export const LOAD_ITEMS_SUCCESS = '[BudgetLine] LOAD_ITEMS_SUCCESS';
 export const LOAD_ITEM_SUCCESS = '[BudgetLine] LOAD_ITEM_SUCCESS';
 export const SELECT = '[BudgetLine] Select Item';
 export const RESET = '[BudgetLine] Reset';
+export const UPDATE_STATUS = '[BudgetLine] Update Status';
 
 export class SearchAction implements Action {
     readonly type = SEARCH;
@@ -84,6 +85,11 @@ export class ResetAction implements Action {
     constructor(public payload = '') { }
 }
 
+export class UpdateStatusAction implements Action {
+    readonly type = UPDATE_STATUS;
+    constructor(public payload: {code: string, status: number}) { }
+}
+
 
 
 
@@ -100,5 +106,6 @@ export type Actions
     | UpdateItemAction
     | LoadItemSuccessAction
     | SelectItemAction
-    | ResetAction;
+    | ResetAction
+    | UpdateStatusAction;
 

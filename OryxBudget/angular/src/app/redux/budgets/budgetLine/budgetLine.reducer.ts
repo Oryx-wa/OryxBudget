@@ -42,7 +42,7 @@ export const BudgetLineReducer: ActionReducer<BudgetLineState> = (state: BudgetL
                 return state;
             }
             const BudgetLine: any = normalize(action.payload, arrayOfBudgetLine);
-           
+
             return updateObject({}, updateObject(state, {
                 ids: BudgetLine.result,
                 entities: BudgetLine.entities.BudgetLine,
@@ -53,6 +53,22 @@ export const BudgetLineReducer: ActionReducer<BudgetLineState> = (state: BudgetL
             return updateObject({}, updateObject(state, { selectedId: action.payload }));
         case AllActions.RESET:
             return initBudgetLineState;
+        case AllActions.UPDATE_STATUS:
+
+            const line = _.assign({}, normalize(
+                _.assign({}, state.entities[action.payload.code], { lineStatus: action.payload.status }),
+                budgetLineSchema));
+            // const lines = _.assign({}, state.entities);
+            // delete lines[action.payload.code];
+            
+            // console.log(line);
+            return Object.assign({}, state, {
+                ids: state.ids,
+                entities: _.merge({}, state.entities, line.entities.BudgetLine),
+                lastUpdate: new Date(),
+                selectedId: state.selectedId
+            });
+
         default:
             return state;
     }
