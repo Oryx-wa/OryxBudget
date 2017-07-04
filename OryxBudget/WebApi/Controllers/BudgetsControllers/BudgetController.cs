@@ -233,6 +233,8 @@ namespace OryxWebApi.Controllers.BudgetControllers
             return Json("File Uploaded"); //null just to make error free
         }
 
+        
+
         public JsonResult AddActualViaTemplate(IFormFile file, string lineId)
         {
             var fileName = string.Concat("Uploads", "\\", Helpers.RandomString(10), ".csv");
@@ -328,6 +330,45 @@ namespace OryxWebApi.Controllers.BudgetControllers
             _budgetService.UpdateOperatorActuals(periodStart, periodEnd, budgetLine, attachment);
 
             return Json("Operator BudgetLine Performance updated");
+        }
+
+        [Route("DownloadSignOff")]
+        [HttpGet]
+        public FileResult DownloadSignOff(string budgetId)
+        {
+            var fileName = string.Empty;
+            var filepath = "Signoff_Uploads/";
+            DirectoryInfo di = new DirectoryInfo(filepath);
+
+            foreach (var file in di.GetFiles())
+            {
+                if (file.Name.Contains(budgetId))
+                {
+                    fileName = file.Name;
+                    break;
+                }
+            }
+
+            var newFilepath = $"{filepath}/{fileName}";
+            //var filepath = $"Signoff_Uploads/{fileName}";
+            byte[] fileBytes = System.IO.File.ReadAllBytes(newFilepath);
+            return File(fileBytes, "application/pdf", fileName);
+        }
+
+        [HttpPost]
+        [Route("UploadSignOffDoc")]
+        public JsonResult UploadSignOffDoc(string budgetId, IFormFile file)
+        {
+            var filepath = string.Concat("Signoff_Uploads", "\\", "SignOffDoc_" + budgetId, ".pdf");
+
+            using (FileStream fs = System.IO.File.Create(filepath))
+            {
+                file.CopyTo(fs);
+                fs.Flush();
+                fs.Dispose();
+            }
+
+            return Json("Signoff File Uploaded");
         }
     }
 }
