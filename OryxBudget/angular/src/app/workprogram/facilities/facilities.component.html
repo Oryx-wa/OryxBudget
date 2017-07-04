@@ -1,3 +1,62 @@
-<p>
-  facilities works!
-</p>
+<div class="row">
+  <div class="col l3">
+    <app-logo></app-logo>
+  </div>
+  <div class="col l9">
+    <app-sub-navbar (budgetSelected)="selectBudget($event)"></app-sub-navbar>
+  </div>
+</div>
+<div class="row">
+  <div class="col l3">
+    <div class="row">
+      <div class="filter-elements">
+        <div class="row">
+          <a class="btn waves-effect waves-light orange" (click)="showExploration('AFE')">Exploration Details</a>
+        </div>
+        <div class="row">
+          <a class="btn waves-effect waves-light green" (click)="showExploration('Exploration Details')">Well AFE</a>
+        </div>
+        <div *ngIf="napims$ | async" class="row">
+          <a class="btn waves-effect waves-light blue" (click)="openFirst()">Sign Off</a>
+        </div>
+
+        <form *ngIf="showApproval" materialize materialize="updateTextFields" [formGroup]="form" (ngSubmit)="save(form.value)">
+          <div class="row">
+            <div class="input-field col l12 m12 s12">
+              <ul class="collection">
+                <li class="collection-item">Something 1</li>
+                <li class="collection-item">Something 2</li>
+                <li class="collection-item">Something 3</li>
+              </ul>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col l6">
+              <button [disabled]="form.invalid || form.pristine" class="wave-effect wave-light btn" type="submit" name="action">Print</button>
+            </div>
+            <div class="col l6">
+              <button [disabled]="form.invalid || form.pristine" class="right wave-effect wave-light btn" type="submit" name="action">Signoff</button>
+            </div>
+          </div>
+        </form>
+
+
+
+      </div>
+    </div>
+  </div>
+  <div class="col l9">
+    <div *ngIf="displayMode === displayModeEnum.Budget">
+      <div *ngIf="lines$ | async;let lines; else loading2">
+        <app-line-details2 [lines]="lines" [budgetId]="budgetId" [type]="'budget'">
+        </app-line-details2>
+      </div>
+    </div>
+    <div *ngIf="displayMode === displayModeEnum.Actual">
+      <div *ngIf="actuals$ | async;let actuals; else loading2">
+        <app-line-details2 [actuals]="actuals" [budgetId]="budgetId" [type]="'actual'">
+        </app-line-details2>
+      </div>
+    </div>
+  </div>
+</div>
