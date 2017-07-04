@@ -1,6 +1,8 @@
 ﻿using Data.Infrastructure;
 using Data.Repositories.BudgetsRepositories.WorkPrograms;
+using Entities.Budgets;
 using Entities.Budgets.WorkPrograms;
+using OryxSecurity.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,11 +17,12 @@ namespace OryxBudgetService.BudgetsServices
         private readonly DrillingCostTypeRepository _drillingCostTypeRepo;
         private readonly DrillingCostRepository _drillingCostRepo;
         private readonly WorkProgramStatusRepository _workProgramStatusRepo;
+        protected IUserResolverService _userResolverService;
 
         public WorkProgramService(ExplorationWorkProgramRepository explorationWorkProgramRepo,
             WorkProgramTypeRepository workProgramTypeRepo,
             DrillingCostTypeRepository drillingCostTypeRepo, DrillingCostRepository drillingCostRepo, 
-            WorkProgramStatusRepository workProgramStatusRepo,
+            WorkProgramStatusRepository workProgramStatusRepo, IUserResolverService userResolverService,
             IBudgetUnitOfWork unitOfWork) : base(explorationWorkProgramRepo, unitOfWork)
         {
             _explorationWorkProgramRepo = explorationWorkProgramRepo;
@@ -27,6 +30,7 @@ namespace OryxBudgetService.BudgetsServices
             _drillingCostTypeRepo = drillingCostTypeRepo;
             _drillingCostRepo = drillingCostRepo;
             _workProgramStatusRepo = workProgramStatusRepo;
+            _userResolverService = userResolverService;
         }
 
         public override void Update(ExplorationWorkProgram entity)
@@ -95,9 +99,38 @@ namespace OryxBudgetService.BudgetsServices
 
         public void AddWorkProgramStatus(WorkProgramStatus entity)
         {
+            
+
             _workProgramStatusRepo.Add(entity);
         }
 
+        public WorkProgramStatus AddWorkProgramStatus(string dept,  string status, Guid budgetId)
+        {
+            var roleList = _userResolverService.GetRoles();
+            // string userType = "";
+            string userName = _userResolverService.GetUserName();
+            BudgetStatus bdStatus = BudgetStatus.SubCom;
+            foreach (var item in roleList)
+            {
+
+                if (item.EndsWith("Com"))
+                {
+                    Enum.TryParse(item, out BudgetStatus bdStatusOut);
+                    bdStatus = bdStatusOut;
+                }
+
+            }
+            Enum.TryParse(dept, out WorkProgramTypeEnum workPrg);
+            Enum.TryParse(status, out SignOffStatus signOff);
+            WorkProgramStatus entity = new WorkProgramStatus();
+            entity.BudgetId = budgetId;
+            entity.ProgramStatus = signOff;
+            entity.WorkProgram = workPrg;
+
+            _workProgramStatusRepo.Add(entity);
+            return entity;
+            
+        }
         public void UpdateWorkProgramStatus(WorkProgramStatus entity)
         {
             var status = _workProgramStatusRepo.Get(entity.Id);

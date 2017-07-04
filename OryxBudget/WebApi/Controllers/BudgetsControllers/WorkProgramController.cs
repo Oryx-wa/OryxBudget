@@ -26,9 +26,10 @@ namespace OryxWebApi.Controllers.BudgetsControllers
         public JsonResult AddWorkProgramStatus([FromBody] WorkProgramStatusViewModel statusVm)
         {
             var status = Mapper.Map<WorkProgramStatus>(statusVm);
-            _workProgramService.AddWorkProgramStatus(status);
+
+           var ret = _workProgramService.AddWorkProgramStatus(statusVm.Department, statusVm.Status, statusVm.BudgetId);
             _workProgramService.SaveChanges();
-            return Json(_workProgramService.Get(status.Id));
+            return Json(ret);
         }
 
         [HttpGet]

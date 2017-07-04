@@ -19,7 +19,8 @@ namespace Entities.Budgets.WorkPrograms
         public string UserSign { get; set; }
 
         public Guid BudgetId { get; set; }
-
+        public WorkProgramTypeEnum WorkProgram { get; set; }
+        public BudgetStatus BudgetStatus { get; set; }
         public SignOffStatus ProgramStatus { get; set; }
     }
 
@@ -36,7 +37,8 @@ namespace Entities.Budgets.WorkPrograms
         public string UserSign { get; set; }
 
         public Guid BudgetId { get; set; }
-
+        public WorkProgramTypeEnum WorkProgram { get; set; }
+        public BudgetStatus BudgetStatus { get; set; }
         public SignOffStatus ProgramStatus { get; set; }
     }
 
