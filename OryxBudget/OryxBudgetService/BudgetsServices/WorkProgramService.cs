@@ -14,16 +14,19 @@ namespace OryxBudgetService.BudgetsServices
         private readonly WorkProgramTypeRepository _workProgramTypeRepo;
         private readonly DrillingCostTypeRepository _drillingCostTypeRepo;
         private readonly DrillingCostRepository _drillingCostRepo;
+        private readonly WorkProgramStatusRepository _workProgramStatusRepo;
 
         public WorkProgramService(ExplorationWorkProgramRepository explorationWorkProgramRepo,
             WorkProgramTypeRepository workProgramTypeRepo,
-            DrillingCostTypeRepository drillingCostTypeRepo, DrillingCostRepository drillingCostRepo,
+            DrillingCostTypeRepository drillingCostTypeRepo, DrillingCostRepository drillingCostRepo, 
+            WorkProgramStatusRepository workProgramStatusRepo,
             IBudgetUnitOfWork unitOfWork) : base(explorationWorkProgramRepo, unitOfWork)
         {
             _explorationWorkProgramRepo = explorationWorkProgramRepo;
             _workProgramTypeRepo = workProgramTypeRepo;
             _drillingCostTypeRepo = drillingCostTypeRepo;
             _drillingCostRepo = drillingCostRepo;
+            _workProgramStatusRepo = workProgramStatusRepo;
         }
 
         public override void Update(ExplorationWorkProgram entity)
@@ -88,6 +91,32 @@ namespace OryxBudgetService.BudgetsServices
         public IEnumerable<DrillingCost> GetAllDrillCosts()
         {
             return _drillingCostRepo.GetAll();
+        }
+
+        public void AddWorkProgramStatus(WorkProgramStatus entity)
+        {
+            _workProgramStatusRepo.Add(entity);
+        }
+
+        public void UpdateWorkProgramStatus(WorkProgramStatus entity)
+        {
+            var status = _workProgramStatusRepo.Get(entity.Id);
+            _workProgramStatusRepo.Update(status);
+        }
+
+        public IEnumerable<WorkProgramStatus> GetAllWorkProgramStatuses()
+        {
+            return _workProgramStatusRepo.GetAll();
+        }
+
+        public IEnumerable<WorkProgramStatus> GetWorkProgramStatusesByBudget(string budgetId)
+        {
+            return this.GetAllWorkProgramStatuses().Where(s => s.BudgetId == new Guid(budgetId));
+        }
+
+        public WorkProgramStatus GetWorkProgramStatusesById(Guid id)
+        {
+            return _workProgramStatusRepo.Get(id);
         }
     }
 }
