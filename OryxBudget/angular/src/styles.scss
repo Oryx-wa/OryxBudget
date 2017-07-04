@@ -23,7 +23,7 @@ $roboto-font-path: "~materialize-css/dist/fonts/roboto/"; /* This is needed so t
     overflow: hidden;
 }
 
-.image{
+.explore{
     background:url('assets/images/explore.jpg')no-repeat center center fixed; 
   -webkit-background-size: cover;
   -moz-background-size: cover;
@@ -31,6 +31,13 @@ $roboto-font-path: "~materialize-css/dist/fonts/roboto/"; /* This is needed so t
   background-size: cover;height:350px;
 }
 
+.facilities{
+    background:url('assets/images/facilities.jpg')no-repeat center center fixed; 
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;height:350px;
+}
 .dropdown-content {
   background-color: #FFFFFF;
   margin: 0;
