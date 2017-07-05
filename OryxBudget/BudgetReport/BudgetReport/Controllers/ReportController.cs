@@ -6,6 +6,7 @@ using System.IO;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Hosting;
 using BudgetReport.Services;
+using System.Threading.Tasks;
 
 namespace BudgetReport.Controllers
 {
@@ -16,9 +17,9 @@ namespace BudgetReport.Controllers
         {
             _reportService = reportService;
         }
-        public FileResult Index(string BudgetId)
+        public async Task<FileResult> Index(string BudgetId)
         {
-            return _reportService.GetBudgetReport(BudgetId);
+           return await _reportService.GetBudgetReport(BudgetId);
         }
     }
 }
