@@ -9,7 +9,7 @@ import { FormsModule } from '@angular/forms';
 
 import { StoreModule, Store } from '@ngrx/store';
 // import { DBModule } from '@ngrx/db';
-import { reducer, initialState } from '../redux';
+import { reducer } from '../redux';
 import { MaterializeModule } from 'angular2-materialize';
 import { Configuration } from '../app.constants';
 // import { schema } from './../redux/utilities/db';

@@ -10,16 +10,12 @@ import * as _ from 'lodash';
 })
 export class LineCommentComponent implements OnInit, OnChanges {
   @Input() line: BudgetLines;
-  @Input() lineComments: LineComments[] = [{
-    id: '', budgetId: '', userType: '',
-    code: '', comment: '', commentStatus: '', userName: '', commentType: '', createDate: new Date()
-  }];
-  @Input() lineStatus: LineStatus[] = [{ budgetId: '', code: '', status: '' }]
+  @Input() lineComments: LineComments[] = [];
+
   @Input() showSubCom = false;
   @Input() showTecCom = false;
   @Input() showMalCom = false;
 
-  @Input() userType = '';
   @Input() napims = false;
   @Input() operator = false;
   @Input() displayMode = 'details';
@@ -34,7 +30,7 @@ export class LineCommentComponent implements OnInit, OnChanges {
 
   }
   ngOnChanges(changes: any): void {
-    const status = (this.lineStatus) ? this.lineStatus[0].status : 'New';
+
     this.form = this.fb.group({
       opBudgetFC: new FormControl({ value: this.line.opBudgetFC, disabled: true }),
       opBudgetLC: new FormControl({ value: this.line.opBudgetLC, disabled: true }),
@@ -90,7 +86,7 @@ export class LineCommentComponent implements OnInit, OnChanges {
       id: new FormControl(this.line.id),
       budgetId: new FormControl(this.line.budgetId),
       lineStatus: new FormControl({
-        value: status,
+        value: this.line.lineStatus,
         disabled: !(this.napims === true)
       }),
       formArray: this.fb.array([])
@@ -103,7 +99,7 @@ export class LineCommentComponent implements OnInit, OnChanges {
     const arrayControl = <FormArray>this.form.controls['formArray'];
     const lineComment: LineComments = (data === null) ?
       { id: null, budgetId: this.line.budgetId, code: this.line.code, comment: '', commentStatus: '' } : data;
-    const status = (this.lineStatus) ? this.lineStatus[0].status : '';
+
     const newDetail = this.fb.group({
       comment: new FormControl(lineComment.comment),
       id: new FormControl(lineComment.id),

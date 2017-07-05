@@ -4,10 +4,10 @@ import { ICellRendererAngularComp } from 'ag-grid-angular/main';
 @Component({
     selector: 'app-approval',
     template: `<form action="#">
-                            <div  class="col s12">  
+                            <div *ngIf="level === '3'" class="col s12">  
                               
       
-       <input #checkbox type="checkbox" [checked]="checkBoxValue" 
+       <input #checkbox [indeterminate]="chkVal" type="checkbox" [checked]="checkBoxValue" 
         (change)="invokeParentMethod($event.target.checked)" [id]="chkId" [name]="chkId"/>
        <label [for]="chkId">{{val}}</label>
        
@@ -26,6 +26,8 @@ export class ApprovalComponent implements ICellRendererAngularComp {
     public val = 'True';
     public chkId = '';
     public status: 1;
+    public level: '3';
+    public chkVal = true;
 
     @ViewChild('checkbox') checkbox: ElementRef;
     constructor(private renderer: Renderer) {
@@ -34,30 +36,34 @@ export class ApprovalComponent implements ICellRendererAngularComp {
 
     agInit(params: any): void {
         this.status = params.data.lineStatus;
-        switch (params.data.lineStatus) {
-            case 1:
-                this.val = 'No decision';
-                this.renderer.setElementProperty(this.checkbox.nativeElement, 'indeterminate', true);
-                break;
-            case 2:
-                this.val = 'No';
-                this.renderer.setElementProperty(this.checkbox.nativeElement, 'indeterminate', false);
-                this.checkBoxValue = true;
-                break;
-            case 3:
-                this.val = 'Yes';
-                this.renderer.setElementProperty(this.checkbox.nativeElement, 'indeterminate', false);
-                this.checkBoxValue = true;
-                break;
+        if (this.level = '3') {
+            switch (params.data.lineStatus) {
+                case 1:
+                    this.val = 'N/A';
+                    this.chkVal = true;
+                    break;
+                case 2:
+                    this.val = 'No';
+                    this.chkVal = false;
+                    this.checkBoxValue = true;
+                    break;
+                case 3:
+                    this.val = 'Yes';
+                    this.chkVal = false;
+                    this.checkBoxValue = true;
+                    break;
+            }
         }
         this.params = params;
         this.chkId = this.params.data.code;
         this.type = this.params.colDef.type;
+        this.level = this.params.data.level;
     }
 
     public invokeParentMethod(type: boolean) {
+        this.checkBoxValue = type;
         this.val = (type) ? 'Yes' : 'No';
-        this.params.context.componentParent.methodFromParent(this.params.data.code, type, this.params.data.level);
+        this.params.context.componentParent.handleApproval(this.params.data.code, type, this.params.data.level);
 
     }
 

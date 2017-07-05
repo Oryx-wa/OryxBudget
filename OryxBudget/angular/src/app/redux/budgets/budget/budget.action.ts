@@ -17,6 +17,8 @@ export const LOAD_ITEM_SUCCESS = '[Budget] LOAD_ITEM_SUCCESS';
 export const SELECT = '[Budget] Select Item';
 export const GET_WORKPROGRAM_STATUS = '[Budget] Get Work program status';
 export const GET_WORKPROGRAM_STATUS_SUCCESS = '[Budget] Get Work program status success';
+export const GET_PRINTOUT = '[Budget] Get print out';
+export const GET_PRINOUT_SUCCESS = '[Budget] Get print out success';
 
 
 
@@ -75,7 +77,7 @@ export class LoadItemsSuccessAction implements Action {
 export class LoadItemSuccessAction implements Action {
     readonly type = LOAD_ITEM_SUCCESS;
 
-    constructor(public payload: string) {  }
+    constructor(public payload: string) { }
 }
 
 export class SelectItemAction implements Action {
@@ -85,13 +87,22 @@ export class SelectItemAction implements Action {
 }
 export class GetWorkProgramStatusAction implements Action {
     readonly type = GET_WORKPROGRAM_STATUS;
-    constructor(public payload = ''){ }
+    constructor(public payload = '') { }
 }
 export class GetWorkProgramStatusSuccessAction implements Action {
     readonly type = GET_WORKPROGRAM_STATUS_SUCCESS;
-    constructor(public payload: any){ }
+    constructor(public payload: any) { }
 }
 
+export class GetPrintOutAction implements Action {
+    readonly type = GET_PRINTOUT;
+    constructor(public payload = '') { }
+}
+
+export class GetPrintOutSuccessAction implements Action {
+    readonly type = GET_PRINOUT_SUCCESS;
+    constructor(public payload: any) { }
+}
 
 
 export type Actions
@@ -108,6 +119,8 @@ export type Actions
     | LoadItemAction
     | LoadItemSuccessAction
     | SelectItemAction
-    | GetWorkProgramStatusAction 
-    | GetWorkProgramStatusSuccessAction;
+    | GetWorkProgramStatusAction
+    | GetWorkProgramStatusSuccessAction
+    | GetPrintOutAction
+    | GetPrintOutSuccessAction;
 

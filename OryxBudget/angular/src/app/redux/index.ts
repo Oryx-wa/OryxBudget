@@ -61,7 +61,7 @@ export function reducer(state: any, action: any) {
   }
 
 }
-
+/*
 export function initialState() {
   const ret = {
     budgets: fromBudget.initBdState,
@@ -70,7 +70,7 @@ export function initialState() {
   console.log(ret);
   return ret;
 }
-
+*/
 export interface Lookup {
   id: string;
   name: string;

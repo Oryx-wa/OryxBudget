@@ -7,11 +7,11 @@ import { AgGridModule } from 'ag-grid-angular/main';
 import { SecurityService } from './login/security.service';
 import { AppComponent } from './app.component';
 import { HomeModule } from './home/home.module';
-import { BudgetModule } from './budget/budget.module';
+// import { BudgetModule } from './budget/budget.module';
 import { StoreModule, Store } from '@ngrx/store';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { EffectsModule } from '@ngrx/effects';
-import { reducer, initLoginState, initBdState, AppState } from './redux';
+import { reducer, initLoginState, AppState } from './redux';
 import { CoreModule } from './core/core.module';
 
 import { MainNavComponent } from './shared/main-nav/main-nav.component';
@@ -20,7 +20,7 @@ import { Configuration } from './app.constants';
 
 // import { Routes, RouterModule, PreloadAllModules } from '@angular/router';
 import { AppRoutingModule } from './app.routing.module';
-import { OperatorsModule } from './operators/operators.module';
+// import { OperatorsModule } from './operators/operators.module';
 import { WorkprogramModule } from './workprogram/workprogram.module';
 import { BudgetEffects, BudgetService } from './redux/budgets/budget/';
 import { LogoutComponent } from './shared/logout/logout.component';
@@ -36,7 +36,7 @@ import { LogoutComponent } from './shared/logout/logout.component';
     LogoutComponent
 
 
-    //OryxDashboardComponent
+    //  OryxDashboardComponent
   ],
   imports: [
     BrowserModule,
@@ -48,10 +48,10 @@ import { LogoutComponent } from './shared/logout/logout.component';
     StoreDevtoolsModule.instrumentOnlyWithExtension(),
     EffectsModule.run(BudgetEffects),
     HomeModule,
-    BudgetModule,
+    // BudgetModule,
     AppRoutingModule,
     AgGridModule,
-    OperatorsModule,
+    // OperatorsModule,
     WorkprogramModule
 
 

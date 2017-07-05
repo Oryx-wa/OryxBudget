@@ -8,7 +8,7 @@ import {
   BudgetLines, BudgetSelector, BudgetLineActions, BudgetLineSelector, ActualActions
 } from './../../redux';
 import { DisplayModeEnum } from '../../shared/shared-enum.enum';
-
+import swal from 'sweetalert2';
 @Component({
   selector: 'app-exploration',
   templateUrl: './exploration.component.html',
@@ -34,6 +34,7 @@ export class ExplorationComponent implements OnInit, OnDestroy {
 
   public dept$: Observable<string>;
   public operator$: Observable<boolean>;
+  public printOut$: Observable<any>;
   private alive = true;
 
   public displayMode: DisplayModeEnum;
@@ -83,7 +84,7 @@ export class ExplorationComponent implements OnInit, OnDestroy {
             switch (this.displayMode) {
               case DisplayModeEnum.Budget:
                 this.store.dispatch(new BudgetLineActions.LoadItemsAction(this.budgetId));
-                
+
                 break;
               case DisplayModeEnum.Actual:
                 this.store.dispatch(new ActualActions.LoadItemsAction(this.budgetId));
@@ -100,8 +101,17 @@ export class ExplorationComponent implements OnInit, OnDestroy {
     });
     this.lines$ = this.store.select(BudgetLineSelector.getBudgetLineCollection);
     this.actuals$ = this.store.select(ActualSelector.getActualCollection);
-    
+
     this.changeDisplayMode(DisplayModeEnum.Budget);
+
+    this.printOut$ = this.store.select(BudgetSelector.printOut);
+    this.printOut$.subscribe(file => {
+      if (file !== null) {
+        // console.log(file);
+        const fileURL = URL.createObjectURL(file)
+        window.open(fileURL);
+      }
+    })
   }
   openFirst() {
     this.showApproval = true;
@@ -121,8 +131,44 @@ export class ExplorationComponent implements OnInit, OnDestroy {
     // this.store.dispatch(new BudgetLineActions.LoadItemsAction(this.budgetId));
   }
 
+  print() {
+    this.store.dispatch(new BudgetActions.GetPrintOutAction(''));
+  }
+
+  signOff() {
+    let lines: BudgetLines[] = [];
+    this.lines$
+      .map(line => line.filter(x => x.lineStatus < 2))
+      .subscribe(c => lines = c);
+
+    if (lines.length > 0) {
+      getUserRes(this.store);
+    }
+
+
+
+  }
   ngOnDestroy() {
     this.alive = false;
   }
 
 }
+
+function getUserRes(store: Store<AppState>) {
+  return swal({
+    title: 'Code unapproved!',
+    input: 'checkbox',
+    inputValue: 1,
+    inputPlaceholder: 'Approve remaining codes',
+    showCancelButton: true,
+    confirmButtonText: 'Save',
+    confirmButtonClass: 'waves-effect waves-light btn btn-small',
+    cancelButtonText: 'Cancel',
+    cancelButtonClass: 'waves-effect waves-light btn btn-small',
+    
+  }).then(function (result) {
+    console.log(result);
+  });
+}
+
+

@@ -4,7 +4,7 @@ import { createSelector } from 'reselect';
 import { AppState } from './../../';
 
 import {
-    getBudgetIds, getBudgetEntities,
+    getBudgetIds, getBudgetEntities, getPrintOut,
     BudgetState, getSelectedBudget, getWorkProgramStatus
 } from './budget.reducer';
 
@@ -18,3 +18,4 @@ export const getBudgetCollection = createSelector(BudgetEntities, BudgetIds, (en
 });
 export const selectedBudget = createSelector(getBudgetState, getSelectedBudget);
 export const workProgramStatus = createSelector(getBudgetState, getWorkProgramStatus);
+export const printOut = createSelector(getBudgetState, getPrintOut);

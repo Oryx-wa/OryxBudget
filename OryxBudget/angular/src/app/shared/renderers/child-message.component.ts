@@ -25,6 +25,6 @@ export class ChildMessageComponent implements ICellRendererAngularComp {
     }
 
     public invokeParentMethod(type: string) {
-        this.params.context.componentParent.methodFromParent(this.params.data.code, type );
+        this.params.context.componentParent.handleChildMessage(this.params.data.code, type );
     }
 }

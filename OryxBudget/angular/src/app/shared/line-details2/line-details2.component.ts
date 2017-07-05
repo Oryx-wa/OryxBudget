@@ -33,12 +33,15 @@ import { UploadOutput, UploadInput, UploadFile, humanizeBytes, NgUploaderService
 })
 export class LineDetails2Component implements OnInit, OnChanges, OnDestroy {
   lines$: Observable<BudgetLines[]>;
+  line$: Observable<BudgetLines>;
   linesTouched$: Observable<boolean>;
   @Input() lines: BudgetLines[] = [];
   @Input() actuals: Actual[] = [];
   @Input() type = 'budget';
   showSubCom = false;
   showTecCom = false;
+  showMalCom = false;
+  showFinal = false;
   @Input() budgetId = '';
   filtered: BudgetLines[] = [];
   selectedCode: BudgetLines;
@@ -64,7 +67,7 @@ export class LineDetails2Component implements OnInit, OnChanges, OnDestroy {
   public data: any;
   private event: UploadInput;
   public btnClass = 'btn waves-effect waves-light disabled';
-
+  dialogMode = 'details';
   constructor(private store: Store<AppState>, private dialog: DialogService, private securityService: SecurityService) {
     this.gridOptions = <GridOptions>{
       context: {
@@ -91,6 +94,8 @@ export class LineDetails2Component implements OnInit, OnChanges, OnDestroy {
         this.operator = s.security.user.operator;
         this.showTecCom = s.security.user.showTecCom;
         this.showSubCom = s.security.user.showSubCom;
+        this.showMalCom = s.security.user.showMalCom;
+        this.showFinal = s.security.user.showFinal;
       });
     this.data = { id: this.budgetId };
     const url = 'Budget/' + (this.type === 'budget') ? 'UploadBudget' : 'UploadActual';
@@ -117,6 +122,7 @@ export class LineDetails2Component implements OnInit, OnChanges, OnDestroy {
       default:
         break;
     }
+    this.line$ = this.store.select(BudgetLineSelector.selectedBudgetLine);
   }
   initActual() {
     this.createActualColumnDefs();
@@ -157,28 +163,7 @@ export class LineDetails2Component implements OnInit, OnChanges, OnDestroy {
 
   private createColumnDefs() {
     this.columnDefs = [
-      {
-        headerName: 'Actions',
-        children: [
-          {
-            headerName: 'Approved', field: 'id',
-            width: 125,
-            // cellTemplate: '<div><a href="#">Visible text</a></div>',
-            editable: true,
-            cellRendererFramework: ApprovalComponent,
-
-          },
-          {
-            headerName: 'Details', field: 'id',
-            width: 50,
-            // cellTemplate: '<div><a href="#">Visible text</a></div>',
-            editable: true,
-            cellRendererFramework: ChildMessageComponent,
-            mIcon: 'message', type: 'comment'
-          },
-
-        ]
-      },
+     
       {
 
         headerName: 'Budget Codes',
@@ -204,7 +189,28 @@ export class LineDetails2Component implements OnInit, OnChanges, OnDestroy {
           }
         ]
       },
+       {
+        headerName: 'Actions',
+        children: [
+          {
+            headerName: 'Approved', field: 'id',
+            width: 100,
+            // cellTemplate: '<div><a href="#">Visible text</a></div>',
+            editable: true,
+            cellRendererFramework: ApprovalComponent,
 
+          },
+          {
+            headerName: 'Details', field: 'id',
+            width: 100,
+            // cellTemplate: '<div><a href="#">Visible text</a></div>',
+            editable: true,
+            cellRendererFramework: ChildMessageComponent,
+            mIcon: 'message', type: 'comment'
+          },
+
+        ]
+      },
       {
         headerName: 'Operator Budget',
         children: [
@@ -476,7 +482,7 @@ export class LineDetails2Component implements OnInit, OnChanges, OnDestroy {
 
     ];
   }
-  public methodFromParent(id: string, type: boolean, level: string, fatherNum: string) {
+  public handleApproval(id: string, type: boolean, level: string, fatherNum: string) {
     console.log(level);
     const children: any[] = this.rowData[0].level2;
     switch (level) {
@@ -499,7 +505,14 @@ export class LineDetails2Component implements OnInit, OnChanges, OnDestroy {
         this.store.dispatch(new BudgetLineActions.UpdateStatusAction({ code: id, status: (type) ? 3 : 2 }));
         break;
     }
+  }
 
+  public handleChildMessage(id: string, type: string) {
+    console.log(id);
+    this.store.dispatch(new BudgetLineActions.SelectItemAction(id));
+    this.showComment = true;
+
+    
   }
 
   UpdateStatus(type: string) {
@@ -513,6 +526,10 @@ export class LineDetails2Component implements OnInit, OnChanges, OnDestroy {
       default:
         break;
     }
+  }
+
+  changeDialog(mode: string) {
+    this.dialogMode = mode;
   }
 }
 

@@ -4,7 +4,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { EffectsModule } from '@ngrx/effects';
 import { HomeComponent } from './home.component';
 import { SharedModule } from './../shared/shared.module';
-import { OperatorViewModule } from './../operator-view/operator-view.module';
+// import { OperatorViewModule } from './../operator-view/operator-view.module';
 import { UnauthorisedComponent } from './unauthorised.component';
 import { WorkprogramModule } from './../workprogram/workprogram.module';
 import { OperatorEffects, OperatorService } from './../redux';
@@ -13,7 +13,7 @@ import { OperatorEffects, OperatorService } from './../redux';
     CommonModule,
     ReactiveFormsModule,
     SharedModule,
-    OperatorViewModule,
+    
     WorkprogramModule,
     EffectsModule.run(OperatorEffects)
   ],

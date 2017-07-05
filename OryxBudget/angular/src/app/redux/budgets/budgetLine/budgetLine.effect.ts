@@ -6,6 +6,7 @@ import { OnDestroy } from '@angular/core';
 
 import { BudgetLineService } from './budgetLine.service';
 import * as BudgetLineActions from './budgetLine.action';
+import { LineCommentActions } from './../lineComment';
 import { AppState } from './../../';
 import { NotificationActions, ErrorActions } from './../../general/actions/';
 import { Observable } from 'rxjs/Observable';
@@ -39,12 +40,12 @@ export class BudgetLineEffects implements OnDestroy {
         .ofType(BudgetLineActions.SAVE_APPROVAL_UPDATES)
         .withLatestFrom(this.store$.select(state => state.budgets.budgetLine))
         .map(([action, budgetLine]) => {
-            const ret: { id:string, budgetId: string, status: number, code: string }[] = [];
+            const ret: { id: string, budgetId: string, approvalStatus: number, code: string }[] = [];
             budgetLine.ids.map(id => {
                 const line = budgetLine.entities[id];
                 ret.push({
-                    id:line.id, budgetId: line.budgetId,
-                    status: line.lineStatus, code: line.code
+                    id: line.id, budgetId: line.budgetId,
+                    approvalStatus: line.lineStatus, code: line.code
                 })
             });
             return ret;
@@ -79,7 +80,11 @@ export class BudgetLineEffects implements OnDestroy {
                 new NotificationActions.SetSavingError('Error saving BudgetLine')]);
             }));
 
+    @Effect() selectLine$: Observable<Action> = this.actions$
+        .ofType(BudgetLineActions.SELECT)
+        .map(() => new LineCommentActions.LoadItemsAction(''));
 
+    
     constructor(
         private actions$: Actions,
         private store$: Store<AppState>,

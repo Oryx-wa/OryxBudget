@@ -36,6 +36,7 @@ import { LineDetails2Component } from './line-details2/line-details2.component';
 import { LogoutComponent } from './app-security/logout/logout.component';
 import { DialogService } from './dialog.service';
 import { LineActualsComponent } from './line-actuals/line-actuals.component';
+
 @NgModule({
   imports: [
     CommonModule,
@@ -59,18 +60,17 @@ import { LineActualsComponent } from './line-actuals/line-actuals.component';
 
   ],
   declarations: [// MainNavComponent,
-    OryxDashboardComponent,
-    FileuploaderComponent,
-    LineCommentComponent,
-    ListComponent, LineDetails2Component,
-    LineCommentDetailsComponent, ApprovalComponent,
-    DialogComponent, CurrencyComponent, AttachmentComponent, NotificationComponent,
-    CommentsComponent, FileuploadAttachmentComponent, LogoComponent, SubNavbarComponent, LogoutComponent, LineActualsComponent],
+    OryxDashboardComponent, FileuploaderComponent, LineCommentComponent,
+    ListComponent, LineDetails2Component, LineCommentDetailsComponent, ApprovalComponent,
+    DialogComponent, CurrencyComponent, AttachmentComponent, NotificationComponent, WordWrapComponent,
+    CommentsComponent, FileuploadAttachmentComponent, LogoComponent, SubNavbarComponent,TextComponent,
+    LogoutComponent, LineActualsComponent, ChildMessageComponent, StyledComponent],
   providers: [SecurityService, NotificationsService, DialogService],
   exports: [// MainNavComponent,
     OryxDashboardComponent, NotificationComponent,
     FileuploaderComponent, CommentsComponent, AttachmentComponent, FileuploadAttachmentComponent,
     MaterializeModule, LineCommentComponent, CurrencyComponent, LineDetails2Component,
-    DialogComponent, ListComponent, Ng2PaginationModule, SelectModule, LogoComponent, SubNavbarComponent]
+    DialogComponent, ListComponent, Ng2PaginationModule, SelectModule, LogoComponent, WordWrapComponent,
+    TextComponent, ChildMessageComponent,SubNavbarComponent, StyledComponent]
 })
 export class SharedModule { }

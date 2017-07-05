@@ -9,6 +9,7 @@ import * as LineCommentActions from './lineComment.action';
 import { AppState } from './../../';
 import { NotificationActions, ErrorActions } from './../../general/actions/';
 import { Observable } from 'rxjs/Observable';
+import { BudgetLineSelector } from './../budgetLine';
 
 import 'rxjs/add/operator/catch';
 import 'rxjs/add/observable/of';
@@ -20,7 +21,12 @@ import 'rxjs/add/operator/map';
 export class LineCommentEffects implements OnDestroy {
     @Effect() LoadLineComments$: Observable<Action> = this.actions$
         .ofType(LineCommentActions.LOAD_ITEMS)
-        .mergeMap(action => this.lineCommentService.getLineComments(action.payload)
+        .withLatestFrom(this.store$.select(BudgetLineSelector.selectedBudgetLine))
+        .map(([action, budgetLine]) => {
+            const ret = { budgetId: budgetLine.budgetId, code: budgetLine.code };
+            return ret;
+        })
+        .mergeMap(payload => this.lineCommentService.getLineComments(payload.budgetId, payload.code)
             .mergeMap(lineComments => {
                 return Observable.from([new LineCommentActions.LoadItemsSuccessAction(lineComments)]);
             })
@@ -28,6 +34,7 @@ export class LineCommentEffects implements OnDestroy {
                 return Observable.from([new ErrorActions.ErrorAddAction(err),
                 new NotificationActions.SetLoaded('LineComment Items Loaded Sucessfully')]);
             }));
+
     @Effect() AddUpdateItemSuces$: Observable<Action> = this.actions$
         .ofType(LineCommentActions.ADD_UPDATE_ITEM_SUCCESS)
         .map(() => new NotificationActions.SetSaved('LineComment saved Sucessfully'));
@@ -53,7 +60,7 @@ export class LineCommentEffects implements OnDestroy {
 
     constructor(
         private actions$: Actions,
-        private store: Store<AppState>,
+        private store$: Store<AppState>,
         private lineCommentService: LineCommentService
     ) { }
 

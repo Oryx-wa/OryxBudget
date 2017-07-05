@@ -36,7 +36,7 @@ namespace OryxBudgetService.BudgetsServices
         {
             foreach (var item in statuList)
             {
-                _lineStatus.Add(item);
+                // _lineStatus.Add(item);
                 var dbLine = this.GetAll()
                     .Where(c => c.BudgetId.ToString() == item.BudgetId && c.Code == item.Code)
                     .FirstOrDefault();

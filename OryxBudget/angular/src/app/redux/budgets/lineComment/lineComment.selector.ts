@@ -5,15 +5,15 @@ import { AppState } from './../../';
 
 import {
     getLineCommentIds, getLineCommentEntities,
-    LineCommentState
+    LineCommentState, getSelectedLineComment
 } from './lineComment.reducer';
 
 // LineComment
-/*
- export const getLineCommentState = (state: AppState) => state.budgets.;
+
+ export const getLineCommentState = (state: AppState) => state.budgets.lineComment;
 export const LineCommentEntities = createSelector(getLineCommentState, getLineCommentEntities);
 export const LineCommentIds = createSelector(getLineCommentState, getLineCommentIds);
 export const getLineCommentCollection = createSelector(LineCommentEntities, LineCommentIds, (entities, ids) => {
     return ids.map(id => entities[id]);
 });
-*/
+export const selectedComment = (state: AppState) => createSelector(getLineCommentState, getSelectedLineComment)

@@ -48,6 +48,8 @@ export const LineCommentReducer: ActionReducer<LineCommentState> = (state: LineC
                 lastUpdate: new Date(),
                 selectedId: state.selectedId
             }));
+        case AllActions.SELECT_ITEM:
+            return updateObject({}, updateObject(state, { selectedId: action.payload }));
         default:
             return state;
     }

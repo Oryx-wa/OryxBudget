@@ -23,25 +23,17 @@
           <a class="btn waves-effect waves-light blue" (click)="openFirst()">Sign Off</a>
         </div>
         
-        <form *ngIf="showApproval" materialize materialize="updateTextFields" [formGroup]="form" (ngSubmit)="save(form.value)">
-          <div class="row">
-            <div class="input-field col l12 m12 s12">
-              <ul class="collection">
-                <li class="collection-item">Something 1</li>
-                <li class="collection-item">Something 2</li>
-                <li class="collection-item">Something 3</li>
-              </ul>
-            </div>
-          </div>
-          <div class="row">
+        
+          
+          <div *ngIf="showApproval" class="row">
             <div class="col l6">
-              <button [disabled]="form.invalid || form.pristine" class="wave-effect wave-light btn" type="submit" name="action">Print</button>
+              <button  class="wave-effect wave-light btn" (click)="print()" name="action">Print</button>
             </div>
             <div class="col l6">
-              <button [disabled]="form.invalid || form.pristine" class="right wave-effect wave-light btn" type="submit" name="action">Signoff</button>
+              <button  class="right wave-effect wave-light btn" (click)="signOff()" name="action">Signoff</button>
             </div>
           </div>
-        </form>
+        
 
 
 

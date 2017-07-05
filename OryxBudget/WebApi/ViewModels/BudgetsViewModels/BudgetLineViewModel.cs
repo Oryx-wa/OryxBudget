@@ -105,7 +105,7 @@ namespace OryxWebApi.ViewModels.BudgetsViewModels
         [Required]
         public string BudgetId { get; set; }
         [Required]
-        public ApprovalStatus Status { get; set; }
+        public ApprovalStatus ApprovalStatus { get; set; }
     }
 
 }
