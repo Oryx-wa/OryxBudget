@@ -7,9 +7,14 @@ import { SecurityService } from './../../login/security.service';
 })
 export class MainNavComponent implements OnInit {
 
-  constructor(public securityService: SecurityService) { }
+
+  constructor(public securityService: SecurityService) {
+
+
+  }
 
   ngOnInit() {
+    
   }
 
   public Login() {
@@ -17,7 +22,10 @@ export class MainNavComponent implements OnInit {
   }
 
   public Logout() {
-    
+
     this.securityService.Logoff();
   }
+
+ 
+
 }

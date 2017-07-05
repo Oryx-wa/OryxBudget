@@ -22,6 +22,9 @@ $roboto-font-path: "~materialize-css/dist/fonts/roboto/"; /* This is needed so t
     padding: 20px;
     overflow: hidden;
 }
+.tes {
+    color: #00bfa5 !important;
+}
 
 .explore{
     background:url('assets/images/explore.jpg')no-repeat center center fixed; 
@@ -66,7 +69,10 @@ $roboto-font-path: "~materialize-css/dist/fonts/roboto/"; /* This is needed so t
     resize: none;
     min-height: 3rem;
 }
-
+.logo {
+   width: 120px;
+    height: 61px !important;  
+}
 @font-face {
   font-family: 'Material Icons';
   font-style: normal;
