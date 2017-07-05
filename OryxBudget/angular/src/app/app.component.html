@@ -1,14 +1,21 @@
 <div>
+    <div class="row">
     <app-main-nav></app-main-nav>
+</div>
+<div class="row">
     <main>
-        <div class="row" *ngIf="securityService.IsAuthorized()">
+        <!--  <div class="row" *ngIf="securityService.IsAuthorized()">
             <div class="container">
             <div style="clear: both">               
                 <h5 style="float: left"> Welcome {{securityService.name}} </h5>
                 <h6 style="float: right"> Roles:{{securityService.roles}} </h6>   
             </div>    
             </div>
-        </div>
+        </div>  
+        !-->
+        
         <router-outlet></router-outlet>
+       
     </main>
+    </div>
 </div>
