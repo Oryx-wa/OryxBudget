@@ -13,6 +13,7 @@ export const DELETE_ITEM_SUCCESS = '[LineComment] DELETE_ITEM_SUCCESS';
 export const LOAD_ITEM = '[LineComment] Load item';
 export const LOAD_ITEMS = '[LineComment] Load items';
 export const LOAD_ITEMS_SUCCESS = '[LineComment] LOAD_ITEMS_SUCCESS';
+export const SELECT_ITEM = '[lineComment] Select Item';
 
 
 export class SearchAction implements Action {
@@ -66,6 +67,11 @@ export class LoadItemsSuccessAction implements Action {
     constructor(public payload: LineComment[]) { console.log(payload); }
 }
 
+export class SelectItemAction implements Action {
+    readonly type = SELECT_ITEM;
+    constructor(public payload: string) { }
+}
+
 
 export type Actions
     = SearchAction
@@ -77,5 +83,6 @@ export type Actions
     | AddItemAction
     | AddUpdateItemSuccessAction
     | DeleteItemSuccessAction
-    | UpdateItemAction;
+    | UpdateItemAction
+    | SelectItemAction;
 

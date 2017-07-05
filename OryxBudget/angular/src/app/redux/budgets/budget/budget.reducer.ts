@@ -24,6 +24,7 @@ export interface BudgetState {
     lastUpdate: Date;
     selectedId: string | null;
     workProgramState: string | null;
+    printOut: any;
 
 }
 
@@ -32,7 +33,8 @@ export const initBudgetState: BudgetState = {
     entities: {},
     lastUpdate: new Date(),
     selectedId: null,
-    workProgramState: null
+    workProgramState: null,
+    printOut: null,
 };
 
 export const BudgetReducer: ActionReducer<BudgetState> = (state: BudgetState = initBudgetState,
@@ -81,7 +83,12 @@ export const BudgetReducer: ActionReducer<BudgetState> = (state: BudgetState = i
             }
             const status: string = action.payload.budgetStatus;
             return _.assign({}, state, { workProgramState: status });
-
+        case AllActions.GET_PRINOUT_SUCCESS:
+            if (action.payload === null) {
+                return state;
+            }
+            
+            return _.assign({}, state, { printOut: action.payload });
         default:
             return state;
     }
@@ -91,6 +98,7 @@ export const getBudgetEntities = (state: BudgetState) => state.entities;
 export const getBudgetIds = (state: BudgetState) => state.ids;
 export const getSelectedBudgetId = (state: BudgetState) => state.selectedId;
 export const getWorkProgramStatus = (state: BudgetState) => state.workProgramState;
+export const getPrintOut = (state: BudgetState) => state.printOut;
 
 export const getSelectedBudget = createSelector(getBudgetEntities, getSelectedBudgetId, (entities, selectedId) => {
     if (selectedId === null) {

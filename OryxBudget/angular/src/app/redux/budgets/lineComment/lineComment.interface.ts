@@ -1,7 +1,6 @@
 
 export interface LineComment {
     id: string;
-
     code: string;
     userType: string;
     budgetId: string;

@@ -56,13 +56,13 @@ export const BudgetLineReducer: ActionReducer<BudgetLineState> = (state: BudgetL
                 touched: false,
             }));
         case AllActions.SELECT:
-            return updateObject({}, updateObject(state, { selectedId: action.payload }));
+            return _.assign({}, state, { selectedId: action.payload });
         case AllActions.RESET:
             return initBudgetLineState;
         case AllActions.UPDATE_STATUS:
             const line = _.assign({}, normalize(
                 _.assign({}, state.entities[action.payload.code], { lineStatus: action.payload.status }),
-                budgetLineSchema));            
+                budgetLineSchema));
             return Object.assign({}, state, {
                 ids: state.ids,
                 entities: _.merge({}, state.entities, line.entities.BudgetLine),

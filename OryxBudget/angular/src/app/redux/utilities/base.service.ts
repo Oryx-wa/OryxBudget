@@ -1,10 +1,10 @@
 import { Injectable } from '@angular/core';
-import { Http, Response, Headers, URLSearchParams } from '@angular/http';
+import { Http, Response, Headers, URLSearchParams, ResponseContentType } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/do';
 import { Store } from '@ngrx/store';
 // import { Token } from './../login/models/';
-import { AppState, LoginSTATE, UserSelector, TokenSelector, BudgetActions, Token} from '../../redux';
+import { AppState, LoginSTATE, UserSelector, TokenSelector, BudgetActions, Token } from '../../redux';
 import { Configuration } from '../../app.constants';
 import { SecurityService } from '../../login/security.service';
 //import * as loginSelectors from  './../../selectors/login.selector';
@@ -37,7 +37,7 @@ export class BaseService {
 
         this.token$ = this.store.select(TokenSelector.accessToken);
         this.token$.subscribe(token => this.token = token);
-        
+
         // this.token = this.securityService.GetToken();
     }
 
@@ -64,7 +64,7 @@ export class BaseService {
     }
 
     protected getUrl = (urlPart: string): string => {
-        return this._actionUrl  + urlPart + '/';
+        return this._actionUrl + urlPart + '/';
     }
 
     protected getHeaders = (): Headers => {
@@ -138,7 +138,7 @@ export class BaseService {
         }
     }
 
-     protected GetSingle = (urlPart: string): Observable<any> => {
+    protected GetSingle = (urlPart: string): Observable<any> => {
 
         let url: string = this.getUrl(urlPart);
         if (this._useBackEnd) {
@@ -170,6 +170,22 @@ export class BaseService {
                 body: '',
                 search: params
             }).map(res => res.json());
+        }
+    }
+
+    protected GetFile = (urlPart: string, params: URLSearchParams): Observable<any> => {
+
+        let url: string = this.getUrl(urlPart);
+        if (this._useBackEnd) {
+            return this._http.get(url, {
+                headers: this.getHeaders(),
+                body: '',
+                search: params,
+                responseType: ResponseContentType.Blob
+            })
+                .map(res => {
+                    return  new Blob([res.blob()], { type: 'application/pdf' });                    
+                });
         }
     }
 

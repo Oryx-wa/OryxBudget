@@ -23,7 +23,7 @@ import { BudgetCodeReducer, BudgetCodeState, initBudgetCodeState } from './budge
 import { BudgetLineReducer, BudgetLineState, initBudgetLineState } from './budgetLine/budgetLine.reducer';
 import { BudgetRunReducer, BudgetRunState, initBudgetRunState } from './budgetRun/budgetRun.reducer';
 // import { CategoryReducer, CategoryState } from './category/category.reducer';
-// import { LineCommentReducer, LineCommentState } from './lineComment/lineComment.reducer';
+ import { LineCommentReducer, LineCommentState } from './lineComment/lineComment.reducer';
 // import { PeriodReducer, PeriodState } from './period/period.reducer';
 // import { StatusHistoryReducer, StatusHistoryState } from './statusHistory/statusHistory.reducer';
 
@@ -37,7 +37,7 @@ const reducer = {
     budgetLine: BudgetLineReducer,
     budgetRun: BudgetRunReducer,
     // category: CategoryReducer,
-    // lineComment: LineCommentReducer,
+    lineComment: LineCommentReducer,
     // period: PeriodReducer,
     // statusHistory: StatusHistoryReducer
 };
@@ -54,11 +54,11 @@ export interface BdState {
     budgetLine: BudgetLineState;
     budgetRun: BudgetRunState;
     // category: CategoryState;
-    // lineComment: LineCommentState;
+    lineComment: LineCommentState;
     // period: PeriodState;
     // statusHistory: StatusHistoryState;
 }
-
+/*
 export const initBdState: BdState = {
     actual: initActualState,
     budget: initBudgetState,
@@ -66,4 +66,5 @@ export const initBdState: BdState = {
     budgetLine: initBudgetLineState,
     budgetRun: initBudgetRunState
 };
+*/
 
