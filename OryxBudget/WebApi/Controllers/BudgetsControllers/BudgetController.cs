@@ -14,8 +14,12 @@ using System.IO;
 using Hangfire;
 using OryxBudgetService.Utilities.SignalRHubs;
 using Microsoft.AspNetCore.SignalR.Infrastructure;
-using Microsoft.Net.Http.Headers;
+// using Microsoft.Net.Http.Headers;
 using OryxSecurity.Services;
+using System.Net.Http;
+using System.Net.Http.Headers;
+using System.Net;
+using System.Text;
 
 namespace OryxWebApi.Controllers.BudgetControllers
 {
@@ -332,28 +336,28 @@ namespace OryxWebApi.Controllers.BudgetControllers
             return Json("Operator BudgetLine Performance updated");
         }
 
-        [Route("DownloadSignOff")]
-        [HttpGet]
-        public FileResult DownloadSignOff(string budgetId)
-        {
-            var fileName = string.Empty;
-            var filepath = "Signoff_Uploads/";
-            DirectoryInfo di = new DirectoryInfo(filepath);
+        //[Route("DownloadSignOff")]
+        //[HttpGet]
+        //public FileResult DownloadSignOff(string budgetId)
+        //{
+        //    var fileName = string.Empty;
+        //    var filepath = "Signoff_Uploads/";
+        //    DirectoryInfo di = new DirectoryInfo(filepath);
 
-            foreach (var file in di.GetFiles())
-            {
-                if (file.Name.Contains(budgetId))
-                {
-                    fileName = file.Name;
-                    break;
-                }
-            }
+        //    foreach (var file in di.GetFiles())
+        //    {
+        //        if (file.Name.Contains(budgetId))
+        //        {
+        //            fileName = file.Name;
+        //            break;
+        //        }
+        //    }
 
-            var newFilepath = $"{filepath}/{fileName}";
-            //var filepath = $"Signoff_Uploads/{fileName}";
-            byte[] fileBytes = System.IO.File.ReadAllBytes(newFilepath);
-            return File(fileBytes, "application/pdf", fileName);
-        }
+        //    var newFilepath = $"{filepath}/{fileName}";
+        //    //var filepath = $"Signoff_Uploads/{fileName}";
+        //    byte[] fileBytes = System.IO.File.ReadAllBytes(newFilepath);
+        //    return File(fileBytes, "application/pdf", fileName);
+        //}
 
         [HttpPost]
         [Route("UploadSignOffDoc")]
@@ -369,6 +373,22 @@ namespace OryxWebApi.Controllers.BudgetControllers
             }
 
             return Json("Signoff File Uploaded");
+        }
+
+        [Route("DownloadSignOff")]
+        [HttpGet]
+        public async Task<FileResult> DownloadSignOff(string budgetId)
+        {
+            WebRequest request = WebRequest.Create("http://localhost:5509/Report/Index?BudgetId=" + budgetId);
+            request.Method = "GET";
+            request.ContentType = "application/pdf";
+
+            //Get the response
+            WebResponse wr = await request.GetResponseAsync();
+            Stream receiveStream = wr.GetResponseStream();
+            receiveStream.Seek(0, SeekOrigin.Begin);
+
+            return new FileStreamResult(receiveStream, "application/pdf");
         }
     }
 }
