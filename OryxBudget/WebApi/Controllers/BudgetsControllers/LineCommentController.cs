@@ -15,10 +15,13 @@ namespace OryxWebApi.Controllers.BudgetsControllers
     public class LineCommentController : BaseController
     {
         private readonly LineCommentService _lineCommentService;
+        private readonly NotificationService _notificationService;
 
-        public LineCommentController(LineCommentService lineCommentService)
+        public LineCommentController(LineCommentService lineCommentService, 
+            NotificationService notificationService)
         {
             _lineCommentService = lineCommentService;
+            _notificationService = notificationService;
         }
 
         // POST api/values
@@ -31,6 +34,9 @@ namespace OryxWebApi.Controllers.BudgetsControllers
             var lineComment = Mapper.Map<LineComment>(LineCommentVm);
             _lineCommentService.Add(lineComment);
             _lineCommentService.SaveChanges();
+
+            //Add notification
+            _notificationService.AddCommentNotification(lineComment.Id.ToString(), LineCommentVm.Code);
             return Json(_lineCommentService.Get(lineComment.Id));
 
         }

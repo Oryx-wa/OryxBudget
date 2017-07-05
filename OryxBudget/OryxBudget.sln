@@ -1,13 +1,13 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.26510.0
+VisualStudioVersion = 15.0.26430.14
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{DC41F75E-464C-40B5-8D64-7748FE6AABC4}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OryxDomainServices", "OryxDomainServices\OryxDomainServices.csproj", "{F61D6A4B-E5BA-46AC-93E5-9FB3D5B55FF8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Data", "Data\Data.csproj", "{123ABF99-60DB-4C48-B8BA-C41A0E006E10}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Data", "Data\Data.csproj", "{123ABF99-60DB-4C48-B8BA-C41A0E006E10}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{BE7191AF-3217-466D-A303-20E713BF71B7}"
 EndProject
@@ -15,7 +15,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OryxWebApi", "WebApi\OryxWe
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OryxSecurity", "OryxSecurity\OryxSecurity.csproj", "{A97F3841-266D-4EAD-8692-0B094E38ACED}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Entities", "Entities\Entities.csproj", "{8C0F1151-C3C5-402C-8163-E2101483A804}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Entities", "Entities\Entities.csproj", "{8C0F1151-C3C5-402C-8163-E2101483A804}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OryxMailer", "OryxMailer\OryxMailer.csproj", "{88FA2F12-7200-4523-BC1E-1CDEC00B1297}"
 EndProject
@@ -23,9 +23,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Hangfire.Autofac", "HangFir
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OryxBudgetService", "OryxBudgetService\OryxBudgetService.csproj", "{516FF1D3-7C1F-4B77-B9EC-37605A624718}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OryxBudgetWeb", "OryxBudgetWeb\OryxBudgetWeb.csproj", "{E55AEBB0-B15C-4C3D-9D35-BD5EB92B8C79}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OryxBudgetWeb", "OryxBudgetWeb\OryxBudgetWeb.csproj", "{E55AEBB0-B15C-4C3D-9D35-BD5EB92B8C79}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Autofac.Signalr", "Autofac.Signalr\Autofac.Signalr.csproj", "{2F63B0A6-0EAB-4C2A-954A-7F828F00D904}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BudgetReport", "BudgetReport\BudgetReport\BudgetReport.csproj", "{E302A683-5B26-4D23-B847-DDAFD5CAA372}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -115,6 +117,14 @@ Global
 		{2F63B0A6-0EAB-4C2A-954A-7F828F00D904}.Release|Any CPU.Build.0 = Release|Any CPU
 		{2F63B0A6-0EAB-4C2A-954A-7F828F00D904}.Release|x64.ActiveCfg = Release|Any CPU
 		{2F63B0A6-0EAB-4C2A-954A-7F828F00D904}.Release|x64.Build.0 = Release|Any CPU
+		{E302A683-5B26-4D23-B847-DDAFD5CAA372}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E302A683-5B26-4D23-B847-DDAFD5CAA372}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E302A683-5B26-4D23-B847-DDAFD5CAA372}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{E302A683-5B26-4D23-B847-DDAFD5CAA372}.Debug|x64.Build.0 = Debug|Any CPU
+		{E302A683-5B26-4D23-B847-DDAFD5CAA372}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E302A683-5B26-4D23-B847-DDAFD5CAA372}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E302A683-5B26-4D23-B847-DDAFD5CAA372}.Release|x64.ActiveCfg = Release|Any CPU
+		{E302A683-5B26-4D23-B847-DDAFD5CAA372}.Release|x64.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -130,5 +140,6 @@ Global
 		{516FF1D3-7C1F-4B77-B9EC-37605A624718} = {DC41F75E-464C-40B5-8D64-7748FE6AABC4}
 		{E55AEBB0-B15C-4C3D-9D35-BD5EB92B8C79} = {DC41F75E-464C-40B5-8D64-7748FE6AABC4}
 		{2F63B0A6-0EAB-4C2A-954A-7F828F00D904} = {DC41F75E-464C-40B5-8D64-7748FE6AABC4}
+		{E302A683-5B26-4D23-B847-DDAFD5CAA372} = {DC41F75E-464C-40B5-8D64-7748FE6AABC4}
 	EndGlobalSection
 EndGlobal

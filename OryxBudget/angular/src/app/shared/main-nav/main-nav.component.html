@@ -1,25 +1,26 @@
-<nav>
-  <div class="nav-wrapper  teal accent-4">
-    <a href="#" class="brand-logo">Budget </a>
+<nav class="nav-extended">
+  <div class="nav-wrapper  white">
+    <a href="#" class=" brand-logo tes" > <img class="logo" src="assets/images/napim.jpg"> </a>
 
-    <ul style="margin-left: 200px;">
-      <li> <a [routerLink]="['/home']" routerLinkActive="active" class="waves-effect waves-light"><i class="material-icons left">home</i></a></li>
+    <ul style="margin-left: 105px;"  *ngIf="securityService.IsAuthorized()">
+      <li> <a [routerLink]="['/home']" routerLinkActive="active" class="waves-effect waves-light tes"><i class="material-icons left">home</i></a></li>
       <li>
-        <a class="dropdown-button waves-effect waves-light" href="#!" data-activates="dropdown" data-beloworigin="true"><i class="material-icons right">menu</i></a>
+        <a class="dropdown-button waves-effect waves-light tes" href="#!" data-activates="dropdown" data-beloworigin="true"><i class="material-icons right">menu</i></a>
       </li>
 
     </ul>
-    <ul id="nav-mobile" class="right hide-on-med-and-down">
+    <ul id="nav-mobile" class="right hide-on-med-and-down">  
 
 
-      <li> <a class="waves-effect waves-light"><i class="material-icons right">message</i></a></li>
-      <li>
-        <a class="dropdown-button waves-effect waves-light" href="#!"><i class="material-icons">add_alert</i></a>
+      <li  *ngIf="securityService.IsAuthorized()"> <a class="waves-effect waves-light tes"><i class="material-icons right">message</i></a></li>
+      <li  *ngIf="securityService.IsAuthorized()">
+        <a class="dropdown-button waves-effect waves-light tes" href="#!"><i class="material-icons">add_alert</i></a>
       </li>
 
-       <li><a class="waves-effect waves-light" *ngIf="!securityService.IsAuthorized()" (click)="Login()"><i class="material-icons">power_settings_new</i></a></li>
+       <li><a class="waves-effect waves-light tes" *ngIf="!securityService.IsAuthorized()" (click)="Login()"><i class="material-icons">power_settings_new</i></a></li>
       <!--<li><a class="waves-effect waves-light" *ngIf="securityService.IsAuthorized()" (click)="Logout()"><i class="material-icons">power_settings_new</i></a></li>-->
-      <li><a [routerLink]="['signout']" routerLinkActive="active" class="waves-effect waves-light" *ngIf="securityService.IsAuthorized()"><i class="material-icons">power_settings_new</i></a></li>
+      <li><a [routerLink]="['signout']" routerLinkActive="active" class="waves-effect waves-light tes" *ngIf="securityService.IsAuthorized()"><i class="material-icons">power_settings_new</i></a></li>
+       <li  *ngIf="securityService.IsAuthorized()"><a class="btn-floating teal accent-4" ><h5 align="center" style="margin-top:4px;">{{securityService.name[0]}}</h5></a></li>
 
     </ul>
     <ul id="dropdown" class="dropdown-content collection">
