@@ -19,6 +19,7 @@ export interface BudgetLineState {
     selectedId: string | null;
     untouched: BudgetLineEntity;
     touched: boolean;
+    signOffStatus: number;
 }
 
 export const initBudgetLineState: BudgetLineState = {
@@ -28,6 +29,7 @@ export const initBudgetLineState: BudgetLineState = {
     selectedId: null,
     untouched: {},
     touched: false,
+    signOffStatus: 0,
 };
 export const BudgetLineReducer: ActionReducer<BudgetLineState> = (state: BudgetLineState = initBudgetLineState,
     action: AllActions.Actions) => {
@@ -60,12 +62,79 @@ export const BudgetLineReducer: ActionReducer<BudgetLineState> = (state: BudgetL
         case AllActions.RESET:
             return initBudgetLineState;
         case AllActions.UPDATE_STATUS:
-            const line = _.assign({}, normalize(
-                _.assign({}, state.entities[action.payload.code], { lineStatus: action.payload.status }),
-                budgetLineSchema));
+            const line = () => {
+                const bdLine = state.entities[action.payload.code];
+                switch (bdLine.workProgramStatus) {
+                    case 1:
+                        return _.assign({}, normalize(
+                            _.assign({}, bdLine,
+                                {
+                                    lineStatus: action.payload.status,
+                                    subComBudgetFC: bdLine.opBudgetFC,
+                                    subComBudgetLC: bdLine.opBudgetLC,
+                                    subComBudgetUSD: bdLine.opBudgetUSD,
+                                    touched: true,
+                                }),
+                            budgetLineSchema));
+                    case 2:
+                        return _.assign({}, normalize(
+                            _.assign({}, bdLine,
+                                {
+                                    lineStatus: action.payload.status,
+                                    tecComBudgetFC: bdLine.subComBudgetFC,
+                                    tecComBudgetLC: bdLine.subComBudgetLC,
+                                    tecComBudgetUSD: bdLine.subComBudgetUSD,
+                                    touched: true,
+                                }),
+                            budgetLineSchema));
+                    default:
+                        return _.assign({}, normalize(line,
+                            budgetLineSchema));
+
+                }
+            };
             return Object.assign({}, state, {
                 ids: state.ids,
-                entities: _.merge({}, state.entities, line.entities.BudgetLine),
+                entities: _.merge({}, state.entities, line().entities.BudgetLine),
+                lastUpdate: new Date(),
+                selectedId: state.selectedId,
+                touched: true
+            });
+         case AllActions.UPDATE_STATUS_VALUE:
+            const line1 = () => {
+                const bdLine = state.entities[action.payload.code];
+                switch (bdLine.workProgramStatus) {
+                    case 1:
+                        return _.assign({}, normalize(
+                            _.assign({}, bdLine,
+                                {
+                                    lineStatus: action.payload.lineStatus,
+                                    subComBudgetFC: action.payload.subComBudgetFC,
+                                    subComBudgetLC: action.payload.subComBudgetLC,
+                                    subComBudgetUSD: action.payload.subComBudgetUSD,
+                                    touched: true,
+                                }),
+                            budgetLineSchema));
+                    case 2:
+                        return _.assign({}, normalize(
+                            _.assign({}, bdLine,
+                                {
+                                    lineStatus: action.payload.lineStatus,
+                                    tecComBudgetFC: action.payload.tecComBudgetFC,
+                                    tecComBudgetLC: action.payload.tecComBudgetLC,
+                                    tecComBudgetUSD: action.payload.tecComBudgetUSD,
+                                    touched: true,
+                                }),
+                            budgetLineSchema));
+                    default:
+                        return _.assign({}, normalize(line,
+                            budgetLineSchema));
+
+                }
+            };
+            return Object.assign({}, state, {
+                ids: state.ids,
+                entities: _.merge({}, state.entities, line1().entities.BudgetLine),
                 lastUpdate: new Date(),
                 selectedId: state.selectedId,
                 touched: true

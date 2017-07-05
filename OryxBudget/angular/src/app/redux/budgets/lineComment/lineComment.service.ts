@@ -28,7 +28,7 @@ export class LineCommentService extends BaseService {
     }
 
     public addLineComment = (lineComment: LineComment): Observable<LineComment> => {
-        return this.add(lineComment, this.api + '/Add');
+        return this.add(lineComment, 'Budget/AddComment');
     }
 
     public updateLineComment = (lineComment: LineComment): Observable<LineComment> => {

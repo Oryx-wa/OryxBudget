@@ -9,7 +9,7 @@ namespace Entities.Budgets
     [NotMapped]
    public class BudgetCodeView
     {
-       
+        
         public string Code { get; set; }       
         public string Description { get; set; }        
         //public string SecondDescription { get; set; }       
@@ -36,6 +36,7 @@ namespace Entities.Budgets
         public BudgetStatus BudgetStatus { get; set; }
         public WorkProgramTypeEnum Type { get; set; }
         public ApprovalStatus LineStatus { get; set; }
+        public BudgetStatus WorkProgramStatus { get; set; }
 
 
 

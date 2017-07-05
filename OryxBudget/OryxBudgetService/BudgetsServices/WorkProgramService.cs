@@ -132,15 +132,26 @@ namespace OryxBudgetService.BudgetsServices
         }
         public void UpdateWorkProgramStatus(WorkProgramStatus entity)
         {
+            var role = _userResolverService.GetNapimsRole();
+            var dept = _userResolverService.GetDepartment();
+
             var status = _workProgramStatusRepo.Get(entity.Id);
             _workProgramStatusRepo.Update(status);
         }
 
-        public void updateStatusHistory(Guid id, SignOffStatus status)
+        public void UpdateWorkProgramStatus(Guid id)
         {
-            var wrkPrg = _workProgramStatusRepo.Get(id);
-            WorkProgramStatusHistory hist = new WorkProgramStatusHistory();
-            hist.ProgramStatus = status;
+            var role = _userResolverService.GetNapimsRole();
+            var dept = _userResolverService.GetDepartment();
+            Enum.TryParse(role, out BudgetStatus bdStatus);
+            Enum.TryParse(dept, out WorkProgramTypeEnum workPrg);
+            var wrkPrg = _workProgramStatusRepo.GetAll()
+                .Where(c => c.BudgetId == id && c.WorkProgram == workPrg)
+                .FirstOrDefault();
+            //WorkProgramStatusHistory hist = new WorkProgramStatusHistory();
+            // hist.ProgramStatus = SignOffStatus.Approved;
+            //wrkPrg.StatusHistory.Add(hist);
+            wrkPrg.BudgetStatus = bdStatus;
             _workProgramStatusRepo.Update(wrkPrg);
         }
 

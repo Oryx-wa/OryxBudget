@@ -22,18 +22,25 @@
         <div *ngIf="napims$ | async" class="row">
           <a class="btn waves-effect waves-light blue" (click)="openFirst()">Sign Off</a>
         </div>
-        
-        
-          
-          <div *ngIf="showApproval" class="row">
-            <div class="col l6">
-              <button  class="wave-effect wave-light btn" (click)="print()" name="action">Print</button>
-            </div>
-            <div class="col l6">
-              <button  class="right wave-effect wave-light btn" (click)="signOff()" name="action">Signoff</button>
+
+
+
+        <div *ngIf="showApproval" class="row">
+          <div *ngIf="unTouched$ | async; let lines;" class="row">
+            <div *ngIf="lines.length > 0">
+              <h6> {{lines.length}} lines will be automatically approved if you sign-off </h6>
             </div>
           </div>
-        
+          <div class="row">
+            <div class="col l6">
+              <button class="wave-effect wave-light btn" (click)="print()" name="action">Print</button>
+            </div>
+            <div class="col l6">
+              <button class="right wave-effect wave-light btn" (click)="signOff()" name="action">Signoff</button>
+            </div>
+          </div>
+        </div>
+
 
 
 

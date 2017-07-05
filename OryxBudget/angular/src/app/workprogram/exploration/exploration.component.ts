@@ -1,4 +1,4 @@
-import { Component, OnInit, EventEmitter, ChangeDetectionStrategy, OnDestroy } from '@angular/core';
+import { Component, OnInit, EventEmitter, OnChanges, ChangeDetectionStrategy, OnDestroy } from '@angular/core';
 import { FormGroup, FormControl, FormBuilder, FormArray, Validators } from '@angular/forms';
 import { MaterializeDirective, MaterializeAction } from 'angular2-materialize';
 import { Observable } from 'rxjs/Observable';
@@ -15,13 +15,14 @@ import swal from 'sweetalert2';
   styleUrls: ['./exploration.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class ExplorationComponent implements OnInit, OnDestroy {
+export class ExplorationComponent implements OnInit, OnChanges,OnDestroy {
 
   actions1 = new EventEmitter<string | MaterializeAction>();
   public showApproval = false;
   form: FormGroup;
   budget$: Observable<Budget>;
   lines$: Observable<BudgetLines[]>;
+  unTouched$: Observable<BudgetLines[]>;
   actuals$: Observable<Actual[]>;
   workProgramStatus$: Observable<string>;
   budgetId = '';
@@ -100,6 +101,7 @@ export class ExplorationComponent implements OnInit, OnDestroy {
       status: new FormControl({}),
     });
     this.lines$ = this.store.select(BudgetLineSelector.getBudgetLineCollection);
+    this.unTouched$ = this.store.select(BudgetLineSelector.getUntouchedCollection);
     this.actuals$ = this.store.select(ActualSelector.getActualCollection);
 
     this.changeDisplayMode(DisplayModeEnum.Budget);
@@ -112,6 +114,10 @@ export class ExplorationComponent implements OnInit, OnDestroy {
         window.open(fileURL);
       }
     })
+  }
+
+  ngOnChanges(){
+
   }
   openFirst() {
     this.showApproval = true;
@@ -127,6 +133,7 @@ export class ExplorationComponent implements OnInit, OnDestroy {
   }
 
   selectBudget(id: string) {
+    this.budgetId = id;
     this.store.dispatch(new BudgetActions.SelectItemAction(id));
     // this.store.dispatch(new BudgetLineActions.LoadItemsAction(this.budgetId));
   }
@@ -136,17 +143,8 @@ export class ExplorationComponent implements OnInit, OnDestroy {
   }
 
   signOff() {
-    let lines: BudgetLines[] = [];
-    this.lines$
-      .map(line => line.filter(x => x.lineStatus < 2))
-      .subscribe(c => lines = c);
-
-    if (lines.length > 0) {
-      getUserRes(this.store);
-    }
-
-
-
+    this.store.dispatch(new BudgetLineActions.SignOffAction(''));
+    this.store.dispatch(new BudgetActions.SelectItemAction(this.budgetId));
   }
   ngOnDestroy() {
     this.alive = false;
@@ -165,7 +163,7 @@ function getUserRes(store: Store<AppState>) {
     confirmButtonClass: 'waves-effect waves-light btn btn-small',
     cancelButtonText: 'Cancel',
     cancelButtonClass: 'waves-effect waves-light btn btn-small',
-    
+
   }).then(function (result) {
     console.log(result);
   });

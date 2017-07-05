@@ -17,8 +17,11 @@ export const LOAD_ITEM_SUCCESS = '[BudgetLine] LOAD_ITEM_SUCCESS';
 export const SELECT = '[BudgetLine] Select Item';
 export const RESET = '[BudgetLine] Reset';
 export const UPDATE_STATUS = '[BudgetLine] Update Status';
+export const UPDATE_STATUS_VALUE = '[BudgetLine] Update Status with value';
 export const RESET_APPROVAL_UPDATES = '[BudgetLine] Reset approval updates';
 export const SAVE_APPROVAL_UPDATES = '[BudgetLine] Save approval updates';
+export const SIGN_OFF = '[Budget] Sign off';
+export const SIGN_OFF_SUCCESS = '[Budget] Sign Off Success';
 
 
 export class SearchAction implements Action {
@@ -93,6 +96,11 @@ export class UpdateStatusAction implements Action {
     constructor(public payload: { code: string, status: number }) { }
 }
 
+export class UpdateStatusValueAction implements Action {
+    readonly type = UPDATE_STATUS_VALUE;
+    constructor(public payload: BudgetLines) { console.log(payload) }
+}
+
 export class ResetApprovalUpdateAction implements Action {
     readonly type = RESET_APPROVAL_UPDATES;
     constructor(public payload = '') { }
@@ -103,6 +111,14 @@ export class SaveApprovalUpdates implements Action {
     constructor(public payload = '') { }
 }
 
+export class SignOffAction implements Action {
+    readonly type = SIGN_OFF;
+    constructor(public payload = '') { }
+}
+export class SignOffSuccessAction implements Action {
+    readonly type = SIGN_OFF_SUCCESS;
+    constructor(public payload = '') { }
+}
 
 
 export type Actions
@@ -120,6 +136,9 @@ export type Actions
     | SelectItemAction
     | ResetAction
     | UpdateStatusAction
+    | UpdateStatusValueAction
     | ResetApprovalUpdateAction
-    | SaveApprovalUpdates;
+    | SaveApprovalUpdates
+    | SignOffAction
+    | SignOffSuccessAction;
 

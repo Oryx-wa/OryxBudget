@@ -28,9 +28,9 @@
       <div class="col s10">
         <div class="row">
           <ul materialize="tabs" [materializeParams]="tabSelectionParams" class="tabs  z-depth-1  teal accent-4 ">
-            <li class="tab col s3 l3">
+           <!-- <li class="tab col s3 l3">
               <a (click)="changeDialog('actual')" class="white-text waves-effect waves-light"> Actuals </a>
-            </li>
+            </li>-->
             <li class="tab col s3 l3">
               <a (click)="changeDialog('details')" class="white-text waves-effect waves-light"> Details </a>
             </li>
@@ -64,7 +64,7 @@
           </app-line-comment>
         </div>
         <div *ngIf="dialogMode ==='comments'">
-          <app-comments [lineComments]="lineComments" (update)="newComment($event)" (close)="showComment = !showComment" 
+          <app-comments [line]="line" [lineComments]="lineComments$ | async" (update)="newComment($event)" (close)="showComment = !showComment" 
             [napims]="napims" [operator]="operator"> </app-comments>
         </div>
         <div *ngIf="dialogMode ==='attachments'">

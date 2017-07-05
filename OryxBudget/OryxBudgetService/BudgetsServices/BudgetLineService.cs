@@ -4,6 +4,7 @@ using Data.Repositories;
 using Data.Repositories.BudgetsRepositories;
 using Entities.Budgets;
 using OryxBudgetService.CsvMapping;
+using OryxSecurity.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,13 +17,16 @@ namespace OryxBudgetService.BudgetsServices
         private readonly IBaseLogBudgetRepository<BudgetLine, BudgetLineLog, Guid> _repository;
         private readonly LineCommentRepository _lineCommentRepository;
         private readonly BudgetLineStatusHistoryRepository _lineStatus;
+        private readonly IUserResolverService _userResolverService;
 
         public BudgetLineService(IBaseLogBudgetRepository<BudgetLine, BudgetLineLog, Guid> repository, IBudgetUnitOfWork unitOfWork,
-            LineCommentRepository lineCommentRepository, BudgetLineStatusHistoryRepository lineStatus) : base(repository, unitOfWork)
+            LineCommentRepository lineCommentRepository, BudgetLineStatusHistoryRepository lineStatus,
+            IUserResolverService userResolverService) : base(repository, unitOfWork)
         {
             _repository = repository;
             _lineCommentRepository = lineCommentRepository;
             _lineStatus = lineStatus;
+            _userResolverService = userResolverService;
         }
 
         public override void Update(BudgetLine entity)
@@ -32,18 +36,48 @@ namespace OryxBudgetService.BudgetsServices
 
         }
 
-        public void UpdateStatus(IEnumerable<BudgetLineStatusHistory> statuList)
+        public void UpdateStatus(IEnumerable<BudgetCodeView> statuList)
         {
+            string userType = _userResolverService.GetNapimsRole();
+            Enum.TryParse(userType, out BudgetStatus bdStatusOut);
+
             foreach (var item in statuList)
             {
                 // _lineStatus.Add(item);
                 var dbLine = this.GetAll()
-                    .Where(c => c.BudgetId.ToString() == item.BudgetId && c.Code == item.Code)
+                    .Where(c => c.BudgetId == item.BudgetId && c.Code == item.Code)
                     .FirstOrDefault();
 
-                if(dbLine != null)
+                if (dbLine != null)
                 {
-                    dbLine.ApprovalStatus = item.ApprovalStatus;
+                    switch (bdStatusOut)
+                    {
+                        case BudgetStatus.Operator:
+                            break;
+                        case BudgetStatus.SubCom:
+                            dbLine.SubComBudgetFC = item.SubComBudgetFC;
+                            dbLine.SubComBudgetLC = item.SubComBudgetLC;
+                            dbLine.SubComBudgetUSD = item.SubComBudgetUSD;
+                            break;
+                        case BudgetStatus.TecCom:
+                            dbLine.TecComBudgetFC = item.TecComBudgetFC;
+                            dbLine.TecComBudgetLC = item.TecComBudgetLC;
+                            dbLine.TecComBudgetUSD = item.TecComBudgetUSD;
+                            break;
+                        case BudgetStatus.MalCom:
+                            dbLine.MalComBudgetFC = item.MalComBudgetFC;
+                            dbLine.MalComBudgetLC = item.MalComBudgetLC;
+                            dbLine.MalComBudgetUSD = item.MalComBudgetUSD;
+                            break;
+                        case BudgetStatus.Final:
+                            dbLine.FinalBudgetFC = item.FinalBudgetFC;
+                            dbLine.FinalBudgetLC = item.FinalBudgetLC;
+                            dbLine.FinalBudgetUSD = item.FinalBudgetUSD;
+                            break;
+                        default:
+                            break;
+                    }
+                    dbLine.LineStatus = item.LineStatus;
                     this.Update(dbLine);
                 }
 
@@ -68,8 +102,8 @@ namespace OryxBudgetService.BudgetsServices
             foreach (var item in records)
             {
                 item.Code = item.Code.Trim();
-                item.Description = (item.Description.Trim().Length > 99) ?  item.Description.Trim().Substring(0,99) : item.Description.Trim();    
-                
+                item.Description = (item.Description.Trim().Length > 99) ? item.Description.Trim().Substring(0, 99) : item.Description.Trim();
+
                 this.Add(item);
 
             };
@@ -85,7 +119,7 @@ namespace OryxBudgetService.BudgetsServices
         public void UpdateNapimsReview(string napimsUserType, BudgetLine budgetEntity, string code)
         {
             var budgetLine = this.GetAll()
-                .Where(b => b.Code == code && b.BudgetId == budgetEntity.BudgetId ).FirstOrDefault();
+                .Where(b => b.Code == code && b.BudgetId == budgetEntity.BudgetId).FirstOrDefault();
 
             var forSaveBd = this.Get(budgetLine.Id);
 
@@ -97,14 +131,14 @@ namespace OryxBudgetService.BudgetsServices
                 budgetLine = CreateBudgetLineForMalCom(budgetEntity, forSaveBd);
 
             base.Update(budgetLine);
-           
+
         }
 
-        
 
-        private BudgetLine CreateBudgetLineForMalCom(BudgetLine budgetEntity , BudgetLine bd)
+
+        private BudgetLine CreateBudgetLineForMalCom(BudgetLine budgetEntity, BudgetLine bd)
         {
-           
+
             if (bd != null)
             {
                 bd.BudgetId = budgetEntity.BudgetId;
@@ -117,10 +151,10 @@ namespace OryxBudgetService.BudgetsServices
             return bd;
         }
 
-        private BudgetLine CreateBudgetLineForSubCom(BudgetLine budgetEntity,  BudgetLine bd)
+        private BudgetLine CreateBudgetLineForSubCom(BudgetLine budgetEntity, BudgetLine bd)
         {
-            
-                
+
+
             if (budgetEntity != null)
             {
                 bd.BudgetId = budgetEntity.BudgetId;
@@ -135,7 +169,7 @@ namespace OryxBudgetService.BudgetsServices
 
         private BudgetLine CreateBudgetLineForTecCom(BudgetLine budgetEntity, BudgetLine bd)
         {
-            
+
             if (bd != null)
             {
                 bd.BudgetId = budgetEntity.BudgetId;

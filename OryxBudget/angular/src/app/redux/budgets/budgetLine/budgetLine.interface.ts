@@ -36,6 +36,8 @@ export interface BudgetLines {
     finalActualUSD: number;
     lineStatus: number;
     budgetId: string;
+    workProgramStatus: number;
+    touched: boolean;
 }
 
 

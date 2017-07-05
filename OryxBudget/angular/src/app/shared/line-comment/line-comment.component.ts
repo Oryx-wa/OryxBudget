@@ -29,23 +29,31 @@ export class LineCommentComponent implements OnInit, OnChanges {
 
 
   }
-  ngOnChanges(changes: any): void {
 
+  subComDisabled = () => {
+    let subComdisabled = true;
+    subComdisabled = (this.napims) ? false : true;
+    if (!subComdisabled) { subComdisabled = (this.showSubCom) ? false : true; }
+    if (!subComdisabled) { subComdisabled = (this.line.lineStatus === 3) ? true : false; }
+    console.log(subComdisabled);
+    return subComdisabled;
+  }
+  ngOnChanges(changes: any): void {
     this.form = this.fb.group({
       opBudgetFC: new FormControl({ value: this.line.opBudgetFC, disabled: true }),
       opBudgetLC: new FormControl({ value: this.line.opBudgetLC, disabled: true }),
       opBudgetUSD: new FormControl({ value: this.line.opBudgetUSD, disabled: true }),
       subComBudgetFC: new FormControl({
         value: this.line.subComBudgetFC,
-        disabled: (this.showSubCom === true && this.napims === true) ? false : true
+        disabled: this.subComDisabled()
       }),
       subComBudgetLC: new FormControl({
         value: this.line.subComBudgetLC,
-        disabled: (this.showSubCom === true && this.napims === true) ? false : true
+        disabled: this.subComDisabled()
       }),
       subComBudgetUSD: new FormControl({
         value: this.line.subComBudgetUSD,
-        disabled: (this.showSubCom === true && this.napims === true) ? false : true
+        disabled: this.subComDisabled()
       }),
       tecComBudgetFC: new FormControl({
         value: this.line.tecComBudgetFC,
@@ -119,15 +127,15 @@ export class LineCommentComponent implements OnInit, OnChanges {
     const newComments: any[] = data.formArray;
     const status = data.lineStatus;
 
-    const line: BudgetLines = _.assign({}, data);
+    const line: BudgetLines = _.assign({}, this.line, data);
 
     newComments.map(lineComment => {
       if (lineComment.comment !== '') {
         comments.push(lineComment);
       }
     });
-    console.log(comments);
-    this.update.emit({ lineComments: comments, budgetLine: line, status: status });
+    console.log(line);
+    this.update.emit({ lineComments: comments[0], line: line});
 
   }
   removeDetail(i: number) {
