@@ -5,14 +5,23 @@
         <nav  >
           <div materialize class="nav-wrapper white">
             <ul id="nav-mobile" class="  hide-on-med-and-down">
+           <li class="active">
+                <a class="breadcum  waves-effect waves-light tes  " >Subcom</a></li>
+                <li><i class="material-icons tes">keyboard_arrow_right</i></li>
               <li>
-                <a class="btn btn-small waves-effect waves-light left" (click)="filterDisputed(true)">Disputes</a></li>
+                <a class="breadcum  waves-effect waves-light tes">Telcom</a></li>
+                <li><i class="material-icons tes">keyboard_arrow_right</i></li>
               <li>
-                <a class="btn btn-small waves-effect waves-light left" (click)="filterDisputed(false)">Clear Filter</a></li>
-              <li *ngIf="linesTouched$ | async">
-                <a class="btn btn-small waves-effect waves-light right" (click)="UpdateStatus('update')">Save</a></li>
-              <li *ngIf="linesTouched$ | async">
-                <a class="btn btn-small waves-effect waves-light right" (click)="UpdateStatus('reset')">Reset</a></li>
+                <a class="breadcum  waves-effect waves-light tes" >Malcom</a></li>
+                <li><i class="material-icons tes">keyboard_arrow_right</i></li>
+              <li>
+                <a class="breadcum waves-effect waves-light tes" >Malcom</a></li>
+           
+              <li class="right" *ngIf="linesTouched$ | async">
+                <a class="breadcum  btn- btn-small waves-effect waves-light tes" (click)="UpdateStatus('update')">Save</a></li>
+                <li><i class="material-icons tes">keyboard_arrow_right</i></li>
+              <li class="right" *ngIf="linesTouched$ | async">
+                <a class="breadcum  btn- btn-small waves-effect waves-light tes" (click)="UpdateStatus('reset')">Reset</a></li>
             </ul>
           </div>
         </nav>

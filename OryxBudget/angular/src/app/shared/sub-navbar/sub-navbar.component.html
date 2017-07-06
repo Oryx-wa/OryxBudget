@@ -12,11 +12,11 @@
       <div class="col s12 m9">
         <ul id="nav-mobile" class="right hide-on-med-and-down">
           <li>
-            <a [ngClass]= "budgetClass"  (click)="changeDisplay('budget')">Budget</a></li>
+            <a [ngClass]="budgetClass" (click)="changeDisplay('budget')">Budget</a></li>
           <li>
-            <a [ngClass]= "cashCallClass"  (click)="changeDisplay('cashCall')">Cash Call</a></li>
+            <a [ngClass]="cashCallClass" (click)="changeDisplay('cashCall')">Cash Call</a></li>
           <li>
-            <a [ngClass]= "actualClass"  (click)="changeDisplay('actual')">Performance</a></li>
+            <a [ngClass]="actualClass" (click)="changeDisplay('actual')">Performance</a></li>
         </ul>
       </div>
     </form>
@@ -25,32 +25,46 @@
 
   <div materialize class="nav-content  white ">
     <div class="row">
-      <form class="col s12">
-        <div *ngIf="showLevel >= 1">
-          <div class="input-field col s2">
-            <input type="checkbox" name="subCom" id="subCom" [checked]="showSubCom$ | async " (change)="showSubCom$.next($event.target.checked)"
-            />
-            <label for="subCom">Sub Committee</label>
+      <form class="col s12" materialize="updateTextFields" [formGroup]="form">
+        <div class="col l9">
+          <div *ngIf="showLevel >= 1">
+            <div class="input-field col s2">
+              <input type="checkbox" name="subCom" id="subCom" [checked]="showSubCom$ | async " (change)="showSubCom$.next($event.target.checked)"
+              />
+              <label for="subCom">Sub Committee</label>
+            </div>
+          </div>
+          <div *ngIf="showLevel >= 2">
+            <div class="input-field col s2">
+              <input type="checkbox" name="tecCom" id="tecCom" [checked]="showTecCom$ | async " (change)="showTecCom$.next($event.target.checked)"
+              />
+              <label for="tecCom">Technical Committee</label>
+            </div>
+          </div>
+          <div *ngIf=" showLevel >= 3">
+            <div class="input-field col s3">
+              <input type="checkbox" name="malCom" id="malCom" [checked]="showMalCom$ | async " (change)="showMalCom$.next($event.target.checked)"
+              />
+              <label for="malCom">Management Committee</label>
+            </div>
+            <div class=" col s2">
+              <input type="checkbox" name="final" id="final" [checked]="showFinal$ | async " (change)="showFinal$.next($event.target.checked)"
+              />
+              <label for="final">Final Budget</label>
+            </div>
           </div>
         </div>
-        <div *ngIf="showLevel >= 2">
-          <div class="input-field col s2">
-            <input type="checkbox" name="tecCom" id="tecCom" [checked]="showTecCom$ | async " (change)="showTecCom$.next($event.target.checked)"
-            />
-            <label for="tecCom">Technical Committee</label>
+        <div class="col l3">
+          <div class="input-field row col l10 right">
+            <select materialize="material_select" id="status" name="status" formControlName='status'>										
+              							<option  value="" disabled selected > </option>	
+								<option  [value]="1" class="green-text">Disputes</option>
+                <option  [value]="2" class="green-text">Clear Filter</option>         
+                
+							</select>
+            <label for="status" data-error="Please select an item frmm the list"></label>
           </div>
-        </div>
-        <div *ngIf=" showLevel >= 3">
-          <div class="input-field col s3">
-            <input type="checkbox" name="malCom" id="malCom" [checked]="showMalCom$ | async " (change)="showMalCom$.next($event.target.checked)"
-            />
-            <label for="malCom">Management Committee</label>
-          </div>
-          <div class=" col s2">
-            <input type="checkbox" name="final" id="final" [checked]="showFinal$ | async " (change)="showFinal$.next($event.target.checked)"
-            />
-            <label for="final">Final Budget</label>
-          </div>
+
         </div>
       </form>
     </div>
