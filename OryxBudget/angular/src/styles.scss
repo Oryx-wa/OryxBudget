@@ -11,6 +11,10 @@ $roboto-font-path: "~materialize-css/dist/fonts/roboto/"; /* This is needed so t
 .beta{
    margin:0px !important
 }
+.men a:active{
+   background-color: white;
+}
+ 
 .oryx-card-radius {
     border-radius: 15px;
 }

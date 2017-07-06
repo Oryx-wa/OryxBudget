@@ -33,7 +33,8 @@ export class SubNavbarComponent implements OnInit, OnChanges {
 
   constructor(private store: Store<AppState>, private fb: FormBuilder) {
     this.form = this.fb.group({
-      budget: new FormControl('')
+      budget: new FormControl(''),
+      status:new FormControl('')
     });
 
   }
