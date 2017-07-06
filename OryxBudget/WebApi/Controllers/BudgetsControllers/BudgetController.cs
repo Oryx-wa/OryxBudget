@@ -379,23 +379,40 @@ namespace OryxWebApi.Controllers.BudgetControllers
         [HttpGet]
         public async Task<FileResult> DownloadSignOff(string budgetId)
         {
-           
-            var client = new HttpClient();
-            client.DefaultRequestHeaders.Accept.Clear();
-            client.DefaultRequestHeaders.Accept.Add(
-                new MediaTypeWithQualityHeaderValue("application/pdf"));
-            //client.DefaultRequestHeaders.Add("User-Agent", ".NET Foundation Repository Reporter");
+            try
+            {
+                WebRequest request = WebRequest.Create("http://localhost:5509/Report/Index?BudgetId=" + budgetId);
 
-            var stream = client.GetStreamAsync("http://localhost:5509/Report/Index?BudgetId=" + budgetId);
+                request.Method = "GET";
+                request.ContentType = "application/pdf";
 
-            var msg = await stream;
-            Console.Write(msg);
+                WebResponse wr = await request.GetResponseAsync();
+                Stream receiveStream = wr.GetResponseStream();
+                return new FileStreamResult(receiveStream, "application/pdf");
+            }
+            catch (Exception exc)
+            {
+                throw new Exception(exc.Message);
+            }
+            
+
+            //var client = new HttpClient();
+            //client.DefaultRequestHeaders.Accept.Clear();
+            //client.DefaultRequestHeaders.Accept.Add(
+            //    new MediaTypeWithQualityHeaderValue("application/pdf"));
+            ////client.DefaultRequestHeaders.Add("User-Agent", ".NET Foundation Repository Reporter");
+
+            //var stream = await client.GetStreamAsync("http://localhost:5509/Report/Index?BudgetId=" + budgetId);
+
+            //var msg = stream;
+
+            //Console.Write(msg);
+
+
 
 
 
             
-
-            return new FileStreamResult(msg, "application/pdf");
         }
     }
 }
