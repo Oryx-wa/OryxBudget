@@ -21,7 +21,7 @@ namespace BudgetReport.Services
             _log = log;
         }
 
-        public FileStreamResult GetBudgetReport(string budgetId)
+        public async Task<FileStreamResult> GetBudgetReport(string budgetId)
         {
             ReportDocument rd = new ReportDocument();
             rd.Load(_crystalOptions.payslipRpt);
@@ -33,7 +33,7 @@ namespace BudgetReport.Services
 
             Stream stream = rd.ExportToStream(ExportFormatType.PortableDocFormat);
             stream.Seek(0, SeekOrigin.Begin);
-            return new FileStreamResult(stream, "application/pdf");
+            return  new FileStreamResult(stream, "application/pdf");
         }
 
         private void setConnectionProperties(ReportDocument rd)
