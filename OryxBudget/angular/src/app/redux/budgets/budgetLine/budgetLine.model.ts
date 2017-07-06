@@ -41,6 +41,8 @@ export const initBudgetLines: BudgetLines = {
     finalActualUSD: 0,
     lineStatus: 1,
     budgetId: '',
+    workProgramStatus: 0,
+    touched: false,
 };
 
 export interface BudgetLineEntity {

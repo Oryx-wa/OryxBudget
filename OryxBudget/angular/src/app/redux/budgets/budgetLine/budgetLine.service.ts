@@ -38,8 +38,15 @@ export class BudgetLineService extends BaseService {
         return this.update(budgetLine, this.api + '/update');
     }
 
-    public saveLineApprovals = ( data: any[]): Observable<any> => {
+    public saveLineApprovals = (data: any[]): Observable<any> => {
         return this.add(data, 'BudgetLine/UpdateStatus');
     }
+    public signOff = (budgetId: string, data: any[]): Observable<any> => {
+        const params: URLSearchParams = new URLSearchParams();
+        params.append('budgetId', budgetId);
+        const url = 'BudgetLine/UpdateWorkProgramStatus';
+        return this.addByParam(data, url, params);
+    }
+
 
 }

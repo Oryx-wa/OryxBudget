@@ -6,7 +6,7 @@ export const arrayOfLineComment = arrayOf(lineCommentSchema);
 
 
 export const initLineComment: LineComment = {
-    id: '',
+    id: null,
     code: '',
     userType: '',
     budgetId: '',

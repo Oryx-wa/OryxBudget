@@ -1,5 +1,5 @@
-import { Component, ViewChild, ElementRef, Renderer } from '@angular/core';
-import { ICellRendererAngularComp } from 'ag-grid-angular/main';
+import { Component, ViewChild, ElementRef, Renderer, AfterViewInit } from '@angular/core';
+import { ICellRendererAngularComp, AgEditorComponent } from 'ag-grid-angular/main';
 
 @Component({
     selector: 'app-approval',
@@ -7,7 +7,7 @@ import { ICellRendererAngularComp } from 'ag-grid-angular/main';
                             <div *ngIf="level === '3'" class="col s12">  
                               
       
-       <input #checkbox [indeterminate]="chkVal" type="checkbox" [checked]="checkBoxValue" 
+       <input #checkbox  type="checkbox"  [checked]="checkBoxValue" 
         (change)="invokeParentMethod($event.target.checked)" [id]="chkId" [name]="chkId"/>
        <label [for]="chkId">{{val}}</label>
        
@@ -19,11 +19,11 @@ import { ICellRendererAngularComp } from 'ag-grid-angular/main';
                             `
 })
 
-export class ApprovalComponent implements ICellRendererAngularComp {
+export class ApprovalComponent implements ICellRendererAngularComp, AfterViewInit, AgEditorComponent {
     public params: any;
     public type: string;
     public checkBoxValue = false;
-    public val = 'True';
+    public val = '';
     public chkId = '';
     public status: 1;
     public level: '3';
@@ -33,19 +33,29 @@ export class ApprovalComponent implements ICellRendererAngularComp {
     constructor(private renderer: Renderer) {
 
     }
+    // dont use afterGuiAttached for post gui events - hook into ngAfterViewInit instead for this
+    ngAfterViewInit() {
 
+
+    }
+    getValue(): any {
+
+    }
     agInit(params: any): void {
         this.status = params.data.lineStatus;
-        if (this.level = '3') {
+        this.params = params;
+        this.level = this.params.data.level;
+        if (this.level === '3') {
             switch (params.data.lineStatus) {
                 case 1:
                     this.val = 'N/A';
                     this.chkVal = true;
+                    this.checkBoxValue = false;
                     break;
                 case 2:
                     this.val = 'No';
                     this.chkVal = false;
-                    this.checkBoxValue = true;
+                    this.checkBoxValue = false;
                     break;
                 case 3:
                     this.val = 'Yes';
@@ -53,15 +63,16 @@ export class ApprovalComponent implements ICellRendererAngularComp {
                     this.checkBoxValue = true;
                     break;
             }
+            this.chkId = this.params.data.code;
+            this.type = this.params.colDef.type;
         }
-        this.params = params;
-        this.chkId = this.params.data.code;
-        this.type = this.params.colDef.type;
-        this.level = this.params.data.level;
+
+
     }
 
     public invokeParentMethod(type: boolean) {
-        this.checkBoxValue = type;
+        // this.checkBoxValue = type;
+        console.log(type);
         this.val = (type) ? 'Yes' : 'No';
         this.params.context.componentParent.handleApproval(this.params.data.code, type, this.params.data.level);
 

@@ -82,7 +82,20 @@ export class BudgetEffects implements OnDestroy {
                 return Observable.from([new ErrorActions.ErrorAddAction(err),
                 new NotificationActions.SetSavingError('Error saving Budget')]);
             }));
-
+    
+    @Effect() SignOff: Observable<Action> = this.actions$
+        .ofType(BudgetActions.GET_PRINTOUT)
+        .withLatestFrom(this.store$.select(state => state.budgets.budget.selectedId))
+        .map(([action, id]) => {
+            return id;
+        })
+        .mergeMap( ret => this.budgetService.getPrintOut(ret)
+        .map(file => new BudgetActions.GetPrintOutSuccessAction(file))
+        .catch(err => {
+                console.log(err);
+                return Observable.from([new ErrorActions.ErrorAddAction(err),
+                new NotificationActions.SetSavingError('Error saving Budget')]);
+            }));
 
     @Effect() AddUpdateItemSucess$: Observable<Action> = this.actions$
         .ofType(BudgetActions.ADD_UPDATE_ITEM_SUCCESS)

@@ -51,10 +51,10 @@
           <div class="input-field col s4">
             <select materialize="material_select" id="lineStatus" name="lineStatus" formControlName="lineStatus" >										
                               <option  value="" disabled selected >Select a status </option>	
-                  <option  [value]="'New'" >New</option>
-                  <option  [value]="'Accepted'" >Accepted</option>          
-                  <option  [value]="'Parked'" >Parked</option>
-                  <option  [value]="'UnderReview'" >Under Review</option>                  
+                  <option  [value]="1" >No Decision</option>
+                  <option  [value]="2" >Rejected</option>          
+                  <option  [value]="3" >Accepted</option>
+                                   
                     </select>
             <label for="lineStatus" data-error="Please select an item frmm the list">Status</label>
           </div>

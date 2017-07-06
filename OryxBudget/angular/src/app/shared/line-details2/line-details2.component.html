@@ -1,14 +1,18 @@
 <div materialize class="">
   <div class="">
     <div *ngIf="!noLines;else upload">
-      <div materialize class="col l4 left">
-        <nav *ngIf="linesTouched$ | async">
+      <div materialize class=" col s12 left">
+        <nav  >
           <div materialize class="nav-wrapper white">
-            <ul id="nav-mobile" class="right hide-on-med-and-down">
+            <ul id="nav-mobile" class="  hide-on-med-and-down">
               <li>
-                <a class="btn waves-effect waves-light" (click)="UpdateStatus('update')">Save</a></li>
+                <a class="btn btn-small waves-effect waves-light left" (click)="filterDisputed(true)">Disputes</a></li>
               <li>
-                <a class="btn waves-effect waves-light" (click)="UpdateStatus('reset')">Reset</a></li>
+                <a class="btn btn-small waves-effect waves-light left" (click)="filterDisputed(false)">Clear Filter</a></li>
+              <li *ngIf="linesTouched$ | async">
+                <a class="btn btn-small waves-effect waves-light right" (click)="UpdateStatus('update')">Save</a></li>
+              <li *ngIf="linesTouched$ | async">
+                <a class="btn btn-small waves-effect waves-light right" (click)="UpdateStatus('reset')">Reset</a></li>
             </ul>
           </div>
         </nav>
@@ -28,9 +32,9 @@
       <div class="col s10">
         <div class="row">
           <ul materialize="tabs" [materializeParams]="tabSelectionParams" class="tabs  z-depth-1  teal accent-4 ">
-            <li class="tab col s3 l3">
+            <!-- <li class="tab col s3 l3">
               <a (click)="changeDialog('actual')" class="white-text waves-effect waves-light"> Actuals </a>
-            </li>
+            </li>-->
             <li class="tab col s3 l3">
               <a (click)="changeDialog('details')" class="white-text waves-effect waves-light"> Details </a>
             </li>
@@ -58,13 +62,12 @@
         </div>
 
         <div *ngIf="dialogMode === 'details'">
-          <app-line-comment [line]="line" [lineComments]="lineComments"   (update)="updateComments($event)"
-            (close)="showComment = !showComment" [showSubCom]="showSubCom" [showTecCom]="showTecCom" [showMalCom]="showMalCom"
-            [napims]="napims" [operator]="operator">
+          <app-line-comment [line]="line" [lineComments]="lineComments" (update)="updateComments($event)" (close)="showComment = !showComment"
+            [showSubCom]="showSubCom" [showTecCom]="showTecCom" [showMalCom]="showMalCom" [napims]="napims" [operator]="operator">
           </app-line-comment>
         </div>
         <div *ngIf="dialogMode ==='comments'">
-          <app-comments [lineComments]="lineComments" (update)="newComment($event)" (close)="showComment = !showComment" 
+          <app-comments [line]="line" [lineComments]="lineComments$ | async" (update)="newComment($event)" (close)="showComment = !showComment"
             [napims]="napims" [operator]="operator"> </app-comments>
         </div>
         <div *ngIf="dialogMode ==='attachments'">

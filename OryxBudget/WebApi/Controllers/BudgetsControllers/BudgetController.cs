@@ -98,7 +98,7 @@ namespace OryxWebApi.Controllers.BudgetControllers
             _budgetService.AddLineComments(comments);
 
             _budgetService.SaveChanges();
-            return Json("Ok");
+            return Json(_budgetService.GetLineComment(vm.BudgetId, vm.Code));
 
         }
 

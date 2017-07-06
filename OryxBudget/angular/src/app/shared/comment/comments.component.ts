@@ -1,6 +1,6 @@
 import { Component, OnInit, Input, Output, OnChanges, EventEmitter } from '@angular/core';
 import { FormGroup, FormControl, FormBuilder, FormArray, Validators } from '@angular/forms';
-import { LineComments } from './../../models';
+import { LineComment, initLineComment, BudgetLines } from './../../redux';
 import * as _ from 'lodash';
 
 @Component({
@@ -9,10 +9,11 @@ import * as _ from 'lodash';
   styleUrls: ['./comments.component.scss']
 })
 export class CommentsComponent implements OnInit, OnChanges {
-  @Input() lineComments: LineComments[] = [];
+  @Input() lineComments: LineComment[] = [];
   @Input() userType: string;
   @Input() napims = false;
   @Input() operator = false;
+  @Input() line: BudgetLines;
 
   @Output() update = new EventEmitter();
   @Output() close = new EventEmitter();
@@ -42,16 +43,16 @@ export class CommentsComponent implements OnInit, OnChanges {
   }
 
   send(data: any) {
-    const comment: LineComments = _.assign({}, {
-      id: '', budgetId: '', userType: (this.napims === true) ? 'napims' : 'operator',
-      code: '', comment: data.message, commentStatus: '', userName: '',
-      commentType: '', createDate: new Date()
+    const comment: LineComment = _.assign({}, initLineComment, {
+       budgetId: this.line.budgetId, userType: (this.napims === true) ? 'napims' : 'operator',
+      code: this.line.code, comment: data.message, commentStatus: '',
+      createDate: new Date()
     });
-    const newComments: LineComments[] = [];
+    const newComments: LineComment[] = [];
     this.lineComments.push(comment);
     newComments.push(comment);
     this.form.reset();
-    this.update.emit(data.message);
+    this.update.emit(comment);
     console.log(comment);
 
   }

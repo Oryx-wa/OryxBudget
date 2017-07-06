@@ -39,6 +39,46 @@ namespace OryxSecurity.Services
                  .Where(c => c.Type == "id").FirstOrDefault().Value;
 
         }
+
+        public string GetNapimsRole()
+        {
+            var roleList = this.GetRoles();
+            string ret = "";
+            foreach (var item in roleList)
+            {
+               
+                if (item.EndsWith("Com"))
+                {
+                    ret = item;
+                    break;
+                }
+            }
+            return ret;
+        }
+        public string GetDepartment()
+        {
+            var roleList = this.GetRoles();
+            string ret = "";
+            foreach (var item in roleList)
+            {
+                switch (item)
+                {
+                    case "Exploration":
+                        ret = item;
+                        break;
+                    case "Facilities":
+                        ret = item;
+                        break;
+                    default:
+                        break;
+                }
+                if (!string.IsNullOrEmpty(ret))
+                {                   
+                    break;
+                }
+            }
+            return ret;
+        }
     }
 
     public interface IUserResolverService
@@ -47,6 +87,8 @@ namespace OryxSecurity.Services
         IEnumerable<string> GetRoles();
         string GetUserName();
         string GetId();
+        string GetNapimsRole();
+        string GetDepartment();
 
     }
 }

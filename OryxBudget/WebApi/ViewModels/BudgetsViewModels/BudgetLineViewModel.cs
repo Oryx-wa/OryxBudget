@@ -105,7 +105,22 @@ namespace OryxWebApi.ViewModels.BudgetsViewModels
         [Required]
         public string BudgetId { get; set; }
         [Required]
-        public ApprovalStatus ApprovalStatus { get; set; }
+        public ApprovalStatus LineStatus { get; set; }
+        public Decimal OpBudgetFC { get; set; }
+        public Decimal OpBudgetLC { get; set; }
+        public Decimal OpBudgetUSD { get; set; }
+        public decimal SubComBudgetFC { get; set; }
+        public decimal SubComBudgetLC { get; set; }
+        public decimal SubComBudgetUSD { get; set; }
+        public decimal TecComBudgetFC { get; set; }
+        public decimal TecComBudgetLC { get; set; }
+        public decimal TecComBudgetUSD { get; set; }
+        public decimal MalComBudgetFC { get; set; }
+        public decimal MalComBudgetLC { get; set; }
+        public decimal MalComBudgetUSD { get; set; }
+        public decimal FinalBudgetFC { get; set; }
+        public decimal FinalBudgetLC { get; set; }
+        public decimal FinalBudgetUSD { get; set; }
     }
 
 }

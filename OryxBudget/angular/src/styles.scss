@@ -233,3 +233,8 @@ $roboto-font-path: "~materialize-css/dist/fonts/roboto/"; /* This is needed so t
     width: 398px;
     height: 140px !important;
 }
+.btn-small {
+    height: 35px;
+    line-height: 35px;
+    padding: 0 0.5rem;
+}

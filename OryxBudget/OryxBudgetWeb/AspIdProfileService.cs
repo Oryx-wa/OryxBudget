@@ -86,6 +86,16 @@ namespace OryxBudgetWeb
                 if (user.SubCom)
                 {
                     claims.Add(new System.Security.Claims.Claim(JwtClaimTypes.Role, "SubCom"));
+                   
+                }
+
+                if (user.Final)
+                {
+                    claims.Add(new System.Security.Claims.Claim(JwtClaimTypes.Role, "Final"));
+                }
+
+                if (!string.IsNullOrEmpty(user.Department))
+                {
                     switch (user.Department)
                     {
                         case "Exploration":
@@ -103,11 +113,6 @@ namespace OryxBudgetWeb
                         default:
                             break;
                     }
-                }
-
-                if (user.Final)
-                {
-                    claims.Add(new System.Security.Claims.Claim(JwtClaimTypes.Role, "Final"));
                 }
                 context.IssuedClaims = claims;
             }

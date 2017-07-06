@@ -19,12 +19,14 @@ namespace OryxWebApi.Controllers.BudgetLineControllers
     public class BudgetLineController : BaseController
     {
         private readonly BudgetLineService _budgetLineService;
+        private readonly WorkProgramService _workProgramService;
         // private readonly AccreditationInfoService _accreditationInfoService;
         // private readonly TrainingInfoService _trainingInfoService;
 
-        public BudgetLineController(BudgetLineService budgetLineService)
+        public BudgetLineController(BudgetLineService budgetLineService, WorkProgramService workProgramService)
         {
             _budgetLineService = budgetLineService;
+            _workProgramService = workProgramService;
             //  _accreditationInfoService = accreditationInfoService;
             //  _trainingInfoService = trainingInfoService;
         }
@@ -57,12 +59,23 @@ namespace OryxWebApi.Controllers.BudgetLineControllers
         [Route("UpdateStatus")]
         public JsonResult Update([FromBody]IEnumerable<StatusHistoryViewModel2> statusVM)
         {
-            var statusList = Mapper.Map<IEnumerable<BudgetLineStatusHistory>>(statusVM);
+            var statusList = Mapper.Map<IEnumerable<BudgetCodeView>>(statusVM);
             _budgetLineService.UpdateStatus(statusList);
             _budgetLineService.SaveChanges();
             return Json("Ok");
         }
 
+        [HttpPost]
+        [ValidateModelState]
+        [Route("UpdateWorkProgramStatus")]
+        public JsonResult UpdateWorkProgramStatus( string budgetId, [FromBody]IEnumerable<StatusHistoryViewModel2> statusVM)
+        {
+            var statusList = Mapper.Map<IEnumerable<BudgetCodeView>>(statusVM);
+            _budgetLineService.UpdateStatus(statusList);
+            _workProgramService.UpdateWorkProgramStatus(this.ConvertToGuid(budgetId));
+            _budgetLineService.SaveChanges();
+            return Json("Ok");
+        }
 
         // PUT api/values/5
         [HttpPut("{id}")]

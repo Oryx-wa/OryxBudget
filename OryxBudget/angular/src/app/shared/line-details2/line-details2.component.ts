@@ -11,8 +11,9 @@ import { Store } from '@ngrx/store';
 import { MaterializeAction } from 'angular2-materialize';
 import { GridOptions } from 'ag-grid/main';
 import {
-  Budget, BudgetLines, BudgetLineActions,
-  LineComment, Actual, AppState, UserSelector, BudgetLineSelector
+  Budget, BudgetLines, BudgetLineActions, BudgetActions,
+  LineComment, Actual, AppState, UserSelector, BudgetLineSelector,
+  LineCommentActions, LineCommentSelector
 } from '../../redux';
 import { CurrencyComponent } from '../../shared/renderers/currency.component';
 import { WordWrapComponent } from '../../shared/renderers/word-wrap.component';
@@ -35,6 +36,7 @@ export class LineDetails2Component implements OnInit, OnChanges, OnDestroy {
   lines$: Observable<BudgetLines[]>;
   line$: Observable<BudgetLines>;
   linesTouched$: Observable<boolean>;
+  lineComments$: Observable<LineComment[]>;
   @Input() lines: BudgetLines[] = [];
   @Input() actuals: Actual[] = [];
   @Input() type = 'budget';
@@ -42,6 +44,7 @@ export class LineDetails2Component implements OnInit, OnChanges, OnDestroy {
   showTecCom = false;
   showMalCom = false;
   showFinal = false;
+  napims = false;
   @Input() budgetId = '';
   filtered: BudgetLines[] = [];
   selectedCode: BudgetLines;
@@ -83,6 +86,8 @@ export class LineDetails2Component implements OnInit, OnChanges, OnDestroy {
       floatingTopRowData: this.floatingRow,
       floatingBottomRowData: this.floatingRow,
       rowSelection: 'multiple',
+      animateRows: true,
+      
 
     };
   }
@@ -96,6 +101,8 @@ export class LineDetails2Component implements OnInit, OnChanges, OnDestroy {
         this.showSubCom = s.security.user.showSubCom;
         this.showMalCom = s.security.user.showMalCom;
         this.showFinal = s.security.user.showFinal;
+        this.napims = s.security.user.napims;
+
       });
     this.data = { id: this.budgetId };
     const url = 'Budget/' + (this.type === 'budget') ? 'UploadBudget' : 'UploadActual';
@@ -110,7 +117,7 @@ export class LineDetails2Component implements OnInit, OnChanges, OnDestroy {
     this.linesTouched$ = this.store.select(BudgetLineSelector.touched);
     this.linesTouched$.subscribe(touched => {
       this.btnClass = 'btn waves-effect waves-light' + (touched) ? ' disabled ' : '';
-      console.log(this.btnClass);
+      // console.log(this.btnClass);
     });
     switch (this.type) {
       case 'budget':
@@ -123,6 +130,11 @@ export class LineDetails2Component implements OnInit, OnChanges, OnDestroy {
         break;
     }
     this.line$ = this.store.select(BudgetLineSelector.selectedBudgetLine);
+    this.line$.subscribe(line => {
+      // console.log(line);
+      this.store.dispatch(new LineCommentActions.LoadItemsAction(''));
+    })
+    this.lineComments$ = this.store.select(LineCommentSelector.getLineCommentCollection);
   }
   initActual() {
     this.createActualColumnDefs();
@@ -163,7 +175,7 @@ export class LineDetails2Component implements OnInit, OnChanges, OnDestroy {
 
   private createColumnDefs() {
     this.columnDefs = [
-     
+
       {
 
         headerName: 'Budget Codes',
@@ -189,7 +201,7 @@ export class LineDetails2Component implements OnInit, OnChanges, OnDestroy {
           }
         ]
       },
-       {
+      {
         headerName: 'Actions',
         children: [
           {
@@ -230,7 +242,7 @@ export class LineDetails2Component implements OnInit, OnChanges, OnDestroy {
             headerName: 'Budget FC', field: 'opBudgetFC',
             width: this.colWidth,
             cellRendererFramework: CurrencyComponent,
-            currency: 'USD'
+            currency: 'USD', hidden: true
           },
         ]
       },
@@ -253,7 +265,7 @@ export class LineDetails2Component implements OnInit, OnChanges, OnDestroy {
             headerName: 'Budget FC', field: 'subComBudgetFC',
             width: this.colWidth,
             cellRendererFramework: CurrencyComponent,
-            currency: 'USD', editable: true
+            currency: 'USD', editable: true, hidden: true
           }
         ]
       },
@@ -296,13 +308,33 @@ export class LineDetails2Component implements OnInit, OnChanges, OnDestroy {
   }
   private setColumns() {
     if (this.ready) {
-      this.gridOptions.columnApi.setColumnsVisible(
-        ['subComBudgetLC', 'subComBudgetUSD', 'subComBudgetFC'],
-        this.showSubCom);
+      if (this.showSubCom) {
+        this.gridOptions.columnApi.setColumnsVisible(
+          ['opBudgetLC', 'opBudgetFC', 'opBudgetUSD'],
+          true);
+        this.gridOptions.columnApi.setColumnsVisible(
+          ['subComBudgetLC', 'subComBudgetUSD', 'subComBudgetFC'],
+          true);
+        this.gridOptions.columnApi.setColumnsVisible(
+          ['tecComBudgetLC',
+            'tecComBudgetUSD', 'tecComBudgetFC'],
+          false);
+      }
 
-      this.gridOptions.columnApi.setColumnsVisible(
-        ['tecComBudgetLC', 'tecComBudgetUSD', 'tecComBudgetFC'],
-        this.showTecCom);
+      if (this.showTecCom) {
+        this.gridOptions.columnApi.setColumnsVisible(
+          ['opBudgetLC', 'opBudgetUSD'],
+          false);
+        this.gridOptions.columnApi.setColumnsVisible(
+          ['subComBudgetLC', 'subComBudgetUSD'],
+          false);
+
+        this.gridOptions.columnApi.setColumnsVisible(
+          ['opBudgetFC', 'subComBudgetFC', 'tecComBudgetLC',
+            'tecComBudgetUSD', 'tecComBudgetFC'],
+          true);
+      }
+
       /*
     this.gridOptions.columnApi.setColumnsVisible(
       ['malComBudgetLC', 'malComBudgetUSD', 'malComBudgetFC'],
@@ -394,7 +426,7 @@ export class LineDetails2Component implements OnInit, OnChanges, OnDestroy {
       comment: '',
       float: true,
     });
-    console.log(this.rowData);
+    // console.log(this.rowData);
   }
   ngOnDestroy() {
     this.alive = false;
@@ -484,7 +516,16 @@ export class LineDetails2Component implements OnInit, OnChanges, OnDestroy {
   }
   public handleApproval(id: string, type: boolean, level: string, fatherNum: string) {
     console.log(level);
-    const children: any[] = this.rowData[0].level2;
+    // const children: any[] = this.rowData[0].level2;
+    if (type === true) {
+      this.store.dispatch(new BudgetLineActions.UpdateStatusAction({ code: id, status: 3 }));
+    } else {
+      this.store.dispatch(new BudgetLineActions.UpdateStatusAction({ code: id, status: 2 }));
+      this.store.dispatch(new BudgetLineActions.SelectItemAction(id));
+      this.changeDialog('details');
+    }
+
+    /*
     switch (level) {
 
       case '1':
@@ -504,7 +545,7 @@ export class LineDetails2Component implements OnInit, OnChanges, OnDestroy {
       default:
         this.store.dispatch(new BudgetLineActions.UpdateStatusAction({ code: id, status: (type) ? 3 : 2 }));
         break;
-    }
+    }*/
   }
 
   public handleChildMessage(id: string, type: string) {
@@ -512,13 +553,14 @@ export class LineDetails2Component implements OnInit, OnChanges, OnDestroy {
     this.store.dispatch(new BudgetLineActions.SelectItemAction(id));
     this.showComment = true;
 
-    
+
   }
 
   UpdateStatus(type: string) {
     switch (type) {
       case 'update':
         this.store.dispatch(new BudgetLineActions.SaveApprovalUpdates(''));
+        this.store.dispatch(new BudgetLineActions.LoadItemAction(this.budgetId));
         break;
       case 'reset':
         this.store.dispatch(new BudgetLineActions.ResetApprovalUpdateAction(''));
@@ -528,8 +570,25 @@ export class LineDetails2Component implements OnInit, OnChanges, OnDestroy {
     }
   }
 
+  updateComments(data: any) {
+    const update: any = data.line;
+    this.store.dispatch(new BudgetLineActions.UpdateStatusValueAction(update));
+    this.store.dispatch(new BudgetLineActions.SaveApprovalUpdates(''));
+    this.store.dispatch(new LineCommentActions.AddItemAction(data.lineComments));
+
+  }
+
+  newComment(data: any) {
+    this.store.dispatch(new LineCommentActions.AddItemAction(data));
+  }
+
   changeDialog(mode: string) {
     this.dialogMode = mode;
+  }
+
+  filterDisputed(type: boolean) {
+    this.store.dispatch(new BudgetLineActions.FilterAction(type));
+    console.log(this.lines);
   }
 }
 
