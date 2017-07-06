@@ -86,6 +86,8 @@ export class LineDetails2Component implements OnInit, OnChanges, OnDestroy {
       floatingTopRowData: this.floatingRow,
       floatingBottomRowData: this.floatingRow,
       rowSelection: 'multiple',
+      animateRows: true,
+      
 
     };
   }
@@ -100,6 +102,7 @@ export class LineDetails2Component implements OnInit, OnChanges, OnDestroy {
         this.showMalCom = s.security.user.showMalCom;
         this.showFinal = s.security.user.showFinal;
         this.napims = s.security.user.napims;
+
       });
     this.data = { id: this.budgetId };
     const url = 'Budget/' + (this.type === 'budget') ? 'UploadBudget' : 'UploadActual';
@@ -114,7 +117,7 @@ export class LineDetails2Component implements OnInit, OnChanges, OnDestroy {
     this.linesTouched$ = this.store.select(BudgetLineSelector.touched);
     this.linesTouched$.subscribe(touched => {
       this.btnClass = 'btn waves-effect waves-light' + (touched) ? ' disabled ' : '';
-      console.log(this.btnClass);
+      // console.log(this.btnClass);
     });
     switch (this.type) {
       case 'budget':
@@ -128,6 +131,7 @@ export class LineDetails2Component implements OnInit, OnChanges, OnDestroy {
     }
     this.line$ = this.store.select(BudgetLineSelector.selectedBudgetLine);
     this.line$.subscribe(line => {
+      // console.log(line);
       this.store.dispatch(new LineCommentActions.LoadItemsAction(''));
     })
     this.lineComments$ = this.store.select(LineCommentSelector.getLineCommentCollection);
@@ -238,7 +242,7 @@ export class LineDetails2Component implements OnInit, OnChanges, OnDestroy {
             headerName: 'Budget FC', field: 'opBudgetFC',
             width: this.colWidth,
             cellRendererFramework: CurrencyComponent,
-            currency: 'USD'
+            currency: 'USD', hidden: true
           },
         ]
       },
@@ -261,7 +265,7 @@ export class LineDetails2Component implements OnInit, OnChanges, OnDestroy {
             headerName: 'Budget FC', field: 'subComBudgetFC',
             width: this.colWidth,
             cellRendererFramework: CurrencyComponent,
-            currency: 'USD', editable: true
+            currency: 'USD', editable: true, hidden: true
           }
         ]
       },
@@ -304,13 +308,33 @@ export class LineDetails2Component implements OnInit, OnChanges, OnDestroy {
   }
   private setColumns() {
     if (this.ready) {
-      this.gridOptions.columnApi.setColumnsVisible(
-        ['subComBudgetLC', 'subComBudgetUSD', 'subComBudgetFC'],
-        this.showSubCom);
+      if (this.showSubCom) {
+        this.gridOptions.columnApi.setColumnsVisible(
+          ['opBudgetLC', 'opBudgetFC', 'opBudgetUSD'],
+          true);
+        this.gridOptions.columnApi.setColumnsVisible(
+          ['subComBudgetLC', 'subComBudgetUSD', 'subComBudgetFC'],
+          true);
+        this.gridOptions.columnApi.setColumnsVisible(
+          ['tecComBudgetLC',
+            'tecComBudgetUSD', 'tecComBudgetFC'],
+          false);
+      }
 
-      this.gridOptions.columnApi.setColumnsVisible(
-        ['tecComBudgetLC', 'tecComBudgetUSD', 'tecComBudgetFC'],
-        this.showTecCom);
+      if (this.showTecCom) {
+        this.gridOptions.columnApi.setColumnsVisible(
+          ['opBudgetLC', 'opBudgetUSD'],
+          false);
+        this.gridOptions.columnApi.setColumnsVisible(
+          ['subComBudgetLC', 'subComBudgetUSD'],
+          false);
+
+        this.gridOptions.columnApi.setColumnsVisible(
+          ['opBudgetFC', 'subComBudgetFC', 'tecComBudgetLC',
+            'tecComBudgetUSD', 'tecComBudgetFC'],
+          true);
+      }
+
       /*
     this.gridOptions.columnApi.setColumnsVisible(
       ['malComBudgetLC', 'malComBudgetUSD', 'malComBudgetFC'],
@@ -402,7 +426,7 @@ export class LineDetails2Component implements OnInit, OnChanges, OnDestroy {
       comment: '',
       float: true,
     });
-    console.log(this.rowData);
+    // console.log(this.rowData);
   }
   ngOnDestroy() {
     this.alive = false;
@@ -560,6 +584,11 @@ export class LineDetails2Component implements OnInit, OnChanges, OnDestroy {
 
   changeDialog(mode: string) {
     this.dialogMode = mode;
+  }
+
+  filterDisputed(type: boolean) {
+    this.store.dispatch(new BudgetLineActions.FilterAction(type));
+    console.log(this.lines);
   }
 }
 

@@ -58,6 +58,7 @@ export class SubNavbarComponent implements OnInit, OnChanges {
 
   itemSelected(id: string) {
     this.store.dispatch(new BudgetActions.SelectItemAction(id));
+    this.store.dispatch(new BudgetActions.GetWorkProgramStatusAction(id));
   }
 
   changeDisplay(type: string) {
