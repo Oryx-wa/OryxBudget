@@ -379,34 +379,9 @@ namespace OryxWebApi.Controllers.BudgetControllers
         [HttpGet]
         public async Task<FileResult> DownloadSignOff(string budgetId)
         {
-            WebRequest request = WebRequest.Create("http://localhost:5509/Report/Index?BudgetId=" + budgetId);
+            var result = await _budgetService.DownloadSignOff(budgetId);
 
-            request.Method = "GET";
-            request.ContentType = "application/pdf";
-
-            WebResponse wr = await request.GetResponseAsync();
-            Stream receiveStream = wr.GetResponseStream();
-            return new FileStreamResult(receiveStream, "application/pdf");
-
-
-
-            //var client = new HttpClient();
-            //client.DefaultRequestHeaders.Accept.Clear();
-            //client.DefaultRequestHeaders.Accept.Add(
-            //    new MediaTypeWithQualityHeaderValue("application/pdf"));
-            ////client.DefaultRequestHeaders.Add("User-Agent", ".NET Foundation Repository Reporter");
-
-            //var stream = await client.GetStreamAsync("http://localhost:5509/Report/Index?BudgetId=" + budgetId);
-
-            //var msg = stream;
-
-            //Console.Write(msg);
-
-
-
-
-
-
+            return new FileStreamResult(result, "application/pdf");
         }
     }
 }

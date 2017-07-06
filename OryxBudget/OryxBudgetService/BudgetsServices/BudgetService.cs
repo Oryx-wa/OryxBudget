@@ -16,6 +16,7 @@ using OryxBudgetService.Utilities.SignalRHubs;
 using OryxSecurity.Services;
 using Entities.Budgets.WorkPrograms;
 using System.IO;
+using System.Net;
 
 namespace OryxBudgetService.BudgetsServices
 {
@@ -443,6 +444,23 @@ namespace OryxBudgetService.BudgetsServices
             AddAttachment(attachment);
             
             base.SaveChanges();
+        }
+
+        public async Task<Stream> DownloadSignOff(string budgetId)
+        {
+            var dept = _userResolverService.GetDepartment();
+            int type = (int)Enum.Parse(typeof(WorkProgramTypeEnum), dept);
+            WebRequest request = WebRequest.Create("http://localhost:5509/Report/Index?BudgetId=" + budgetId + "&Type=" + type);
+
+            request.Method = "GET";
+            request.ContentType = "application/pdf";
+
+            WebResponse wr = await request.GetResponseAsync();
+            Stream receiveStream = wr.GetResponseStream();
+
+            //return new FileStreamResult(receiveStream, "application/pdf");
+            return receiveStream;
+
         }
     }
 
