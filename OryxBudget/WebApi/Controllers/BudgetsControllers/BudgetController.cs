@@ -64,7 +64,7 @@ namespace OryxWebApi.Controllers.BudgetControllers
             if (vm.LineComments != null)
             {
                 var lineComment = Mapper.Map<IEnumerable<LineComment>>(vm.LineComments);
-                _budgetService.AddLineComments(lineComment); 
+                _budgetService.AddLineComments(lineComment);
             }
             if (vm.BudgetLine != null)
             {
@@ -89,7 +89,7 @@ namespace OryxWebApi.Controllers.BudgetControllers
         [HttpPost]
         [ValidateModelState]
         [Route("AddComment")]
-        public JsonResult AddComment( [FromBody] LineCommentViewModel vm)
+        public JsonResult AddComment([FromBody] LineCommentViewModel vm)
         {
 
             var lineComment = Mapper.Map<LineComment>(vm);
@@ -184,7 +184,7 @@ namespace OryxWebApi.Controllers.BudgetControllers
             foreach (var item in dbStatus)
             {
                 ret.Add(new StatusHistoryViewModel(item));
-            }             
+            }
             return Json(ret);
         }
 
@@ -237,7 +237,7 @@ namespace OryxWebApi.Controllers.BudgetControllers
             return Json("File Uploaded"); //null just to make error free
         }
 
-        
+
 
         public JsonResult AddActualViaTemplate(IFormFile file, string lineId)
         {
@@ -379,22 +379,16 @@ namespace OryxWebApi.Controllers.BudgetControllers
         [HttpGet]
         public async Task<FileResult> DownloadSignOff(string budgetId)
         {
-            try
-            {
-                WebRequest request = WebRequest.Create("http://localhost:5509/Report/Index?BudgetId=" + budgetId);
+            WebRequest request = WebRequest.Create("http://localhost:5509/Report/Index?BudgetId=" + budgetId);
 
-                request.Method = "GET";
-                request.ContentType = "application/pdf";
+            request.Method = "GET";
+            request.ContentType = "application/pdf";
 
-                WebResponse wr = await request.GetResponseAsync();
-                Stream receiveStream = wr.GetResponseStream();
-                return new FileStreamResult(receiveStream, "application/pdf");
-            }
-            catch (Exception exc)
-            {
-                throw new Exception(exc.Message);
-            }
-            
+            WebResponse wr = await request.GetResponseAsync();
+            Stream receiveStream = wr.GetResponseStream();
+            return new FileStreamResult(receiveStream, "application/pdf");
+
+
 
             //var client = new HttpClient();
             //client.DefaultRequestHeaders.Accept.Clear();
@@ -412,7 +406,7 @@ namespace OryxWebApi.Controllers.BudgetControllers
 
 
 
-            
+
         }
     }
 }

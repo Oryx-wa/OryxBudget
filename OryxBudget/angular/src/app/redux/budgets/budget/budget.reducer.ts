@@ -86,8 +86,7 @@ export const BudgetReducer: ActionReducer<BudgetState> = (state: BudgetState = i
         case AllActions.GET_PRINOUT_SUCCESS:
             if (action.payload === null) {
                 return state;
-            }
-            
+            }            
             return _.assign({}, state, { printOut: action.payload });
         default:
             return state;
