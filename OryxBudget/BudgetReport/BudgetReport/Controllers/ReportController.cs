@@ -17,9 +17,9 @@ namespace BudgetReport.Controllers
         {
             _reportService = reportService;
         }
-        public async Task<FileResult> Index(string BudgetId)
+        public async Task<FileResult> Index(string BudgetId, int Type)
         {
-           return await _reportService.GetBudgetReport(BudgetId);
+           return await _reportService.GetBudgetReport(BudgetId,Type);
         }
     }
 }
