@@ -31,11 +31,12 @@ namespace OryxBudgetService.BudgetsServices
         protected IUserResolverService _userResolverService;
         private readonly BudgetLineStatusHistoryRepository _lineStatus;
         private readonly ActualsRepository _actualRepository;
+        private readonly WorkProgramService _workProgramService;
 
         public BudgetService(BudgetRepository repository, BudgetCodeService budgetCodeService,
             BudgetLineRepository lineRepository, IBudgetUnitOfWork unitOfWork, LineCommentRepository lineCommentRepository,
             OperatorRepository operatorRepository, AttachmentRepository attachmentRepository, BudgetLineStatusHistoryRepository lineStatus,
-            IConnectionManager signalRConnectionManager, IUserResolverService userResolverService, 
+            IConnectionManager signalRConnectionManager, IUserResolverService userResolverService, WorkProgramService workProgramService,
             ActualsRepository actualRepository) : base(repository, unitOfWork)
         {
             _repository = repository;
@@ -47,6 +48,7 @@ namespace OryxBudgetService.BudgetsServices
             _userResolverService = userResolverService;
             _lineStatus = lineStatus;
             _actualRepository = actualRepository;
+            _workProgramService = workProgramService;
         }
 
         public override void Update(Budget entity)
@@ -116,6 +118,7 @@ namespace OryxBudgetService.BudgetsServices
             decimal totalUSD = budget.OpBudgetUSD;
             decimal totalLC = budget.OpBudgetLC;
             decimal total = budget.OpBudgetFC;
+            string dept = "";
 
             foreach (var item in records)
             {
@@ -123,6 +126,10 @@ namespace OryxBudgetService.BudgetsServices
                 if (!code.Postable.Trim().Equals("Y"))
                 {
                     continue;
+                }
+                if (string.IsNullOrEmpty(dept))
+                {
+                    dept = code.Type.ToString();
                 }
                 item.Code = item.Code.Trim();
                 item.Description = (item.Description.Trim().Length > 99) ? item.Description.Trim().Substring(0, 99) : item.Description.Trim();
@@ -142,6 +149,8 @@ namespace OryxBudgetService.BudgetsServices
             budget.OpBudgetFC = total;
 
             base.Update(budget, userId);
+            _workProgramService.AddWorkProgramStatus(dept, "Operator", id, userId);
+
             this.SaveChanges();
             dataFile.Dispose();
             file.Dispose();
@@ -264,8 +273,14 @@ namespace OryxBudgetService.BudgetsServices
             else
             {
                 Enum.TryParse(department, out WorkProgramTypeEnum  type);
+                var tmp = _repository.GetBudgetLines(id).Where(b => b.Type == type || b.Type == WorkProgramTypeEnum.Header);
+                IEnumerable<BudgetCodeView> ret = new List<BudgetCodeView>();
+                if (tmp.ToList().Count > 1)
+                {
+                    ret = tmp;  
+                }
 
-                return _repository.GetBudgetLines(id).Where(b => b.Type == type || b.Type == WorkProgramTypeEnum.Header);
+                return ret;
             }
 
         }

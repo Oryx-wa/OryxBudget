@@ -126,7 +126,7 @@ from Budgets f join BudgetLines a
 	join (Select a.Code,  b.Description, b.Level, b.code level2, b.FatherNum, b.Type
 from BudgetCodes a join BudgetCodes b
 	on a.level1 = b.Code) h on a.Code = h.Code
-where f.id =  '{id}'
+where f.id =  '{id}' 
 Group by f.OperatorId,  f.id,h.level2, h.Description, h.FatherNum, h.Level, g.Name, h.Type
 Order by 19";
 

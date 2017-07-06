@@ -52,7 +52,12 @@ export class BudgetLineEffects implements OnDestroy {
             console.log(ret);
             return ret;
         })
-        .mergeMap(payload => this.budgetLineService.saveLineApprovals(payload)           
+        .mergeMap(payload => this.budgetLineService.saveLineApprovals(payload)
+            .withLatestFrom(this.store$.select(state => state.budgets.budget))
+            .map(([action, budget]) => {
+                return budget.selectedId;
+            })
+            .map(budgetId => new BudgetLineActions.LoadItemsAction(budgetId))
             .catch(err => {
                 return Observable.from([new ErrorActions.ErrorAddAction(err),
                 new NotificationActions.SetSavingError('Error saving BudgetLine')]);
@@ -74,6 +79,11 @@ export class BudgetLineEffects implements OnDestroy {
             return { budgetId: state.budget.selectedId, data: ret };
         })
         .mergeMap(payload => this.budgetLineService.signOff(payload.budgetId, payload.data)
+           .withLatestFrom(this.store$.select(state => state.budgets.budget))
+            .map(([action, budget]) => {
+                return budget.selectedId;
+            })
+            .map(budgetId => new BudgetLineActions.LoadItemsAction(budgetId))
             .catch(err => {
                 return Observable.from([new ErrorActions.ErrorAddAction(err),
                 new NotificationActions.SetSavingError('Error saving BudgetLine')]);

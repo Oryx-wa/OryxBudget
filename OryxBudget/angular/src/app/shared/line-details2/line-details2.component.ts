@@ -36,6 +36,7 @@ export class LineDetails2Component implements OnInit, OnChanges, OnDestroy {
   lines$: Observable<BudgetLines[]>;
   line$: Observable<BudgetLines>;
   linesTouched$: Observable<boolean>;
+  linesTouched = false;
   lineComments$: Observable<LineComment[]>;
   @Input() lines: BudgetLines[] = [];
   @Input() actuals: Actual[] = [];
@@ -87,7 +88,7 @@ export class LineDetails2Component implements OnInit, OnChanges, OnDestroy {
       floatingBottomRowData: this.floatingRow,
       rowSelection: 'multiple',
       animateRows: true,
-      
+
 
     };
   }
@@ -105,18 +106,20 @@ export class LineDetails2Component implements OnInit, OnChanges, OnDestroy {
 
       });
     this.data = { id: this.budgetId };
-    const url = 'Budget/' + (this.type === 'budget') ? 'UploadBudget' : 'UploadActual';
+    const url = (this.type === 'budget') ? 'UploadBudget' : 'UploadActual';
     this.event = {
       type: 'uploadFile',
-      url: this.securityService.getUrl(url),
+      url: this.securityService.getUrl('Budget/' + url),
       method: 'POST',
       data: { id: this.budgetId },
       concurrency: 1, // set sequential uploading of files with concurrency 1,
       headers: { ['Authorization']: 'Bearer ' + this.securityService.GetToken() }
     };
+    // console.log(this.event);
     this.linesTouched$ = this.store.select(BudgetLineSelector.touched);
     this.linesTouched$.subscribe(touched => {
       this.btnClass = 'btn waves-effect waves-light' + (touched) ? ' disabled ' : '';
+      this.linesTouched = touched;
       // console.log(this.btnClass);
     });
     switch (this.type) {
@@ -148,10 +151,15 @@ export class LineDetails2Component implements OnInit, OnChanges, OnDestroy {
       case 'budget':
         if (changes['lines']) {
           if (changes['lines'].currentValue.length > 0) {
-            this.structureData();
+            if (this.linesTouched === false) {
+              this.structureData();
+              this.store.dispatch(new BudgetActions.GetWorkProgramStatusAction(''));
+            }
           } else {
             const nolines = this.nolines;
             if (this.operator) {
+              this.event.data = { id: this.budgetId };
+              console.log(this.event);
               uploadBudget(this.event, this.type);
               this.nolines = nolines;
             }
@@ -515,7 +523,7 @@ export class LineDetails2Component implements OnInit, OnChanges, OnDestroy {
     ];
   }
   public handleApproval(id: string, type: boolean, level: string, fatherNum: string) {
-    console.log(level);
+    // console.log(level);
     // const children: any[] = this.rowData[0].level2;
     if (type === true) {
       this.store.dispatch(new BudgetLineActions.UpdateStatusAction({ code: id, status: 3 }));
@@ -549,7 +557,7 @@ export class LineDetails2Component implements OnInit, OnChanges, OnDestroy {
   }
 
   public handleChildMessage(id: string, type: string) {
-    console.log(id);
+    // console.log(id);
     this.store.dispatch(new BudgetLineActions.SelectItemAction(id));
     this.showComment = true;
 
@@ -560,7 +568,7 @@ export class LineDetails2Component implements OnInit, OnChanges, OnDestroy {
     switch (type) {
       case 'update':
         this.store.dispatch(new BudgetLineActions.SaveApprovalUpdates(''));
-        this.store.dispatch(new BudgetLineActions.LoadItemAction(this.budgetId));
+        // this.store.dispatch(new BudgetLineActions.LoadItemsAction(this.budgetId));
         break;
       case 'reset':
         this.store.dispatch(new BudgetLineActions.ResetApprovalUpdateAction(''));
@@ -588,7 +596,7 @@ export class LineDetails2Component implements OnInit, OnChanges, OnDestroy {
 
   filterDisputed(type: boolean) {
     this.store.dispatch(new BudgetLineActions.FilterAction(type));
-    console.log(this.lines);
+    // console.log(this.lines);
   }
 }
 

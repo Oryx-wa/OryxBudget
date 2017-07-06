@@ -22,7 +22,9 @@ export class FacilitiesComponent implements OnInit, OnDestroy {
   form: FormGroup;
   budget$: Observable<Budget>;
   lines$: Observable<BudgetLines[]>;
-  actuals$: Observable<Actual[]>
+   unTouched$: Observable<BudgetLines[]>;
+  actuals$: Observable<Actual[]>;
+  workProgramStatus$: Observable<string>;
   budgetId = '';
 
   public napims$: Observable<boolean>;
@@ -33,6 +35,7 @@ export class FacilitiesComponent implements OnInit, OnDestroy {
 
   public dept$: Observable<string>;
   public operator$: Observable<boolean>;
+  public printOut$: Observable<any>;
   private alive = true;
 
   public displayMode: DisplayModeEnum;
@@ -71,6 +74,7 @@ export class FacilitiesComponent implements OnInit, OnDestroy {
 
     });
     this.budget$ = this.store.select(BudgetSelector.selectedBudget);
+     this.workProgramStatus$ = this.store.select(BudgetSelector.workProgramStatus);
     this.budget$
       .takeWhile(() => this.alive)
       .subscribe(budget => {
@@ -79,25 +83,35 @@ export class FacilitiesComponent implements OnInit, OnDestroy {
             this.budgetId = budget.id;
             switch (this.displayMode) {
               case DisplayModeEnum.Budget:
-                this.store.dispatch(new BudgetLineActions.LoadItemsAction(this.budgetId));
+                this.store.dispatch(new BudgetLineActions.LoadItemsAction(budget.id));
                 break;
               case DisplayModeEnum.Actual:
-                this.store.dispatch(new ActualActions.LoadItemsAction(this.budgetId));
+                this.store.dispatch(new ActualActions.LoadItemsAction(budget.id));
                 break;
               default:
                 break;
             }
           }
         }
-
       });
     this.form = this.fb.group({
       status: new FormControl({}),
     });
     this.lines$ = this.store.select(BudgetLineSelector.getBudgetLineCollection);
+    this.unTouched$ = this.store.select(BudgetLineSelector.getUntouchedCollection);
     this.actuals$ = this.store.select(ActualSelector.getActualCollection);
 
     this.changeDisplayMode(DisplayModeEnum.Budget);
+
+    
+    this.printOut$ = this.store.select(BudgetSelector.printOut);
+    this.printOut$.subscribe(file => {
+      if (file !== null) {
+        // console.log(file);
+        const fileURL = URL.createObjectURL(file)
+        window.open(fileURL);
+      }
+    })
   }
   openFirst() {
     this.showApproval = true;
@@ -113,8 +127,19 @@ export class FacilitiesComponent implements OnInit, OnDestroy {
   }
 
   selectBudget(id: string) {
+    this.budgetId = id;
     this.store.dispatch(new BudgetActions.SelectItemAction(id));
+    // console.log(id);
     // this.store.dispatch(new BudgetLineActions.LoadItemsAction(this.budgetId));
+  }
+
+  print() {
+    this.store.dispatch(new BudgetActions.GetPrintOutAction(''));
+  }
+
+  signOff() {
+    this.store.dispatch(new BudgetLineActions.SignOffAction(''));
+    this.store.dispatch(new BudgetActions.SelectItemAction(this.budgetId));
   }
 
   ngOnDestroy() {

@@ -11,10 +11,13 @@ namespace OryxWebApi.ViewModels.BudgetsViewModels
     {
         public WorkProgramStatusViewModel(WorkProgramStatus programStatus)
         {
-            this.Id = programStatus.Id;
-            this.BudgetId = programStatus.BudgetId;
-            this.Department = programStatus.WorkProgram.ToString();
-            this.BudgetStatus = programStatus.BudgetStatus.ToString();           
+            if (programStatus != null)
+            {
+                this.Id = programStatus.Id;
+                this.BudgetId = programStatus.BudgetId;
+                this.Department = programStatus.WorkProgram.ToString();
+                this.BudgetStatus = programStatus.BudgetStatus.ToString();  
+            }          
 
         }
         public Guid Id { get; set; }
