@@ -41,6 +41,7 @@ export class LineDetails2Component implements OnInit, OnChanges, OnDestroy {
   @Input() lines: BudgetLines[] = [];
   @Input() actuals: Actual[] = [];
   @Input() type = 'budget';
+  @Input() workProgramStatus = 'Operator';
   showSubCom = false;
   showTecCom = false;
   showMalCom = false;
@@ -70,6 +71,7 @@ export class LineDetails2Component implements OnInit, OnChanges, OnDestroy {
   public operator = false;
   public data: any;
   private event: UploadInput;
+  public workflow: string[] = ['Operator','SubCom', 'TecCom', 'MaCom', 'Final']
   public btnClass = 'btn waves-effect waves-light disabled';
   dialogMode = 'details';
   constructor(private store: Store<AppState>, private dialog: DialogService, private securityService: SecurityService) {

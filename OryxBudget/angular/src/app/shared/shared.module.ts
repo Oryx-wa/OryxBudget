@@ -36,6 +36,7 @@ import { LineDetails2Component } from './line-details2/line-details2.component';
 import { LogoutComponent } from './app-security/logout/logout.component';
 import { DialogService } from './dialog.service';
 import { LineActualsComponent } from './line-actuals/line-actuals.component';
+import { SvgAssetsModule } from './../svg-assets/svg-assets.module'
 
 @NgModule({
   imports: [
@@ -57,6 +58,7 @@ import { LineActualsComponent } from './line-actuals/line-actuals.component';
       StyledComponent,
       ApprovalComponent
     ]),
+    SvgAssetsModule
 
   ],
   declarations: [// MainNavComponent,

@@ -2,31 +2,34 @@
   <div class="">
     <div *ngIf="!noLines;else upload">
       <div materialize class=" col s12 left">
-        <nav  >
+        <nav>
           <div materialize class="nav-wrapper white">
             <ul id="nav-mobile" class="  hide-on-med-and-down">
-           <li class="active">
-                <a class="breadcum  waves-effect waves-light tes  " >Subcom</a></li>
+              <!--
+              <li [class.active]="workProgramStatus === 'Operator'">                
+                <a class="breadcum waves-effect waves-light tes">Operator</a></li>
                 <li><i class="material-icons tes">keyboard_arrow_right</i></li>
-              <li>
-                <a class="breadcum  waves-effect waves-light tes">Telcom</a></li>
-                <li><i class="material-icons tes">keyboard_arrow_right</i></li>
-              <li>
-                <a class="breadcum  waves-effect waves-light tes" >Malcom</a></li>
-                <li><i class="material-icons tes">keyboard_arrow_right</i></li>
-              <li>
-                <a class="breadcum waves-effect waves-light tes" >Malcom</a></li>
-           
+              <li [class.active]="workProgramStatus === 'SubCom'">
+                <a class="breadcum  waves-effect waves-light tes  ">Subcom</a></li>
+              <li><i class="material-icons tes">keyboard_arrow_right</i></li>
+              <li [class.active]="workProgramStatus === 'TecCom'">
+                <a class="breadcum  waves-effect waves-light tes">TecCom</a></li>
+              <li><i class="material-icons tes">keyboard_arrow_right</i></li>
+              <li [class.active]="workProgramStatus === 'MalCom'">
+                <a class="breadcum  waves-effect waves-light tes">MaCom</a></li>
+                -->
+
+                <app-business-process-svg [text]="workflow"> </app-business-process-svg>
               <li class="right" *ngIf="linesTouched$ | async">
-                <a class="breadcum  btn- btn-small waves-effect waves-light tes" (click)="UpdateStatus('update')">Save</a></li>
-                <li><i class="material-icons tes">keyboard_arrow_right</i></li>
+                <a class="btn btn-small waves-effect waves-light " (click)="UpdateStatus('update')">Save</a></li>
+
               <li class="right" *ngIf="linesTouched$ | async">
-                <a class="breadcum  btn- btn-small waves-effect waves-light tes" (click)="UpdateStatus('reset')">Reset</a></li>
+                <a class=" btn btn-small waves-effect waves-light " (click)="UpdateStatus('reset')">Reset</a></li>
             </ul>
           </div>
         </nav>
       </div>
-      <ag-grid-angular style="width: 100%; height: 450px;" class="ag-material" [gridOptions]="gridOptions" [columnDefs]="columnDefs"
+      <ag-grid-angular style="width: 100%; height: 750px;" class="ag-material" [gridOptions]="gridOptions" [columnDefs]="columnDefs"
         groupHeaders rowHeight="48" rowSelection="single" (gridReady)="onReady($event)" [rowData]="rowData">
       </ag-grid-angular>
     </div>
