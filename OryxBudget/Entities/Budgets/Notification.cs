@@ -1,4 +1,5 @@
-﻿using OryxDomainServices;
+﻿using Entities.Budgets.WorkPrograms;
+using OryxDomainServices;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -32,6 +33,11 @@ namespace Entities.Budgets
 
         public string Username { get; set; }
 
+        [MaxLength(50), Required]
+        public string OperatorId { get; set; }
+
+        public int WorkProgramId { get; set; }
+
         public bool IsRead { get; set; }
     }
 
@@ -61,6 +67,11 @@ namespace Entities.Budgets
 
         [MaxLength(100), Required]
         public string Username { get; set; }
+
+        [MaxLength(50), Required]
+        public string OperatorId { get; set; }
+
+        public int WorkProgramId { get; set; }
 
         public bool IsRead { get; set; }
     }

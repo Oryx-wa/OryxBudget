@@ -89,6 +89,11 @@ namespace OryxBudgetService.BudgetsServices
             return this.GetAll().Where(info => info.BudgetId.ToString() == bgtId);
         }
 
+        public BudgetLine GetByCode(string code)
+        {
+            return this.GetAll().Where(bl => bl.Code == code).FirstOrDefault();
+        }
+
         public void uploadEntity(string fileName)
         {
             var file = System.IO.File.OpenRead(fileName);
