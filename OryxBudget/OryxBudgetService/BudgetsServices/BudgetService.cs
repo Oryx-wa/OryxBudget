@@ -62,6 +62,8 @@ namespace OryxBudgetService.BudgetsServices
             return this.GetAll().Where(info => info.PeriodId == periodId);
         }
 
+        
+
         public IEnumerable<Budget> GetByOperatorId(string operatorId)
         {
             return this.GetAll().Where(info => info.OperatorId == operatorId);

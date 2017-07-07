@@ -75,6 +75,9 @@ namespace Data
 
         public DbSet<WorkProgramType> WorkProgramTypes { get; set; }
         public DbSet<WorkProgramTypeLog> WorkProgramTypeLogs { get; set; }
+
+        public DbSet<Notification> Notifications { get; set; }
+        public DbSet<NotificationLog> NotificationLogs { get; set; }
         
         public DbSet<Field> Fields { get; set; }
         public DbSet<FieldLog> FieldLogs { get; set; }
