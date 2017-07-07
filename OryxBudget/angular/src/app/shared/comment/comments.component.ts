@@ -18,6 +18,8 @@ export class CommentsComponent implements OnInit, OnChanges {
   @Output() update = new EventEmitter();
   @Output() close = new EventEmitter();
 
+  lineComments1: LineComment[] = [];
+
   form: FormGroup;
   lineCommentsForm: FormGroup;
   constructor(private fb: FormBuilder) { }
@@ -26,7 +28,9 @@ export class CommentsComponent implements OnInit, OnChanges {
     this.form = this.fb.group({
       message: new FormControl('', Validators.required)
     });
-
+    this.lineComments.map(lineComment => {
+      this.lineComments1.push(lineComment);
+    })
 
   }
 
@@ -44,12 +48,13 @@ export class CommentsComponent implements OnInit, OnChanges {
 
   send(data: any) {
     const comment: LineComment = _.assign({}, initLineComment, {
-       budgetId: this.line.budgetId, userType: (this.napims === true) ? 'napims' : 'operator',
+      budgetId: this.line.budgetId, userType: (this.napims === true) ? 'napims' : 'operator',
       code: this.line.code, comment: data.message, commentStatus: '',
       createDate: new Date()
     });
     const newComments: LineComment[] = [];
     this.lineComments.push(comment);
+    this.lineComments1.push(comment);
     newComments.push(comment);
     this.form.reset();
     this.update.emit(comment);

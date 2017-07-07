@@ -84,11 +84,10 @@ export class ExplorationComponent implements OnInit, OnChanges,OnDestroy {
             this.budgetId = budget.id;
             switch (this.displayMode) {
               case DisplayModeEnum.Budget:
-                this.store.dispatch(new BudgetLineActions.LoadItemsAction(this.budgetId));
-
+                this.store.dispatch(new BudgetLineActions.LoadItemsAction(budget.id));
                 break;
               case DisplayModeEnum.Actual:
-                this.store.dispatch(new ActualActions.LoadItemsAction(this.budgetId));
+                this.store.dispatch(new ActualActions.LoadItemsAction(budget.id));
                 break;
               default:
                 break;

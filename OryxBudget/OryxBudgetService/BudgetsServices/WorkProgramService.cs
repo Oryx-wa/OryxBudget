@@ -104,29 +104,17 @@ namespace OryxBudgetService.BudgetsServices
             _workProgramStatusRepo.Add(entity);
         }
 
-        public WorkProgramStatus AddWorkProgramStatus(string dept, string status, Guid budgetId)
+        public WorkProgramStatus AddWorkProgramStatus(string dept, string status, Guid budgetId, string userId)
         {
-            var roleList = _userResolverService.GetRoles();
-            // string userType = "";
-            string userName = _userResolverService.GetUserName();
-            BudgetStatus bdStatus = BudgetStatus.SubCom;
-            foreach (var item in roleList)
-            {
-
-                if (item.EndsWith("Com"))
-                {
-                    Enum.TryParse(item, out BudgetStatus bdStatusOut);
-                    bdStatus = bdStatusOut;
-                }
-
-            }
+            
+            
             Enum.TryParse(dept, out WorkProgramTypeEnum workPrg);
-            Enum.TryParse(status, out SignOffStatus signOff);
+            // Enum.TryParse(status, out SignOffStatus signOff);
             WorkProgramStatus entity = new WorkProgramStatus();
             entity.BudgetId = budgetId;
             entity.WorkProgram = workPrg;
             entity.BudgetStatus = BudgetStatus.Operator;
-            _workProgramStatusRepo.Add(entity);
+            _workProgramStatusRepo.Add(entity, userId);
             return entity;
 
         }

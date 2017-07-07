@@ -27,7 +27,7 @@ namespace OryxWebApi.Controllers.BudgetsControllers
         {
             var status = Mapper.Map<WorkProgramStatus>(statusVm);
 
-           var ret = _workProgramService.AddWorkProgramStatus(statusVm.Department, statusVm.BudgetStatus, statusVm.BudgetId);
+           var ret = _workProgramService.AddWorkProgramStatus(statusVm.Department, statusVm.BudgetStatus, statusVm.BudgetId, "");
             _workProgramService.SaveChanges();
             return Json(ret);
         }

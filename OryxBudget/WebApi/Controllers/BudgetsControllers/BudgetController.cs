@@ -64,7 +64,7 @@ namespace OryxWebApi.Controllers.BudgetControllers
             if (vm.LineComments != null)
             {
                 var lineComment = Mapper.Map<IEnumerable<LineComment>>(vm.LineComments);
-                _budgetService.AddLineComments(lineComment); 
+                _budgetService.AddLineComments(lineComment);
             }
             if (vm.BudgetLine != null)
             {
@@ -89,7 +89,7 @@ namespace OryxWebApi.Controllers.BudgetControllers
         [HttpPost]
         [ValidateModelState]
         [Route("AddComment")]
-        public JsonResult AddComment( [FromBody] LineCommentViewModel vm)
+        public JsonResult AddComment([FromBody] LineCommentViewModel vm)
         {
 
             var lineComment = Mapper.Map<LineComment>(vm);
@@ -184,7 +184,7 @@ namespace OryxWebApi.Controllers.BudgetControllers
             foreach (var item in dbStatus)
             {
                 ret.Add(new StatusHistoryViewModel(item));
-            }             
+            }
             return Json(ret);
         }
 
@@ -237,7 +237,7 @@ namespace OryxWebApi.Controllers.BudgetControllers
             return Json("File Uploaded"); //null just to make error free
         }
 
-        
+
 
         public JsonResult AddActualViaTemplate(IFormFile file, string lineId)
         {
@@ -380,7 +380,7 @@ namespace OryxWebApi.Controllers.BudgetControllers
         public async Task<FileResult> DownloadSignOff(string budgetId)
         {
             var result = await _budgetService.DownloadSignOff(budgetId);
-            
+
             return new FileStreamResult(result, "application/pdf");
         }
     }

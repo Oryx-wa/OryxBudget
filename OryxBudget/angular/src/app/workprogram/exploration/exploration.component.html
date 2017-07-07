@@ -51,7 +51,8 @@
   <div class="col l9">
     <div *ngIf="displayMode === displayModeEnum.Budget">
       <div *ngIf="lines$ | async;let lines; else loading2">
-        <app-line-details2 [lines]="lines" [budgetId]="budgetId" [type]="'budget'">
+        <app-line-details2 [lines]="lines" [budgetId]="budgetId" [type]="'budget'" 
+          [workProgramStatus]="workProgramStatus$ | async">
         </app-line-details2>
       </div>
     </div>

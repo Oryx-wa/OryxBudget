@@ -20,6 +20,7 @@ export const UPDATE_STATUS = '[BudgetLine] Update Status';
 export const UPDATE_STATUS_VALUE = '[BudgetLine] Update Status with value';
 export const RESET_APPROVAL_UPDATES = '[BudgetLine] Reset approval updates';
 export const SAVE_APPROVAL_UPDATES = '[BudgetLine] Save approval updates';
+export const SAVE_APPROVAL_UPDATES_SUCCESS = '[BudgetLine] Save approval updates success';
 export const SIGN_OFF = '[Budget Line] Sign off';
 export const SIGN_OFF_SUCCESS = '[Budget Line] Sign Off Success';
 export const FILTER = '[Budget Line] filtered';
@@ -111,6 +112,8 @@ export class SaveApprovalUpdates implements Action {
     readonly type = SAVE_APPROVAL_UPDATES;
     constructor(public payload = '') { }
 }
+
+
 
 export class SignOffAction implements Action {
     readonly type = SIGN_OFF;

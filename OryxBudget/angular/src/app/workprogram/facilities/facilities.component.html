@@ -3,6 +3,7 @@
     <app-logo></app-logo>
   </div>
   <div class="col l9">
+    
     <app-sub-navbar (budgetSelected)="selectBudget($event)"></app-sub-navbar>
   </div>
 </div>
@@ -10,6 +11,9 @@
   <div class="col l3">
     <div class="row">
       <div class="filter-elements">
+        <div *ngIf="workProgramStatus$ | async; let status;" class="row">
+          <h6>Status: {{status}}</h6>
+        </div>
         <div class="row">
           <a class="btn waves-effect waves-light orange" (click)="showExploration('AFE')">Exploration Details</a>
         </div>
@@ -20,25 +24,21 @@
           <a class="btn waves-effect waves-light blue" (click)="openFirst()">Sign Off</a>
         </div>
 
-        <form *ngIf="showApproval" materialize materialize="updateTextFields" [formGroup]="form" (ngSubmit)="save(form.value)">
-          <div class="row">
-            <div class="input-field col l12 m12 s12">
-              <ul class="collection">
-                <li class="collection-item">Something 1</li>
-                <li class="collection-item">Something 2</li>
-                <li class="collection-item">Something 3</li>
-              </ul>
+        <div *ngIf="showApproval" class="row" >
+          <div *ngIf="unTouched$ | async; let lines;" class="row">
+            <div *ngIf="lines.length > 0">
+              <h6> {{lines.length}} lines will be automatically approved if you sign-off </h6>
             </div>
           </div>
           <div class="row">
             <div class="col l6">
-              <button [disabled]="form.invalid || form.pristine" class="wave-effect wave-light btn" type="submit" name="action">Print</button>
+              <button class="wave-effect wave-light btn" (click)="print()" name="action">Print</button>
             </div>
             <div class="col l6">
-              <button [disabled]="form.invalid || form.pristine" class="right wave-effect wave-light btn" type="submit" name="action">Signoff</button>
+              <button class="right wave-effect wave-light btn" (click)="signOff()" name="action">Signoff</button>
             </div>
           </div>
-        </form>
+        </div>
 
 
 
@@ -48,7 +48,8 @@
   <div class="col l9">
     <div *ngIf="displayMode === displayModeEnum.Budget">
       <div *ngIf="lines$ | async;let lines; else loading2">
-        <app-line-details2 [lines]="lines" [budgetId]="budgetId" [type]="'budget'">
+        <app-line-details2 [lines]="lines" [budgetId]="budgetId" [type]="'budget'"
+          [workProgramStatus]="workProgramStatus$ | async">
         </app-line-details2>
       </div>
     </div>
