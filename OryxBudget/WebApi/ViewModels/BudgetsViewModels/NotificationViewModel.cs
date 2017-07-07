@@ -22,6 +22,11 @@ namespace OryxWebApi.ViewModels.BudgetsViewModels
         [MaxLength(100), Required]
         public string Username { get; set; }
 
+        [MaxLength(50), Required]
+        public string OperatorId { get; set; }
+
+        public int WorkProgramId { get; set; }
+
         public bool IsRead { get; set; }
     }
 }
