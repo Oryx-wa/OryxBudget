@@ -45,6 +45,14 @@ $roboto-font-path: "~materialize-css/dist/fonts/roboto/"; /* This is needed so t
   -o-background-size: cover;
   background-size: cover;height:350px;
 }
+
+.malcom{
+    background:url('assets/images/malcom.jpg')no-repeat center center fixed; 
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;height:350px;
+}
 .dropdown-content {
   background-color: #FFFFFF;
   margin: 0;
