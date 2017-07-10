@@ -8,7 +8,7 @@
 </div>
 <div class="row">
   <div class="col l3">
-    
+
     <div class="row">
       <div class="filter-elements">
         <div *ngIf="workProgramStatus$ | async; let status;" class="row">
@@ -37,9 +37,42 @@
               <button class="wave-effect wave-light btn" (click)="print()" name="action">Print</button>
             </div>
             <div class="col l6">
-              <button class="right wave-effect wave-light btn" (click)="signOff()" name="action">Signoff</button>
+              <button class="right wave-effect wave-light btn" (click)="displayPopup()" name="action">Signoff</button>
             </div>
           </div>
+        </div>
+
+        <div *ngIf="displaySignoffDlg">
+          <app-dialog [(visible)]="displaySignoffDlg">
+            <div materialize class="col s12">
+                <div class="">
+                  <div class="card oryx-card-radius">
+
+                    <div class="col s12">
+                      <div class="card oryx-card-radius">
+                        <div class="card content">
+                        <div class="row">
+                          <label class="upload-button is-pulled-left">
+                              <input type="file" multiple>
+                            </label>
+                        </div>
+                        <div class="row">
+                          <div class="col l6">
+                          <div class="input-field col l6 m6 s12 ">
+                            <button type="button" class="wave-effect wave-light btn">Cancel</button>
+                          </div>
+                          <div class="input-field col l6 m6 s12 ">
+                            <button type="button" class="wave-effect wave-light btn" (click)="signOff()">Submit & Signoff</button>
+                          </div>
+                          </div>
+                        </div>
+                      </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+          </app-dialog>
         </div>
 
 
@@ -51,7 +84,7 @@
   <div class="col l9">
     <div *ngIf="displayMode === displayModeEnum.Budget">
       <div *ngIf="lines$ | async;let lines; else loading2">
-        <app-line-details2 [lines]="lines" [budgetId]="budgetId" [type]="'budget'" 
+        <app-line-details2 [lines]="lines" [budgetId]="budgetId" [type]="'budget'"
           [workProgramStatus]="workProgramStatus$ | async">
         </app-line-details2>
       </div>

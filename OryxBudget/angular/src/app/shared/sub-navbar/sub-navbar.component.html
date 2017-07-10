@@ -4,8 +4,8 @@
       <div class=" input-field col s12 m3 white black-text ">
         <select materialize="material_select" [materializeSelectOptions]=" budgets" (change)="itemSelected($event.target.value)"
           id="budget" name="budget" formControlName="budget">
-              							<option  value="" disabled selected > </option>	
-                             <option *ngFor="let t of budgets " [value]="t.id">{{t.description}}</option>											
+              							<option  value="" disabled selected > </option>
+                             <option *ngFor="let t of budgets " [value]="t.id">{{t.description}}</option>
 									</select>
         <label for="budget" data-error="Please enter a valid task">Budget</label>
       </div>
@@ -56,11 +56,11 @@
         </div>
         <div class="col l3">
           <div class="input-field row col l10 right">
-            <select materialize="material_select" id="status" name="status" formControlName='status'>										
-              							<option  value="" disabled selected > </option>	
+            <select materialize="material_select" id="status" name="status" formControlName='status'>
+              							<option  value="" disabled selected > </option>
 								<option  [value]="1" class="green-text">Disputes</option>
-                <option  [value]="2" class="green-text">Clear Filter</option>         
-                
+                <option  [value]="2" class="green-text">Clear Filter</option>
+
 							</select>
             <label for="status" data-error="Please select an item frmm the list"></label>
           </div>

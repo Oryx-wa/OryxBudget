@@ -47,9 +47,9 @@ namespace OryxWebApi.Controllers.BudgetsControllers
         }
 
         [HttpGet, Route("GetUnreadNotifications")]
-        public JsonResult GetAllUnreadNotifications(string operatorId, int workProgramId)
+        public JsonResult GetAllUnreadNotifications(string operatorId, string workProgram)
         {
-            var ret = _notificationService.GetAllUnreadNotifications(operatorId, workProgramId);
+            var ret = _notificationService.GetAllUnreadNotifications(operatorId, workProgram);
             return Json(ret);
         }
 

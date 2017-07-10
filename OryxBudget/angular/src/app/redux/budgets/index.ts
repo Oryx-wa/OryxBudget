@@ -10,6 +10,7 @@ export * from './budgetRun';
 //export * from './period';
 export * from './lineComment';
 //export * from './statusHistory';
+export * from './notification';
 
 
 import { combineReducers } from '@ngrx/store';
@@ -24,6 +25,7 @@ import { BudgetLineReducer, BudgetLineState, initBudgetLineState } from './budge
 import { BudgetRunReducer, BudgetRunState, initBudgetRunState } from './budgetRun/budgetRun.reducer';
 // import { CategoryReducer, CategoryState } from './category/category.reducer';
  import { LineCommentReducer, LineCommentState } from './lineComment/lineComment.reducer';
+ import { NotificationReducer, INotificationState, initNotificationState } from './notification/notification.reducer';
 // import { PeriodReducer, PeriodState } from './period/period.reducer';
 // import { StatusHistoryReducer, StatusHistoryState } from './statusHistory/statusHistory.reducer';
 
@@ -38,6 +40,7 @@ const reducer = {
     budgetRun: BudgetRunReducer,
     // category: CategoryReducer,
     lineComment: LineCommentReducer,
+    notification: NotificationReducer
     // period: PeriodReducer,
     // statusHistory: StatusHistoryReducer
 };
@@ -55,6 +58,7 @@ export interface BdState {
     budgetRun: BudgetRunState;
     // category: CategoryState;
     lineComment: LineCommentState;
+    notification: INotificationState;
     // period: PeriodState;
     // statusHistory: StatusHistoryState;
 }
