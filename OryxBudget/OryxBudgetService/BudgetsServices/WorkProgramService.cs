@@ -106,8 +106,8 @@ namespace OryxBudgetService.BudgetsServices
 
         public WorkProgramStatus AddWorkProgramStatus(string dept, string status, Guid budgetId, string userId)
         {
-            
-            
+
+
             Enum.TryParse(dept, out WorkProgramTypeEnum workPrg);
             // Enum.TryParse(status, out SignOffStatus signOff);
             WorkProgramStatus entity = new WorkProgramStatus();
@@ -133,14 +133,33 @@ namespace OryxBudgetService.BudgetsServices
             var dept = _userResolverService.GetDepartment();
             Enum.TryParse(role, out BudgetStatus bdStatus);
             Enum.TryParse(dept, out WorkProgramTypeEnum workPrg);
-            var wrkPrg = _workProgramStatusRepo.GetAll()
-                .Where(c => c.BudgetId == id && c.WorkProgram == workPrg)
-                .FirstOrDefault();
+            
+            if (bdStatus == BudgetStatus.MalCom)
+            {
+                var wrkPrgs = _workProgramStatusRepo.GetAll()
+                      .Where(c => c.BudgetId == id);
+
+                foreach (var item in wrkPrgs)
+                {
+                    item.BudgetStatus = BudgetStatus.Final;
+                    _workProgramStatusRepo.Update(item); 
+                }
+            }
+            else
+            {
+               
+                var wrkPrg = _workProgramStatusRepo.GetAll()
+                       .Where(c => c.BudgetId == id && c.WorkProgram == workPrg)
+                       .FirstOrDefault();
+                wrkPrg.BudgetStatus = bdStatus;
+                _workProgramStatusRepo.Update(wrkPrg);
+
+            }
             //WorkProgramStatusHistory hist = new WorkProgramStatusHistory();
             // hist.ProgramStatus = SignOffStatus.Approved;
             //wrkPrg.StatusHistory.Add(hist);
-            wrkPrg.BudgetStatus = bdStatus;
-            _workProgramStatusRepo.Update(wrkPrg);
+           
+            
         }
 
         public IEnumerable<WorkProgramStatus> GetAllWorkProgramStatuses()
@@ -152,7 +171,7 @@ namespace OryxBudgetService.BudgetsServices
         {
             var roleList = _userResolverService.GetRoles();
             WorkProgramTypeEnum t = WorkProgramTypeEnum.Header;
-           
+
             foreach (var item in roleList)
             {
                 if (Enum.TryParse(item, out WorkProgramTypeEnum wkTypeOut))
@@ -162,7 +181,7 @@ namespace OryxBudgetService.BudgetsServices
 
             }
             return this.GetAllWorkProgramStatuses()
-                .Where(s => s.BudgetId == new Guid(budgetId) && s.WorkProgram == t )
+                .Where(s => s.BudgetId == new Guid(budgetId) && s.WorkProgram == t)
                 .FirstOrDefault();
         }
 

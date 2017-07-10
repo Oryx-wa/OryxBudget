@@ -153,7 +153,6 @@ export class LineDetails2Component implements OnInit, OnChanges, OnDestroy {
     // console.log(changes);
     console.log(this.allBudgetStatus);
     switch (this.type) {
-      
       case 'budget':
         if (changes['lines']) {
           if (changes['lines'].currentValue.length > 0) {
@@ -333,6 +332,29 @@ export class LineDetails2Component implements OnInit, OnChanges, OnDestroy {
           }
         ]
       },
+      {
+        headerName: 'Management Commitee',
+        children: [
+          {
+            headerName: 'Budget LC', field: 'finalBudgetLC',
+            width: this.colWidth,
+            cellRendererFramework: CurrencyComponent,
+            currency: 'NGN', hidden: true,
+          },
+          {
+            headerName: 'Budget USD', field: 'finalBudgetUSD',
+            width: this.colWidth,
+            cellRendererFramework: CurrencyComponent,
+            currency: 'USD', hidden: true,
+          },
+          {
+            headerName: 'Budget FC', field: 'finalBudgetFC',
+            width: this.colWidth,
+            cellRendererFramework: CurrencyComponent,
+            currency: 'USD', hidden: true,
+          }
+        ]
+      },
 
 
 
@@ -373,6 +395,19 @@ export class LineDetails2Component implements OnInit, OnChanges, OnDestroy {
         this.gridOptions.columnApi.setColumnsVisible(
           ['opBudgetFC', 'subComBudgetFC', 'tecComBudgetLC',
             'tecComBudgetUSD', 'tecComBudgetFC'],
+          true);
+      }
+      if (this.showMalCom) {
+        this.gridOptions.columnApi.setColumnsVisible(
+          ['opBudgetLC', 'opBudgetUSD'],
+          false);
+        this.gridOptions.columnApi.setColumnsVisible(
+          ['subComBudgetLC', 'subComBudgetUSD'],
+          false);
+
+        this.gridOptions.columnApi.setColumnsVisible(
+          ['opBudgetFC', 'subComBudgetFC', 'tecComBudgetLC',
+            'finalBudgetUSD', 'finalBudgetFC', 'finalBudgetFC'],
           true);
       }
 
@@ -506,7 +541,7 @@ export class LineDetails2Component implements OnInit, OnChanges, OnDestroy {
         children: [
 
           {
-            headerName: 'Budget FC', field: 'opBudgetFC',
+            headerName: 'Budget FC', field: 'finalBugetFC',
             width: this.colWidth,
             cellRendererFramework: CurrencyComponent,
             currency: 'USD'

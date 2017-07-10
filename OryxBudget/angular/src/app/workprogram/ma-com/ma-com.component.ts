@@ -1,4 +1,4 @@
-import { Component, OnInit, EventEmitter, ChangeDetectionStrategy, OnDestroy } from '@angular/core';
+import { Component, OnInit, EventEmitter, ChangeDetectionStrategy, OnDestroy, OnChanges } from '@angular/core';
 import { FormGroup, FormControl, FormBuilder, FormArray, Validators } from '@angular/forms';
 import { MaterializeDirective, MaterializeAction } from 'angular2-materialize';
 import { Observable } from 'rxjs/Observable';
@@ -16,7 +16,7 @@ import { DisplayModeEnum } from '../../shared/shared-enum.enum';
   styleUrls: ['./ma-com.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class MaComComponent implements OnInit {
+export class MaComComponent implements OnInit, OnChanges {
   public showApproval = false;
   form: FormGroup;
   budget$: Observable<Budget>;
@@ -33,6 +33,7 @@ export class MaComComponent implements OnInit {
   public tecCom$: Observable<boolean>;
   public malCom$: Observable<boolean>;
   public display$: Observable<string>;
+
 
   public dept$: Observable<string>;
   public operator$: Observable<boolean>;
@@ -122,6 +123,14 @@ export class MaComComponent implements OnInit {
       }
     })
   }
+
+  ngOnChanges(changes: any) {
+    if (this.displayMode === DisplayModeEnum.Budget) {
+      this.store.dispatch(new BudgetLineActions.LoadItemsAction(this.budgetId));
+      this.store.dispatch(new BudgetActions.GetBudgetAllWorkProgamStatusAction(''));
+    }
+  }
+
   openFirst() {
     this.showApproval = true;
   }
@@ -150,7 +159,7 @@ export class MaComComponent implements OnInit {
 
     this.store.dispatch(new BudgetLineActions.UpdateUnTouchedAction(this.status));
     this.store.dispatch(new BudgetLineActions.SignOffAction(''));
-    this.store.dispatch(new BudgetActions.SelectItemAction(this.budgetId));
+    // this.store.dispatch(new BudgetActions.SelectItemAction(this.budgetId));
   }
 
   ngOnDestroy() {

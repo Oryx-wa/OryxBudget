@@ -175,6 +175,9 @@ function updateStatus(bdLine: BudgetLines, status: number) {
                             bdLine.subComBudgetFC : bdLine.tecComBudgetLC,
                         malComBudgetUSD: (bdLine.tecComBudgetUSD === 0) ?
                             bdLine.subComBudgetFC : bdLine.tecComBudgetUSD,
+                        finalBudgetFC: bdLine.malComBudgetFC,
+                        finalBudgetLC: bdLine.malComBudgetLC,
+                        finalBudgetUSD: bdLine.malComBudgetUSD,
                         touched: true,
                     }),
                 budgetLineSchema));
