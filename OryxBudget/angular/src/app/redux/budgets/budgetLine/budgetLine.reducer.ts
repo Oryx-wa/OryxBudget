@@ -68,37 +68,7 @@ export const BudgetLineReducer: ActionReducer<BudgetLineState> = (state: BudgetL
         case AllActions.UPDATE_STATUS:
             const line = () => {
                 const bdLine = state.entities[action.payload.code];
-                switch (bdLine.workProgramStatus) {
-                    case 1:
-                        return _.assign({}, normalize(
-                            _.assign({}, bdLine,
-                                {
-                                    lineStatus: action.payload.status,
-                                    subComBudgetFC: bdLine.opBudgetFC,
-                                    subComBudgetLC: bdLine.opBudgetLC,
-                                    subComBudgetUSD: bdLine.opBudgetUSD,
-                                    touched: true,
-                                }),
-                            budgetLineSchema));
-                    case 2:
-                        return _.assign({}, normalize(
-                            _.assign({}, bdLine,
-                                {
-                                    lineStatus: action.payload.status,
-                                    tecComBudgetFC: (bdLine.subComBudgetFC === 0) ?
-                                        bdLine.opBudgetFC : bdLine.subComBudgetFC,
-                                    tecComBudgetLC: (bdLine.subComBudgetLC === 0) ?
-                                        bdLine.opBudgetLC : bdLine.subComBudgetLC,
-                                    tecComBudgetUSD: (bdLine.subComBudgetUSD === 0) ?
-                                        bdLine.opBudgetUSD : bdLine.subComBudgetUSD,
-                                    touched: true,
-                                }),
-                            budgetLineSchema));
-                    default:
-                        return _.assign({}, normalize(line,
-                            budgetLineSchema));
-
-                }
+                return updateStatus(bdLine, action.payload.status);
             };
             return Object.assign({}, state, {
                 ids: state.ids,
@@ -110,38 +80,27 @@ export const BudgetLineReducer: ActionReducer<BudgetLineState> = (state: BudgetL
         case AllActions.UPDATE_STATUS_VALUE:
             const line1 = () => {
                 const bdLine = state.entities[action.payload.code];
-                switch (bdLine.workProgramStatus) {
-                    case 1:
-                        return _.assign({}, normalize(
-                            _.assign({}, bdLine,
-                                {
-                                    lineStatus: action.payload.lineStatus,
-                                    subComBudgetFC: action.payload.subComBudgetFC,
-                                    subComBudgetLC: action.payload.subComBudgetLC,
-                                    subComBudgetUSD: action.payload.subComBudgetUSD,
-                                    touched: true,
-                                }),
-                            budgetLineSchema));
-                    case 2:
-                        return _.assign({}, normalize(
-                            _.assign({}, bdLine,
-                                {
-                                    lineStatus: action.payload.lineStatus,
-                                    tecComBudgetFC: action.payload.tecComBudgetFC,
-                                    tecComBudgetLC: action.payload.tecComBudgetLC,
-                                    tecComBudgetUSD: action.payload.tecComBudgetUSD,
-                                    touched: true,
-                                }),
-                            budgetLineSchema));
-                    default:
-                        return _.assign({}, normalize(line,
-                            budgetLineSchema));
+                return updateStatusWithValue(bdLine, bdLine.workProgramStatus, action.payload)
 
-                }
             };
             return Object.assign({}, state, {
                 ids: state.ids,
                 entities: _.merge({}, state.entities, line1().entities.BudgetLine),
+                lastUpdate: new Date(),
+                selectedId: state.selectedId,
+                touched: true
+            });
+        case AllActions.UPDATE_UNTOUCHED:
+            const untouched = () => {
+                const ret = [];
+                state.ids.map(id => {
+                    ret.push(updateUnTouched(state.entities[id], action.payload));
+                });
+                return normalize(ret, arrayOfBudgetLine);
+            };
+            return Object.assign({}, state, {
+                ids: state.ids,
+                entities: _.merge({}, state.entities, untouched().entities.BudgetLine),
                 lastUpdate: new Date(),
                 selectedId: state.selectedId,
                 touched: true
@@ -151,7 +110,6 @@ export const BudgetLineReducer: ActionReducer<BudgetLineState> = (state: BudgetL
                 entities: state.untouched,
                 touched: false
             })
-
 
         default:
             return state;
@@ -178,3 +136,180 @@ export const getSelectedBudgetLine
         }
 
     });
+
+function updateStatus(bdLine: BudgetLines, status: number) {
+    switch (bdLine.workProgramStatus) {
+        case 1:
+            return _.assign({}, normalize(
+                _.assign({}, bdLine,
+                    {
+                        lineStatus: status,
+                        subComBudgetFC: bdLine.opBudgetFC,
+                        subComBudgetLC: bdLine.opBudgetLC,
+                        subComBudgetUSD: bdLine.opBudgetUSD,
+                        touched: true,
+                    }),
+                budgetLineSchema));
+        case 2:
+            return _.assign({}, normalize(
+                _.assign({}, bdLine,
+                    {
+                        lineStatus: status,
+                        tecComBudgetFC: (bdLine.subComBudgetFC === 0) ?
+                            bdLine.opBudgetFC : bdLine.subComBudgetFC,
+                        tecComBudgetLC: (bdLine.subComBudgetLC === 0) ?
+                            bdLine.opBudgetLC : bdLine.subComBudgetLC,
+                        tecComBudgetUSD: (bdLine.subComBudgetUSD === 0) ?
+                            bdLine.opBudgetUSD : bdLine.subComBudgetUSD,
+                        touched: true,
+                    }),
+                budgetLineSchema));
+        case 3:
+            return _.assign({}, normalize(
+                _.assign({}, bdLine,
+                    {
+                        lineStatus: status,
+                        malComBudgetFC: (bdLine.tecComBudgetFC === 0) ?
+                            bdLine.subComBudgetFC : bdLine.tecComBudgetFC,
+                        malComBudgetLC: (bdLine.tecComBudgetLC === 0) ?
+                            bdLine.subComBudgetFC : bdLine.tecComBudgetLC,
+                        malComBudgetUSD: (bdLine.tecComBudgetUSD === 0) ?
+                            bdLine.subComBudgetFC : bdLine.tecComBudgetUSD,
+                        touched: true,
+                    }),
+                budgetLineSchema));
+        case 4:
+            return _.assign({}, normalize(
+                _.assign({}, bdLine,
+                    {
+                        lineStatus: status,
+                        finalBudgetFC: (bdLine.malComBudgetFC === 0) ?
+                            bdLine.tecComBudgetFC : bdLine.malComBudgetFC,
+                        finalBudgetLC: (bdLine.tecComBudgetLC === 0) ?
+                            bdLine.subComBudgetFC : bdLine.tecComBudgetLC,
+                        finalBudgetUSD: (bdLine.malComBudgetUSD === 0) ?
+                            bdLine.tecComBudgetFC : bdLine.malComBudgetUSD,
+                        touched: true,
+                    }),
+                budgetLineSchema));
+        default:
+            return _.assign({}, normalize(bdLine,
+                budgetLineSchema));
+
+    }
+}
+
+function updateStatusWithValue(bdLine: BudgetLines, status: number, value: BudgetLines) {
+    switch (bdLine.workProgramStatus) {
+        case 1:
+            return _.assign({}, normalize(
+                _.assign({}, bdLine,
+                    {
+                        lineStatus: status,
+                        subComBudgetFC: value.subComBudgetFC,
+                        subComBudgetLC: value.subComBudgetLC,
+                        subComBudgetUSD: value.subComBudgetUSD,
+                        touched: true,
+                    }),
+                budgetLineSchema));
+        case 2:
+            return _.assign({}, normalize(
+                _.assign({}, bdLine,
+                    {
+                        lineStatus: status,
+                        tecComBudgetFC: value.tecComBudgetFC,
+                        tecComBudgetLC: value.tecComBudgetLC,
+                        tecComBudgetUSD: value.tecComBudgetUSD,
+                        touched: true,
+                    }),
+                budgetLineSchema));
+        case 3:
+            return _.assign({}, normalize(
+                _.assign({}, bdLine,
+                    {
+                        lineStatus: status,
+                        malComBudgetFC: value.malComBudgetFC,
+                        malComBudgetLC: value.malComBudgetLC,
+                        malComBudgetUSD: value.malComBudgetUSD,
+                        touched: true,
+                    }),
+                budgetLineSchema));
+        case 4:
+            return _.assign({}, normalize(
+                _.assign({}, bdLine,
+                    {
+                        lineStatus: status,
+                        finalBudgetFC: value.finalBudgetFC,
+                        finalBudgetLC: value.finalBudgetLC,
+                        finalBudgetUSD: value.finalBudgetUSD,
+                        touched: true,
+                    }),
+                budgetLineSchema));
+        default:
+            return _.assign({}, normalize(bdLine,
+                budgetLineSchema));
+
+    }
+}
+
+function updateUnTouched(bdLine: BudgetLines, status: number) {
+    switch (bdLine.workProgramStatus) {
+        case 1:
+            return (bdLine.subComBudgetFC === 0) ?
+                _.assign({}, bdLine,
+                    {
+                        lineStatus: status,
+                        subComBudgetFC: bdLine.opBudgetFC,
+                        subComBudgetLC: bdLine.opBudgetLC,
+                        subComBudgetUSD: bdLine.opBudgetUSD,
+                        touched: true,
+                    }) :
+                bdLine;
+
+        case 2:
+            return (bdLine.tecComBudgetFC === 0) ?
+                _.assign({}, bdLine,
+                    {
+                        lineStatus: status,
+                        tecComBudgetFC: (bdLine.subComBudgetFC === 0) ?
+                            bdLine.opBudgetFC : bdLine.subComBudgetFC,
+                        tecComBudgetLC: (bdLine.subComBudgetLC === 0) ?
+                            bdLine.opBudgetLC : bdLine.subComBudgetLC,
+                        tecComBudgetUSD: (bdLine.subComBudgetUSD === 0) ?
+                            bdLine.opBudgetUSD : bdLine.subComBudgetUSD,
+                        touched: true,
+                    }) :
+                bdLine;
+        case 3:
+            return (bdLine.malComActualFC === 0) ?
+                _.assign({}, bdLine,
+                    {
+                        lineStatus: status,
+                        malComBudgetFC: (bdLine.tecComBudgetFC === 0) ?
+                            bdLine.subComBudgetFC : bdLine.tecComBudgetFC,
+                        malComBudgetLC: (bdLine.tecComBudgetLC === 0) ?
+                            bdLine.subComBudgetFC : bdLine.tecComBudgetLC,
+                        malComBudgetUSD: (bdLine.tecComBudgetUSD === 0) ?
+                            bdLine.subComBudgetFC : bdLine.tecComBudgetUSD,
+                        touched: true,
+                    }) :
+                bdLine;
+        case 4:
+            return (bdLine.finalBudgetFC === 0) ?
+                _.assign({}, bdLine,
+                    {
+                        lineStatus: status,
+                        finalBudgetFC: (bdLine.malComBudgetFC === 0) ?
+                            bdLine.tecComBudgetFC : bdLine.malComBudgetFC,
+                        finalBudgetLC: (bdLine.tecComBudgetLC === 0) ?
+                            bdLine.subComBudgetFC : bdLine.tecComBudgetLC,
+                        finalBudgetUSD: (bdLine.malComBudgetUSD === 0) ?
+                            bdLine.tecComBudgetFC : bdLine.malComBudgetUSD,
+                        touched: true,
+                    }) :
+                bdLine;
+        default:
+            return bdLine;
+
+    }
+}

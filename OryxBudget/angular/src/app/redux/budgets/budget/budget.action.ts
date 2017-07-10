@@ -19,6 +19,9 @@ export const GET_WORKPROGRAM_STATUS = '[Budget] Get Work program status';
 export const GET_WORKPROGRAM_STATUS_SUCCESS = '[Budget] Get Work program status success';
 export const GET_PRINTOUT = '[Budget] Get print out';
 export const GET_PRINOUT_SUCCESS = '[Budget] Get print out success';
+export const GET_BUDGET_ALL_WORKPROGRAM_STATUS = '[Budget] Get all work program status';
+export const GET_BUDGET_ALL_WORKPROGRAM_STATUS_SUCCESS = '[Budget] Get all work program status success';
+
 
 
 
@@ -105,6 +108,16 @@ export class GetPrintOutSuccessAction implements Action {
     constructor(public payload: any) { }
 }
 
+export class GetBudgetAllWorkProgamStatusAction implements Action {
+    readonly type = GET_BUDGET_ALL_WORKPROGRAM_STATUS;
+    constructor(public payload = '') { }
+}
+
+export class GetBudgetAllWorkProgamStatusSuccessAction implements Action {
+    readonly type = GET_BUDGET_ALL_WORKPROGRAM_STATUS_SUCCESS;
+    constructor(public payload: any) { }
+}
+
 
 export type Actions
     = SearchAction
@@ -123,5 +136,7 @@ export type Actions
     | GetWorkProgramStatusAction
     | GetWorkProgramStatusSuccessAction
     | GetPrintOutAction
-    | GetPrintOutSuccessAction;
+    | GetPrintOutSuccessAction
+    | GetBudgetAllWorkProgamStatusAction
+    | GetBudgetAllWorkProgamStatusSuccessAction;
 

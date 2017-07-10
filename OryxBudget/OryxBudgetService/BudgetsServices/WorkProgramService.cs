@@ -166,6 +166,12 @@ namespace OryxBudgetService.BudgetsServices
                 .FirstOrDefault();
         }
 
+        public IEnumerable<WorkProgramStatus> GetAllStatusForBudget(string budgetId)
+        {
+            return this.GetAllWorkProgramStatuses()
+               .Where(s => s.BudgetId == new Guid(budgetId));
+        }
+
         public WorkProgramStatus GetWorkProgramStatusesById(Guid id)
         {
             return _workProgramStatusRepo.Get(id);

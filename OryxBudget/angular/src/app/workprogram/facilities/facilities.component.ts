@@ -25,6 +25,8 @@ export class FacilitiesComponent implements OnInit, OnDestroy {
    unTouched$: Observable<BudgetLines[]>;
   actuals$: Observable<Actual[]>;
   workProgramStatus$: Observable<string>;
+  workProgramNumber$: Observable<number>;
+  status: number;
   budgetId = '';
 
   public napims$: Observable<boolean>;
@@ -74,7 +76,9 @@ export class FacilitiesComponent implements OnInit, OnDestroy {
 
     });
     this.budget$ = this.store.select(BudgetSelector.selectedBudget);
-     this.workProgramStatus$ = this.store.select(BudgetSelector.workProgramStatus);
+    this.workProgramStatus$ = this.store.select(BudgetSelector.workProgramStatus);
+    this.workProgramNumber$ = this.store.select(BudgetSelector.workProgramStatusNumber);
+     this.workProgramNumber$.subscribe(status => this.status = status);
     this.budget$
       .takeWhile(() => this.alive)
       .subscribe(budget => {
@@ -138,6 +142,8 @@ export class FacilitiesComponent implements OnInit, OnDestroy {
   }
 
   signOff() {
+   
+    this.store.dispatch(new BudgetLineActions.UpdateUnTouchedAction(this.status));
     this.store.dispatch(new BudgetLineActions.SignOffAction(''));
     this.store.dispatch(new BudgetActions.SelectItemAction(this.budgetId));
   }

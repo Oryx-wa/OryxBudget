@@ -1,16 +1,18 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { D3Service } from 'd3-ng2-service';
 import { BusinessProcessSVGComponent } from './business-process-svg/business-process-svg.component';
 
-import { StartProcessComponent } from './start-process/start-process.component';
-import { InProcessComponent } from './in-process/in-process.component';
+
+import { BarChartComponent } from './bar-chart/bar-chart.component';
 
 @NgModule({
   imports: [
     CommonModule
   ],
-  declarations: [BusinessProcessSVGComponent, StartProcessComponent, InProcessComponent],
-  exports: [BusinessProcessSVGComponent]
-  
+  declarations: [BusinessProcessSVGComponent, BarChartComponent],
+  providers: [D3Service],
+  exports: [BusinessProcessSVGComponent, BarChartComponent]
+
 })
 export class SvgAssetsModule { }

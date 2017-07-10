@@ -70,16 +70,15 @@ export class BudgetLineEffects implements OnDestroy {
             const ret: BudgetLines[] = [];
             state.budgetLine.ids.map(id => {
                 const line = state.budgetLine.entities[id];
-                if (line.lineStatus === 1) {
-                    const newLine = _.assign({}, line, { lineStatus: 3 });
-                    ret.push(newLine);
-                }
+                const newLine = _.assign({}, line, { lineStatus: 3 });
+                ret.push(newLine);
+
             });
             console.log(ret);
             return { budgetId: state.budget.selectedId, data: ret };
         })
         .mergeMap(payload => this.budgetLineService.signOff(payload.budgetId, payload.data)
-           .withLatestFrom(this.store$.select(state => state.budgets.budget))
+            .withLatestFrom(this.store$.select(state => state.budgets.budget))
             .map(([action, budget]) => {
                 return budget.selectedId;
             })

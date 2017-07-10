@@ -24,6 +24,7 @@ export const SAVE_APPROVAL_UPDATES_SUCCESS = '[BudgetLine] Save approval updates
 export const SIGN_OFF = '[Budget Line] Sign off';
 export const SIGN_OFF_SUCCESS = '[Budget Line] Sign Off Success';
 export const FILTER = '[Budget Line] filtered';
+export const UPDATE_UNTOUCHED = '[Budget Line] Update all untouched';
 
 
 export class SearchAction implements Action {
@@ -129,6 +130,11 @@ export class FilterAction implements Action {
     constructor(public payload: boolean) { }
 }
 
+export class UpdateUnTouchedAction implements Action {
+    readonly type = UPDATE_UNTOUCHED;
+    constructor(public payload: number) { }
+}
+
 export type Actions
     = SearchAction
     | SearchCompleteAction
@@ -149,5 +155,6 @@ export type Actions
     | SaveApprovalUpdates
     | SignOffAction
     | SignOffSuccessAction
-    | FilterAction;
+    | FilterAction
+    | UpdateUnTouchedAction;
 

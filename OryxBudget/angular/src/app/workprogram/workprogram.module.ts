@@ -9,6 +9,7 @@ import { WorkprogramComponent } from './workprogram.component';
 import { WpDashboardComponent } from './wp-dashboard/wp-dashboard.component';
 import { ExplorationModule } from './exploration/exploration.module';
 import { FacilitiesModule } from './facilities/facilities.module';
+import { MacomModule } from '././ma-com/macom.module'
 import { WorkProgramRoutingModule } from './workprogram.routing.module';
 import { WellComponent } from './well/well.component';
 import { CurrencyComponent } from './../shared/renderers/currency.component';
@@ -17,9 +18,10 @@ import { TextComponent } from './../shared/renderers/text.component';
 import { ChildMessageComponent } from './../shared/renderers/child-message.component';
 import { StyledComponent } from './../shared/renderers/styled-component';
 import {
-  BudgetLineEffects,  BudgetLineService, ActualEffects, ActualService,
+  BudgetLineEffects, BudgetLineService, ActualEffects, ActualService,
   LineCommentEffects, LineCommentService
 } from './../redux';
+
 @NgModule({
   imports: [
     CommonModule,
@@ -31,6 +33,7 @@ import {
     AgGridModule,
     ExplorationModule,
     FacilitiesModule,
+    MacomModule,
     AgGridModule.withComponents([
       CurrencyComponent,
       WordWrapComponent,
@@ -44,7 +47,7 @@ import {
 
   ],
   declarations: [WorkprogramComponent, WpDashboardComponent, WellComponent,],
-  exports: [WorkprogramComponent, WpDashboardComponent, WellComponent,
+  exports: [WorkprogramComponent, WpDashboardComponent, WellComponent
   ],
   providers: [BudgetLineService, ActualService, LineCommentService]
 

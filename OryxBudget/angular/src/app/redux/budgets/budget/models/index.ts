@@ -11,10 +11,13 @@ export const budgetSchema = new Schema('Budget');
 export const linesSchema = new Schema('BudgetLines');
 export const actualSchema = new Schema('Actual');
 export const lineCommentsSchema = new Schema('LineComments');
+export const workProgramSchema = new Schema('WorkProgram');
 
 export const arrayOfBudget = arrayOf(budgetSchema);
 export const arrayOfLines = arrayOf(linesSchema);
 export const arrayOfActuals = arrayOf(actualSchema);
 export const arrayOfLineComments = arrayOf(lineCommentsSchema);
+export const arrayOfWorkProgram = arrayOf(workProgramSchema);
+
 
 

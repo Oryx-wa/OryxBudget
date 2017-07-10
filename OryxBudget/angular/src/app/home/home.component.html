@@ -14,6 +14,7 @@
         <app-dialog [(visible)]="displayMode == displayModeEnum.Napims">
           <form materialize="updateTextFields" [formGroup]="form" *ngIf="operatorList$ | async; let operators;">
             <div class="row">
+              <h6> Work with Operator </h6>
               <div class=" input-field col s12 m6 ">
                 <select materialize="material_select" [materializeSelectOptions]="operators" (change)="operatorSelected($event.target.value)"
                   id="budget" name="budget" formControlName="operator">
@@ -22,6 +23,9 @@
 									</select>
                 <label for="budget" data-error="Please enter a valid task">Select an Operator</label>
               </div>
+            </div>
+            <div class="row">
+              <h6> View Dashboards </h6>
             </div>
           </form>
         </app-dialog>

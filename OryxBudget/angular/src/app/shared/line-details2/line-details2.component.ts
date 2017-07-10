@@ -13,7 +13,7 @@ import { GridOptions } from 'ag-grid/main';
 import {
   Budget, BudgetLines, BudgetLineActions, BudgetActions,
   LineComment, Actual, AppState, UserSelector, BudgetLineSelector,
-  LineCommentActions, LineCommentSelector
+  LineCommentActions, LineCommentSelector, WorkProgramState
 } from '../../redux';
 import { CurrencyComponent } from '../../shared/renderers/currency.component';
 import { WordWrapComponent } from '../../shared/renderers/word-wrap.component';
@@ -42,6 +42,8 @@ export class LineDetails2Component implements OnInit, OnChanges, OnDestroy {
   @Input() actuals: Actual[] = [];
   @Input() type = 'budget';
   @Input() workProgramStatus = 'Operator';
+  @Input() showStatus = true;
+  @Input() allBudgetStatus: WorkProgramState[] = [];
   showSubCom = false;
   showTecCom = false;
   showMalCom = false;
@@ -71,7 +73,7 @@ export class LineDetails2Component implements OnInit, OnChanges, OnDestroy {
   public operator = false;
   public data: any;
   private event: UploadInput;
-  public workflow: string[] = ['Operator','SubCom', 'TecCom', 'MaCom', 'Final']
+  public workflow: string[] = ['Operator', 'SubCom', 'TecCom', 'MaCom', 'Final'];
   public btnClass = 'btn waves-effect waves-light disabled';
   dialogMode = 'details';
   constructor(private store: Store<AppState>, private dialog: DialogService, private securityService: SecurityService) {
@@ -149,7 +151,9 @@ export class LineDetails2Component implements OnInit, OnChanges, OnDestroy {
   }
   ngOnChanges(changes: SimpleChanges) {
     // console.log(changes);
+    console.log(this.allBudgetStatus);
     switch (this.type) {
+      
       case 'budget':
         if (changes['lines']) {
           if (changes['lines'].currentValue.length > 0) {
@@ -167,6 +171,7 @@ export class LineDetails2Component implements OnInit, OnChanges, OnDestroy {
             }
           }
         }
+
         break;
       case 'actual':
         if (changes['actuals']) {
@@ -181,6 +186,32 @@ export class LineDetails2Component implements OnInit, OnChanges, OnDestroy {
           }
         }
     }
+  }
+
+  getStatus = (statusString = '') => {
+    let ret = 0;
+    const stringCompare = (statusString === '') ? this.workProgramStatus : statusString;
+    switch (this.workProgramStatus) {
+      case 'Operator':
+        ret = 0;
+        break;
+      case 'SubCom':
+        ret = 1;
+        break;
+      case 'TecCom':
+        ret = 2;
+        break;
+      case 'MalCom':
+        ret = 3;
+        break;
+      case 'Final':
+        ret = 4;
+        break;
+      default:
+        ret = 0;
+        break;
+    }
+    return ret;
   }
 
   private createColumnDefs() {
