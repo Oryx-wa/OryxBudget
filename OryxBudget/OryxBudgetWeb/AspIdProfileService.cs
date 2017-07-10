@@ -110,6 +110,9 @@ namespace OryxBudgetWeb
                         case "Facilities":
                             claims.Add(new System.Security.Claims.Claim(JwtClaimTypes.Role, "Facilities"));
                             break;
+                        case "All":
+                            claims.Add(new System.Security.Claims.Claim(JwtClaimTypes.Role, "All"));
+                            break;
                         default:
                             break;
                     }

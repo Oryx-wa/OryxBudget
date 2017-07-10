@@ -56,6 +56,9 @@ function setUser(roles: string[]) {
       case 'Facilities':
         ret = _.assign({}, ret, { dept: 'Facilities' });
         break;
+       case 'All':
+        ret = _.assign({}, ret, { dept: 'All' });
+        break;
       case 'Operator':
         ret = _.assign({}, ret, { operator: true });
         break;

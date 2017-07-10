@@ -8,6 +8,7 @@ import {
     BudgetLineState, getSelectedBudgetLine, getTouched
 } from './budgetLine.reducer';
 
+import { BudgetLines } from './budgetLine.interface';
 // BudgetLine
 
 export const getBudgetLineState = (state: AppState) => state.budgets.budgetLine;
@@ -18,6 +19,18 @@ export const getBudgetLineCollection = createSelector(BudgetLineEntities, Budget
         return [];
     }
     return ids.map(id => entities[id]);
+});
+export const getBudgetLineLevel2Collection = createSelector(BudgetLineEntities, BudgetLineIds, (entities, ids) => {
+    if (ids.length === 0) {
+        return [];
+    }
+    const ret: BudgetLines[] = []
+    ids.map(id => {
+        if (entities[id].level === '2') {
+            ret.push(entities[id]);
+        }
+    });
+    return ret;
 });
 export const selectedBudgetLine = createSelector(getBudgetLineState, getSelectedBudgetLine);
 export const touched = createSelector(getBudgetLineState, getTouched);

@@ -47,6 +47,13 @@ export class BudgetService extends BaseService {
         return this.GetByParam2(url, params);
     }
 
+     public GetAllStatusForBudget = (budgetId: string): Observable<any> => {
+        const params: URLSearchParams = new URLSearchParams();
+        params.append('budgetId', budgetId);
+        const url = 'WorkProgram/GetAllStatusForBudget';
+        return this.GetByParam2(url, params);
+    }
+
     public getPrintOut = (budgetId: string): Observable<any> => {
         const params: URLSearchParams = new URLSearchParams();
         params.append('budgetId', budgetId);

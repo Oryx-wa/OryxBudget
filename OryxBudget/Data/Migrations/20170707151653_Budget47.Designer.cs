@@ -10,9 +10,10 @@ using Entities.Budgets.WorkPrograms;
 namespace Data.Migrations
 {
     [DbContext(typeof(OryxBudgetContext))]
-    partial class OryxBudgetContextModelSnapshot : ModelSnapshot
+    [Migration("20170707151653_Budget47")]
+    partial class Budget47
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
             modelBuilder
                 .HasAnnotation("ProductVersion", "1.1.2")
@@ -976,98 +977,6 @@ namespace Data.Migrations
                     b.HasKey("Id", "LogInstance");
 
                     b.ToTable("LineCommentLog");
-                });
-
-            modelBuilder.Entity("Entities.Budgets.Notification", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<string>("BudgetCode");
-
-                    b.Property<DateTime>("CreateDate");
-
-                    b.Property<string>("Description")
-                        .IsRequired()
-                        .HasMaxLength(100);
-
-                    b.Property<bool>("IsRead");
-
-                    b.Property<Guid>("LineCommentId");
-
-                    b.Property<string>("OperatorId")
-                        .IsRequired()
-                        .HasMaxLength(50);
-
-                    b.Property<string>("Status")
-                        .HasMaxLength(1);
-
-                    b.Property<DateTime>("UpdateDate");
-
-                    b.Property<string>("UrlData")
-                        .HasMaxLength(100);
-
-                    b.Property<Guid?>("User");
-
-                    b.Property<string>("UserSign")
-                        .IsRequired()
-                        .HasMaxLength(50);
-
-                    b.Property<string>("Username");
-
-                    b.Property<int>("WorkProgramId");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Notifications");
-                });
-
-            modelBuilder.Entity("Entities.Budgets.NotificationLog", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<string>("BudgetCode");
-
-                    b.Property<DateTime>("CreateDate");
-
-                    b.Property<string>("Description")
-                        .IsRequired()
-                        .HasMaxLength(100);
-
-                    b.Property<bool>("IsRead");
-
-                    b.Property<Guid>("LineCommentId");
-
-                    b.Property<int>("LogInstance");
-
-                    b.Property<string>("OperatorId")
-                        .IsRequired()
-                        .HasMaxLength(50);
-
-                    b.Property<string>("Status")
-                        .HasMaxLength(1);
-
-                    b.Property<DateTime>("UpdateDate");
-
-                    b.Property<string>("UrlData")
-                        .HasMaxLength(100);
-
-                    b.Property<Guid?>("User");
-
-                    b.Property<string>("UserSign")
-                        .IsRequired()
-                        .HasMaxLength(50);
-
-                    b.Property<string>("Username")
-                        .IsRequired()
-                        .HasMaxLength(100);
-
-                    b.Property<int>("WorkProgramId");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("NotificationLogs");
                 });
 
             modelBuilder.Entity("Entities.Budgets.Period", b =>

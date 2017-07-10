@@ -9,7 +9,9 @@ import { Budgets, Actual, BudgetLines, LineComments, LineStatus } from './models
 import {
     arrayOfBudget, arrayOfActuals, arrayOfLineComments, arrayOfLines,
     budgetSchema, actualSchema, linesSchema, lineCommentsSchema,
-    initBudget, initActual, initBudgetLines, initLineComments, initLineStatus
+    initBudget, initActual, initBudgetLines, initLineComments, initLineStatus,
+    initWorkProgramState, WorkProgramState, workProgramSchema, arrayOfWorkProgram
+
 } from './models';
 
 export interface BudgetEntity {
@@ -25,6 +27,8 @@ export interface BudgetState {
     selectedId: string | null;
     workProgramState: string | null;
     printOut: any;
+    workProgramStateIds: string[];
+    workProgramStateEntities: { [id: string]: WorkProgramState; };
 
 }
 
@@ -35,6 +39,8 @@ export const initBudgetState: BudgetState = {
     selectedId: null,
     workProgramState: null,
     printOut: null,
+    workProgramStateIds: [],
+    workProgramStateEntities: {}
 };
 
 export const BudgetReducer: ActionReducer<BudgetState> = (state: BudgetState = initBudgetState,
@@ -86,8 +92,18 @@ export const BudgetReducer: ActionReducer<BudgetState> = (state: BudgetState = i
         case AllActions.GET_PRINOUT_SUCCESS:
             if (action.payload === null) {
                 return state;
-            }            
+            }
             return _.assign({}, state, { printOut: action.payload });
+        case AllActions.GET_BUDGET_ALL_WORKPROGRAM_STATUS_SUCCESS:
+            if (action.payload === null) {
+                return state;
+            }
+            const wrk: any = normalize(action.payload, arrayOfWorkProgram);
+            return _.assign({}, state, {
+                workProgramStateIds: wrk.result,
+                workProgramStateEntities: wrk.entities.WorkProgram,
+                lastUpdate: new Date(),
+            })
         default:
             return state;
     }
@@ -98,6 +114,9 @@ export const getBudgetIds = (state: BudgetState) => state.ids;
 export const getSelectedBudgetId = (state: BudgetState) => state.selectedId;
 export const getWorkProgramStatus = (state: BudgetState) => state.workProgramState;
 export const getPrintOut = (state: BudgetState) => state.printOut;
+export const getAllWorkProgramStatusEntities = (state: BudgetState) => state.workProgramStateEntities;
+export const getAllWorkProgramStatusIds = (state: BudgetState) => state.workProgramStateIds;
+
 
 export const getSelectedBudget = createSelector(getBudgetEntities, getSelectedBudgetId, (entities, selectedId) => {
     if (selectedId === null) {
@@ -105,3 +124,30 @@ export const getSelectedBudget = createSelector(getBudgetEntities, getSelectedBu
     }
     return entities[selectedId];
 });
+
+export const getWorkProgramStatusNumber = (state: BudgetState) => {
+    let ret = 0;
+    switch (state.workProgramState) {
+        case 'Operator':
+            ret = 0;
+            break;
+        case 'SubCom':
+            ret = 1;
+            break;
+        case 'TecCom':
+            ret = 2;
+            break;
+        case 'MalCom':
+            ret = 3;
+            break;
+        case 'Final':
+            ret = 4;
+            break;
+        default:
+            ret = 0;
+            break;
+    }
+    return ret;
+}
+
+

@@ -47,6 +47,20 @@ namespace OryxWebApi.Controllers.BudgetsControllers
         }
 
         [HttpGet]
+        [Route("GetAllStatusForBudget")]
+        public JsonResult GetAllStatusForBudget(string budgetId)
+        {
+            var ret = _workProgramService.GetAllStatusForBudget(budgetId);
+            IList < WorkProgramStatusViewModel > statuses = new List<WorkProgramStatusViewModel>();
+            foreach (var item in ret)
+            {
+                statuses.Add(new WorkProgramStatusViewModel(item));
+            }
+
+            return Json(statuses);
+        }
+
+        [HttpGet]
         [Route("GetProgramStatusesById")]
         public JsonResult GetProgramStatusesById(string id)
         {

@@ -39,3 +39,19 @@ export const initBudget: Budgets = {
     finalBudetUSD: 0,
     description: '',
 }
+
+export interface WorkProgramState {
+    id: string;
+    department: string;
+    status: number;
+    
+}
+
+export const initWorkProgramState: WorkProgramState = {
+    id: '',
+    department: '',
+    status: 1
+}
+
+
+

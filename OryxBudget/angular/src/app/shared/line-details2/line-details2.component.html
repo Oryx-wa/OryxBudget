@@ -1,25 +1,14 @@
 <div materialize class="">
-  <div class="">
+  <div class="row">
     <div *ngIf="!noLines;else upload">
-      <div materialize class=" col s12 left">
+      <div *ngIf="showStatus" materialize class=" col s12 left">
         <nav>
           <div materialize class="nav-wrapper white">
             <ul id="nav-mobile" class="  hide-on-med-and-down">
-              <!--
-              <li [class.active]="workProgramStatus === 'Operator'">                
-                <a class="breadcum waves-effect waves-light tes">Operator</a></li>
-                <li><i class="material-icons tes">keyboard_arrow_right</i></li>
-              <li [class.active]="workProgramStatus === 'SubCom'">
-                <a class="breadcum  waves-effect waves-light tes  ">Subcom</a></li>
-              <li><i class="material-icons tes">keyboard_arrow_right</i></li>
-              <li [class.active]="workProgramStatus === 'TecCom'">
-                <a class="breadcum  waves-effect waves-light tes">TecCom</a></li>
-              <li><i class="material-icons tes">keyboard_arrow_right</i></li>
-              <li [class.active]="workProgramStatus === 'MalCom'">
-                <a class="breadcum  waves-effect waves-light tes">MaCom</a></li>
-                -->
-
-                <app-business-process-svg [text]="workflow"> </app-business-process-svg>
+              <div >
+                <app-business-process-svg [text]="workflow" [active]="getStatus('')"> </app-business-process-svg>
+              </div>
+              
               <li class="right" *ngIf="linesTouched$ | async">
                 <a class="btn btn-small waves-effect waves-light " (click)="UpdateStatus('update')">Save</a></li>
 

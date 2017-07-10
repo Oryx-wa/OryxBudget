@@ -1,4 +1,5 @@
-﻿using Entities.Budgets.WorkPrograms;
+﻿using Entities.Budgets;
+using Entities.Budgets.WorkPrograms;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -16,7 +17,8 @@ namespace OryxWebApi.ViewModels.BudgetsViewModels
                 this.Id = programStatus.Id;
                 this.BudgetId = programStatus.BudgetId;
                 this.Department = programStatus.WorkProgram.ToString();
-                this.BudgetStatus = programStatus.BudgetStatus.ToString();  
+                this.BudgetStatus = programStatus.BudgetStatus.ToString();
+                this.Status = programStatus.BudgetStatus;
             }          
 
         }
@@ -26,5 +28,6 @@ namespace OryxWebApi.ViewModels.BudgetsViewModels
         [Required]
         public string BudgetStatus { get; set; }
         public string Department { get; set; }
+        public BudgetStatus Status { get; set; }
     }
 }

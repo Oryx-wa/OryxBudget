@@ -14,3 +14,11 @@
     <a [routerLink]="['/facilities']" routerLinkActive="active" class=" orange lighten-2 btn">Facilities</a>
   </div>
 </div>
+<div class="container"  *ngIf="dept === 'All'">
+  <div materialize class="row card facilities">
+    <h3 align="center"></h3>
+  </div>
+  <div class="card-action" align="center">
+    <a [routerLink]="['/macom']" routerLinkActive="active" class=" orange lighten-2 btn">Management Committee</a>
+  </div>
+</div>

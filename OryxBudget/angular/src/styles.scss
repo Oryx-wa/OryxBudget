@@ -242,3 +242,33 @@ $roboto-font-path: "~materialize-css/dist/fonts/roboto/"; /* This is needed so t
     line-height: 35px;
     padding: 0 0.5rem;
 }
+
+
+
+
+.chart rect {
+  fill: steelblue;
+}
+
+.chart text {
+  fill: white;
+  font: 10px sans-serif;
+  text-anchor: middle;
+}
+
+
+
+.bar {
+  fill: steelblue;
+}
+
+.bar:hover {
+  fill: brown;
+}
+
+.axis--x path {
+  display: none;
+}
+
+
+
