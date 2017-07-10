@@ -12,6 +12,7 @@ import { SecurityReducer, LoginSTATE } from './login/reducers';
 
 import * as fromBudget from './budgets';
 import * as fromOperator from './operators';
+import * as fromNotification from './budgets/notification';
 import * as General from './general';
 import * as fromLogin from './login';
 
@@ -25,6 +26,7 @@ export * from './operators';
 export * from './general';
 export * from './utilities';
 export * from './login';
+export * from './budgets/notification';
 
 
 
@@ -33,6 +35,7 @@ export interface AppState {
   budgets: fromBudget.BdState;
   security: fromLogin.LoginSTATE;
   operators: fromOperator.OperatorsState;
+  notifications: fromNotification.INotificationState;
   // errors: General.ErrorState;
   // storestatus: StoreStatus;
 
@@ -42,6 +45,7 @@ const reducers = {
   budgets: fromBudget.bdReducer,
   security: fromLogin.SecurityReducer,
   operators: fromOperator.OperatorsReducer,
+  notifications: fromNotification.NotificationReducer
   // errors: General.errorsReducer,
   //  storestatus: General.notificationReducer,
 };

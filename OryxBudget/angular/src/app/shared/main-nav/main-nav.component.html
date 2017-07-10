@@ -9,12 +9,12 @@
       </li>
 
     </ul>
-    <ul id="nav-mobile" class="right hide-on-med-and-down">  
+    <ul id="nav-mobile" class="right hide-on-med-and-down">
 
 
       <li  *ngIf="securityService.IsAuthorized()"> <a class="waves-effect waves-light tes"><i class="material-icons right">message</i></a></li>
       <li  *ngIf="securityService.IsAuthorized()">
-        <a class="dropdown-button waves-effect waves-light tes" href="#!"><i class="material-icons">add_alert</i></a>
+        <a class="dropdown-button waves-effect waves-light tes" href="#!" data-activates="dropdown1" data-beloworigin="true"><i class="material-icons">add_alert</i></a>
       </li>
 
        <li><a class="waves-effect waves-light tes" *ngIf="!securityService.IsAuthorized()" (click)="Login()"><i class="material-icons">power_settings_new</i></a></li>
@@ -53,7 +53,39 @@
 
 
     </ul>
+<ul id="dropdown1" class="dropdown-content collection">
+      <li *ngFor="let n of notifications">
+        <a class="waves-effect waves-purple special" href="#">{{n.description}}</a>
+      </li>
 
+      <li>
+        <a routerLinkActive="active" class="waves-effect waves-purple special">
+          <i class="material-icons left">persons</i>Users &nbsp;
+        </a>
+      </li>
+      <li>
+        <a [routerLink]="['/operators']"routerLinkActive="active" class="waves-effect waves-purple special">
+          <i class="material-icons left">persons</i>Operators &nbsp;
+        </a>
+      </li>
+      <li>
+        <a [routerLink]="['/budgetInitialisation']" routerLinkActive="active" class="waves-effect waves-purple special">
+          <i class="material-icons left">next_week</i>Budgets &nbsp;
+        </a>
+      </li>
+      <li>
+        <a routerLinkActive="active" class="waves-effect waves-purple special">
+          <i class="material-icons left">persons</i>Budget Codes &nbsp;
+        </a>
+      </li>
+      <li>
+        <a routerLinkActive="active" class="waves-effect waves-purple special">
+          <i class="material-icons left">info_outline</i>About &nbsp;
+        </a>
+      </li>
+
+
+    </ul>
 
   </div>
 </nav>

@@ -19,6 +19,7 @@ export class ExplorationComponent implements OnInit, OnChanges,OnDestroy {
 
   actions1 = new EventEmitter<string | MaterializeAction>();
   public showApproval = false;
+  public displaySignoffDlg = false;
   form: FormGroup;
   budget$: Observable<Budget>;
   lines$: Observable<BudgetLines[]>;
@@ -43,6 +44,7 @@ export class ExplorationComponent implements OnInit, OnChanges,OnDestroy {
   constructor(private fb: FormBuilder, private store: Store<AppState>) { }
 
   ngOnInit() {
+    // this.displaySignoffDlg = false;
     this.displayMode = DisplayModeEnum.Card;
     this.dept$ = this.store.select(UserSelector.dept);
     this.subCom$ = this.store.select(UserSelector.subCom);
@@ -122,12 +124,17 @@ export class ExplorationComponent implements OnInit, OnChanges,OnDestroy {
     this.showApproval = true;
   }
 
+  displayPopup() {
+    this.displaySignoffDlg = true;
+    //console.log('done');
+  }
+
   getBudgetLines() {
 
   }
 
   changeDisplayMode(mode: DisplayModeEnum) {
-    // // console.log(mode); 
+    // // console.log(mode);
     this.displayMode = mode;
   }
 

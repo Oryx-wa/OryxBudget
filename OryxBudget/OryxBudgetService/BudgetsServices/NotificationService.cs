@@ -79,8 +79,9 @@ namespace OryxBudgetService.BudgetsServices
             && n.WorkProgramId == workProgramId).OrderBy(n => n.IsRead);
         }
 
-        public IEnumerable<Notification> GetAllUnreadNotifications(string operatorId, int workProgramId)
+        public IEnumerable<Notification> GetAllUnreadNotifications(string operatorId, string workProgram)
         {
+            int workProgramId = (int)Enum.Parse(typeof(WorkProgramTypeEnum), workProgram);
             return _notificationRepo.GetAll().Where(n => !n.IsRead && n.OperatorId == operatorId && 
             n.WorkProgramId == workProgramId );
         }

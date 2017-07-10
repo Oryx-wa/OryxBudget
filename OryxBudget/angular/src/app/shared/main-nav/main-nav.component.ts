@@ -1,5 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { SecurityService } from './../../login/security.service';
+import { Observable } from 'rxjs/Observable';
+import { BehaviorSubject } from 'rxjs/BehaviorSubject';
+import { Store } from '@ngrx/store';
+import { AppState, Notification, NotificationActions } from './../../redux';
 @Component({
   selector: 'app-main-nav',
   templateUrl: './main-nav.component.html',
@@ -14,7 +18,7 @@ export class MainNavComponent implements OnInit {
   }
 
   ngOnInit() {
-    
+
   }
 
   public Login() {
@@ -26,6 +30,6 @@ export class MainNavComponent implements OnInit {
     this.securityService.Logoff();
   }
 
- 
+
 
 }

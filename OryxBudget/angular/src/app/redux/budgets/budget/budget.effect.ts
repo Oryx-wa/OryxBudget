@@ -6,7 +6,7 @@ import { OnDestroy } from '@angular/core';
 
 import { BudgetService } from './budget.service';
 import * as BudgetActions from './budget.action';
-import * as BudgetLineActions from './../budgetLine/budgetLine.action'
+import * as BudgetLineActions from './../budgetLine/budgetLine.action';
 import { AppState } from './../../';
 import { NotificationActions, ErrorActions } from './../../general/actions/';
 import { Observable } from 'rxjs/Observable';
@@ -37,7 +37,7 @@ export class BudgetEffects implements OnDestroy {
                 return Observable.from([new ErrorActions.ErrorAddAction(err),
                 new NotificationActions.SetLoaded('Budget Items Loaded Sucessfully')]);
             }));
-    
+
     @Effect() GetStatus$: Observable<Action> = this.actions$
         .ofType(BudgetActions.GET_WORKPROGRAM_STATUS)
         .withLatestFrom(this.store$.select(state => state.budgets.budget.selectedId))
@@ -82,7 +82,7 @@ export class BudgetEffects implements OnDestroy {
                 return Observable.from([new ErrorActions.ErrorAddAction(err),
                 new NotificationActions.SetSavingError('Error saving Budget')]);
             }));
-    
+
     /*@Effect() SignOff: Observable<Action> = this.actions$
         .ofType(BudgetActions.GET_PRINTOUT)
         .withLatestFrom(this.store$.select(state => state.budgets.budget.selectedId))
@@ -100,7 +100,7 @@ export class BudgetEffects implements OnDestroy {
     @Effect() AddUpdateItemSucess$: Observable<Action> = this.actions$
         .ofType(BudgetActions.ADD_UPDATE_ITEM_SUCCESS)
         .map(() => new NotificationActions.SetSaved('Budget saved Sucessfully'));
-        
+
     @Effect() addBudgets$: Observable<Action> = this.actions$
         .ofType(BudgetActions.ADD_ITEM)
         .mergeMap(action => this.budgetService.addBudget(action.payload)
