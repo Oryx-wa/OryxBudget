@@ -21,6 +21,7 @@ import {
   BudgetLineEffects, BudgetLineService, ActualEffects, ActualService,
   LineCommentEffects, LineCommentService
 } from './../redux';
+import { CashCallModule } from './cash-call/cash-call.module';
 
 @NgModule({
   imports: [
@@ -33,6 +34,7 @@ import {
     AgGridModule,
     ExplorationModule,
     FacilitiesModule,
+    CashCallModule,
     MacomModule,
     AgGridModule.withComponents([
       CurrencyComponent,
@@ -46,7 +48,7 @@ import {
     EffectsModule.run(LineCommentEffects)
 
   ],
-  declarations: [WorkprogramComponent, WpDashboardComponent, WellComponent,],
+  declarations: [WorkprogramComponent, WpDashboardComponent, WellComponent],
   exports: [WorkprogramComponent, WpDashboardComponent, WellComponent
   ],
   providers: [BudgetLineService, ActualService, LineCommentService]

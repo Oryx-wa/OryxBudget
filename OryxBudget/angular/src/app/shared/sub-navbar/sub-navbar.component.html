@@ -14,7 +14,7 @@
           <li>
             <a [ngClass]="budgetClass" (click)="changeDisplay('budget')">Budget</a></li>
           <li>
-            <a [ngClass]="cashCallClass" (click)="changeDisplay('cashCall')">Cash Call</a></li>
+            <a [routerLink]="['/cashcall']" routerLinkActive="active" [ngClass]="cashCallClass" (click)="changeDisplay('cashCall')">Cash Call</a></li>
           <li>
             <a [ngClass]="actualClass" (click)="changeDisplay('actual')">Performance</a></li>
         </ul>

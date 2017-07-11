@@ -1,4 +1,4 @@
-import { Component, OnInit, EventEmitter, Input, Output, OnChanges, ChangeDetectionStrategy, OnDestroy } from '@angular/core';
+import { Component, OnInit, EventEmitter, ChangeDetectionStrategy, OnDestroy } from '@angular/core';
 import { FormGroup, FormControl, FormBuilder, FormArray, Validators } from '@angular/forms';
 import { MaterializeDirective, MaterializeAction } from 'angular2-materialize';
 import { Observable } from 'rxjs/Observable';
@@ -8,26 +8,29 @@ import {
   BudgetLines, BudgetSelector, BudgetLineActions, BudgetLineSelector, ActualActions
 } from './../../redux';
 import { DisplayModeEnum } from '../../shared/shared-enum.enum';
-import swal from 'sweetalert2';
+import { SecurityService } from './../../login/security.service';
+
 @Component({
-  selector: 'app-exploration',
-  templateUrl: './exploration.component.html',
-  styleUrls: ['./exploration.component.scss'],
+  selector: 'app-cash-call',
+  templateUrl: './cash-call.component.html',
+  styleUrls: ['./cash-call.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class ExplorationComponent implements OnInit, OnChanges, OnDestroy {
+export class CashCallComponent implements OnInit, OnDestroy {
 
   actions1 = new EventEmitter<string | MaterializeAction>();
   public showApproval = false;
-  public displaySignoffDlg = false;
   form: FormGroup;
   budget$: Observable<Budget>;
   lines$: Observable<BudgetLines[]>;
-  unTouched$: Observable<BudgetLines[]>;
+   unTouched$: Observable<BudgetLines[]>;
   actuals$: Observable<Actual[]>;
   workProgramStatus$: Observable<string>;
   workProgramNumber$: Observable<number>;
+  status: number;
   budgetId = '';
+   public showNapims = false;
+  public showNewRequestBtn = false;
 
   public napims$: Observable<boolean>;
   public subCom$: Observable<boolean>;
@@ -35,23 +38,16 @@ export class ExplorationComponent implements OnInit, OnChanges, OnDestroy {
   public malCom$: Observable<boolean>;
   public display$: Observable<string>;
 
-
-
   public dept$: Observable<string>;
   public operator$: Observable<boolean>;
   public printOut$: Observable<any>;
   private alive = true;
-  status: number;
 
   public displayMode: DisplayModeEnum;
   public displayModeEnum = DisplayModeEnum;
-
-  @Input() visible: boolean;
-  @Output() visibleChange: EventEmitter<boolean> = new EventEmitter<boolean>();
   constructor(private fb: FormBuilder, private store: Store<AppState>) { }
 
   ngOnInit() {
-    // this.displaySignoffDlg = false;
     this.displayMode = DisplayModeEnum.Card;
     this.dept$ = this.store.select(UserSelector.dept);
     this.subCom$ = this.store.select(UserSelector.subCom);
@@ -66,7 +62,6 @@ export class ExplorationComponent implements OnInit, OnChanges, OnDestroy {
           case 'budget':
             this.changeDisplayMode(DisplayModeEnum.Budget);
             this.store.dispatch(new BudgetLineActions.LoadItemsAction(this.budgetId));
-            this.store.dispatch(new BudgetActions.GetWorkProgramStatusAction(''));
             break;
           case 'actual':
             this.changeDisplayMode(DisplayModeEnum.Actual);
@@ -86,7 +81,17 @@ export class ExplorationComponent implements OnInit, OnChanges, OnDestroy {
     this.budget$ = this.store.select(BudgetSelector.selectedBudget);
     this.workProgramStatus$ = this.store.select(BudgetSelector.workProgramStatus);
     this.workProgramNumber$ = this.store.select(BudgetSelector.workProgramStatusNumber);
-    this.workProgramNumber$.subscribe(status => this.status = status);
+     this.workProgramNumber$.subscribe(status => this.status = status);
+
+    this.store
+      .takeWhile(() => this.alive)
+      .subscribe(state => {
+        if (state.security.user.napims) {
+          this.showApproval = true;
+        }else {
+          this.showNewRequestBtn = true;
+        }
+      });
     this.budget$
       .takeWhile(() => this.alive)
       .subscribe(budget => {
@@ -105,7 +110,6 @@ export class ExplorationComponent implements OnInit, OnChanges, OnDestroy {
             }
           }
         }
-
       });
     this.form = this.fb.group({
       status: new FormControl({}),
@@ -116,34 +120,35 @@ export class ExplorationComponent implements OnInit, OnChanges, OnDestroy {
 
     this.changeDisplayMode(DisplayModeEnum.Budget);
 
+    
     this.printOut$ = this.store.select(BudgetSelector.printOut);
     this.printOut$.subscribe(file => {
       if (file !== null) {
-        // // console.log(file);
+        // console.log(file);
         const fileURL = URL.createObjectURL(file)
         window.open(fileURL);
       }
-    });
+    })
   }
-
-  ngOnChanges() { }
-
   openFirst() {
-    this.showApproval = true;
+    // this.showApproval = true;
+    console.log('Signoff button clicked!');
   }
 
-  displayPopup() {
-    this.displaySignoffDlg = true;
-    //// console.log('done');
+  getBudgetLines() {
+
   }
 
   changeDisplayMode(mode: DisplayModeEnum) {
+    // // console.log(mode); 
     this.displayMode = mode;
   }
 
   selectBudget(id: string) {
     this.budgetId = id;
     this.store.dispatch(new BudgetActions.SelectItemAction(id));
+    // console.log(id);
+    // this.store.dispatch(new BudgetLineActions.LoadItemsAction(this.budgetId));
   }
 
   print() {
@@ -151,35 +156,14 @@ export class ExplorationComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   signOff() {
+   
     this.store.dispatch(new BudgetLineActions.UpdateUnTouchedAction(this.status));
     this.store.dispatch(new BudgetLineActions.SignOffAction(''));
     this.store.dispatch(new BudgetActions.SelectItemAction(this.budgetId));
-    this.visible = false;
-    this.visibleChange.emit(this.visible);
   }
 
-  showExploration(type: string) { }
   ngOnDestroy() {
     this.alive = false;
   }
 
 }
-
-function getUserRes(store: Store<AppState>) {
-  return swal({
-    title: 'Code unapproved!',
-    input: 'checkbox',
-    inputValue: 1,
-    inputPlaceholder: 'Approve remaining codes',
-    showCancelButton: true,
-    confirmButtonText: 'Save',
-    confirmButtonClass: 'waves-effect waves-light btn btn-small',
-    cancelButtonText: 'Cancel',
-    cancelButtonClass: 'waves-effect waves-light btn btn-small',
-
-  }).then(function (result) {
-    // console.log(result);
-  });
-}
-
-
