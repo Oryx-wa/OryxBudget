@@ -79,7 +79,7 @@ export class ListComponent implements OnInit, OnChanges {
   }
 
   ngOnChanges(changes: any): void {
-    //console.log(changes);
+    //// console.log(changes);
   }
 
   setupListData() {

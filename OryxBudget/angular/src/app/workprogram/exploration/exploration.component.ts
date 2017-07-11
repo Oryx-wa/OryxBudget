@@ -26,6 +26,7 @@ export class ExplorationComponent implements OnInit, OnChanges, OnDestroy {
   unTouched$: Observable<BudgetLines[]>;
   actuals$: Observable<Actual[]>;
   workProgramStatus$: Observable<string>;
+  workProgramNumber$: Observable<number>;
   budgetId = '';
 
   public napims$: Observable<boolean>;
@@ -34,10 +35,13 @@ export class ExplorationComponent implements OnInit, OnChanges, OnDestroy {
   public malCom$: Observable<boolean>;
   public display$: Observable<string>;
 
+
+
   public dept$: Observable<string>;
   public operator$: Observable<boolean>;
   public printOut$: Observable<any>;
   private alive = true;
+  status: number;
 
   public displayMode: DisplayModeEnum;
   public displayModeEnum = DisplayModeEnum;
@@ -78,6 +82,8 @@ export class ExplorationComponent implements OnInit, OnChanges, OnDestroy {
     });
     this.budget$ = this.store.select(BudgetSelector.selectedBudget);
     this.workProgramStatus$ = this.store.select(BudgetSelector.workProgramStatus);
+    this.workProgramNumber$ = this.store.select(BudgetSelector.workProgramStatusNumber);
+    this.workProgramNumber$.subscribe(status => this.status = status);
     this.budget$
       .takeWhile(() => this.alive)
       .subscribe(budget => {
@@ -110,7 +116,7 @@ export class ExplorationComponent implements OnInit, OnChanges, OnDestroy {
     this.printOut$ = this.store.select(BudgetSelector.printOut);
     this.printOut$.subscribe(file => {
       if (file !== null) {
-        // console.log(file);
+        // // console.log(file);
         const fileURL = URL.createObjectURL(file)
         window.open(fileURL);
       }
@@ -125,7 +131,7 @@ export class ExplorationComponent implements OnInit, OnChanges, OnDestroy {
 
   displayPopup() {
     this.displaySignoffDlg = true;
-    //console.log('done');
+    //// console.log('done');
   }
 
   changeDisplayMode(mode: DisplayModeEnum) {
@@ -134,17 +140,20 @@ export class ExplorationComponent implements OnInit, OnChanges, OnDestroy {
 
   selectBudget(id: string) {
     this.budgetId = id;
-    this.store.dispatch(new BudgetActions.SelectItemAction(id));    
+    this.store.dispatch(new BudgetActions.SelectItemAction(id));
   }
-  
+
   print() {
     this.store.dispatch(new BudgetActions.GetPrintOutAction(''));
   }
 
   signOff() {
+    this.store.dispatch(new BudgetLineActions.UpdateUnTouchedAction(this.status));
     this.store.dispatch(new BudgetLineActions.SignOffAction(''));
     this.store.dispatch(new BudgetActions.SelectItemAction(this.budgetId));
   }
+
+  showExploration(type: string) { }
   ngOnDestroy() {
     this.alive = false;
   }
@@ -164,7 +173,7 @@ function getUserRes(store: Store<AppState>) {
     cancelButtonClass: 'waves-effect waves-light btn btn-small',
 
   }).then(function (result) {
-    console.log(result);
+    // console.log(result);
   });
 }
 

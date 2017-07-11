@@ -13,6 +13,6 @@ export class StyledComponent implements ICellRendererAngularComp {
     agInit(params: any): void {
         this.params = params;
         this.style = this.params.style;
-        console.log(this.params.value);
+        // console.log(this.params.value);
     }
 }

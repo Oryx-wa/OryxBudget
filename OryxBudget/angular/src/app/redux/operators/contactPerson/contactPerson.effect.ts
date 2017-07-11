@@ -58,6 +58,6 @@ constructor(
 ) {}
 
 ngOnDestroy() {
-    console.log('ngOnDestroy');
+    // console.log('ngOnDestroy');
 }
 }

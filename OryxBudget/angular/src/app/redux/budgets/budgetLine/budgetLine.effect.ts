@@ -49,7 +49,7 @@ export class BudgetLineEffects implements OnDestroy {
                     ret.push(line);
                 }
             });
-            console.log(ret);
+            // console.log(ret);
             return ret;
         })
         .mergeMap(payload => this.budgetLineService.saveLineApprovals(payload)
@@ -74,7 +74,7 @@ export class BudgetLineEffects implements OnDestroy {
                 ret.push(newLine);
 
             });
-            console.log(ret);
+            // console.log(ret);
             return { budgetId: state.budget.selectedId, data: ret };
         })
         .mergeMap(payload => this.budgetLineService.signOff(payload.budgetId, payload.data)
@@ -122,6 +122,6 @@ export class BudgetLineEffects implements OnDestroy {
     ) { }
 
     ngOnDestroy() {
-        console.log('ngOnDestroy');
+        // console.log('ngOnDestroy');
     }
 }

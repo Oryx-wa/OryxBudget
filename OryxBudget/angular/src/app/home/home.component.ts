@@ -115,7 +115,7 @@ export class HomeComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   changeDisplayMode(mode: DisplayModeEnum) {
-    // // console.log(mode);
+    // // // console.log(mode);
     this.displayMode = mode;
   }
 

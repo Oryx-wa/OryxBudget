@@ -62,7 +62,7 @@ export class LoadItemsAction implements Action {
 export class LoadItemsSuccessAction implements Action {
     readonly type = LOAD_ITEMS_SUCCESS;
 
-    constructor(public payload: Notification[]) { console.log(payload); }
+    constructor(public payload: Notification[]){ }
 }
 
 export class SelectItemAction implements Action {

@@ -16,7 +16,7 @@ export class OryxDashboardComponent implements OnInit {
   constructor() { }
 
   ngOnInit() {
-    // console.log(this.operators);
+    // // console.log(this.operators);
     if (this.role.indexOf('NAPIMS') !== -1) {
       this.showNapims = true;
     }

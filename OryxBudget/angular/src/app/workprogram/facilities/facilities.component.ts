@@ -22,7 +22,7 @@ export class FacilitiesComponent implements OnInit, OnDestroy {
   form: FormGroup;
   budget$: Observable<Budget>;
   lines$: Observable<BudgetLines[]>;
-   unTouched$: Observable<BudgetLines[]>;
+  unTouched$: Observable<BudgetLines[]>;
   actuals$: Observable<Actual[]>;
   workProgramStatus$: Observable<string>;
   workProgramNumber$: Observable<number>;
@@ -78,7 +78,7 @@ export class FacilitiesComponent implements OnInit, OnDestroy {
     this.budget$ = this.store.select(BudgetSelector.selectedBudget);
     this.workProgramStatus$ = this.store.select(BudgetSelector.workProgramStatus);
     this.workProgramNumber$ = this.store.select(BudgetSelector.workProgramStatusNumber);
-     this.workProgramNumber$.subscribe(status => this.status = status);
+    this.workProgramNumber$.subscribe(status => this.status = status);
     this.budget$
       .takeWhile(() => this.alive)
       .subscribe(budget => {
@@ -107,11 +107,11 @@ export class FacilitiesComponent implements OnInit, OnDestroy {
 
     this.changeDisplayMode(DisplayModeEnum.Budget);
 
-    
+
     this.printOut$ = this.store.select(BudgetSelector.printOut);
     this.printOut$.subscribe(file => {
       if (file !== null) {
-        // console.log(file);
+        // // console.log(file);
         const fileURL = URL.createObjectURL(file)
         window.open(fileURL);
       }
@@ -126,14 +126,14 @@ export class FacilitiesComponent implements OnInit, OnDestroy {
   }
 
   changeDisplayMode(mode: DisplayModeEnum) {
-    // // console.log(mode); 
+    // // // console.log(mode); 
     this.displayMode = mode;
   }
 
   selectBudget(id: string) {
     this.budgetId = id;
     this.store.dispatch(new BudgetActions.SelectItemAction(id));
-    // console.log(id);
+    // // console.log(id);
     // this.store.dispatch(new BudgetLineActions.LoadItemsAction(this.budgetId));
   }
 
@@ -142,12 +142,12 @@ export class FacilitiesComponent implements OnInit, OnDestroy {
   }
 
   signOff() {
-   
+
     this.store.dispatch(new BudgetLineActions.UpdateUnTouchedAction(this.status));
     this.store.dispatch(new BudgetLineActions.SignOffAction(''));
     this.store.dispatch(new BudgetActions.SelectItemAction(this.budgetId));
   }
-
+  showExploration(type: string) { }
   ngOnDestroy() {
     this.alive = false;
   }

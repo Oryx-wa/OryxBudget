@@ -232,7 +232,7 @@ namespace OryxWebApi.Controllers.BudgetControllers
                 fs.Flush();
                 fs.Dispose();
             }
-            BackgroundJob.Enqueue(() => _budgetService.UploadActual(fileName, ConvertToGuid(id)));
+            BackgroundJob.Enqueue(() => _budgetService.UploadActual(fileName, ConvertToGuid(id), _userResolverService.GetUser()));
 
             return Json("File Uploaded"); //null just to make error free
         }

@@ -37,4 +37,6 @@ export class LineActualsComponent implements OnInit {
   ngOnInit() {
   }
 
+  public onReady(data: any) {}
+
 }

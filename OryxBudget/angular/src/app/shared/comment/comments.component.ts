@@ -35,7 +35,7 @@ export class CommentsComponent implements OnInit, OnChanges {
   }
 
   ngOnChanges(changes: any) {
-    console.log(this.lineComments);
+    // console.log(this.lineComments);
   }
 
   addDetail(data: any) {
@@ -58,7 +58,7 @@ export class CommentsComponent implements OnInit, OnChanges {
     newComments.push(comment);
     this.form.reset();
     this.update.emit(comment);
-    console.log(comment);
+    // console.log(comment);
 
   }
 

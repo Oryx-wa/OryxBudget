@@ -4,13 +4,10 @@ import { ICellRendererAngularComp, AgEditorComponent } from 'ag-grid-angular/mai
 @Component({
     selector: 'app-approval',
     template: `<form action="#">
-                            <div *ngIf="level === '3'" class="col s12">  
-                              
-      
-       <input #checkbox  type="checkbox"  [checked]="checkBoxValue" 
+                            <div *ngIf="level === '3'" class="col s12"> 
+       <input #checkbox  type="checkbox"  [checked]="checkBoxValue" [disabled]="disabled" 
         (change)="invokeParentMethod($event.target.checked)" [id]="chkId" [name]="chkId"/>
-       <label [for]="chkId">{{val}}</label>
-       
+       <label [for]="chkId">{{val}}</label>       
                               </div> 
                               
                               
@@ -28,6 +25,7 @@ export class ApprovalComponent implements ICellRendererAngularComp, AfterViewIni
     public status: 1;
     public level: '3';
     public chkVal = true;
+    public disabled = true;
 
     @ViewChild('checkbox') checkbox: ElementRef;
     constructor(private renderer: Renderer) {
@@ -45,24 +43,66 @@ export class ApprovalComponent implements ICellRendererAngularComp, AfterViewIni
         this.status = params.data.lineStatus;
         this.params = params;
         this.level = this.params.data.level;
-        if (this.level === '3') {
+        const operator = <boolean>this.params.data.operator;
+        const subCom = <boolean>this.params.data.subCom;
+        const tecCom = <boolean>this.params.data.tecCom;
+        const malCom = <boolean>this.params.data.malCom;
+        const prgStatus = +this.params.data.workProgramStatus;
+
+        switch (prgStatus) {
+            case 1:
+                if (subCom) {
+                    this.disabled = false;
+                } else {
+                    this.disabled = true;
+                }
+
+                break;
+            case 2:
+                if (tecCom) {
+                    this.disabled = false;
+                } else {
+                    this.disabled = true;
+                }
+                break;
+            case 3:
+                if (malCom) {
+                    this.disabled = false;
+                } else {
+                    this.disabled = true;
+                }
+                break;
+            default:
+                this.disabled = true;
+        }
+
+        if (operator) {
+            this.disabled = true;
+        }
+
+
+        if (this.level === '3') {            
             switch (params.data.lineStatus) {
                 case 1:
                     this.val = 'N/A';
                     this.chkVal = true;
                     this.checkBoxValue = false;
+
                     break;
                 case 2:
                     this.val = 'No';
                     this.chkVal = false;
                     this.checkBoxValue = false;
+
                     break;
                 case 3:
                     this.val = 'Yes';
                     this.chkVal = false;
                     this.checkBoxValue = true;
+
                     break;
             }
+
             this.chkId = this.params.data.code;
             this.type = this.params.colDef.type;
         }
@@ -72,7 +112,7 @@ export class ApprovalComponent implements ICellRendererAngularComp, AfterViewIni
 
     public invokeParentMethod(type: boolean) {
         // this.checkBoxValue = type;
-        console.log(type);
+        // console.log(type);
         this.val = (type) ? 'Yes' : 'No';
         this.params.context.componentParent.handleApproval(this.params.data.code, type, this.params.data.level);
 

@@ -3,6 +3,7 @@ import {
   EventEmitter, ChangeDetectionStrategy, OnDestroy, SimpleChanges
 } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
+import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { Router, ActivatedRoute, Params } from '@angular/router';
 import { RouterModule } from '@angular/router';
 import { Http, URLSearchParams } from '@angular/http';
@@ -33,23 +34,26 @@ import { UploadOutput, UploadInput, UploadFile, humanizeBytes, NgUploaderService
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class LineDetails2Component implements OnInit, OnChanges, OnDestroy {
-  lines$: Observable<BudgetLines[]>;
-  line$: Observable<BudgetLines>;
-  linesTouched$: Observable<boolean>;
-  linesTouched = false;
-  lineComments$: Observable<LineComment[]>;
+
   @Input() lines: BudgetLines[] = [];
   @Input() actuals: Actual[] = [];
   @Input() type = 'budget';
   @Input() workProgramStatus = 'Operator';
   @Input() showStatus = true;
   @Input() allBudgetStatus: WorkProgramState[] = [];
+  @Input() budgetId = '';
   showSubCom = false;
   showTecCom = false;
   showMalCom = false;
   showFinal = false;
   napims = false;
-  @Input() budgetId = '';
+  public dept: string;
+  lines$: Observable<BudgetLines[]>;
+  line$: Observable<BudgetLines>;
+  linesTouched$: Observable<boolean>;
+  linesTouched = false;
+  lineComments$: Observable<LineComment[]>;
+
   filtered: BudgetLines[] = [];
   selectedCode: BudgetLines;
   parentCode: BudgetLines;
@@ -73,10 +77,24 @@ export class LineDetails2Component implements OnInit, OnChanges, OnDestroy {
   public operator = false;
   public data: any;
   private event: UploadInput;
-  public workflow: string[] = ['Operator', 'SubCom', 'TecCom', 'MaCom', 'Final'];
+  public workflow: string[] = ['Operator', 'SubCom', 'TecCom', 'MaCom'];
   public btnClass = 'btn waves-effect waves-light disabled';
   dialogMode = 'details';
+
+
+
   constructor(private store: Store<AppState>, private dialog: DialogService, private securityService: SecurityService) {
+    this.store
+      .takeWhile(() => this.alive)
+      .subscribe(s => {
+        this.operator = s.security.user.operator;
+        this.showTecCom = s.security.user.showTecCom;
+        this.showSubCom = s.security.user.showSubCom;
+        this.showMalCom = s.security.user.showMalCom;
+        this.showFinal = s.security.user.showFinal;
+        this.napims = s.security.user.napims;
+        this.dept = s.security.user.dept;
+      });
     this.gridOptions = <GridOptions>{
       context: {
         componentParent: this
@@ -98,17 +116,7 @@ export class LineDetails2Component implements OnInit, OnChanges, OnDestroy {
   }
 
   ngOnInit() {
-    this.store
-      .takeWhile(() => this.alive)
-      .subscribe(s => {
-        this.operator = s.security.user.operator;
-        this.showTecCom = s.security.user.showTecCom;
-        this.showSubCom = s.security.user.showSubCom;
-        this.showMalCom = s.security.user.showMalCom;
-        this.showFinal = s.security.user.showFinal;
-        this.napims = s.security.user.napims;
 
-      });
     this.data = { id: this.budgetId };
     const url = (this.type === 'budget') ? 'UploadBudget' : 'UploadActual';
     this.event = {
@@ -119,12 +127,12 @@ export class LineDetails2Component implements OnInit, OnChanges, OnDestroy {
       concurrency: 1, // set sequential uploading of files with concurrency 1,
       headers: { ['Authorization']: 'Bearer ' + this.securityService.GetToken() }
     };
-    // console.log(this.event);
+    // // console.log(this.event);
     this.linesTouched$ = this.store.select(BudgetLineSelector.touched);
     this.linesTouched$.subscribe(touched => {
       this.btnClass = 'btn waves-effect waves-light' + (touched) ? ' disabled ' : '';
       this.linesTouched = touched;
-      // console.log(this.btnClass);
+      // // console.log(this.btnClass);
     });
     switch (this.type) {
       case 'budget':
@@ -138,9 +146,9 @@ export class LineDetails2Component implements OnInit, OnChanges, OnDestroy {
     }
     this.line$ = this.store.select(BudgetLineSelector.selectedBudgetLine);
     this.line$.subscribe(line => {
-      // console.log(line);
+      // // console.log(line);
       this.store.dispatch(new LineCommentActions.LoadItemsAction(''));
-    })
+    });
     this.lineComments$ = this.store.select(LineCommentSelector.getLineCommentCollection);
   }
   initActual() {
@@ -150,8 +158,8 @@ export class LineDetails2Component implements OnInit, OnChanges, OnDestroy {
     this.createColumnDefs();
   }
   ngOnChanges(changes: SimpleChanges) {
-    // console.log(changes);
-    console.log(this.allBudgetStatus);
+    // // console.log(changes);
+    // console.log(this.allBudgetStatus);
     switch (this.type) {
       case 'budget':
         if (changes['lines']) {
@@ -159,14 +167,18 @@ export class LineDetails2Component implements OnInit, OnChanges, OnDestroy {
             if (this.linesTouched === false) {
               this.structureData();
               this.store.dispatch(new BudgetActions.GetWorkProgramStatusAction(''));
+
             }
           } else {
             const nolines = this.nolines;
             if (this.operator) {
-              this.event.data = { id: this.budgetId };
-              console.log(this.event);
-              uploadBudget(this.event, this.type);
-              this.nolines = nolines;
+              if (this.budgetId !== '' && this.budgetId !== null) {
+                this.event.data = { id: this.budgetId };
+                // console.log(this.event);
+                uploadBudget(this.event, this.type);
+                this.nolines = nolines;
+              }
+
             }
           }
         }
@@ -178,13 +190,20 @@ export class LineDetails2Component implements OnInit, OnChanges, OnDestroy {
             this.structureActualData();
           } else {
             const nolines = this.nolines;
-            if (this.operator) {
+            /*if (this.operator) {
               uploadBudget(this.event, this.type);
               this.nolines = nolines;
-            }
+            }*/
           }
         }
     }
+  }
+
+  uploadActual() {
+    if (this.budgetId !== '' && this.budgetId !== null) {
+      uploadBudget(this.event, this.type);
+    }
+
   }
 
   getStatus = (statusString = '') => {
@@ -336,19 +355,19 @@ export class LineDetails2Component implements OnInit, OnChanges, OnDestroy {
         headerName: 'Management Commitee',
         children: [
           {
-            headerName: 'Budget LC', field: 'finalBudgetLC',
+            headerName: 'Budget LC', field: 'malComBudgetLC',
             width: this.colWidth,
             cellRendererFramework: CurrencyComponent,
             currency: 'NGN', hidden: true,
           },
           {
-            headerName: 'Budget USD', field: 'finalBudgetUSD',
+            headerName: 'Budget USD', field: 'malComBudgetUSD',
             width: this.colWidth,
             cellRendererFramework: CurrencyComponent,
             currency: 'USD', hidden: true,
           },
           {
-            headerName: 'Budget FC', field: 'finalBudgetFC',
+            headerName: 'Budget FC', field: 'malComBudgetFC',
             width: this.colWidth,
             cellRendererFramework: CurrencyComponent,
             currency: 'USD', hidden: true,
@@ -356,15 +375,22 @@ export class LineDetails2Component implements OnInit, OnChanges, OnDestroy {
         ]
       },
 
-
-
     ];
   }
   public onReady(data: any) {
-    // // console.log('onReady');
+    // // // console.log('onReady');
     // this.gridOptions.api.setColumnDefs(this.createColumnDefs());
     // this.gridOptions.api.setRowData(this.rowData);
     this.ready = true;
+
+    if (this.dept === 'All' && this.lines.length > 1) {
+      this.gridOptions.api.forEachNode((node) => {
+
+        if (node.data.level === '2') {
+          node.setExpanded(false);
+        }
+      });
+    }
     // this.setColumns();
 
 
@@ -382,6 +408,9 @@ export class LineDetails2Component implements OnInit, OnChanges, OnDestroy {
           ['tecComBudgetLC',
             'tecComBudgetUSD', 'tecComBudgetFC'],
           false);
+        this.gridOptions.columnApi.setColumnsVisible(
+          ['finalBudgetUSD', 'finalBudgetLC', 'finalBudgetFC'],
+          false);
       }
 
       if (this.showTecCom) {
@@ -391,11 +420,14 @@ export class LineDetails2Component implements OnInit, OnChanges, OnDestroy {
         this.gridOptions.columnApi.setColumnsVisible(
           ['subComBudgetLC', 'subComBudgetUSD'],
           false);
-
         this.gridOptions.columnApi.setColumnsVisible(
           ['opBudgetFC', 'subComBudgetFC', 'tecComBudgetLC',
             'tecComBudgetUSD', 'tecComBudgetFC'],
           true);
+        this.gridOptions.columnApi.setColumnsVisible(
+          ['finalBudgetUSD', 'finalBudgetLC', 'finalBudgetFC'],
+          false);
+
       }
       if (this.showMalCom) {
         this.gridOptions.columnApi.setColumnsVisible(
@@ -404,21 +436,16 @@ export class LineDetails2Component implements OnInit, OnChanges, OnDestroy {
         this.gridOptions.columnApi.setColumnsVisible(
           ['subComBudgetLC', 'subComBudgetUSD'],
           false);
-
+        this.gridOptions.columnApi.setColumnsVisible(
+          ['tecComBudgetLC', 'tecComBudgetUSD',],
+          false);
         this.gridOptions.columnApi.setColumnsVisible(
           ['opBudgetFC', 'subComBudgetFC', 'tecComBudgetLC',
-            'finalBudgetUSD', 'finalBudgetFC', 'finalBudgetFC'],
+            'finalBudgetUSD', 'finalBudgetLC', 'finalBudgetFC'],
           true);
+
       }
 
-      /*
-    this.gridOptions.columnApi.setColumnsVisible(
-      ['malComBudgetLC', 'malComBudgetUSD', 'malComBudgetFC'],
-     false);
-
-    this.gridOptions.columnApi.setColumnsVisible(
-      ['finalBudgetLC', 'finalBudgetUSD', 'finalBudgetFC'],
-      false);*/
     }
   }
   structureData() {
@@ -427,10 +454,20 @@ export class LineDetails2Component implements OnInit, OnChanges, OnDestroy {
     const level1: BudgetLines[] = this.lines.filter(line => line.level === '1');
     const level2: BudgetLines[] = this.lines.filter(line => line.level === '2');
     const level3: BudgetLines[] = this.lines.filter(line => line.level === '3');
+
+    const level3Data = [];
+    level3.map(line => {
+      level3Data.push(_.assign({}, line, {
+        operator: this.operator, dept: this.dept,
+        subCom: this.showSubCom, tecCom: this.showTecCom, malCom: this.showMalCom
+
+      }))
+    })
+
     let leve2Data: any[] = [];
     level2.map(line => {
-      const children = level3.filter(l2 => l2.fatherNum === line.code);
-      const bd = _.assign({}, line, { level2: line.code, level3: children });
+      const children = level3Data.filter(l2 => l2.fatherNum === line.code);
+      const bd = _.assign({}, line, { level2: line.code, level3: children, dept: this.dept });
       leve2Data.push(bd);
     });
 
@@ -467,6 +504,7 @@ export class LineDetails2Component implements OnInit, OnChanges, OnDestroy {
     });
     if (this.rowData.length > 0) {
       this.setColumns();
+      // console.log(this.rowData);
     }
   }
   structureActualData() {
@@ -541,7 +579,7 @@ export class LineDetails2Component implements OnInit, OnChanges, OnDestroy {
         children: [
 
           {
-            headerName: 'Budget FC', field: 'finalBugetFC',
+            headerName: 'Budget FC', field: 'finalBudgetFC',
             width: this.colWidth,
             cellRendererFramework: CurrencyComponent,
             currency: 'USD'
@@ -591,7 +629,7 @@ export class LineDetails2Component implements OnInit, OnChanges, OnDestroy {
     ];
   }
   public handleApproval(id: string, type: boolean, level: string, fatherNum: string) {
-    // console.log(level);
+    // // console.log(level);
     // const children: any[] = this.rowData[0].level2;
     if (type === true) {
       this.store.dispatch(new BudgetLineActions.UpdateStatusAction({ code: id, status: 3 }));
@@ -625,7 +663,7 @@ export class LineDetails2Component implements OnInit, OnChanges, OnDestroy {
   }
 
   public handleChildMessage(id: string, type: string) {
-    // console.log(id);
+    // // console.log(id);
     this.store.dispatch(new BudgetLineActions.SelectItemAction(id));
     this.showComment = true;
 
@@ -664,7 +702,7 @@ export class LineDetails2Component implements OnInit, OnChanges, OnDestroy {
 
   filterDisputed(type: boolean) {
     this.store.dispatch(new BudgetLineActions.FilterAction(type));
-    // console.log(this.lines);
+    // // console.log(this.lines);
   }
 }
 
@@ -696,7 +734,7 @@ function getNodeChildDetails(rowItem) {
         children: rowItem.level3,
 
         field: 'level2',
-        expanded: true,
+        expanded: (rowItem.dept === 'All') ? false : true,
         // the key is used by the default group cellRenderer
         key: rowItem.level2
       };

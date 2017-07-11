@@ -69,18 +69,18 @@ export class DeleteItemSuccessAction implements Action {
 
 export class LoadItemsAction implements Action {
     readonly type = LOAD_ITEMS;
-    constructor(public payload: string) { console.log(payload) }
+    constructor(public payload: string) { }
 }
 
 export class LoadItemsSuccessAction implements Action {
     readonly type = LOAD_ITEMS_SUCCESS;
 
-    constructor(public payload: BudgetLines[]) { console.log(payload); }
+    constructor(public payload: BudgetLines[]) {  }
 }
 export class LoadItemSuccessAction implements Action {
     readonly type = LOAD_ITEM_SUCCESS;
 
-    constructor(public payload: any) { console.log(payload); }
+    constructor(public payload: any){ }
 }
 
 export class SelectItemAction implements Action {
@@ -101,7 +101,7 @@ export class UpdateStatusAction implements Action {
 
 export class UpdateStatusValueAction implements Action {
     readonly type = UPDATE_STATUS_VALUE;
-    constructor(public payload: BudgetLines) { console.log(payload) }
+    constructor(public payload: BudgetLines) {  }
 }
 
 export class ResetApprovalUpdateAction implements Action {

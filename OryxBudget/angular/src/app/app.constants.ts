@@ -31,8 +31,8 @@ export class Configuration {
             this.returnUrl = 'http://localhost:4200/';
             this.apiUploadFolder = this.apiServer + 'uploads';
         }
-        console.log(environment.production);
-        console.log(this.apiServer)
+        // console.log(environment.production);
+        // console.log(this.apiServer)
     }
 }
 

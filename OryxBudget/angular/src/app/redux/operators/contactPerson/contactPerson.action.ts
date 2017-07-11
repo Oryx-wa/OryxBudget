@@ -63,7 +63,7 @@ export class LoadItemsAction implements Action {
 export class LoadItemsSuccessAction implements Action {
     readonly type = LOAD_ITEMS_SUCCESS;
 
-    constructor(public payload: ContactPerson[]) { console.log(payload); }
+    constructor(public payload: ContactPerson[]){ }
 }
 
 

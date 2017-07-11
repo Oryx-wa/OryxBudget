@@ -46,7 +46,7 @@ export class BaseService {
         this.headers.append('Content-Type', 'application/json');
         this.headers.append('Accept', 'application/json');
         let token = this.token;
-        console.log(token);
+        // console.log(token);
         if (token !== '') {
             this.headers.append('Authorization', 'Bearer ' + token);
         }
@@ -55,7 +55,7 @@ export class BaseService {
     public setActionUrl(action: string) {
 
         this.actionUrl = this._actionUrl + '/' + action + '/';
-        // console.log(this.actionUrl)
+        // // console.log(this.actionUrl)
     }
 
     public GetLocalJson = (file: string): Observable<any> => {
@@ -81,13 +81,13 @@ export class BaseService {
     }
 
     protected add = (itemToAdd: any, action: string): Observable<any> => {
-        console.log(JSON.stringify(itemToAdd));
+        // console.log(JSON.stringify(itemToAdd));
         return this._http.post(this.getUrl(action), JSON.stringify(itemToAdd), { headers: this.getHeaders() })
             .map(res => res.json());
     }
 
     protected addByParam = (itemToAdd: any, action: string, params: URLSearchParams): Observable<any> => {
-        console.log(JSON.stringify(itemToAdd));
+        // console.log(JSON.stringify(itemToAdd));
         return this._http.post(this.getUrl(action),
             JSON.stringify(itemToAdd),
             {

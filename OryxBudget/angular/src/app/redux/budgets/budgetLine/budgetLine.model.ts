@@ -43,6 +43,7 @@ export const initBudgetLines: BudgetLines = {
     budgetId: '',
     workProgramStatus: 0,
     touched: false,
+    dept: ''
 };
 
 export interface BudgetLineEntity {

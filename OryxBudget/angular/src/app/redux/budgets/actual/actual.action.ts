@@ -64,13 +64,13 @@ export class LoadItemsAction implements Action {
 export class LoadItemsSuccessAction implements Action {
     readonly type = LOAD_ITEMS_SUCCESS;
 
-    constructor(public payload: Actual[]) { console.log(payload); }
+    constructor(public payload: Actual[]){ }
 }
 
 export class LoadItemSuccessAction implements Action {
     readonly type = LOAD_ITEM_SUCCESS;
 
-    constructor(public payload: any) { console.log(payload); }
+    constructor(public payload: any){ }
 }
 
 export class SelectItemAction implements Action {

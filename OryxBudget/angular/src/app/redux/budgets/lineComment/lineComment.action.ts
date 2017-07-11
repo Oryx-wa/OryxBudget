@@ -64,7 +64,7 @@ export class LoadItemsAction implements Action {
 export class LoadItemsSuccessAction implements Action {
     readonly type = LOAD_ITEMS_SUCCESS;
 
-    constructor(public payload: LineComment[]) { console.log(payload); }
+    constructor(public payload: LineComment[]){ }
 }
 
 export class SelectItemAction implements Action {

@@ -54,6 +54,6 @@ export class NotificationEffects implements OnDestroy {
     ) { }
 
   ngOnDestroy() {
-      console.log('ngOnDestroy');
+      // console.log('ngOnDestroy');
   }
 }

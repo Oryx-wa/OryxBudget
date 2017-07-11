@@ -38,6 +38,7 @@ export interface BudgetLines {
     budgetId: string;
     workProgramStatus: number;
     touched: boolean;
+    dept: string;
 }
 
 

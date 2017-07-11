@@ -48,7 +48,7 @@ export class BarChartComponent implements OnInit {
       // width = this.width;
       // height = this.height;
       const data = this.data;
-      console.log(data);
+      // console.log(data);
 
       width = this.width - margin.left - margin.right;
       height = this.height - margin.top - margin.bottom;

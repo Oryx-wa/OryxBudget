@@ -20,13 +20,16 @@ namespace OryxWebApi.Controllers.BudgetLineControllers
     {
         private readonly BudgetLineService _budgetLineService;
         private readonly WorkProgramService _workProgramService;
+        private readonly BudgetService _budgetService;
         // private readonly AccreditationInfoService _accreditationInfoService;
         // private readonly TrainingInfoService _trainingInfoService;
 
-        public BudgetLineController(BudgetLineService budgetLineService, WorkProgramService workProgramService)
+        public BudgetLineController(BudgetLineService budgetLineService, WorkProgramService workProgramService, 
+            BudgetService budgetService)
         {
             _budgetLineService = budgetLineService;
             _workProgramService = workProgramService;
+            _budgetService = budgetService;
             //  _accreditationInfoService = accreditationInfoService;
             //  _trainingInfoService = trainingInfoService;
         }
@@ -71,8 +74,10 @@ namespace OryxWebApi.Controllers.BudgetLineControllers
         public JsonResult UpdateWorkProgramStatus( string budgetId, [FromBody]IEnumerable<StatusHistoryViewModel2> statusVM)
         {
             var statusList = Mapper.Map<IEnumerable<BudgetCodeView>>(statusVM);
+            var budgetIdGuid = this.ConvertToGuid(budgetId);
             _budgetLineService.UpdateStatus(statusList);
-            _workProgramService.UpdateWorkProgramStatus(this.ConvertToGuid(budgetId));
+            _workProgramService.UpdateWorkProgramStatus(budgetIdGuid);
+            _budgetService.updateBudgetStatus(budgetIdGuid);
             _budgetLineService.SaveChanges();
             return Json("Ok");
         }

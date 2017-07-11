@@ -26,7 +26,7 @@ export class BudgetEffects implements OnDestroy {
         .ofType(BudgetActions.LOAD_ITEMS)
         .withLatestFrom(this.store$.select(state => state.security.user))
         .map(([action, user]) => {
-            console.log(user);
+            // console.log(user);
             const ret = user.operatorId;
             return ret;
         })
@@ -94,7 +94,7 @@ export class BudgetEffects implements OnDestroy {
         .mergeMap(ret => this.budgetService.getPrintOut(ret)
             .map(file => new BudgetActions.GetPrintOutSuccessAction(file))
             .catch(err => {
-                console.log(err);
+                // console.log(err);
                 return Observable.from([new ErrorActions.ErrorAddAction(err),
                 new NotificationActions.SetSavingError('Error saving Budget')]);
             }));
@@ -108,7 +108,7 @@ export class BudgetEffects implements OnDestroy {
         .mergeMap( ret => this.budgetService.getPrintOut(ret)
         .map(file => new BudgetActions.GetPrintOutSuccessAction(file))
         .catch(err => {
-                console.log(err);
+                // console.log(err);
                 return Observable.from([new ErrorActions.ErrorAddAction(err),
                 new NotificationActions.SetSavingError('Error saving Budget')]);
             }));
@@ -146,6 +146,6 @@ export class BudgetEffects implements OnDestroy {
     ) { }
 
     ngOnDestroy() {
-        console.log('ngOnDestroy');
+        // console.log('ngOnDestroy');
     }
 }

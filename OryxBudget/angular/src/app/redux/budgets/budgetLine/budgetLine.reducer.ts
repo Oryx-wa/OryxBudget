@@ -186,12 +186,15 @@ function updateStatus(bdLine: BudgetLines, status: number) {
                 _.assign({}, bdLine,
                     {
                         lineStatus: status,
-                        finalBudgetFC: (bdLine.malComBudgetFC === 0) ?
-                            bdLine.tecComBudgetFC : bdLine.malComBudgetFC,
-                        finalBudgetLC: (bdLine.tecComBudgetLC === 0) ?
+                        malComBudgetFC: (bdLine.tecComBudgetFC === 0) ?
+                            bdLine.subComBudgetFC : bdLine.tecComBudgetFC,
+                        malComBudgetLC: (bdLine.tecComBudgetLC === 0) ?
                             bdLine.subComBudgetFC : bdLine.tecComBudgetLC,
-                        finalBudgetUSD: (bdLine.malComBudgetUSD === 0) ?
-                            bdLine.tecComBudgetFC : bdLine.malComBudgetUSD,
+                        malComBudgetUSD: (bdLine.tecComBudgetUSD === 0) ?
+                            bdLine.subComBudgetFC : bdLine.tecComBudgetUSD,
+                        finalBudgetFC: bdLine.malComBudgetFC,
+                        finalBudgetLC: bdLine.malComBudgetLC,
+                        finalBudgetUSD: bdLine.malComBudgetUSD,
                         touched: true,
                     }),
                 budgetLineSchema));
@@ -234,6 +237,9 @@ function updateStatusWithValue(bdLine: BudgetLines, status: number, value: Budge
                         malComBudgetFC: value.malComBudgetFC,
                         malComBudgetLC: value.malComBudgetLC,
                         malComBudgetUSD: value.malComBudgetUSD,
+                        finalBudgetFC: value.finalBudgetFC,
+                        finalBudgetLC: value.finalBudgetLC,
+                        finalBudgetUSD: value.finalBudgetUSD,
                         touched: true,
                     }),
                 budgetLineSchema));
@@ -284,7 +290,7 @@ function updateUnTouched(bdLine: BudgetLines, status: number) {
                     }) :
                 bdLine;
         case 3:
-            return (bdLine.malComActualFC === 0) ?
+            return (bdLine.malComBudgetFC === 0) ?
                 _.assign({}, bdLine,
                     {
                         lineStatus: status,
@@ -294,6 +300,9 @@ function updateUnTouched(bdLine: BudgetLines, status: number) {
                             bdLine.subComBudgetFC : bdLine.tecComBudgetLC,
                         malComBudgetUSD: (bdLine.tecComBudgetUSD === 0) ?
                             bdLine.subComBudgetFC : bdLine.tecComBudgetUSD,
+                        finalBudgetFC: bdLine.malComBudgetFC,
+                        finalBudgetLC: bdLine.malComBudgetLC,
+                        finalBudgetUSD: bdLine.malComBudgetUSD,
                         touched: true,
                     }) :
                 bdLine;

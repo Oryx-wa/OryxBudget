@@ -13,7 +13,7 @@ export class TextComponent implements ICellEditorAngularComp, AfterViewInit {
     agInit(params: any): void {
         this.params = params;
         this.value = this.params.value;
-        // // console.log(this.params);
+        // // // console.log(this.params);
     }
     isPopup(): boolean {
         return true;

@@ -35,7 +35,7 @@ export class LineCommentComponent implements OnInit, OnChanges {
     subComdisabled = (this.napims) ? false : true;
     if (!subComdisabled) { subComdisabled = (this.showSubCom) ? false : true; }
     if (!subComdisabled) { subComdisabled = (this.line.lineStatus === 3) ? true : false; }
-    console.log(subComdisabled);
+    // console.log(subComdisabled);
     return subComdisabled;
   }
   ngOnChanges(changes: any): void {
@@ -134,7 +134,7 @@ export class LineCommentComponent implements OnInit, OnChanges {
         comments.push(lineComment);
       }
     });
-    console.log(line);
+    // console.log(line);
     this.update.emit({ lineComments: comments[0], line: line});
 
   }

@@ -10,12 +10,12 @@ export const TokenReducer: ActionReducer<UserModel.Token> = (state: UserModel.To
   action: TokenActions.Actions) => {
   switch (action.type) {
     case TokenActions.SET_TOKEN:
-      console.log(action.payload);
+      // console.log(action.payload);
       return Object.assign({}, state, action.payload);
     case TokenActions.INIT_TOKEN:
       return UserModel.initToken;
     case TokenActions.GET_URL_SUCCESS:
-      console.log(action.payload);
+      // console.log(action.payload);
 
       return Object.assign({}, state, { retUrl: action.payload });
     case TokenActions.SET_URL:

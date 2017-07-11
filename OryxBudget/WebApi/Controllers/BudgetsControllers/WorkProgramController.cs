@@ -14,10 +14,12 @@ namespace OryxWebApi.Controllers.BudgetsControllers
     public class WorkProgramController : BaseController
     {
         private readonly WorkProgramService _workProgramService;
-        
-        public WorkProgramController(WorkProgramService workProgramService)
+        private readonly BudgetService _budgetService;
+
+        public WorkProgramController(WorkProgramService workProgramService, BudgetService budgetService)
         {
             _workProgramService = workProgramService;
+            _budgetService = budgetService;
         }
 
         [HttpPost]
@@ -42,7 +44,7 @@ namespace OryxWebApi.Controllers.BudgetsControllers
         [Route("GetWorkProgramStatusesByBudget")]
         public JsonResult GetWorkProgramStatusesByBudgetId(string budgetId)
         {
-            var ret = _workProgramService.GetWorkProgramStatusesByBudget(budgetId);
+            var ret = _budgetService.GetWorkProgramStatusesByBudget(budgetId);
             return Json(new WorkProgramStatusViewModel(ret));
         }
 

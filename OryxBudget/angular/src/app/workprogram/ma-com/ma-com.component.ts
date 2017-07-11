@@ -81,7 +81,10 @@ export class MaComComponent implements OnInit, OnChanges {
     this.budget$ = this.store.select(BudgetSelector.selectedBudget);
     this.workProgramStatus$ = this.store.select(BudgetSelector.workProgramStatus);
     this.workProgramNumber$ = this.store.select(BudgetSelector.workProgramStatusNumber);
-    this.workProgramNumber$.subscribe(status => this.status = status);
+    this.workProgramNumber$.subscribe(status => {
+      console.log(status);
+      this.status = status;
+    });
     this.budget$
       .takeWhile(() => this.alive)
       .subscribe(budget => {
@@ -110,6 +113,7 @@ export class MaComComponent implements OnInit, OnChanges {
     this.unTouched$ = this.store.select(BudgetLineSelector.getUntouchedCollection);
     this.actuals$ = this.store.select(ActualSelector.getActualCollection);
     this.allWorkProgramStatuses$ = this.store.select(BudgetSelector.getAllStatusCollection);
+    this.workProgramStatus$ = this.store.select(BudgetSelector.workProgramStatus);
     this.changeDisplayMode(DisplayModeEnum.Budget);
     this.level2Lines$.subscribe(l => console.log(l));
 
@@ -117,7 +121,7 @@ export class MaComComponent implements OnInit, OnChanges {
     this.printOut$ = this.store.select(BudgetSelector.printOut);
     this.printOut$.subscribe(file => {
       if (file !== null) {
-        // console.log(file);
+        // // console.log(file);
         const fileURL = URL.createObjectURL(file)
         window.open(fileURL);
       }
@@ -125,10 +129,10 @@ export class MaComComponent implements OnInit, OnChanges {
   }
 
   ngOnChanges(changes: any) {
-    if (this.displayMode === DisplayModeEnum.Budget) {
-      this.store.dispatch(new BudgetLineActions.LoadItemsAction(this.budgetId));
-      this.store.dispatch(new BudgetActions.GetBudgetAllWorkProgamStatusAction(''));
-    }
+    /* if (this.displayMode === DisplayModeEnum.Budget) {
+       this.store.dispatch(new BudgetLineActions.LoadItemsAction(this.budgetId));
+       this.store.dispatch(new BudgetActions.GetBudgetAllWorkProgamStatusAction(''));
+     }*/
   }
 
   openFirst() {
@@ -140,14 +144,13 @@ export class MaComComponent implements OnInit, OnChanges {
   }
 
   changeDisplayMode(mode: DisplayModeEnum) {
-    // // console.log(mode); 
     this.displayMode = mode;
   }
 
   selectBudget(id: string) {
     this.budgetId = id;
     this.store.dispatch(new BudgetActions.SelectItemAction(id));
-    // console.log(id);
+    // // console.log(id);
     // this.store.dispatch(new BudgetLineActions.LoadItemsAction(this.budgetId));
   }
 

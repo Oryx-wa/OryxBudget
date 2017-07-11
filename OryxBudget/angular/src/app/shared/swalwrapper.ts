@@ -28,7 +28,7 @@ export function upload(uploadInput: UploadInput) {
       }
     }).then(function (file) {
 
-      // console.log(uploadInput);
+      // // console.log(uploadInput);
       const ngx = new NgUploaderService();
       uploadFile(file, uploadInput).subscribe(data => console.log(data));
     });

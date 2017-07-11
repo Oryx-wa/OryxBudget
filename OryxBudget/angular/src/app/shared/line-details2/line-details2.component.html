@@ -1,6 +1,6 @@
 <div materialize class="">
   <div class="row">
-    <div *ngIf="!noLines;else upload">
+    <div *ngIf="!nolines;else upload">
       <div *ngIf="showStatus" materialize class=" col s12 left">
         <nav>
           <div materialize class="nav-wrapper white">
@@ -14,6 +14,9 @@
 
               <li class="right" *ngIf="linesTouched$ | async">
                 <a class=" btn btn-small waves-effect waves-light " (click)="UpdateStatus('reset')">Reset</a></li>
+
+              <li class="right" *ngIf="operator === true && type === 'actual'">
+                <a class=" btn btn-small waves-effect waves-light " (click)="uploadActual('reset')">Upload Performance</a></li>
             </ul>
           </div>
         </nav>

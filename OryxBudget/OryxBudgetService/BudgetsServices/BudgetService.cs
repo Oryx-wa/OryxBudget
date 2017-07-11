@@ -165,7 +165,7 @@ namespace OryxBudgetService.BudgetsServices
 
         }
 
-        public void UploadActual(string fileName, Guid id)
+        public void UploadActual(string fileName, Guid id, string userId)
         {
             var file = System.IO.File.OpenRead(fileName);
             System.IO.TextReader dataFile = new System.IO.StreamReader(file);
@@ -178,6 +178,7 @@ namespace OryxBudgetService.BudgetsServices
             var budget = this.Get(id);
             decimal totalUSD = budget.OpActualUSD;
             decimal totalLC = budget.OpActualLC;
+            
             decimal total = budget.OpActualFC;
 
             foreach (var item in records)
@@ -189,14 +190,16 @@ namespace OryxBudgetService.BudgetsServices
                 }
                 item.Code = item.Code.Trim();
                 item.Description = (item.Description.Trim().Length > 99) ? item.Description.Trim().Substring(0, 99) : item.Description.Trim();
-                item.UserSign = "e317f2dc-deb1-4463-8b67-7f435211d652";
+                item.UserSign = userId;
                 item.UpdateDate = System.DateTime.Now;
                 item.CreateDate = System.DateTime.Now;
+                item.OpActualFC = item.OpActualLCInUSD + item.OpActualUSD;
 
                 budget.Actuals.Add(item);
                 totalLC += item.OpActualLC;
                 totalUSD += item.OpActualUSD;
-                total += item.OpActualLCInUSD + item.OpActualUSD;
+                
+                total += item.OpActualFC;
 
             };
 
@@ -204,7 +207,7 @@ namespace OryxBudgetService.BudgetsServices
             budget.OpActualUSD = totalUSD;
             budget.OpActualFC = total;
 
-            base.Update(budget);
+            base.Update(budget, userId);
             this.SaveChanges();
             dataFile.Dispose();
             file.Dispose();
@@ -349,6 +352,19 @@ namespace OryxBudgetService.BudgetsServices
             }
         }
 
+        public void updateBudgetStatus(Guid id)
+        {
+            var role = _userResolverService.GetNapimsRole();
+            var dept = _userResolverService.GetDepartment();
+            Enum.TryParse(role, out BudgetStatus bdStatus);
+
+            var budget = this.Get(id);
+            budget.BudgetStatus = bdStatus;
+            this.Update(budget);
+
+
+        }
+
         public void updateStatus(string status, string Code, string BudgetId)
         {
             var roleList = _userResolverService.GetRoles();
@@ -381,6 +397,41 @@ namespace OryxBudgetService.BudgetsServices
             statusHistory.Code = Code;
             statusHistory.BudgetId = BudgetId;
             _lineStatus.Add(statusHistory);
+        }
+
+
+        public WorkProgramStatus GetWorkProgramStatusesByBudget(string budgetId)
+        {
+            var roleList = _userResolverService.GetRoles();
+            var role = _userResolverService.GetNapimsRole();
+
+            Enum.TryParse(role, out BudgetStatus bdStatus);
+            if (bdStatus == BudgetStatus.MalCom || bdStatus == BudgetStatus.TecCom)
+            {
+                var budget = this.Get(new Guid(budgetId));
+                WorkProgramStatus ret = new WorkProgramStatus();
+                ret.BudgetStatus = budget.BudgetStatus;
+                ret.BudgetId = budget.Id;
+                ret.WorkProgram = WorkProgramTypeEnum.Header;
+                return ret;
+            }
+            else
+            {
+                WorkProgramTypeEnum t = WorkProgramTypeEnum.Header;
+
+                foreach (var item in roleList)
+                {
+                    if (Enum.TryParse(item, out WorkProgramTypeEnum wkTypeOut))
+                    {
+                        t = wkTypeOut;
+                    }
+
+                }
+                return _workProgramService.GetAllWorkProgramStatuses()
+                    .Where(s => s.BudgetId == new Guid(budgetId) && s.WorkProgram == t)
+                    .FirstOrDefault();
+            }
+
         }
 
         public IEnumerable<BudgetLineStatusHistory> GetLineStatus(string BudgetId, string Code)
@@ -464,6 +515,8 @@ namespace OryxBudgetService.BudgetsServices
             return receiveStream;
 
         }
+
+       
     }
 
 

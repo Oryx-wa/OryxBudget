@@ -23,7 +23,7 @@ export class B1Service extends BaseService {
     public setActionUrl(action: string) {
 
         this.actionUrl = this.b1Url + '/' + action + '/';
-        // console.log(this.actionUrl)
+        // // console.log(this.actionUrl)
     }
 
 }

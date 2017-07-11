@@ -11,7 +11,7 @@ import { AppState, Notification, NotificationActions } from './../../redux';
 })
 export class MainNavComponent implements OnInit {
 
-
+  notifications = [];
   constructor(public securityService: SecurityService) {
 
 

@@ -1,5 +1,6 @@
 import * as fromRoot from './../../';
 import { createSelector } from 'reselect';
+import * as _ from 'lodash';
 
 import { AppState } from './../../';
 
@@ -10,15 +11,16 @@ import {
 
 import { BudgetLines } from './budgetLine.interface';
 // BudgetLine
-
+// const dept = (state: AppState) => state.security.user.dept;
 export const getBudgetLineState = (state: AppState) => state.budgets.budgetLine;
 export const BudgetLineEntities = createSelector(getBudgetLineState, getBudgetLineEntities);
 export const BudgetLineIds = createSelector(getBudgetLineState, getBudgetLineIds);
-export const getBudgetLineCollection = createSelector(BudgetLineEntities, BudgetLineIds, (entities, ids) => {
+export const getBudgetLineCollection = createSelector( BudgetLineEntities, BudgetLineIds, (entities, ids) => {
     if (ids.length === 0) {
         return [];
     }
-    return ids.map(id => entities[id]);
+
+    return ids.map(id =>  entities[id]);
 });
 export const getBudgetLineLevel2Collection = createSelector(BudgetLineEntities, BudgetLineIds, (entities, ids) => {
     if (ids.length === 0) {

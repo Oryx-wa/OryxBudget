@@ -65,6 +65,6 @@ export class LineCommentEffects implements OnDestroy {
     ) { }
 
     ngOnDestroy() {
-        console.log('ngOnDestroy');
+        // console.log('ngOnDestroy');
     }
 }

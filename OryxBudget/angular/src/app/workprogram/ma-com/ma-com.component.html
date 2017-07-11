@@ -10,7 +10,13 @@
   <div class="col l3">
     <div class="row">
       <div class="filter-elements">
-        <div *ngIf="displayMode === displayModeEnum.Budget">
+        <div *ngIf="displayMode === displayModeEnum.Budget  || displayMode === displayModeEnum.WorkProgram">
+          <div *ngIf="napims$ | async" class="row">
+            <a class="btn waves-effect waves-light green" (click)="changeDisplayMode(displayModeEnum.WorkProgram)">Work Program Status</a>
+          </div>
+          <div *ngIf="napims$ | async" class="row">
+            <a class="btn waves-effect waves-light orange" (click)="changeDisplayMode(displayModeEnum.Budget)">Budget Details</a>
+          </div>
           <div *ngIf="napims$ | async" class="row">
             <a class="btn waves-effect waves-light blue" (click)="openFirst()">Sign Off</a>
           </div>
@@ -42,24 +48,26 @@
     </div>
   </div>
   <div class="col l9">
-    <div *ngIf="allWorkProgramStatuses$ | async; let items;" class="col s12">
-      <div *ngIf="items.length > 0">
-        <div class="row" *ngFor="let item of items">
-          <nav>
-            <div materialize class="nav-wrapper white">
-              <a href="#" class="brand-logo black-text right">{{item.department}}</a>
-              <ul id="nav-mobile" class="  hide-on-med-and-down">
-                <app-business-process-svg [text]="workflow" [active]="item.status - 1"> </app-business-process-svg>
-              </ul>
-            </div>
-          </nav>
+    <div *ngIf="displayMode === displayModeEnum.WorkProgram">
+      <div *ngIf="allWorkProgramStatuses$ | async; let items;" class="col s12">
+        <div *ngIf="items.length > 0">
+          <div class="row" *ngFor="let item of items">
+            <nav>
+              <div materialize class="nav-wrapper white">
+                <a href="#" class="brand-logo black-text right">{{item.department}}</a>
+                <ul id="nav-mobile" class="  hide-on-med-and-down">
+                  <app-business-process-svg [text]="workflow" [active]="item.status - 1"> </app-business-process-svg>
+                </ul>
+              </div>
+            </nav>
+          </div>
         </div>
       </div>
     </div>
     <div *ngIf="displayMode === displayModeEnum.Budget">
       <div *ngIf="lines$ | async;let lines; else loading2">
-        <app-line-details2 [lines]="lines" [budgetId]="budgetId" [type]="'budget'" [allBudgetStatus]="allWorkProgramStatuses$ | async"
-          [showStatus]="false">
+        <app-line-details2 [lines]="lines" [budgetId]="budgetId" [type]="'budget'" 
+          [showStatus]="true"  [workProgramStatus]="workProgramStatus$ | async">
         </app-line-details2>
       </div>
     </div>

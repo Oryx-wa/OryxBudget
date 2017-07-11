@@ -7,9 +7,14 @@ import { Component, OnInit, Input, Output } from '@angular/core';
 })
 export class WpDashboardComponent implements OnInit {
   @Input() dept: string;
+  @Input() tecCom = true;
+  @Input() malCom = false;
+  buttonText = '';
   constructor() { }
 
   ngOnInit() { 
+    this.buttonText = (this.tecCom === true) ? 'Technical Committee' : 'Management Committee';
+
   }
 
 }

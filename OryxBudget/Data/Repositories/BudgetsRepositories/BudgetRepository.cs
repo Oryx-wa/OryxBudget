@@ -19,7 +19,7 @@ namespace Data.Repositories.BudgetsRepositories
 
         public IEnumerable<BudgetActuals> GetBudgetActuals (string id)
         {
-            var sql = $@"Select SUM(a.FinalBudgetFC) FinalBudgetFC, SUM(i.OpActualFC) OpActualFC, 
+            var sql = $@"Select SUM(a.malComBudgetFC) FinalBudgetFC, SUM(i.OpActualFC) OpActualFC, 
 	SUM(i.OpActualLC) OpActualLC, SUM(i.OpActualLCInUSD) OpActualLCInUSD, SUM(i.OpActualUSD) OpActualUSD,
 	f.OperatorId,  f.Id BudgetId, g.Name OperatorName, h.Code, h.Description, h.FatherNum, h.Level, h.Type
 from Budgets f join BudgetLines a 
@@ -30,7 +30,7 @@ from Budgets f join BudgetLines a
 where f.id = '{id}'
 Group by f.OperatorId,  f.id,h.Code, h.Description, h.FatherNum, h.Level, g.Name, h.Type
 union all
-Select 	SUM(a.FinalBudgetFC) FinalBudgetFC, SUM(i.OpActualFC) OpActualFC, 
+Select 	SUM(a.malComBudgetFC) FinalBudgetFC, SUM(i.OpActualFC) OpActualFC, 
 	SUM(i.OpActualLC) OpActualLC, SUM(i.OpActualLCInUSD) OpActualLCInUSD, SUM(i.OpActualUSD) OpActualUSD,
 	f.OperatorId,  f.Id, g.Name OperatorName, h.level2, h.Description, h.FatherNum, h.Level, h.Type
 from Budgets f join BudgetLines a 
@@ -44,7 +44,7 @@ where a.Level = '3') h on a.Code = h.Code
 where f.id = '{id}'
 Group by f.OperatorId,  f.id,h.level2, h.Description, h.FatherNum, h.Level, g.Name, h.Type
 union all
-Select 	SUM(a.FinalBudgetFC) FinalBudgetFC, SUM(i.OpActualFC) OpActualFC, 
+Select 	SUM(a.malComBudgetFC) FinalBudgetFC, SUM(i.OpActualFC) OpActualFC, 
 	SUM(i.OpActualLC) OpActualLC, SUM(i.OpActualLCInUSD) OpActualLCInUSD, SUM(i.OpActualUSD) OpActualUSD,
 	f.OperatorId,  f.Id, g.Name OperatorName, h.level2, h.Description, h.FatherNum, h.Level, -1
 from Budgets f join BudgetLines a 
