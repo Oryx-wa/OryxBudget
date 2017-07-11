@@ -12,10 +12,10 @@
       <div class="filter-elements">
         
         <div class="row">
-          <a class="btn waves-effect waves-light orange" (click)="showExploration('AFE')">Maintenance Contract</a>
+          <a class="btn waves-effect waves-light orange" (click)="showExploration('AFE')">Budget Details</a>
         </div>
         <div class="row">
-          <a class="btn waves-effect waves-light green" (click)="showExploration('Exploration Details')">Call Off Contracts</a>
+          <a class="btn waves-effect waves-light green" (click)="showExploration('Exploration Details')">Cash Call Request</a>
         </div>
         <div *ngIf="napims$ | async" class="row">
           <a class="btn waves-effect waves-light blue" (click)="openFirst()">Sign Off</a>
@@ -58,3 +58,4 @@
     </div>
   </div>
 </div>
+

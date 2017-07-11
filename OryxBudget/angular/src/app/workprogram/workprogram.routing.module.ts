@@ -6,6 +6,7 @@ import { AuthGuard } from './../login';
 import { WorkprogramComponent } from './workprogram.component';
 import { FacilitiesComponent } from './facilities/facilities.component';
 import { ExplorationComponent } from './exploration/exploration.component';
+import {CashCallComponent } from './cash-call/cash-call.component';
 import { MaComComponent} from './ma-com/ma-com.component'
 
 const workProgramRoutes: Routes = [
@@ -22,6 +23,10 @@ const workProgramRoutes: Routes = [
         },
          {
             path: 'macom', component: MaComComponent,
+            canDeactivate: [CanDeactivateGuard], canActivate: [AuthGuard], canLoad: [AuthGuard]
+        },
+         {
+            path: 'cashcall', component: CashCallComponent,
             canDeactivate: [CanDeactivateGuard], canActivate: [AuthGuard], canLoad: [AuthGuard]
         },
         ]
