@@ -72,7 +72,7 @@ export class HomeComponent implements OnInit, OnChanges, OnDestroy {
 
     });
 
-    this.store
+this.store
       .takeWhile(() => this.alive)
       .subscribe(s => {
         if (s.security.user.showSubCom && s.security.user.operator) {

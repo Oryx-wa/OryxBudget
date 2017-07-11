@@ -1,4 +1,4 @@
-import { Component, OnInit, EventEmitter, OnChanges, ChangeDetectionStrategy, OnDestroy } from '@angular/core';
+import { Component, OnInit, EventEmitter, Input, Output, OnChanges, ChangeDetectionStrategy, OnDestroy } from '@angular/core';
 import { FormGroup, FormControl, FormBuilder, FormArray, Validators } from '@angular/forms';
 import { MaterializeDirective, MaterializeAction } from 'angular2-materialize';
 import { Observable } from 'rxjs/Observable';
@@ -41,6 +41,9 @@ export class ExplorationComponent implements OnInit, OnChanges, OnDestroy {
 
   public displayMode: DisplayModeEnum;
   public displayModeEnum = DisplayModeEnum;
+
+  @Input() visible: boolean;
+  @Output() visibleChange: EventEmitter<boolean> = new EventEmitter<boolean>();
   constructor(private fb: FormBuilder, private store: Store<AppState>) { }
 
   ngOnInit() {
@@ -144,6 +147,8 @@ export class ExplorationComponent implements OnInit, OnChanges, OnDestroy {
   signOff() {
     this.store.dispatch(new BudgetLineActions.SignOffAction(''));
     this.store.dispatch(new BudgetActions.SelectItemAction(this.budgetId));
+    this.visible = false;
+    this.visibleChange.emit(this.visible);
   }
   ngOnDestroy() {
     this.alive = false;

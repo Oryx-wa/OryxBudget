@@ -8,6 +8,7 @@ import {
   BudgetLines, BudgetSelector, BudgetLineActions, BudgetLineSelector, ActualActions
 } from './../../redux';
 import { DisplayModeEnum } from '../../shared/shared-enum.enum';
+import { SecurityService } from './../../login/security.service';
 
 @Component({
   selector: 'app-cash-call',
@@ -28,6 +29,8 @@ export class CashCallComponent implements OnInit, OnDestroy {
   workProgramNumber$: Observable<number>;
   status: number;
   budgetId = '';
+   public showNapims = false;
+  public showNewRequestBtn = false;
 
   public napims$: Observable<boolean>;
   public subCom$: Observable<boolean>;
@@ -79,6 +82,16 @@ export class CashCallComponent implements OnInit, OnDestroy {
     this.workProgramStatus$ = this.store.select(BudgetSelector.workProgramStatus);
     this.workProgramNumber$ = this.store.select(BudgetSelector.workProgramStatusNumber);
      this.workProgramNumber$.subscribe(status => this.status = status);
+
+    this.store
+      .takeWhile(() => this.alive)
+      .subscribe(state => {
+        if (state.security.user.napims) {
+          this.showApproval = true;
+        }else {
+          this.showNewRequestBtn = true;
+        }
+      });
     this.budget$
       .takeWhile(() => this.alive)
       .subscribe(budget => {
@@ -118,7 +131,8 @@ export class CashCallComponent implements OnInit, OnDestroy {
     })
   }
   openFirst() {
-    this.showApproval = true;
+    // this.showApproval = true;
+    console.log('Signoff button clicked!');
   }
 
   getBudgetLines() {
