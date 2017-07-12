@@ -35,6 +35,7 @@ using System.IdentityModel.Tokens.Jwt;
 using Microsoft.AspNetCore.Mvc.Authorization;
 using OryxBudgetService.Utilities;
 using Newtonsoft.Json;
+using OryxWebApi.Utilities;
 
 namespace OryxWebApi
 {
@@ -117,6 +118,7 @@ namespace OryxWebApi
             services.Add(new ServiceDescriptor(typeof(JsonSerializer),
                                             provider => serializer,
                                             ServiceLifetime.Transient));
+            services.Configure<apiOptions>(Configuration);
 
             services.AddMvc()
                 .AddJsonOptions(jsonOptions =>

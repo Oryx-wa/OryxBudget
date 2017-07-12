@@ -38,7 +38,8 @@ namespace OryxBudgetService.BudgetsServices
             BudgetLineRepository lineRepository, IBudgetUnitOfWork unitOfWork, LineCommentRepository lineCommentRepository,
             OperatorRepository operatorRepository, AttachmentRepository attachmentRepository, BudgetLineStatusHistoryRepository lineStatus,
             IConnectionManager signalRConnectionManager, IUserResolverService userResolverService, WorkProgramService workProgramService,
-            ActualsRepository actualRepository) : base(repository, unitOfWork)
+            ActualsRepository actualRepository
+            ) : base(repository, unitOfWork)
         {
             _repository = repository;
             _lineRepository = lineRepository;
@@ -499,11 +500,12 @@ namespace OryxBudgetService.BudgetsServices
             base.SaveChanges();
         }
 
-        public async Task<Stream> DownloadSignOff(string budgetId)
+        public async Task<Stream> DownloadSignOff(string budgetId, string server)
         {
             var dept = _userResolverService.GetDepartment();
             int type = (int)Enum.Parse(typeof(WorkProgramTypeEnum), dept);
-            WebRequest request = WebRequest.Create("http://localhost:5509/Report/Index?BudgetId=" + budgetId + "&Type=" + type);
+            string urlToCall = server + "Report/";
+            WebRequest request = WebRequest.Create("http://192.168.1.19/budgetrep/Report/Index?BudgetId=" + budgetId + "&Type=" + type);
 
             request.Method = "GET";
             request.ContentType = "application/pdf";

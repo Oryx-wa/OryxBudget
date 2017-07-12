@@ -20,6 +20,8 @@ using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Net;
 using System.Text;
+using Microsoft.Extensions.Options;
+using OryxWebApi.Utilities;
 
 namespace OryxWebApi.Controllers.BudgetControllers
 {
@@ -30,15 +32,18 @@ namespace OryxWebApi.Controllers.BudgetControllers
         private readonly PeriodService _periodService;
         private readonly BackgroundJobClient _jobs = new BackgroundJobClient();
         protected IUserResolverService _userResolverService;
+        private readonly apiOptions _apiOptions;
 
         public BudgetController(BudgetService budgetService, BudgetLineService lineService, PeriodService periodService,
-            IConnectionManager signalRConnectionManager, IUserResolverService userResolverService)
+            IConnectionManager signalRConnectionManager, IUserResolverService userResolverService, 
+            IOptions<apiOptions> optionsAccessor)
              : base()
         {
             _budgetService = budgetService;
             _lineService = lineService;
             _periodService = periodService;
             _userResolverService = userResolverService;
+            _apiOptions = optionsAccessor.Value;
         }
 
         // POST api/values
@@ -379,7 +384,7 @@ namespace OryxWebApi.Controllers.BudgetControllers
         [HttpGet]
         public async Task<FileResult> DownloadSignOff(string budgetId)
         {
-            var result = await _budgetService.DownloadSignOff(budgetId);
+            var result = await _budgetService.DownloadSignOff(budgetId, _apiOptions.repSrv);
 
             return new FileStreamResult(result, "application/pdf");
         }
