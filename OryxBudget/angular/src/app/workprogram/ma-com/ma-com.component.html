@@ -21,12 +21,12 @@
             <a class="btn waves-effect waves-light blue" (click)="openFirst()">Sign Off</a>
           </div>
           <div *ngIf="level2Lines$ | async;let lines;">
-            <!--<div class="card" *ngIf="lines.length > 0">
+            <div class="card" *ngIf="lines.length > 0">
               <div class="card-image">
                 <h6> Charts</h6>
                 <app-bar-chart [dataset]="lines" [valueField]="'opBudgetFC'" [labelField]="'code'"> </app-bar-chart>
               </div>
-            </div>-->
+            </div>
           </div>
         </div>
         <div *ngIf="showApproval" class="row">

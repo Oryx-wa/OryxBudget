@@ -1,11 +1,10 @@
 import { Component, ElementRef, NgZone, OnDestroy, OnInit, Input, Output } from '@angular/core';
-import { D3Service, D3, RGBColor, Selection, Timer, ScaleLinear } from 'd3-ng2-service';
+import * as d3 from 'd3';
 import * as _ from 'lodash';
 
 @Component({
   selector: 'app-bar-chart',
-  template: `
-    
+  template: `    
     <svg class="chart" [attr.width]="height" [attr.height]="width"></svg>
   `,
   styles: []
@@ -17,96 +16,135 @@ export class BarChartComponent implements OnInit {
   @Input() labelField: string;
   @Input() valueField: string;
 
-  private d3: D3;
+
   private parentNativeElement: any;
-  private d3Svg: Selection<SVGSVGElement, any, null, undefined>;
-  private timer: Timer;
+
   private data: any[];
 
-  constructor(element: ElementRef, private ngZone: NgZone, d3Service: D3Service) {
-    this.d3 = d3Service.getD3();
+  constructor(element: ElementRef, private ngZone: NgZone) {
+
     this.parentNativeElement = element.nativeElement;
   }
 
   ngOnInit() {
     this.setupData();
 
-    const d3 = this.d3;
 
 
-    let d3ParentElement: Selection<HTMLElement, any, null, undefined>;
-    let chart: Selection<SVGSVGElement, any, null, undefined>;
+
+
     // let d3G: Selection<SVGGElement, any, null, undefined>;
 
     // const context: CanvasRenderingContext2D;
-    let width: number;
-    let height: number;
-    if (this.parentNativeElement !== null) {
-      d3ParentElement = d3.select(this.parentNativeElement);
-      chart = this.d3Svg = d3ParentElement.select<SVGSVGElement>('svg');
-      const margin = { top: 20, right: 30, bottom: 30, left: 40 };
-      // width = this.width;
-      // height = this.height;
-      const data = this.data;
-      // console.log(data);
+    const margin = { top: 20, right: 30, bottom: 30, left: 40 };
+    const formatPercent = d3.format(',');
+    const data = this.data;
 
-      width = this.width - margin.left - margin.right;
-      height = this.height - margin.top - margin.bottom;
-      const x = d3.scaleLinear()
-        .domain([0, d3.max(data, function (d) { return d.value; })])
-        .range([0, width]);
+    const width = this.width - margin.left - margin.right;
+    const height = this.height - margin.top - margin.bottom;
 
-      const y = d3.scaleLinear()
-        .domain([0, d3.max(data, function (d) { return d.value; })])
-        .range([height, 0]);
+    const barWidth = width / data.length;
+
+    const x = d3.scaleBand()
+      .range([0, width])
+      .padding(0.1);
+
+    const y = d3.scaleLinear()
+      .range([height, 0]);
+
+    x.domain(this.data.map(function (d) { return d.label; }));
+    y.domain([0, d3.max(data, function (d) { return d.value; })]);
+
+    const g = d3.select('svg')
+      .attr('width', width + margin.left + margin.right)
+      .attr('height', height + margin.top + margin.bottom)
+      .append('g')
+      .attr('transform',
+      'translate(' + margin.left + ',' + margin.top + ')');
 
 
 
-      // x.domain(data.map(function (d) { return d.label; }));
-      // y.domain([0, 1000000]);
+    const yAxis = d3.axisBottom(y)
+      .ticks(10);
 
-      const barWidth = width / data.length;
+    const xAxis = d3.axisLeft(x);
 
-      const g = chart.append('g')
-        .attr('transform', 'translate(' + margin.left + ',' + margin.right + ')');
+    g.selectAll('bar')
+      .data(data)
+      .enter().append('rect')
+      .attr('class', 'bar')
+      .attr('x', function (d) { return x(d.label); })
+      .attr('width', x.bandwidth())
+      .attr('y', function (d) { return y(d.value); })
+      .attr('height', function (d) { return height - y(d.value); });
 
-      g.append('g')
-        .attr('class', 'axis axis--x')
-        .attr('transform', 'translate(0,' + height + ')')
-        .call(d3.axisBottom(x));
+    // add the x Axis
+    g.append('g')
+      .attr('transform', 'translate(0,' + height + ')')
+      .call(d3.axisBottom(x))
+      .selectAll('text')
+      .style('text-anchor', 'end')
+      .attr('dx', '-.8em')
+      .attr('dy', '-.55em')
+      .attr('transform', 'rotate(-90)' );;
 
-      g.append('g')
-        .attr('class', 'axis axis--y')
-        .call(d3.axisLeft(y).ticks(10, '%'))
-        .append('text')
-        .attr('transform', 'rotate(-90)')
-        .attr('y', 6)
-        .attr('dy', '0.71em')
-        .attr('text-anchor', 'end')
-        .text('Code');
+    // add the y Axis
+    g.append('g')
+      .call(d3.axisLeft(y))
+      .append('text')
+      .attr('transform', 'rotate(-90)')
+      .attr('y', 6)
+      .attr('dy', '.71em')
+      .style('text-anchor', 'end')
+      .text('Value ($)');
 
-      const bar = g.selectAll('g')
-        .data(data)
-        .enter().append('rect')
-        .attr('class', 'bar')
-        .attr('x', function (d) { return x(d.value); })
-        .attr('y', function (d) { return y(d.value); })
-        .attr('width', barWidth - 1)
-        .attr('height', function (d) { return height - y(d.value); });
-      /*
-            bar.append('rect')
-              .attr('y', function (d) { return y(d.value); })
-              .attr('height', function (d) { return height - y(d.value); })
-              .attr('width', barWidth - 1);
-      
-            bar.append('text')
-              .attr('x', barWidth / 2)
-              .attr('y', function (d) { return y(d.value) + 3; })
-              .attr('dy', '.75em')
-              .text(function (d) { return d.label; });
-              */
-    }
+    /*
+        g.append('g')
+          .attr('class', 'x axis')
+          .attr('transform', 'translate(0,' + height + ')')
+          .call(xAxis)
+          .selectAll('text')
+          .style('text-anchor', 'end')
+          .attr('dx', '-.8em')
+          .attr('dy', '-.55em')
+          .attr('transform', 'rotate(-90)');
+
+        g.append('g')
+          .attr('class', 'y axis')
+          .call(yAxis)
+          .append('text')
+          .attr('transform', 'rotate(-90)')
+          .attr('y', 6)
+          .attr('dy', '.71em')
+          .style('text-anchor', 'end')
+          .text('Value ($)');
+
+
+
+        g.selectAll('bar')
+          .data(data)
+          .enter().append('rect')
+          .style('fill', 'steelblue')
+          .attr('x', function (d) { return x(d.label); })
+          .attr('width', x.bandwidth())
+          .attr('y', function (d) { return y(d.value); })
+          .attr('height', function (d) { return height - y(d.value); });
+
+
+              bar.append('rect')
+                .attr('y', function (d) { return y(d.value); })
+                .attr('height', function (d) { return height - y(d.value); })
+                .attr('width', barWidth - 1);
+
+              bar.append('text')
+                .attr('x', barWidth / 2)
+                .attr('y', function (d) { return y(d.value) + 3; })
+                .attr('dy', '.75em')
+                .text(function (d) { return d.label; });
+                */
+
   }
+
 
   setupData() {
     const labelField = this.labelField;
